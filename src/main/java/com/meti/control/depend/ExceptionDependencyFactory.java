@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.control.depend;
 
 import com.meti.control.depend.Dependency;
 import com.meti.control.depend.DependencyFactory;

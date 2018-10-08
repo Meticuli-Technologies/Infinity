@@ -2,6 +2,7 @@ package com.meti;
 
 import com.meti.control.ControllerLoader;
 import com.meti.control.depend.DependencyManager;
+import com.meti.control.depend.ExceptionDependencyFactory;
 import com.meti.control.depend.window.WindowedDependency;
 import com.meti.control.depend.window.WindowedDependencyFactory;
 import javafx.application.Application;
