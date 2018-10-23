@@ -1,6 +1,8 @@
 package com.meti.app.main;
 
 import com.meti.app.server.InfinityServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -11,6 +13,8 @@ import java.util.Scanner;
  * @since 10/21/2018
  */
 public class ServerMain {
+    private static final Logger logger = LoggerFactory.getLogger(ServerMain.class);
+
     public static void main(String[] args) {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -28,7 +32,7 @@ public class ServerMain {
 
             infinityServer.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception in application:", e);
         }
     }
 }
