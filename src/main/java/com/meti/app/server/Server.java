@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.meti.app.server.ServerActionManager.RegexPredicate.of;
 
@@ -44,6 +46,21 @@ public class Server {
     public void start() {
         logger.info("Server starting");
         service.submit(new ServerListener(this));
+
+        try {
+            Path directory = Paths.get(".\\content");
+            if (!Files.exists(directory)) {
+                Files.createDirectory(directory);
+            }
+
+            StringBuilder builder = new StringBuilder();
+            Set<Path> walkedPaths = Files.walk(directory).collect(Collectors.toSet());
+            walkedPaths.stream().map(Path::toString).forEach(s -> builder.append("\t\n").append(s));
+
+            logger.info("Loaded " + walkedPaths.size() + " files:" + builder.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean loop() throws Exception {
