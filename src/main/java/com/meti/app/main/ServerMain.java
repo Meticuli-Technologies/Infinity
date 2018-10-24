@@ -1,10 +1,9 @@
 package com.meti.app.main;
 
-import com.meti.app.server.InfinityServer;
+import com.meti.app.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -22,15 +21,15 @@ public class ServerMain {
             System.out.println("Enter in a port:");
             int port = Integer.parseInt(scanner.nextLine());
 
-            InfinityServer infinityServer = new InfinityServer(port);
-            infinityServer.start();
+            Server server = new Server(port);
+            server.start();
 
             boolean running = true;
             while(running){
-                running = infinityServer.loop();
+                running = server.loop();
             }
 
-            infinityServer.stop();
+            server.stop();
         } catch (Exception e) {
             logger.error("Exception in application:", e);
         }

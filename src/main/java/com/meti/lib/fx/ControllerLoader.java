@@ -12,6 +12,8 @@ import java.util.*;
  */
 public class ControllerLoader extends FXMLLoader {
     public static DependencyManager defaultDependencyManager;
+    public static ControllerState defaultControllerState;
+
     public final DependencyManager dependencyManager;
 
     public ControllerLoader(URL location) {
@@ -24,15 +26,23 @@ public class ControllerLoader extends FXMLLoader {
     }
 
     public static <T> T loadWithDependenciesStatic(URL url) throws Exception {
+        return loadWithDependenciesStatic(url, defaultControllerState);
+    }
+
+    public static <T> T loadWithDependenciesStatic(URL url, ControllerState controllerState) throws Exception {
         Objects.requireNonNull(defaultDependencyManager);
-        return loadWithDependenciesStatic(url, defaultDependencyManager);
+        return loadWithDependenciesStatic(url, defaultDependencyManager, controllerState);
     }
 
     public static <T> T loadWithDependenciesStatic(URL url, DependencyManager dependencyManager) throws Exception {
-        return new ControllerLoader(url, dependencyManager).loadWithDependencies();
+        return loadWithDependenciesStatic(url, dependencyManager, defaultControllerState);
     }
 
-    public <T> T loadWithDependencies() throws Exception {
+    public static <T> T loadWithDependenciesStatic(URL url, DependencyManager dependencyManager, ControllerState controllerState) throws Exception {
+        return new ControllerLoader(url, dependencyManager).loadWithDependencies(controllerState);
+    }
+
+    public <T> T loadWithDependencies(ControllerState controllerState) throws Exception {
         T result = load();
         Object controllerToken = getController();
 
@@ -44,7 +54,9 @@ public class ControllerLoader extends FXMLLoader {
             classes.stream()
                     .map(aClass -> {
                         try {
-                            return (Dependency) dependencyManager.getDependencyOfClass(aClass).clone();
+                            Dependency clone = (Dependency) dependencyManager.getDependencyOfClass(aClass).clone();
+                            clone.load(controllerState);
+                            return clone;
                         } catch (CloneNotSupportedException e) {
                             callback.add(e);
                             return null;

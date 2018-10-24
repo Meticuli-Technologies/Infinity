@@ -1,5 +1,6 @@
 package com.meti.lib.fx.depend;
 
+import com.meti.lib.fx.ControllerState;
 import com.meti.lib.fx.Dependency;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,4 +13,9 @@ import javafx.stage.Stage;
 public class WindowedDependency extends Dependency {
     public Stage stage;
     public Scene scene;
+
+    @Override
+    public void load(ControllerState controllerState) {
+        stage = controllerState.getObject(Stage.class);
+    }
 }

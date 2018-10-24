@@ -10,11 +10,14 @@
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="402.0" prefViewportHeight="400.0" prefViewportWidth="600.0" prefWidth="602.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <ListView prefHeight="200.0" prefWidth="200.0">
+            <ListView fx:id="serverList" prefHeight="200.0" prefWidth="200.0">
                <contextMenu>
                   <ContextMenu>
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#addServer" text="Add Server" />
+                        <MenuItem mnemonicParsing="false" onAction="#removeServer" text="RemoveServer" />
+                        <MenuItem mnemonicParsing="false" onAction="#openServer" text="Open Server" />
+                        <MenuItem mnemonicParsing="false" onAction="#clearServers" text="Clear Servers" />
                     </items>
                   </ContextMenu>
                </contextMenu>

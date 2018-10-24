@@ -27,12 +27,12 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add a Server" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IP Address:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <TextField fx:id="address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="25.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="portField" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="25.0" />
                </GridPane.margin>

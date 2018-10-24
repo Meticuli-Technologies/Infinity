@@ -10,4 +10,6 @@ public abstract class Dependency implements Cloneable {
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    public abstract void load(ControllerState controllerState);
 }
