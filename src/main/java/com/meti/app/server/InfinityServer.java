@@ -33,7 +33,13 @@ public class InfinityServer {
         service.submit(new ServerListener(this));
     }
 
-    public boolean loop() {
+    private final ServerInput serverInput = new ServerInput(System.in, System.out);
+
+    public boolean loop() throws Exception {
+        String line = serverInput.readLine();
+        if(line.toLowerCase().equals("stop")){
+            return false;
+        }
         return true;
     }
 
@@ -44,6 +50,13 @@ public class InfinityServer {
     public void stop(long milliseconds) throws InterruptedException {
         logger.info("Server stopping");
 
+        logger.info("Closing streams");
+        try {
+            serverInput.close();
+        } catch (IOException e) {
+            logger.error("Exception when closing streams", e);
+        }
+
         logger.info("ExecutorService shutting down");
         service.shutdown();
 
@@ -53,5 +66,7 @@ public class InfinityServer {
             logger.warn("ExecutorService did not shut down cleanly, shutting down now!");
             service.shutdownNow();
         }
+
+        System.exit(0);
     }
 }

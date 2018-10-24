@@ -1,5 +1,6 @@
 package com.meti.lib.client;
 
+import com.meti.app.server.ClientConsumer;
 import com.meti.lib.manage.Manager;
 
 import java.net.InetAddress;
@@ -12,16 +13,18 @@ import java.util.function.Consumer;
  * @since 10/21/2018
  */
 public class ClientManager extends Manager<InetAddress, Client> {
-    private final Consumer<Client> clientConsumer;
+    private final ClientConsumer clientConsumer;
     private final Consumer<Exception> callback;
 
-    public ClientManager(Consumer<Client> clientConsumer) {
+    public ClientManager(ClientConsumer clientConsumer) {
         this(clientConsumer, Throwable::printStackTrace);
     }
 
-    public ClientManager(Consumer<Client> clientConsumer, Consumer<Exception> callback) {
+    public ClientManager(ClientConsumer clientConsumer, Consumer<Exception> callback) {
         this.clientConsumer = clientConsumer;
         this.callback = callback;
+
+        clientConsumer.setCallback(callback);
     }
 
     private void handleClient(Client client) {
