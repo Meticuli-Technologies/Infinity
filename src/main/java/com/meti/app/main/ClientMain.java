@@ -1,9 +1,12 @@
 package com.meti.app.main;
 
+import com.meti.lib.client.ClientManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author SirMathhman
@@ -11,6 +14,8 @@ import javafx.stage.Stage;
  * @since 10/21/2018
  */
 public class ClientMain extends Application {
+    public static final Logger logger = LoggerFactory.getLogger(ClientManager.class);
+
     public static void main(String[] args) {
         launch(args);
     }
