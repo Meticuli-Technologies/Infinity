@@ -1,6 +1,8 @@
 package com.meti.lib.client;
 
 import com.meti.lib.fx.StateDependency;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.net.InetAddress;
 
@@ -10,13 +12,15 @@ import java.net.InetAddress;
  * @since 10/25/2018
  */
 public class ClientDependency extends StateDependency {
-    private Client client;
+    public final ObjectProperty<Client> clientProperty = new SimpleObjectProperty<>();
 
-    public void loadAddress(InetAddress address) {
+    public Client loadAddress(InetAddress address) {
         Client client = controllerState.getObject(ClientState.class).clientMap.get(address);
         if (client == null) {
             throw new IllegalArgumentException("Client not found");
         }
-        this.client = client;
+
+        clientProperty.set(client);
+        return client;
     }
 }

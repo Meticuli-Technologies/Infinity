@@ -75,7 +75,7 @@ public class MenuView extends Controller implements Initializable {
         try {
             ControllerLoader controllerLoader = new ControllerLoader(getClass().getResource("/com/meti/app/fxml/ServerView.fxml"));
             getDependency(WindowedDependency.class).sceneProperty.get().setRoot(controllerLoader.loadWithDependencies(defaultControllerState));
-            ((ServerView) controllerLoader.getController()).addressProperty.set(serverList.getSelectionModel().getSelectedItem());
+            ((ServerView) controllerLoader.getController()).setAddress(serverList.getSelectionModel().getSelectedItem());
         } catch (Exception e) {
             ClientMain.logger.error("Failed to load fxml", e);
         }

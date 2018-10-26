@@ -1,5 +1,6 @@
 package com.meti.app.main;
 
+import com.meti.lib.client.ClientDependency;
 import com.meti.lib.client.ClientManager;
 import com.meti.lib.client.ClientState;
 import com.meti.lib.fx.ControllerLoader;
@@ -29,9 +30,9 @@ public class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         WindowedDependency windowedDependency = new WindowedDependency(primaryStage, null);
 
-
         DependencyManager defaultDependencyManager = new DependencyManager();
-        defaultDependencyManager.put(WindowedDependency.class, windowedDependency);
+        defaultDependencyManager.addDependency(windowedDependency);
+        defaultDependencyManager.addDependency(new ClientDependency());
 
         ControllerLoader.defaultDependencyManager = defaultDependencyManager;
         ControllerLoader.defaultControllerState = ControllerState.of(primaryStage, clientState);
