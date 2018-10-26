@@ -34,7 +34,7 @@ public class AddServer extends Controller {
 
     @FXML
     public void cancel() {
-        getDependency(WindowedDependency.class).stage.close();
+        getDependency(WindowedDependency.class).stageProperty.get().close();
     }
 
     @FXML
@@ -58,7 +58,7 @@ public class AddServer extends Controller {
             try {
                 ClientMain.clientState.clientMap.put(address, ClientLauncher.launch(address, port));
 
-                getDependency(WindowedDependency.class).stage.close();
+                getDependency(WindowedDependency.class).stageProperty.get().close();
             } catch (IOException e) {
                 //TODO: handle exception
                 e.printStackTrace();

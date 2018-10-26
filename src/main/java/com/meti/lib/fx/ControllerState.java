@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ControllerState extends Manager<Class<?>, List<Object>> {
-
     public static ControllerState of(Object... objects) {
         ControllerState controllerState = new ControllerState();
         Arrays.stream(objects).forEach(o -> {

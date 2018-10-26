@@ -1,13 +1,12 @@
 package com.meti.app.main;
 
-import com.meti.app.client.ClientState;
 import com.meti.lib.client.ClientManager;
+import com.meti.lib.client.ClientState;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.ControllerState;
 import com.meti.lib.fx.DependencyManager;
 import com.meti.lib.fx.depend.WindowedDependency;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -28,13 +27,19 @@ public class ClientMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        WindowedDependency windowedDependency = new WindowedDependency(primaryStage, null);
+
+
         DependencyManager defaultDependencyManager = new DependencyManager();
-        defaultDependencyManager.put(WindowedDependency.class, new WindowedDependency());
+        defaultDependencyManager.put(WindowedDependency.class, windowedDependency);
 
         ControllerLoader.defaultDependencyManager = defaultDependencyManager;
-        ControllerLoader.defaultControllerState = ControllerState.of(primaryStage);
+        ControllerLoader.defaultControllerState = ControllerState.of(primaryStage, clientState);
 
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/com/meti/app/fxml/ServerView.fxml"))));
+        Scene scene = new Scene(ControllerLoader.loadWithDependenciesStatic(getClass().getResource("/com/meti/app/fxml/MenuView.fxml")));
+        windowedDependency.sceneProperty.set(scene);
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }

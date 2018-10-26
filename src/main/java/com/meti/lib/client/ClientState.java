@@ -1,6 +1,5 @@
-package com.meti.app.client;
+package com.meti.lib.client;
 
-import com.meti.lib.client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 

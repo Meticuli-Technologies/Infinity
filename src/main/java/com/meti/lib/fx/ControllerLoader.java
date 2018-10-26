@@ -17,7 +17,7 @@ public class ControllerLoader extends FXMLLoader {
     public final DependencyManager dependencyManager;
 
     public ControllerLoader(URL location) {
-        this(location, new DependencyManager());
+        this(location, defaultDependencyManager);
     }
 
     public ControllerLoader(URL location, DependencyManager dependencyManager) {
@@ -67,6 +67,10 @@ public class ControllerLoader extends FXMLLoader {
             if (callback.size() > 0) {
                 throw callback.get(0);
             }
+        }
+
+        if(controllerState instanceof PostInitializable){
+            ((PostInitializable) controllerState).postInitialize();
         }
 
         return result;
