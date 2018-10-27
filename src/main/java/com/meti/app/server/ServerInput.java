@@ -26,7 +26,7 @@ public class ServerInput {
         return returnString == null ? "" : returnString;
     }
 
-    public void write(String line){
+    public void writeLine(String line){
         writer.println(line);
         writer.flush();
     }

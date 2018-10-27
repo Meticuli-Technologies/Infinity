@@ -4,8 +4,6 @@ import com.meti.app.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Scanner;
-
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -16,16 +14,11 @@ public class ServerMain {
 
     public static void main(String[] args) {
         try {
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("Enter in a port:");
-            int port = Integer.parseInt(scanner.nextLine());
-
-            Server server = new Server(port);
+            Server server = new Server();
             server.start();
 
             boolean running = true;
-            while(running){
+            while (running) {
                 running = server.loop();
             }
 

@@ -26,10 +26,12 @@ import static com.meti.app.server.ServerActionManager.RegexPredicate.of;
 public class Server {
     public final Logger logger = LoggerFactory.getLogger(Server.class);
     public final ClientManager clientManager;
-    public final ServerSocket serverSocket;
+    public ServerSocket serverSocket;
     private final ServerActionManager serverActionManager = new ServerActionManager();
     private final ExecutorService service = Executors.newCachedThreadPool();
-    private final ServerInput serverInput = new ServerInput(System.in, System.out);
+
+    private final ServerInput serverIO = new ServerInput(System.in, System.out);
+
     private boolean shouldContinue = true;
     private Set<Path> files;
 
@@ -38,15 +40,20 @@ public class Server {
 
     }
 
-    public Server(int port) throws IOException {
+    public Server() {
         this.clientManager = new ClientManager(new ClientConsumer(this));
-        this.serverSocket = new ServerSocket(port);
 
         logger.info("Server constructed");
     }
 
-    public void start() {
+    public void start() throws IOException {
         logger.info("Server starting");
+
+        serverIO.writeLine("Enter in a port:");
+
+        int port = Integer.parseInt(serverIO.readLine());
+        this.serverSocket = new ServerSocket(port);
+
         service.submit(new ServerListener(this));
 
         try {
@@ -67,7 +74,7 @@ public class Server {
 
     public boolean loop() throws Exception {
         String line;
-        if((line = serverInput.readLine()) != null){
+        if((line = serverIO.readLine()) != null){
             serverActionManager.keySet()
                     .stream()
                     .filter(stringPredicate -> stringPredicate.test(line))
@@ -94,7 +101,7 @@ public class Server {
 
         logger.info("Closing streams");
         try {
-            serverInput.close();
+            serverIO.close();
         } catch (IOException e) {
             logger.error("Exception when closing streams", e);
         }
