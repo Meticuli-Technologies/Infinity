@@ -49,47 +49,56 @@ public class Server {
     public void start() throws IOException {
         logger.info("Server starting");
 
+        this.serverSocket = new ServerSocket(getPort(serverIO));
+        this.service.submit(new ServerListener(this));
+        this.service.submit(this::updateClients);
+
+        indexFiles();
+    }
+
+    private int getPort(ServerInput serverIO) throws IOException {
         serverIO.writeLine("Enter in a port:");
+        return Integer.parseInt(this.serverIO.readLine());
+    }
 
-        int port = Integer.parseInt(serverIO.readLine());
-        this.serverSocket = new ServerSocket(port);
+    private Set<Path> indexFiles() throws IOException {
+        Path contentDirectory = getContentDirectory();
+        files = Files.walk(contentDirectory).collect(Collectors.toSet());
+        logger.info("Loaded " + files.size() + " files:" + filesAsString(files));
 
-        service.submit(new ServerListener(this));
+        return files;
+    }
 
-        try {
-            Path directory = Paths.get(".\\content");
-            if (!Files.exists(directory)) {
-                Files.createDirectory(directory);
-            }
-
-            StringBuilder builder = new StringBuilder();
-            files = Files.walk(directory).collect(Collectors.toSet());
-            files.stream().map(Path::toString).forEach(s -> builder.append("\t\n").append(s));
-
-            logger.info("Loaded " + files.size() + " files:" + builder.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+    private Path getContentDirectory() throws IOException {
+        Path directory = Paths.get(".\\content");
+        if (!Files.exists(directory)) {
+            Files.createDirectory(directory);
         }
+        return directory;
+    }
+
+    private String filesAsString(Set<Path> files) {
+        StringBuilder builder = new StringBuilder();
+        files.stream().map(Path::toString).forEach(s -> builder.append("\t\n").append(s));
+        return builder.toString();
     }
 
     public boolean loop() throws Exception {
+        readLine(serverIO, serverActionManager);
+
+        return shouldContinue;
+    }
+
+    private String readLine(ServerInput serverIO, ServerActionManager serverActionManager) throws IOException {
         String line;
-        if((line = serverIO.readLine()) != null){
+        if ((line = serverIO.readLine()) != null) {
             serverActionManager.keySet()
                     .stream()
                     .filter(stringPredicate -> stringPredicate.test(line))
                     .map(serverActionManager::get)
                     .forEach(stringConsumer -> stringConsumer.accept(line));
         }
-
-        clientManager.values().stream()
-                .filter(Client::isClosed)
-                .forEach(client -> {
-                    logger.info("Client " + client.socket.getInetAddress() + " has disconnected from the server");
-                    clientManager.remove(client.socket.getInetAddress());
-                });
-
-        return shouldContinue;
+        return line;
     }
 
     public void stop() throws InterruptedException {
@@ -99,24 +108,42 @@ public class Server {
     public void stop(long milliseconds) throws InterruptedException {
         logger.info("Server stopping");
 
+        closeIO(serverIO);
+        shutdownExecutorService(milliseconds, service);
+
+        System.exit(0);
+    }
+
+    private void closeIO(ServerInput serverIO) {
         logger.info("Closing streams");
+
         try {
             serverIO.close();
         } catch (IOException e) {
             logger.error("Exception when closing streams", e);
         }
+    }
 
+    private void shutdownExecutorService(long milliseconds, ExecutorService service) throws InterruptedException {
         logger.info("ExecutorService shutting down");
-        service.shutdown();
+        this.service.shutdown();
 
         Thread.sleep(milliseconds);
 
         if (!service.isShutdown()) {
             logger.warn("ExecutorService did not shut down cleanly, shutting down now!");
-            service.shutdownNow();
+            this.service.shutdownNow();
         }
+    }
 
-        System.exit(0);
+    private Set<Client> updateClients() {
+        return clientManager.values().stream()
+                .filter(Client::isClosed)
+                .map(client -> {
+                    logger.info("Client " + client.socket.getInetAddress() + " has disconnected from the server");
+                    return clientManager.remove(client.socket.getInetAddress());
+                }).collect(Collectors.toSet());
+
     }
 
     public Optional<Set<Path>> getFiles() {
