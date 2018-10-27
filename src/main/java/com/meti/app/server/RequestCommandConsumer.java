@@ -28,12 +28,14 @@ public class RequestCommandConsumer extends CommandConsumer<RequestCommand, Seri
 
     @Override
     protected Serializable process(RequestCommand command, Server server) {
-        Set<RequestType> parameters = Arrays.stream(command.getParameters())
+        return requestableMap.get(getParametersAsSet(command)).request(server);
+    }
+
+    private Set<RequestType> getParametersAsSet(RequestCommand command) {
+        return Arrays.stream(command.getParameters())
                 .filter(serializable -> serializable instanceof RequestType)
                 .map(serializable -> (RequestType) serializable)
                 .collect(Collectors.toSet());
-
-        return requestableMap.get(parameters).request(server);
     }
 
     @Override
