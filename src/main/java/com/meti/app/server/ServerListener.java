@@ -20,17 +20,19 @@ public class ServerListener implements Callable<Optional<Exception>> {
 
         while (!Thread.interrupted()) {
             try {
-                Socket socket = server.serverSocket.accept();
-                Client client = new Client(socket);
-
-                server.logger.info("Located client at " + socket.getInetAddress().toString());
-
-                server.clientManager.put(socket.getInetAddress(), client);
+                constructClient(server.serverSocket.accept());
             } catch (IOException e) {
                 return Optional.of(e);
             }
         }
 
         return Optional.empty();
+    }
+
+    private Client constructClient(Socket socket) throws IOException {
+        Client client = new Client(socket);
+        server.logger.info("Located client at " + socket.getInetAddress().toString());
+        server.clientManager.put(socket.getInetAddress(), client);
+        return client;
     }
 }
