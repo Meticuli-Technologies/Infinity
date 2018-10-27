@@ -31,23 +31,8 @@ public class ClientConsumer implements Consumer<Client> {
 
         while (!client.isClosed()) {
             try {
-                Object token = client.inputStream.readObject();
-                logger.debug("Received input of " + token.toString());
-
-                boolean hasProcessed = false;
-                for (TokenHandler<?> tokenHandler : tokenHandlers) {
-                    if (tokenHandler.tokenClass.isAssignableFrom(token.getClass())) {
-                        Optional<?> o = tokenHandler.handleObject(token, server);
-                        if (o.isPresent()) {
-                            try {
-                                client.outputStream.writeObject(o.get());
-                                hasProcessed = true;
-                            } catch (IOException e) {
-                                callback.accept(e);
-                            }
-                        }
-                    }
-                }
+                Object token = readToken(client);
+                boolean hasProcessed = processToken(client, token);
 
                 if(!hasProcessed){
                     client.outputStream.writeObject(new IllegalArgumentException("Token " + token + "has been received but the server has no handlers for it!"));
@@ -58,6 +43,31 @@ public class ClientConsumer implements Consumer<Client> {
                 callback.accept(e);
             }
         }
+    }
+
+    private boolean processToken(Client client, Object token) throws IOException {
+        boolean hasProcessed = false;
+        for (TokenHandler<?> tokenHandler : tokenHandlers) {
+            if (tokenHandler.tokenClass.isAssignableFrom(token.getClass())) {
+                hasProcessed = hasProcessed || processHandler(client, token, tokenHandler);
+            }
+        }
+        return hasProcessed;
+    }
+
+    private Object readToken(Client client) throws IOException, ClassNotFoundException {
+        Object token = client.inputStream.readObject();
+        logger.debug("Received input of " + token.toString());
+        return token;
+    }
+
+    private boolean processHandler(Client client, Object token, TokenHandler<?> tokenHandler) throws IOException {
+        Optional<?> o = tokenHandler.handleObject(token, server);
+        if (o.isPresent()) {
+            client.outputStream.writeObject(o.get());
+            return true;
+        }
+        return false;
     }
 
     public void setCallback(Consumer<Exception> callback) {
