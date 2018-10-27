@@ -30,7 +30,7 @@ public class ServerListener implements Callable<Optional<Exception>> {
     }
 
     private Client constructClient(Socket socket) throws IOException {
-        Client client = new Client(socket);
+        Client client = Client.fromSocket(socket);
         server.logger.info("Located client at " + socket.getInetAddress().toString());
         server.clientManager.put(socket.getInetAddress(), client);
         return client;

@@ -25,8 +25,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Client {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
-    public final Socket socket;
     private final ExecutorService clientService = Executors.newFixedThreadPool(2);
+
+    public final Connection connection;
     public final ObjectInputStream inputStream;
     public final ObjectOutputStream outputStream;
 
@@ -37,12 +38,15 @@ public class Client {
         timeoutDuration.set(Duration.ofSeconds(1));
     }
 
-    public Client(Socket socket) throws IOException {
-        this.socket = socket;
+    public static Client fromSocket(Socket socket) throws IOException {
+        return new Client(new Connection(socket.getInputStream(), socket.getOutputStream()));
+    }
 
-        //construction is reversed because the header would cause problems
-        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.inputStream = new ObjectInputStream(socket.getInputStream());
+    private Client(Connection connection) throws IOException {
+        this.connection = connection;
+
+        this.outputStream = new ObjectOutputStream(connection.outputStream);
+        this.inputStream = new ObjectInputStream(connection.inputStream);
     }
 
     public <T extends Serializable> Optional<T> runCommand(Command<T> command) throws Exception {
@@ -93,7 +97,8 @@ public class Client {
             inputStream.close();
             outputStream.close();
 
-            socket.close();
+            connection.close();
+
             return true;
         }
         else{
