@@ -1,6 +1,6 @@
 package com.meti.app.main;
 
-import com.meti.app.server.Server;
+import com.meti.lib.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

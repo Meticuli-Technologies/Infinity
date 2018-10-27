@@ -1,6 +1,6 @@
 package com.meti.lib.client;
 
-import com.meti.app.server.command.Command;
+import com.meti.lib.server.command.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.slf4j.Logger;

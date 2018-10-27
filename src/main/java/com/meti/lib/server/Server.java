@@ -1,4 +1,4 @@
-package com.meti.app.server;
+package com.meti.lib.server;
 
 import com.meti.lib.client.Client;
 import com.meti.lib.client.ClientManager;
@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import static com.meti.app.server.ServerActionManager.RegexPredicate.of;
+import static com.meti.lib.server.ServerActionManager.RegexPredicate.of;
 
 /**
  * @author SirMathhman

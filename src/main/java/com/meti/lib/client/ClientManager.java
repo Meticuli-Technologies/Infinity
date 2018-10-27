@@ -1,6 +1,6 @@
 package com.meti.lib.client;
 
-import com.meti.app.server.ClientConsumer;
+import com.meti.lib.server.ClientConsumer;
 import com.meti.lib.manage.Manager;
 
 import java.net.InetAddress;

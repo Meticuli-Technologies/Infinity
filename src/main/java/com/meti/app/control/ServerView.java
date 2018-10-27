@@ -1,8 +1,8 @@
 package com.meti.app.control;
 
-import com.meti.app.server.Location;
-import com.meti.app.server.command.RequestCommand;
-import com.meti.app.server.command.RequestType;
+import com.meti.lib.server.Location;
+import com.meti.lib.server.command.RequestCommand;
+import com.meti.lib.server.command.RequestType;
 import com.meti.lib.client.Client;
 import com.meti.lib.client.ClientDependency;
 import com.meti.lib.fx.Controller;

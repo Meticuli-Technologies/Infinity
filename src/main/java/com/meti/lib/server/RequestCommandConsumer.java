@@ -1,7 +1,7 @@
-package com.meti.app.server;
+package com.meti.lib.server;
 
-import com.meti.app.server.command.RequestCommand;
-import com.meti.app.server.command.RequestType;
+import com.meti.lib.server.command.RequestCommand;
+import com.meti.lib.server.command.RequestType;
 import com.meti.lib.Requestable;
 
 import java.io.Serializable;

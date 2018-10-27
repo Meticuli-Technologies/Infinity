@@ -1,4 +1,4 @@
-package com.meti.app.server.command;
+package com.meti.lib.server.command;
 
 import java.io.Serializable;
 
