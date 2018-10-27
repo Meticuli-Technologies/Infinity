@@ -50,33 +50,49 @@ public class ControllerLoader extends FXMLLoader {
         T result = load();
         Object controllerToken = getController();
 
-        if (controllerToken instanceof Controller) {
-            Controller controller = (Controller) controllerToken;
-            Set<Class<? extends Dependency>> classes = controller.getDependencyClasses();
-
-            List<Exception> callback = new ArrayList<>();
-            classes.stream()
-                    .map(aClass -> {
-                        try {
-                            Dependency clone = (Dependency) dependencyManager.getDependencyOfClass(aClass).clone();
-                            clone.load(controllerState);
-                            return clone;
-                        } catch (CloneNotSupportedException e) {
-                            callback.add(e);
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .forEach(dependency -> controller.dependencies.put(dependency.getClass(), dependency));
-            if (callback.size() > 0) {
-                throw callback.get(0);
-            }
-        }
-
+        loadController(controllerState, controllerToken);
         if(controllerState instanceof PostInitializable){
             ((PostInitializable) controllerState).postInitialize();
         }
 
         return result;
+    }
+
+    private Controller loadController(ControllerState controllerState, Object controllerToken) throws Exception {
+        if (controllerToken instanceof Controller) {
+            Controller controller = (Controller) controllerToken;
+
+            Set<Class<? extends Dependency>> dependencyClasses = controller.getDependencyClasses();
+            List<Exception> callback = new ArrayList<>();
+
+            buildDependencies(controllerState, controller, dependencyClasses, callback);
+
+            if (callback.size() > 0) {
+                throw callback.get(0);
+            }
+
+            return controller;
+        }
+        else{
+            throw new IllegalArgumentException("ControllerToken is not an instance of a Controller");
+        }
+    }
+
+    private void buildDependencies(ControllerState controllerState, Controller controller, Set<Class<? extends Dependency>> dependencyClasses, List<Exception> callback) {
+        dependencyClasses.stream()
+                .map(aClass -> getDependencyClone(aClass, controllerState, callback))
+                .filter(Objects::nonNull)
+                .forEach(dependency -> controller.dependencies.put(dependency.getClass(), dependency));
+    }
+
+    private Dependency getDependencyClone(Class<? extends Dependency> aClass, ControllerState controllerState, List<Exception> callback) {
+        try {
+            Dependency clone = (Dependency) dependencyManager.getDependencyOfClass(aClass).clone();
+            clone.load(controllerState);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            callback.add(e);
+            return null;
+        }
     }
 }
