@@ -1,7 +1,5 @@
 package com.meti.app.control.wizard;
 
-import com.meti.app.main.ClientMain;
-import com.meti.lib.client.ClientLauncher;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.Dependency;
 import com.meti.lib.fx.depend.WindowedDependency;
@@ -10,10 +8,18 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.meti.app.main.ClientMain.clientState;
+import static com.meti.lib.client.ClientLauncher.launch;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 /**
  * @author SirMathhman
@@ -37,34 +43,47 @@ public class AddServer extends Controller {
         getDependency(WindowedDependency.class).stageProperty.get().close();
     }
 
+
     @FXML
     public void apply() {
-        InetAddress address = null;
-        int port = -1;
         try {
-            if (!addressField.getText().trim().equals("")) {
-                address = InetAddress.getByName(addressField.getText());
-            }
+            Optional<Socket> socketOptional = constructSocket();
+            if (socketOptional.isPresent()) {
+                Socket socket = socketOptional.get();
+                clientState.addClient(launch(socket));
 
-            if (!portField.getText().trim().equals("")) {
-                port = Integer.parseInt(portField.getText());
+                getDependency(WindowedDependency.class).stageProperty.get().close();
+            } else {
+                //TODO: alert user
             }
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             //TODO: handle exception
         }
+    }
 
-        if (address != null && port != -1) {
-            try {
-                ClientMain.clientState.clientMap.put(address, ClientLauncher.launch(address, port));
+    private Optional<Socket> constructSocket() throws IOException {
+        Optional<InetAddress> address = getAddress();
+        OptionalInt port = getPort();
 
-                getDependency(WindowedDependency.class).stageProperty.get().close();
-            } catch (IOException e) {
-                //TODO: handle exception
-                e.printStackTrace();
-            }
-        } else {
-            //TODO: alert user
-        }
+        return address.isPresent() && port.isPresent()
+                ? of(new Socket(address.get(), port.getAsInt()))
+                : empty();
+    }
+
+    private Optional<InetAddress> getAddress() throws UnknownHostException {
+        return !addressField.getText().trim().equals("")
+                ? of(InetAddress.getByName(addressField.getText()))
+                : empty();
+    }
+
+    private OptionalInt getPort() {
+        return getPortFromText(portField.getText());
+    }
+
+    private OptionalInt getPortFromText(String portText) {
+        return !portText.trim().equals("")
+                ? OptionalInt.of(Integer.parseInt(portText))
+                : OptionalInt.empty();
     }
 }
