@@ -15,9 +15,9 @@ import java.util.function.Predicate;
  * @since 10/26/2018
  */
 public class CommandHandler extends TokenHandler<Command> {
-    private static final Set<CommandConsumer<Serializable, ? extends Command>> consumers = new HashSet<>();
+    private static final Set<CommandConsumer<? extends Command, Serializable>> consumers = new HashSet<>();
 
-    {
+    static {
         consumers.add(new RequestCommandConsumer());
     }
 
@@ -27,10 +27,14 @@ public class CommandHandler extends TokenHandler<Command> {
 
     @Override
     protected Object handleToken(Command token, Server server) {
+        return getResults(token, server).get(0);
+    }
+
+    private ArrayList<Object> getResults(Command token, Server server) {
         ArrayList<Object> results = new ArrayList<>();
         consumers.stream()
                 .filter((Predicate<CommandConsumer<?, ?>>) commandConsumer -> commandConsumer.getCommandClass().isAssignableFrom(token.getClass()))
                 .forEach((Consumer<CommandConsumer<?, ?>>) commandConsumer -> results.add(commandConsumer.processObject(token, server)));
-        return results.get(0);
+        return results;
     }
 }

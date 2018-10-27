@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 0.0.0
  * @since 10/27/2018
  */
-public abstract class CommandConsumer<R extends Serializable, T extends Command> {
+public abstract class CommandConsumer<T extends Command, R extends Serializable> {
     public R processObject(Object obj, Server server) {
         return process(getCommandClass().cast(obj), server);
     }

@@ -15,7 +15,7 @@ import static com.meti.lib.CollectionsUtil.toSet;
  * @version 0.0.0
  * @since 10/27/2018
  */
-public class RequestCommandConsumer extends CommandConsumer<Serializable, RequestCommand> {
+public class RequestCommandConsumer extends CommandConsumer<RequestCommand, Serializable> {
     private static final Map<Set<RequestType>, Requestable<Server, Serializable>> requestableMap = new HashMap<>();
 
     static {
