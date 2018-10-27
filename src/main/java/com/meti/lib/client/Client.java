@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author SirMathhman
@@ -24,16 +25,13 @@ import java.util.concurrent.Future;
  */
 public class Client {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
-
-    public final ObjectInputStream inputStream;
-
     public final Socket socket;
-    public final ObjectOutputStream outputStream;
-    //TODO: make configurable
     private final ExecutorService clientService = Executors.newFixedThreadPool(2);
+    public final ObjectInputStream inputStream;
+    public final ObjectOutputStream outputStream;
 
-    private boolean closed = false;
     private final ObjectProperty<Duration> timeoutDuration = new SimpleObjectProperty<>();
+    private boolean closed = false;
 
     {
         timeoutDuration.set(Duration.ofSeconds(1));
@@ -56,25 +54,33 @@ public class Client {
 
         logger.debug("Running command " + command + " with timeout of " + duration);
 
+        writeCommand(outputStream, command);
+        return command.isReceiving()
+                ? receiveToken(clientService, inputStream, duration, c)
+                : Optional.empty();
+    }
+
+    private <T extends Serializable> void writeCommand(ObjectOutputStream outputStream, Command<T> command) throws IOException {
         outputStream.writeObject(command);
         outputStream.flush();
+    }
 
-        if (command.isReceiving()) {
-            Future<?> future = clientService.submit(inputStream::readObject);
-
-            //Object token = future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
-            Object token = future.get();
-            if (token instanceof Exception) {
-                throw ((Exception) token);
-            }
-
-            if (c.isAssignableFrom(token.getClass())) {
-                return Optional.of(c.cast(token));
-            } else {
-                throw new IllegalArgumentException("Server returned invalid response: " + token.toString());
-            }
+    private <T extends Serializable> Optional<T> receiveToken(ExecutorService clientService, ObjectInputStream inputStream, Duration duration, Class<T> tokenClass) throws Exception {
+        Object token = getToken(clientService, inputStream, duration);
+        if (tokenClass.isAssignableFrom(token.getClass())) {
+            return Optional.of(tokenClass.cast(token));
         } else {
-            return Optional.empty();
+            throw new IllegalArgumentException("Server returned invalid response: " + token.toString());
+        }
+    }
+
+    private Object getToken(ExecutorService clientService, ObjectInputStream inputStream, Duration duration) throws Exception {
+        Future<?> future = clientService.submit(inputStream::readObject);
+        Object token = future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
+        if (token instanceof Exception) {
+            throw ((Exception) token);
+        } else {
+            return token;
         }
     }
 
