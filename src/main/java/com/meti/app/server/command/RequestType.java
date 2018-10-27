@@ -6,5 +6,5 @@ package com.meti.app.server.command;
  * @since 10/26/2018
  */
 public enum RequestType {
-    FILES
+    LOCATIONS
 }

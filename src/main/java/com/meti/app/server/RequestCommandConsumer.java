@@ -19,7 +19,7 @@ public class RequestCommandConsumer extends CommandConsumer<Serializable, Reques
     private static final Map<Set<RequestType>, Requestable<Server, Serializable>> requestableMap = new HashMap<>();
 
     static {
-        requestableMap.put(toSet(RequestType.FILES), parameter ->
+        requestableMap.put(toSet(RequestType.LOCATIONS), parameter ->
                 new ArrayList<>(parameter.getFiles().orElse(new HashSet<>())
                         .stream()
                         .map(path -> new Location(path.toString()))

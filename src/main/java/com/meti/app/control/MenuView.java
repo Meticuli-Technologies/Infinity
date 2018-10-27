@@ -97,7 +97,7 @@ public class MenuView extends Controller implements Initializable {
             ServerView controller = controllerLoader.getController();
 
             getDependency(WindowedDependency.class).setRoot(parent);
-            controller.setAddress(serverList.getSelectionModel().getSelectedItem());
+            controller.reload(serverList.getSelectionModel().getSelectedItem());
         } catch (Exception e) {
             logger.error("Failed to load fxml", e);
         }
