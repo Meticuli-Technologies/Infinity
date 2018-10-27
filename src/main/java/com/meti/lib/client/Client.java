@@ -23,11 +23,11 @@ import java.util.concurrent.TimeUnit;
  * @version 0.0.0
  * @since 10/21/2018
  */
-public class Client {
+public class Client<T extends Connection> {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
     private final ExecutorService clientService = Executors.newFixedThreadPool(2);
 
-    public final Connection connection;
+    public final T connection;
     public final ObjectInputStream inputStream;
     public final ObjectOutputStream outputStream;
 
@@ -38,11 +38,11 @@ public class Client {
         timeoutDuration.set(Duration.ofSeconds(1));
     }
 
-    public static Client fromSocket(Socket socket) throws IOException {
-        return new Client(new Connection(socket.getInputStream(), socket.getOutputStream()));
+    public static Client<Connection> fromSocket(Socket socket) throws IOException {
+        return new Client<>(new SocketConnection(socket));
     }
 
-    private Client(Connection connection) throws IOException {
+    private Client(T connection) throws IOException {
         this.connection = connection;
 
         this.outputStream = new ObjectOutputStream(connection.outputStream);
