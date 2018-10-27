@@ -14,7 +14,6 @@ import java.util.function.Consumer;
  */
 public class ClientManager extends Manager<InetAddress, Client> {
     private final ClientConsumer clientConsumer;
-    private final Consumer<Exception> callback;
 
     public ClientManager(ClientConsumer clientConsumer) {
         this(clientConsumer, Throwable::printStackTrace);
@@ -22,7 +21,7 @@ public class ClientManager extends Manager<InetAddress, Client> {
 
     public ClientManager(ClientConsumer clientConsumer, Consumer<Exception> callback) {
         this.clientConsumer = clientConsumer;
-        this.callback = callback;
+        Consumer<Exception> callback1 = callback;
 
         clientConsumer.setCallback(callback);
     }
