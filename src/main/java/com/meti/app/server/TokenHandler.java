@@ -14,12 +14,12 @@ public abstract class TokenHandler<T> {
         this.tokenClass = tokenClass;
     }
 
-    public Optional<?> handleObject(Object obj) {
+    public Optional<?> handleObject(Object obj, Server server) {
         if (tokenClass.isAssignableFrom(obj.getClass())) {
-            return Optional.ofNullable(handleToken(tokenClass.cast(obj)));
+            return Optional.ofNullable(handleToken(tokenClass.cast(obj), server));
         }
         return Optional.empty();
     }
 
-    protected abstract Object handleToken(T token);
+    protected abstract Object handleToken(T token, Server server);
 }

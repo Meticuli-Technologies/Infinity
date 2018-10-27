@@ -3,11 +3,11 @@ package com.meti.app.server;
 import com.meti.app.server.command.Command;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -15,11 +15,10 @@ import java.util.stream.Collectors;
  * @since 10/26/2018
  */
 public class CommandHandler extends TokenHandler<Command> {
-    private static final Set<? extends CommandConsumer<?>> consumers = new HashSet<>();
-
+    private static final Set<CommandConsumer<Serializable, ? extends Command>> consumers = new HashSet<>();
 
     {
-
+        consumers.add(new RequestCommandConsumer());
     }
 
     public CommandHandler(Class<Command> tokenClass) {
@@ -27,21 +26,11 @@ public class CommandHandler extends TokenHandler<Command> {
     }
 
     @Override
-    protected Object handleToken(Command token) {
-        //TODO: multiple results?
-        return consumers.stream()
-                .filter((Predicate<CommandConsumer<?>>) commandConsumer -> commandConsumer.getCommandClass().isAssignableFrom(token.getClass()))
-                .map((Function<CommandConsumer<?>, Object>) commandConsumer -> commandConsumer.processObject(token))
-                .collect(Collectors.toList()).get(0);
-    }
-
-    private abstract class CommandConsumer<R extends Serializable> {
-        public R processObject(Object obj) {
-            return process(getCommandClass().cast(obj));
-        }
-
-        protected abstract R process(Command<? extends R> command);
-
-        protected abstract Class<? extends Command<? extends R>> getCommandClass();
+    protected Object handleToken(Command token, Server server) {
+        ArrayList<Object> results = new ArrayList<>();
+        consumers.stream()
+                .filter((Predicate<CommandConsumer<?, ?>>) commandConsumer -> commandConsumer.getCommandClass().isAssignableFrom(token.getClass()))
+                .forEach((Consumer<CommandConsumer<?, ?>>) commandConsumer -> results.add(commandConsumer.processObject(token, server)));
+        return results.get(0);
     }
 }

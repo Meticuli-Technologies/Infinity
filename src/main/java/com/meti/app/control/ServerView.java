@@ -2,7 +2,7 @@ package com.meti.app.control;
 
 import com.meti.app.server.Location;
 import com.meti.app.server.command.RequestCommand;
-import com.meti.app.server.command.RequestTypes;
+import com.meti.app.server.command.RequestType;
 import com.meti.lib.client.Client;
 import com.meti.lib.client.ClientDependency;
 import com.meti.lib.fx.Controller;
@@ -51,7 +51,7 @@ public class ServerView extends Controller {
     public void reload(InetAddress address) {
         try {
             Client client = getDependency(ClientDependency.class).loadAddress(address);
-            ArrayList<?> list = client.runCommand(new RequestCommand<>(ArrayList.class, RequestTypes.FILES))
+            ArrayList<?> list = client.runCommand(new RequestCommand<>(ArrayList.class, RequestType.FILES))
                     .orElse(new ArrayList());
 
             list.stream()

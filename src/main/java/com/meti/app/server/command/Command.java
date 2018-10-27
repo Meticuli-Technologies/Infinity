@@ -18,5 +18,10 @@ public abstract class Command<R extends Serializable> implements Serializable {
         return getClass().getSimpleName();
     }
 
+    @Override
+    public String toString(){
+        return getName() + " " + resultClass.getSimpleName();
+    }
+
     public abstract boolean isReceiving();
 }

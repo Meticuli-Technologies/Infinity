@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +31,7 @@ public class Server {
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final ServerInput serverInput = new ServerInput(System.in, System.out);
     private boolean shouldContinue = true;
+    private Set<Path> files;
 
     {
         serverActionManager.put(of("stop"), s -> shouldContinue = false);
@@ -37,7 +39,7 @@ public class Server {
     }
 
     public Server(int port) throws IOException {
-        this.clientManager = new ClientManager(new ClientConsumer());
+        this.clientManager = new ClientManager(new ClientConsumer(this));
         this.serverSocket = new ServerSocket(port);
 
         logger.info("Server constructed");
@@ -54,10 +56,10 @@ public class Server {
             }
 
             StringBuilder builder = new StringBuilder();
-            Set<Path> walkedPaths = Files.walk(directory).collect(Collectors.toSet());
-            walkedPaths.stream().map(Path::toString).forEach(s -> builder.append("\t\n").append(s));
+            files = Files.walk(directory).collect(Collectors.toSet());
+            files.stream().map(Path::toString).forEach(s -> builder.append("\t\n").append(s));
 
-            logger.info("Loaded " + walkedPaths.size() + " files:" + builder.toString());
+            logger.info("Loaded " + files.size() + " files:" + builder.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,5 +110,9 @@ public class Server {
         }
 
         System.exit(0);
+    }
+
+    public Optional<Set<Path>> getFiles() {
+        return Optional.of(files);
     }
 }

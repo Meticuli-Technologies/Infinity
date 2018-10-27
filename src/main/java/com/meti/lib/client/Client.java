@@ -3,6 +3,8 @@ package com.meti.lib.client;
 import com.meti.app.server.command.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,7 +16,6 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author SirMathhman
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
  * @since 10/21/2018
  */
 public class Client {
+    private static final Logger logger = LoggerFactory.getLogger(Client.class);
+
     public final ObjectInputStream inputStream;
 
     public final Socket socket;
@@ -51,13 +54,20 @@ public class Client {
     public <T extends Serializable> Optional<T> runCommand(Command<T> command, Duration duration) throws Exception {
         Class<T> c = command.resultClass;
 
+        logger.debug("Running command " + command + " with timeout of " + duration);
+
         outputStream.writeObject(command);
         outputStream.flush();
 
         if (command.isReceiving()) {
             Future<?> future = clientService.submit(inputStream::readObject);
 
-            Object token = future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
+            //Object token = future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
+            Object token = future.get();
+            if (token instanceof Exception) {
+                throw ((Exception) token);
+            }
+
             if (c.isAssignableFrom(token.getClass())) {
                 return Optional.of(c.cast(token));
             } else {
