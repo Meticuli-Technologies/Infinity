@@ -42,6 +42,10 @@ public class ControllerLoader extends FXMLLoader {
         return new ControllerLoader(url, dependencyManager).loadWithDependencies(controllerState);
     }
 
+    public <T> T loadWithDependencies() throws Exception {
+        return loadWithDependencies(defaultControllerState);
+    }
+
     public <T> T loadWithDependencies(ControllerState controllerState) throws Exception {
         T result = load();
         Object controllerToken = getController();

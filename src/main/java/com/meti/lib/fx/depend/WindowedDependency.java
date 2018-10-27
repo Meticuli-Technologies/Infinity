@@ -4,6 +4,7 @@ import com.meti.lib.fx.ControllerState;
 import com.meti.lib.fx.Dependency;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -19,6 +20,12 @@ public class WindowedDependency extends Dependency {
     public WindowedDependency(Stage stage, Scene scene) {
         stageProperty.set(stage);
         sceneProperty.set(scene);
+    }
+
+    public Parent setRoot(Parent parent) {
+        Parent previous = sceneProperty.get().getRoot();
+        sceneProperty.get().setRoot(parent);
+        return previous;
     }
 
     @Override
