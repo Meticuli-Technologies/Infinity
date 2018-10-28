@@ -28,6 +28,15 @@ public class ClientMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        loadDependents(primaryStage);
+
+        Scene scene = new Scene(ControllerLoader.loadWithDependenciesStatic(getClass().getResource("/com/meti/app/fxml/MenuView.fxml")));
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void loadDependents(Stage primaryStage) {
         WindowedDependency windowedDependency = new WindowedDependency(primaryStage, null);
 
         DependencyManager defaultDependencyManager = new DependencyManager();
@@ -36,12 +45,6 @@ public class ClientMain extends Application {
 
         ControllerLoader.defaultDependencyManager = defaultDependencyManager;
         ControllerLoader.defaultControllerState = ControllerState.of(primaryStage, clientState);
-
-        Scene scene = new Scene(ControllerLoader.loadWithDependenciesStatic(getClass().getResource("/com/meti/app/fxml/MenuView.fxml")));
-        windowedDependency.sceneProperty.set(scene);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 }
 

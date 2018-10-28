@@ -1,6 +1,7 @@
 package com.meti.app.control;
 
 import com.meti.lib.client.Client;
+import com.meti.lib.client.SocketConnection;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.Dependency;
@@ -62,7 +63,7 @@ public class MenuView extends Controller implements Initializable {
         serverList.getSelectionModel().getSelectedItems().forEach(address -> removeServerImpl(address, clientState.clientMap));
     }
 
-    public void removeServerImpl(InetAddress address, ObservableMap<InetAddress, Client> clientMap) {
+    public void removeServerImpl(InetAddress address, ObservableMap<InetAddress, Client<SocketConnection>> clientMap) {
         try {
             clientMap.remove(address).close();
         } catch (IOException e) {

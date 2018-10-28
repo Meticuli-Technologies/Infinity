@@ -9,7 +9,7 @@ public class ClientLauncher {
         return launch(new Socket(address, port));
     }
 
-    public static Client launch(Socket socket) throws IOException {
-        return new Client(socket);
+    public static Client<SocketConnection> launch(Socket socket) throws IOException {
+        return new Client<>(new SocketConnection(socket));
     }
 }

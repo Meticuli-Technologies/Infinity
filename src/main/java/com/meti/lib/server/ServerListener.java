@@ -1,6 +1,7 @@
 package com.meti.lib.server;
 
 import com.meti.lib.client.Client;
+import com.meti.lib.client.ClientLauncher;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -30,7 +31,7 @@ public class ServerListener implements Callable<Optional<Exception>> {
     }
 
     private Client constructClient(Socket socket) throws IOException {
-        Client client = Client.fromSocket(socket);
+        Client client = ClientLauncher.launch(socket);
         server.logger.info("Located client at " + socket.getInetAddress().toString());
         server.clientManager.put(socket.getInetAddress(), client);
         return client;

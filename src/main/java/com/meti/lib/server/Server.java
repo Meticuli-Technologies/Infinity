@@ -2,6 +2,7 @@ package com.meti.lib.server;
 
 import com.meti.lib.client.Client;
 import com.meti.lib.client.ClientManager;
+import com.meti.lib.client.SocketConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ import static com.meti.lib.server.ServerActionManager.RegexPredicate.of;
  */
 public class Server {
     public final Logger logger = LoggerFactory.getLogger(Server.class);
-    public final ClientManager clientManager;
+    public final ClientManager<SocketConnection> clientManager;
     public ServerSocket serverSocket;
     private final ServerActionManager serverActionManager = new ServerActionManager();
     private final ExecutorService service = Executors.newCachedThreadPool();
@@ -136,12 +137,12 @@ public class Server {
         }
     }
 
-    private Set<Client> updateClients() {
+    private Set<Client<SocketConnection>> updateClients() {
         return clientManager.values().stream()
                 .filter(Client::isClosed)
                 .map(client -> {
-                    logger.info("Client " + client.socket.getInetAddress() + " has disconnected from the server");
-                    return clientManager.remove(client.socket.getInetAddress());
+                    logger.info("Client " + client.connection.socket.getInetAddress() + " has disconnected from the server");
+                    return clientManager.remove(client.connection.socket.getInetAddress());
                 }).collect(Collectors.toSet());
 
     }

@@ -43,7 +43,6 @@ public class AddServer extends Controller {
         getDependency(WindowedDependency.class).stageProperty.get().close();
     }
 
-
     @FXML
     public void apply() {
         try {

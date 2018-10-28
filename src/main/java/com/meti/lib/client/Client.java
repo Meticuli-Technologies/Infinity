@@ -38,11 +38,7 @@ public class Client<T extends Connection> {
         timeoutDuration.set(Duration.ofSeconds(1));
     }
 
-    public static Client<Connection> fromSocket(Socket socket) throws IOException {
-        return new Client<>(new SocketConnection(socket));
-    }
-
-    private Client(T connection) throws IOException {
+    public Client(T connection) throws IOException {
         this.connection = connection;
 
         this.outputStream = new ObjectOutputStream(connection.outputStream);

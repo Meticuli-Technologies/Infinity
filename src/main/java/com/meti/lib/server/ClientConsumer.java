@@ -1,7 +1,7 @@
 package com.meti.lib.server;
 
-import com.meti.lib.server.command.Command;
 import com.meti.lib.client.Client;
+import com.meti.lib.server.command.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class ClientConsumer implements Consumer<Client> {
+public class ClientConsumer implements Consumer<Client<?>> {
     private static final Logger logger = LoggerFactory.getLogger(ClientConsumer.class);
     private static final Set<TokenHandler<?>> tokenHandlers = new HashSet<>();
     private final Server server;
@@ -26,8 +26,8 @@ public class ClientConsumer implements Consumer<Client> {
     }
 
     @Override
-    public void accept(Client client) {
-        logger.info("Handling client at " + client.socket.getInetAddress());
+    public void accept(Client<?> client) {
+        logger.info("Handling client at " + client.connection.toString());
 
         while (!client.isClosed()) {
             try {

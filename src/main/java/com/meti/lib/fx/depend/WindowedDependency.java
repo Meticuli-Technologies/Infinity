@@ -20,6 +20,8 @@ public class WindowedDependency extends Dependency {
     public WindowedDependency(Stage stage, Scene scene) {
         stageProperty.set(stage);
         sceneProperty.set(scene);
+
+        sceneProperty.bind(stage.sceneProperty());
     }
 
     public Parent setRoot(Parent parent) {
