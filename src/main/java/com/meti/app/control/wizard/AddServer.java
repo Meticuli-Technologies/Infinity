@@ -40,6 +40,10 @@ public class AddServer extends Controller {
 
     @FXML
     public void cancel() {
+        closeWindow();
+    }
+
+    private void closeWindow() {
         getDependency(WindowedDependency.class).stageProperty.get().close();
     }
 
@@ -48,10 +52,9 @@ public class AddServer extends Controller {
         try {
             Optional<Socket> socketOptional = constructSocket();
             if (socketOptional.isPresent()) {
-                Socket socket = socketOptional.get();
-                clientState.addClient(launch(socket));
+                clientState.addClient(launch(socketOptional.get()));
 
-                getDependency(WindowedDependency.class).stageProperty.get().close();
+                closeWindow();
             } else {
                 //TODO: alert user
             }

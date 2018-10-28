@@ -13,7 +13,7 @@ import java.net.URL;
  * @since 10/28/2018
  */
 public abstract class FXMLTest<T> extends ClientTest {
-    protected T fxmlController;
+    protected T controller;
 
     @Override
     void start(Stage primaryStage) throws IOException {
@@ -22,7 +22,7 @@ public abstract class FXMLTest<T> extends ClientTest {
         ControllerLoader loader = new ControllerLoader(getFxmlUrl());
         FXUtil.onto(loader.load(), primaryStage);
 
-        fxmlController = loader.getController();
+        controller = loader.getController();
     }
 
     public abstract URL getFxmlUrl();
