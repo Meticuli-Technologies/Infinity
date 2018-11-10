@@ -21,7 +21,7 @@ public class HostALocalServer extends Controller {
         try {
             state.firstOfType(Stage.class)
                     .orElse(new Stage())
-                    .setScene(new Scene(Main.load(getClass().getResource("/ServerDisplay.fxml"), state)));
+                    .setScene(new Scene(Main.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         } catch (IOException e) {
             getLogger().error("", e);
         }
