@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.lib.util;
 
 import java.util.*;
 import java.util.function.Function;

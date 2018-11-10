@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.lib.net;
 
 import java.util.function.Consumer;
 

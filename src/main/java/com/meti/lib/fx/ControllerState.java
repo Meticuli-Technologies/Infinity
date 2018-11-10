@@ -1,4 +1,6 @@
-package com.meti.app;
+package com.meti.lib.fx;
+
+import com.meti.lib.util.ClassMap;
 
 /**
  * @author SirMathhman

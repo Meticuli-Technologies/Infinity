@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.lib.net;
 
 import java.io.InputStream;
 import java.io.OutputStream;

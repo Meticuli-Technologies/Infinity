@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.lib.net;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
