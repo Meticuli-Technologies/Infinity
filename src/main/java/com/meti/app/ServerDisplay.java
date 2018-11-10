@@ -39,7 +39,8 @@ public class ServerDisplay extends Controller implements PostInitializable {
     @Override
     public void postInitialize() {
         try {
-            this.server = state.firstOfType(Server.class).orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to load in display"));
+            this.server = state.firstOfType(Server.class)
+                    .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to load in display"));
         } catch (Throwable throwable) {
             getLogger().error("", throwable);
         }
