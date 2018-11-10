@@ -24,7 +24,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ControllerState state = ControllerState.of(primaryStage, LoggerFactory.getLogger(Main.class));
+        ControllerState state = new ControllerState(primaryStage, LoggerFactory.getLogger(Main.class));
 
         primaryStage.setScene(new Scene(load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         primaryStage.show();

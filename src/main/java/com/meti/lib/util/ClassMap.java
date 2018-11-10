@@ -11,8 +11,11 @@ import java.util.stream.Stream;
  * @since 11/10/2018
  */
 public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
-    public static ClassMap of(Object... objects) {
-        return new ClassMap().addAllObjects(objects);
+    public ClassMap() {
+    }
+
+    public ClassMap(Object... objects){
+        addAllObjects(objects);
     }
 
     public ClassMap addAllObjects(Object... objects) {

@@ -8,4 +8,10 @@ import com.meti.lib.util.ClassMap;
  * @since 11/10/2018
  */
 public class ControllerState extends ClassMap {
+    public ControllerState() {
+    }
+
+    public ControllerState(Object... objects) {
+        super(objects);
+    }
 }
