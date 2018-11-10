@@ -32,6 +32,10 @@ public class ControllerLoader extends FXMLLoader {
             ((Controller) controller).setState(state);
         }
 
+        if(controller instanceof PostInitializable){
+            ((PostInitializable) controller).postInitialize();
+        }
+
         return parent;
     }
 }
