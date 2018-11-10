@@ -21,6 +21,10 @@ public class Console {
         this.writer = writer;
     }
 
+    public String log(Level level, String message) {
+        return log(level, message, null);
+    }
+
     public String log(Level level, String message, Exception exception){
         StringBuilder builder = new StringBuilder();
         builder.append("[")
@@ -28,8 +32,11 @@ public class Console {
                 .append("]: ");
 
         if(message != null){
-            builder.append(message)
-                    .append(" ==> ");
+            builder.append(message);
+        }
+
+        if (message != null && exception != null) {
+            builder.append(" ==> ");
         }
 
         if(exception != null){
@@ -42,5 +49,9 @@ public class Console {
         writer.println(string);
         writer.flush();
         return string;
+    }
+
+    public String log(Level level, Exception exception) {
+        return log(level, null, exception);
     }
 }

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class Server {
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
     private final ClientConsumer clientConsumer;
-    private final ServerSocket serverSocket;
+    public final ServerSocket serverSocket;
     private final ExecutorService service;
 
     private Future<Set<Client>> future;

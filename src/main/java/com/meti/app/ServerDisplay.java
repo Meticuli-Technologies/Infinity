@@ -16,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -29,7 +30,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @FXML
     private TextArea outputArea;
 
-    private BufferedConsole bufferedConsole;
+    private BufferedConsole console;
     private AnimationTimer timer;
     private Server server;
 
@@ -42,12 +43,12 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bufferedConsole = new BufferedConsole();
+        console = new BufferedConsole();
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 //TODO: could be a performance hiccup, but I'm not sure until I try it
-                outputArea.setText(bufferedConsole.getBuffer().toString());
+                outputArea.setText(console.getBuffer().toString());
             }
         };
 
@@ -68,6 +69,8 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         try {
             this.server = state.firstOfType(Server.class)
                     .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to load in display"));
+
+            console.log(Level.INFO, "Loaded server with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
         } catch (Throwable throwable) {
             getLogger().error("", throwable);
         }
