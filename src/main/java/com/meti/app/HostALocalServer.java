@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 /**
  * @author SirMathhman
@@ -13,6 +14,7 @@ import java.io.IOException;
  * @since 11/10/2018
  */
 public class HostALocalServer extends Controller {
+    public static final int DEFAULT_PORT = 80;
     @FXML
     private TextField portField;
 
@@ -29,5 +31,23 @@ public class HostALocalServer extends Controller {
 
     @FXML
     public void next(){
+        try {
+            int port;
+            try {
+                port = Integer.parseInt(portField.getText());
+            } catch (NumberFormatException e) {
+                port = DEFAULT_PORT;
+            }
+
+            Server server = new Server(port);
+            server.listen();
+
+            state.addObject(server);
+            state.firstOfType(Stage.class)
+                    .orElse(new Stage())
+                    .setScene(new Scene(Main.load(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), state)));
+        } catch (IOException e) {
+            getLogger().error("", e);
+        }
     }
 }
