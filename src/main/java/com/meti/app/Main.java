@@ -24,5 +24,4 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         primaryStage.show();
     }
-
 }
