@@ -12,9 +12,7 @@ import java.io.IOException;
  * @version 0.0.0
  * @since 11/10/2018
  */
-public class Menu {
-    private Stage stage;
-
+public class Menu extends Controller {
     @FXML
     public void connectToAServer(){
 
@@ -36,9 +34,5 @@ public class Menu {
     @FXML
     public void hostAServer(){
 
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 }
