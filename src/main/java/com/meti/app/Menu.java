@@ -23,7 +23,7 @@ public class Menu extends Controller {
             Stage stage = state.firstOfType(Stage.class).orElse(new Stage());
             stage.setScene(new Scene(Main.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().error("", e);
         }
     }
 

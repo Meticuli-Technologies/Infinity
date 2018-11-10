@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +22,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ControllerState state = ControllerState.of(primaryStage);
+        ControllerState state = ControllerState.of(primaryStage, LoggerFactory.getLogger(Main.class));
 
         primaryStage.setScene(new Scene(load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         primaryStage.show();

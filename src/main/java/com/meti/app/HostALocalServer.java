@@ -14,11 +14,9 @@ public class HostALocalServer extends Controller {
 
     @FXML
     public void back(){
-
     }
 
     @FXML
     public void next(){
-
     }
 }

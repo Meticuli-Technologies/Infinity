@@ -1,5 +1,8 @@
 package com.meti.app;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -10,5 +13,9 @@ public class Controller {
 
     public void setState(ControllerState state) {
         this.state = state;
+    }
+
+    public Logger getLogger() {
+        return state.firstOfType(Logger.class).orElse(LoggerFactory.getLogger(getClass()));
     }
 }
