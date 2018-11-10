@@ -20,8 +20,9 @@ public class Menu extends Controller {
     @FXML
     public void hostALocalServer(){
         try {
-            Stage stage = state.firstOfType(Stage.class).orElse(new Stage());
-            stage.setScene(new Scene(Main.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
+            state.firstOfType(Stage.class)
+                    .orElse(new Stage())
+                    .setScene(new Scene(Main.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
         } catch (IOException e) {
             getLogger().error("", e);
         }
