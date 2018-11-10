@@ -18,6 +18,5 @@ public class ServerDisplay {
 
     @FXML
     public void checkEnter(){
-
     }
 }

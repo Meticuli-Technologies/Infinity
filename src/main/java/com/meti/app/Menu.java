@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.fx.Controller;
+import com.meti.lib.fx.ControllerLoader;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -23,7 +24,7 @@ public class Menu extends Controller {
         try {
             state.firstOfType(Stage.class)
                     .orElse(new Stage())
-                    .setScene(new Scene(Main.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
+                    .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
         } catch (IOException e) {
             getLogger().error("", e);
         }

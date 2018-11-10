@@ -1,16 +1,11 @@
 package com.meti.app;
 
-import com.meti.lib.fx.Controller;
+import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.ControllerState;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * @author SirMathhman
@@ -26,19 +21,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         ControllerState state = new ControllerState(primaryStage, LoggerFactory.getLogger(Main.class));
 
-        primaryStage.setScene(new Scene(load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
+        primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         primaryStage.show();
     }
 
-    public static Parent load(URL url, ControllerState state) throws IOException {
-        FXMLLoader loader = new FXMLLoader(url);
-        Parent load = loader.load();
-
-        Object controller = loader.getController();
-        if(controller instanceof Controller){
-            ((Controller) controller).setState(state);
-        }
-
-        return load;
-    }
 }
