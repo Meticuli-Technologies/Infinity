@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -18,13 +21,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/meti/app/Menu.fxml"));
+        ControllerState state = ControllerState.of(primaryStage);
+
+        primaryStage.setScene(new Scene(load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
+        primaryStage.show();
+    }
+
+    public static Parent load(URL url, ControllerState state) throws IOException {
+        FXMLLoader loader = new FXMLLoader(url);
         Parent load = loader.load();
 
-        primaryStage.setScene(new Scene(load));
-        primaryStage.show();
+        Object controller = loader.getController();
+        if(controller instanceof Controller){
+            ((Controller) controller).setState(state);
+        }
 
-        Menu controller = loader.getController();
-        controller.setStage(primaryStage);
+        return load;
     }
 }
