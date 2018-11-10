@@ -6,7 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 
 /**
  * @author SirMathhman
@@ -39,7 +38,7 @@ public class HostALocalServer extends Controller {
                 port = DEFAULT_PORT;
             }
 
-            Server server = new Server(port);
+            Server server = new Server(port, null);
             server.listen();
 
             state.addObject(server);

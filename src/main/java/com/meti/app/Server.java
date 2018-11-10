@@ -2,13 +2,16 @@ package com.meti.app;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.concurrent.Callable;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author SirMathhman
@@ -17,23 +20,44 @@ import java.util.concurrent.Executors;
  */
 public class Server {
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
-
-    private final ExecutorService service;
+    private final ClientConsumer clientConsumer;
     private final ServerSocket serverSocket;
+    private final ExecutorService service;
 
-    public Server(int port) throws IOException {
-        this.serverSocket = new ServerSocket(port);
+    private Future<Set<Client>> future;
+
+    public Server(int port, ClientConsumer clientConsumer) throws IOException {
         this.service = Executors.newCachedThreadPool();
+        this.serverSocket = new ServerSocket(port);
+        this.clientConsumer = clientConsumer;
     }
 
-    public void listen() {
-        service.submit(new ServerListener());
+    public ServerListener listen() {
+        ServerListener listener = new ServerListener(clientConsumer, serverSocket);
+        listener.runningProperty.bindBidirectional(runningProperty);
+        future = service.submit(listener);
+        return listener;
     }
 
-    private class ServerListener implements Callable<Void> {
-        @Override
-        public Void call() throws Exception {
-            return null;
+    public Optional<Set<Client>> stop() throws Exception {
+        return stop(Duration.ofSeconds(1));
+    }
+
+    public Optional<Set<Client>> stop(Duration duration) throws Exception {
+        runningProperty.set(false);
+        service.shutdown();
+
+        try {
+            return Optional.ofNullable(future.get(duration.toMillis(), TimeUnit.MILLISECONDS));
+        } catch (Exception e) {
+            /*
+            even though we caught an exception, we should shutdown the service
+            then send it back up to the user
+            can't use finally because if the try block is successful
+            the service will be shutdown properly and ExecutorService.shutdownNow() becomes redundant
+            */
+            service.shutdownNow();
+            throw e;
         }
     }
 }
