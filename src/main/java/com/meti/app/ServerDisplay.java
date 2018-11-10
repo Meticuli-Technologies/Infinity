@@ -14,9 +14,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
 
 /**
  * @author SirMathhman
@@ -30,6 +37,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @FXML
     private TextArea outputArea;
 
+    private final InputParser inputParser = new InputParser();
     private BufferedConsole console;
     private AnimationTimer timer;
     private Server server;
@@ -37,7 +45,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @FXML
     public void checkEnter(KeyEvent event){
         if(event.getCode().equals(KeyCode.ENTER)){
-            parseToken(inputField.getText());
+            inputParser.parseToken(inputField.getText());
         }
     }
 
@@ -60,10 +68,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         timer.stop();
     }
 
-    private void parseToken(String text) {
-        //TODO: implement ServerDisplay.parseToken(String text)
-    }
-
     @Override
     public void postInitialize() {
         try {
@@ -73,6 +77,21 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
             console.log(Level.INFO, "Loaded server with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
         } catch (Throwable throwable) {
             getLogger().error("", throwable);
+        }
+    }
+
+    public class InputParser {
+        private final Map<Predicate<String>, Consumer<String[]>> inputMap = new HashMap<>();
+
+        public void parseToken(String input){
+            inputMap.keySet()
+                    .stream()
+                    .filter(stringPredicate -> stringPredicate.test(input))
+                    .map(inputMap::get)
+                    .forEach(consumer -> {
+                        String[] parts = input.split(" ");
+                        consumer.accept(Arrays.copyOfRange(parts, 1, parts.length));
+                    });
         }
     }
 }

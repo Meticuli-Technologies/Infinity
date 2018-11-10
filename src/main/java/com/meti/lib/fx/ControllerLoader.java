@@ -1,10 +1,13 @@
 package com.meti.lib.fx;
 
+import com.meti.lib.util.Finalizable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -12,6 +15,7 @@ import java.net.URL;
  * @since 11/10/2018
  */
 public class ControllerLoader extends FXMLLoader {
+    public static final Set<Finalizable> finalizables = new HashSet<>();
     private final ControllerState state;
 
     public ControllerLoader(URL location, ControllerState state) {
@@ -34,6 +38,10 @@ public class ControllerLoader extends FXMLLoader {
 
         if(controller instanceof PostInitializable){
             ((PostInitializable) controller).postInitialize();
+        }
+
+        if(controller instanceof Finalizable){
+            finalizables.add((Finalizable) controller);
         }
 
         return parent;
