@@ -35,7 +35,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         properties = loadProperties();
-        state = new ControllerState(primaryStage, LoggerFactory.getLogger(Main.class), properties);
+        state = new ControllerState(
+                primaryStage,
+                LoggerFactory.getLogger(Main.class),
+                properties
+        );
 
         primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         primaryStage.show();

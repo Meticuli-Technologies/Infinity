@@ -14,16 +14,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -40,6 +41,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     private final InputParser inputParser = new InputParser();
     private BufferedConsole console;
     private AnimationTimer timer;
+    private Set<Path> files;
 
     @FXML
     public void checkEnter(KeyEvent event){
@@ -74,9 +76,61 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
                     .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to load in display"));
 
             console.log(Level.INFO, "Loaded server with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
+
+            loadProperties();
         } catch (Throwable throwable) {
             getLogger().error("", throwable);
         }
+    }
+
+    private void loadProperties() throws IOException {
+        Optional<Properties> propertiesOptional = state.firstOfType(Properties.class);
+        if (propertiesOptional.isPresent()) {
+            Properties properties = propertiesOptional.get();
+            String serverDirectoryName = getDirectoryName(properties);
+            Path serverDirectory = Paths.get(".\\" + serverDirectoryName);
+
+            files = loadServerDirectory(serverDirectory);
+            printFiles(serverDirectory, files);
+        } else {
+            console.log(Level.WARNING, "Could not find properties");
+        }
+    }
+
+    private void printFiles(Path serverDirectory, Set<Path> files) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Located ")
+                .append(files.size())
+                .append(" files in directory ")
+                .append(serverDirectory.toAbsolutePath())
+                .append(":");
+        this.files.forEach(path -> {
+            builder.append("\n\t");
+            builder.append(path.toAbsolutePath());
+        });
+
+        console.log(Level.INFO, builder.toString());
+    }
+
+    private String getDirectoryName(Properties properties) {
+        String serverDirectoryName;
+        if (properties.containsKey("server_directory_name")) {
+            serverDirectoryName = properties.getProperty("server_directory_name");
+        } else {
+            console.log(Level.WARNING, "Could not find server directory name, proceeding with default");
+            serverDirectoryName = "content";
+        }
+        return serverDirectoryName;
+    }
+
+    private Set<Path> loadServerDirectory(Path serverDirectory) throws IOException {
+        if (!Files.exists(serverDirectory)) {
+            console.log(Level.WARNING, "Directory at " + serverDirectory.toAbsolutePath() + " was not found, server will create directory");
+
+            Files.createDirectory(serverDirectory);
+        }
+
+        return Files.walk(serverDirectory).collect(Collectors.toSet());
     }
 
     public class InputParser {
