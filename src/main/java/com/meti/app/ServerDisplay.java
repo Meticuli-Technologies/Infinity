@@ -6,6 +6,7 @@ import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.Server;
 import com.meti.lib.util.Finalizable;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -19,11 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
 
 /**
  * @author SirMathhman
@@ -40,7 +39,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     private final InputParser inputParser = new InputParser();
     private BufferedConsole console;
     private AnimationTimer timer;
-    private Server server;
 
     @FXML
     public void checkEnter(KeyEvent event){
@@ -71,7 +69,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @Override
     public void postInitialize() {
         try {
-            this.server = state.firstOfType(Server.class)
+            Server server = state.firstOfType(Server.class)
                     .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to load in display"));
 
             console.log(Level.INFO, "Loaded server with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
@@ -83,15 +81,26 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     public class InputParser {
         private final Map<Predicate<String>, Consumer<String[]>> inputMap = new HashMap<>();
 
+        {
+            inputMap.put(s -> s.startsWith("exit"), strings -> {
+            getLogger().info("Exiting application");
+                Platform.exit();
+            });
+        }
+
         public void parseToken(String input){
-            inputMap.keySet()
-                    .stream()
-                    .filter(stringPredicate -> stringPredicate.test(input))
-                    .map(inputMap::get)
-                    .forEach(consumer -> {
-                        String[] parts = input.split(" ");
-                        consumer.accept(Arrays.copyOfRange(parts, 1, parts.length));
-                    });
+            if (inputMap.size() != 0) {
+                inputMap.keySet()
+                        .stream()
+                        .filter(stringPredicate -> stringPredicate.test(input))
+                        .map(inputMap::get)
+                        .forEach(consumer -> {
+                            String[] parts = input.split(" ");
+                            consumer.accept(Arrays.copyOfRange(parts, 1, parts.length));
+                        });
+            } else {
+                throw new IllegalStateException("No values found inside of inputMap!");
+            }
         }
     }
 }

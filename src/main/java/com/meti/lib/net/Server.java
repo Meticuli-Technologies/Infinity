@@ -32,7 +32,7 @@ public class Server {
         this.clientConsumer = clientConsumer;
     }
 
-    public ServerListener listen() {
+    public ServerListener start() {
         ServerListener listener = new ServerListener(clientConsumer, serverSocket);
         listener.runningProperty.bindBidirectional(runningProperty);
         future = service.submit(listener);
@@ -46,6 +46,8 @@ public class Server {
     public Optional<Set<Client>> stop(Duration duration) throws Exception {
         runningProperty.set(false);
         service.shutdown();
+
+        serverSocket.close();
 
         try {
             return Optional.ofNullable(future.get(duration.toMillis(), TimeUnit.MILLISECONDS));

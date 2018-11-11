@@ -42,7 +42,7 @@ public class HostALocalServer extends Controller {
             }
 
             Server server = new Server(port, null);
-            server.listen();
+            server.start();
 
             state.addObject(server);
             state.firstOfType(Stage.class)

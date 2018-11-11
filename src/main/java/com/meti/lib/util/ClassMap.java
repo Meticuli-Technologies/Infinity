@@ -34,7 +34,7 @@ public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
 
     public <T> List<T> ofType(Class<T> tClass) {
         List<ClassMapBindings<?>> results = stream()
-                .filter(controllerStateBindings -> tClass.equals(controllerStateBindings.tClass))
+                .filter(controllerStateBindings -> tClass.isAssignableFrom(controllerStateBindings.tClass))
                 .collect(Collectors.toList());
 
         if (results.size() == 0) {

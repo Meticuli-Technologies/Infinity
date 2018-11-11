@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -27,12 +28,18 @@ class ServerListener implements Callable<Set<Client>> {
 
     @Override
     public Set<Client> call() throws Exception {
-        while (runningProperty.get()) {
-            Socket socket = serverSocket.accept();
-            Client client = new Client(socket.getInputStream(), socket.getOutputStream());
-            clients.add(client);
-            clientConsumer.accept(client);
+        try {
+            while (runningProperty.get()) {
+                Socket socket = serverSocket.accept();
+                Client client = new Client(socket.getInputStream(), socket.getOutputStream());
+                clients.add(client);
+                clientConsumer.accept(client);
+            }
+
+            //TODO: not sure what to return in this instance...
+            return clients;
+        } catch (SocketException e) {
+            return clients;
         }
-        return clients;
     }
 }
