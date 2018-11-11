@@ -38,7 +38,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     private final InputParser inputParser = new InputParser();
     private BufferedConsole console;
     private AnimationTimer timer;
-    private Set<Path> files;
 
     @FXML
     public void checkEnter(KeyEvent event){
