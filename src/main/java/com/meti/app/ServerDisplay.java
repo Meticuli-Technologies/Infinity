@@ -16,15 +16,12 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -77,60 +74,38 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
             console.log(Level.INFO, "Loaded server with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
 
-            loadProperties();
+            loadServerDirectory(server);
         } catch (Throwable throwable) {
             getLogger().error("", throwable);
         }
     }
 
-    private void loadProperties() throws IOException {
-        Optional<Properties> propertiesOptional = state.firstOfType(Properties.class);
-        if (propertiesOptional.isPresent()) {
-            Properties properties = propertiesOptional.get();
-            String serverDirectoryName = getDirectoryName(properties);
-            Path serverDirectory = Paths.get(".\\" + serverDirectoryName);
+    private void loadServerDirectory(Server server) throws IOException {
+        String serverDirectoryName = getServerDirectoryName(server);
+        loadProperties(server, serverDirectoryName);
+        console.log(Level.INFO, server.printFiles());
+    }
 
-            files = loadServerDirectory(serverDirectory);
-            printFiles(serverDirectory, files);
+    private void loadProperties(Server server, String serverDirectoryName) throws IOException {
+        boolean directoryCreated = server.loadProperties(serverDirectoryName);
+        if (directoryCreated) {
+            console.log(Level.WARNING, "Directory created at " + server.getServerDirectory().toString());
         } else {
-            console.log(Level.WARNING, "Could not find properties");
+            console.log(Level.INFO, "Directory loaded at " + server.getServerDirectory().toString());
         }
     }
 
-    private void printFiles(Path serverDirectory, Set<Path> files) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Located ")
-                .append(files.size())
-                .append(" files in directory ")
-                .append(serverDirectory.toAbsolutePath())
-                .append(":");
-        this.files.forEach(path -> {
-            builder.append("\n\t");
-            builder.append(path.toAbsolutePath());
-        });
-
-        console.log(Level.INFO, builder.toString());
-    }
-
-    private String getDirectoryName(Properties properties) {
+    private String getServerDirectoryName(Server server) {
+        Optional<String> directoryName = server.getDirectoryName(getProperties());
         String serverDirectoryName;
-        if (properties.containsKey("server_directory_name")) {
-            serverDirectoryName = properties.getProperty("server_directory_name");
+        if (directoryName.isPresent()) {
+            serverDirectoryName = directoryName.get();
         } else {
-            console.log(Level.WARNING, "Could not find server directory name, proceeding with default");
-            serverDirectoryName = "content";
+            console.log(Level.WARNING, "No directory specified in properties found, using default directory");
+
+            serverDirectoryName = directoryName.orElse(Server.DEFAULT_DIRECTORY_NAME);
         }
         return serverDirectoryName;
-    }
-
-    private Set<Path> loadServerDirectory(Path serverDirectory) throws IOException {
-        if (!Files.exists(serverDirectory)) {
-            console.log(Level.WARNING, "Directory at " + serverDirectory.toAbsolutePath() + " was not found, server will create directory");
-
-            Files.createDirectory(serverDirectory);
-        }
-
-        return Files.walk(serverDirectory).collect(Collectors.toSet());
     }
 
     public class InputParser {

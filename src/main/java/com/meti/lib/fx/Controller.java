@@ -3,6 +3,8 @@ package com.meti.lib.fx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Properties;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -17,5 +19,9 @@ public class Controller {
 
     public Logger getLogger() {
         return state.firstOfType(Logger.class).orElse(LoggerFactory.getLogger(getClass()));
+    }
+
+    public Properties getProperties() {
+        return state.firstOfType(Properties.class).orElse(new Properties());
     }
 }
