@@ -23,8 +23,9 @@ import java.util.Properties;
  * @since 11/10/2018
  */
 public class Main extends Application {
+    private static final Path PROPERTIES_PATH = Paths.get("Infinity.properties");
+
     private ControllerState state;
-    public static final Path PROPERTIES_PATH = Paths.get("Infinity.properties");
     private Properties properties;
 
     public static void main(String[] args) {
@@ -53,6 +54,12 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
+        stopServer();
+        finalizeControllers();
+        storeProperties();
+    }
+
+    private void stopServer() throws Exception {
         Optional<Server> serverOptional = state.firstOfType(Server.class);
         if (serverOptional.isPresent()) {
             if (properties.containsKey("stop_duration")) {
@@ -67,10 +74,14 @@ public class Main extends Application {
                 serverOptional.get().stop();
             }
         }
+    }
 
+    private void finalizeControllers() {
         //TODO: workaround? rather not use static variables
         ControllerLoader.finalizables.forEach(Finalizable::finalizeController);
+    }
 
+    private void storeProperties() throws IOException {
         properties.store(Files.newOutputStream(PROPERTIES_PATH), "");
     }
 }
