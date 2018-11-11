@@ -89,19 +89,30 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         Set<Path> files = loadProperties(server, serverDirectoryName);
         console.log(Level.INFO, server.printFiles());
 
-        TreeItem<Path> root = new TreeItem<>();
+        TreeItem<Path> root = new TreeItem<>(null);
+        fileView.setShowRoot(false);
         fileView.setRoot(root);
 
         Map<Path, TreeItem<Path>> treeItemMap = new HashMap<>();
         files.forEach(path1 -> files.forEach(new Consumer<Path>() {
             @Override
             public void accept(Path path2) {
-                if (isParent(path1, path2)) {
-                    getTreeItem(path1).getChildren().add(getTreeItem(path2));
+                if(!treeItemMap.containsKey(path1)){
+                    getTreeItem(path1);
                 }
 
-                if (isParent(path2, path1)) {
-                    getTreeItem(path2).getChildren().add(getTreeItem(path1));
+                if(!treeItemMap.containsKey(path2)){
+                    getTreeItem(path2);
+                }
+
+                if (!path1.equals(path2)) {
+                    if (isParent(path1, path2)) {
+                        getTreeItem(path1).getChildren().add(getTreeItem(path2));
+                    }
+
+                    if (isParent(path2, path1)) {
+                        getTreeItem(path2).getChildren().add(getTreeItem(path1));
+                    }
                 }
             }
 
@@ -113,15 +124,19 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
                 if (treeItemMap.containsKey(path)) {
                     return treeItemMap.get(path);
                 } else {
-                    TreeItem<Path> item = new TreeItem<>();
+                    TreeItem<Path> item = new TreeItem<>(path.getName(path.getNameCount() - 1));
                     treeItemMap.put(path, item);
                     return item;
                 }
             }
         }));
         files.stream()
-                .filter(path -> path.startsWith(server.getServerDirectory()))
-                .forEach(path -> root.getChildren().add(treeItemMap.get(path)));
+                .filter(path -> {
+                    return path.startsWith(server.getServerDirectory());
+                })
+                .forEach(path -> {
+                    root.getChildren().add(treeItemMap.get(path));
+                });
     }
 
     private Set<Path> loadProperties(Server server, String serverDirectoryName) throws IOException {
