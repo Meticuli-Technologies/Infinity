@@ -25,7 +25,7 @@ public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
 
     public <T> Optional<T> firstOfType(Class<T> tClass) {
         List<T> list = ofType(tClass);
-        if (list.size() != 0) {
+        if (list != null && list.size() != 0) {
             return Optional.of(list.get(0));
         } else {
             return Optional.empty();
@@ -38,7 +38,7 @@ public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
                 .collect(Collectors.toList());
 
         if (results.size() == 0) {
-            throw new IllegalArgumentException(tClass.getSimpleName() + " not found");
+            return new ArrayList<>();
         } else {
             return results.stream()
                     .flatMap((Function<ClassMapBindings<?>, Stream<?>>) controllerStateBindings -> controllerStateBindings.content.stream())

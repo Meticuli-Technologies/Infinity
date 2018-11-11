@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,12 +84,12 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
         {
             inputMap.put(s -> s.startsWith("exit"), strings -> {
-            getLogger().info("Exiting application");
+                getLogger().info("Exiting application");
                 Platform.exit();
             });
         }
 
-        public void parseToken(String input){
+        void parseToken(String input){
             if (inputMap.size() != 0) {
                 inputMap.keySet()
                         .stream()
