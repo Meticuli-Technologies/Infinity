@@ -89,9 +89,9 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     private void loadProperties(Server server, String serverDirectoryName) throws IOException {
         boolean directoryCreated = server.loadProperties(serverDirectoryName);
         if (directoryCreated) {
-            console.log(Level.WARNING, "Directory created at " + server.getServerDirectory().toString());
+            console.log(Level.WARNING, "Directory created at " + server.getServerDirectory().toAbsolutePath().toString());
         } else {
-            console.log(Level.INFO, "Directory loaded at " + server.getServerDirectory().toString());
+            console.log(Level.INFO, "Directory loaded at " + server.getServerDirectory().toAbsolutePath().toString());
         }
     }
 
