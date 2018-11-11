@@ -11,11 +11,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -33,6 +36,9 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
     @FXML
     private TextArea outputArea;
+
+    @FXML
+    private TreeView<Path> fileView;
 
     private final InputParser inputParser = new InputParser();
     private BufferedConsole console;
@@ -80,17 +86,53 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
     private void loadServerDirectory(Server server) throws IOException {
         String serverDirectoryName = getServerDirectoryName(server);
-        loadProperties(server, serverDirectoryName);
+        Set<Path> files = loadProperties(server, serverDirectoryName);
         console.log(Level.INFO, server.printFiles());
+
+        TreeItem<Path> root = new TreeItem<>();
+        fileView.setRoot(root);
+
+        Map<Path, TreeItem<Path>> treeItemMap = new HashMap<>();
+        files.forEach(path1 -> files.forEach(new Consumer<Path>() {
+            @Override
+            public void accept(Path path2) {
+                if (isParent(path1, path2)) {
+                    getTreeItem(path1).getChildren().add(getTreeItem(path2));
+                }
+
+                if (isParent(path2, path1)) {
+                    getTreeItem(path2).getChildren().add(getTreeItem(path1));
+                }
+            }
+
+            boolean isParent(Path parent, Path child) {
+                return child.startsWith(parent);
+            }
+
+            TreeItem<Path> getTreeItem(Path path) {
+                if (treeItemMap.containsKey(path)) {
+                    return treeItemMap.get(path);
+                } else {
+                    TreeItem<Path> item = new TreeItem<>();
+                    treeItemMap.put(path, item);
+                    return item;
+                }
+            }
+        }));
+        files.stream()
+                .filter(path -> path.startsWith(server.getServerDirectory()))
+                .forEach(path -> root.getChildren().add(treeItemMap.get(path)));
     }
 
-    private void loadProperties(Server server, String serverDirectoryName) throws IOException {
-        boolean directoryCreated = server.loadProperties(serverDirectoryName);
+    private Set<Path> loadProperties(Server server, String serverDirectoryName) throws IOException {
+        boolean directoryCreated = server.createServerDirectory(serverDirectoryName);
         if (directoryCreated) {
             console.log(Level.WARNING, "Directory created at " + server.getServerDirectory().toAbsolutePath().toString());
         } else {
             console.log(Level.INFO, "Directory loaded at " + server.getServerDirectory().toAbsolutePath().toString());
         }
+
+        return server.loadServerDirectory();
     }
 
     private String getServerDirectoryName(Server server) {

@@ -80,7 +80,7 @@ public class Server {
     }
 
 
-    public boolean loadProperties(String serverDirectoryName) throws IOException {
+    public boolean createServerDirectory(String serverDirectoryName) throws IOException {
         serverDirectory = Paths.get(".\\" + serverDirectoryName);
         boolean toReturn = true;
 
@@ -89,12 +89,11 @@ public class Server {
             toReturn = false;
         }
 
-        files = loadServerDirectory(serverDirectory);
         return toReturn;
     }
 
-    private Set<Path> loadServerDirectory(Path serverDirectory) throws IOException {
-        return Files.walk(serverDirectory).collect(Collectors.toSet());
+    public Set<Path> loadServerDirectory() throws IOException {
+        return files = Files.walk(serverDirectory).collect(Collectors.toSet());
     }
 
     public String printFiles() {
