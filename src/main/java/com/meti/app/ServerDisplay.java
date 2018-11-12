@@ -89,6 +89,10 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         Set<Path> files = loadProperties(server, serverDirectoryName);
         console.log(Level.INFO, server.printFiles());
 
+        buildTree(server, files);
+    }
+
+    private void buildTree(Server server, Set<Path> files) {
         TreeItem<Path> root = new TreeItem<>(null);
         fileView.setShowRoot(false);
         fileView.setRoot(root);
@@ -109,10 +113,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
                     if (isParent(path1, path2)) {
                         getTreeItem(path1).getChildren().add(getTreeItem(path2));
                     }
-
-                    if (isParent(path2, path1)) {
-                        getTreeItem(path2).getChildren().add(getTreeItem(path1));
-                    }
                 }
             }
 
@@ -131,12 +131,9 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
             }
         }));
         files.stream()
-                .filter(path -> {
-                    return path.startsWith(server.getServerDirectory());
-                })
-                .forEach(path -> {
-                    root.getChildren().add(treeItemMap.get(path));
-                });
+                .filter(path -> path.startsWith(server.getServerDirectory()) &&
+                        path.getNameCount() == server.getServerDirectory().getNameCount())
+                .forEach(path -> root.getChildren().add(treeItemMap.get(path)));
     }
 
     private Set<Path> loadProperties(Server server, String serverDirectoryName) throws IOException {
