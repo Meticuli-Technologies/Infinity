@@ -98,38 +98,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         fileView.setRoot(root);
 
         Map<Path, TreeItem<Path>> treeItemMap = new HashMap<>();
-        files.forEach(path1 -> files.forEach(new Consumer<Path>() {
-            @Override
-            public void accept(Path path2) {
-                if(!treeItemMap.containsKey(path1)){
-                    getTreeItem(path1);
-                }
-
-                if(!treeItemMap.containsKey(path2)){
-                    getTreeItem(path2);
-                }
-
-                if (!path1.equals(path2)) {
-                    if (isParent(path1, path2)) {
-                        getTreeItem(path1).getChildren().add(getTreeItem(path2));
-                    }
-                }
-            }
-
-            boolean isParent(Path parent, Path child) {
-                return child.startsWith(parent);
-            }
-
-            TreeItem<Path> getTreeItem(Path path) {
-                if (treeItemMap.containsKey(path)) {
-                    return treeItemMap.get(path);
-                } else {
-                    TreeItem<Path> item = new TreeItem<>(path.getName(path.getNameCount() - 1));
-                    treeItemMap.put(path, item);
-                    return item;
-                }
-            }
-        }));
+        files.forEach(path1 -> files.forEach(new TreeBuilder(treeItemMap, path1)));
         files.stream()
                 .filter(path -> path.startsWith(server.getServerDirectory()) &&
                         path.getNameCount() == server.getServerDirectory().getNameCount())
@@ -158,6 +127,47 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
             serverDirectoryName = directoryName.orElse(Server.DEFAULT_DIRECTORY_NAME);
         }
         return serverDirectoryName;
+    }
+
+    private static class TreeBuilder implements Consumer<Path> {
+        private final Map<Path, TreeItem<Path>> treeItemMap;
+        private final Path path1;
+
+        public TreeBuilder(Map<Path, TreeItem<Path>> treeItemMap, Path path1) {
+            this.treeItemMap = treeItemMap;
+            this.path1 = path1;
+        }
+
+        @Override
+        public void accept(Path path2) {
+            if(!treeItemMap.containsKey(path1)){
+                getTreeItem(path1);
+            }
+
+            if(!treeItemMap.containsKey(path2)){
+                getTreeItem(path2);
+            }
+
+            if (!path1.equals(path2)) {
+                if (isParent(path1, path2)) {
+                    getTreeItem(path1).getChildren().add(getTreeItem(path2));
+                }
+            }
+        }
+
+        boolean isParent(Path parent, Path child) {
+            return child.startsWith(parent);
+        }
+
+        TreeItem<Path> getTreeItem(Path path) {
+            if (treeItemMap.containsKey(path)) {
+                return treeItemMap.get(path);
+            } else {
+                TreeItem<Path> item = new TreeItem<>(path.getName(path.getNameCount() - 1));
+                treeItemMap.put(path, item);
+                return item;
+            }
+        }
     }
 
     public class InputParser {
