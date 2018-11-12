@@ -9,23 +9,33 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.app.ServerDisplay">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="369.0" prefViewportWidth="600.0">
-               <content>
-                  <TextArea fx:id="outputArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-               </content>
-            </ScrollPane>
-         </center>
          <bottom>
             <TextField fx:id="inputField" onKeyPressed="#checkEnter" BorderPane.alignment="CENTER" />
          </bottom>
-         <right>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="369.0" prefViewportWidth="200.0">
-               <content>
-                  <TreeView fx:id="fileView" prefHeight="200.0" prefWidth="200.0" />
-               </content>
-            </ScrollPane>
-         </right>
+         <center>
+            <SplitPane dividerPositions="0.75" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="367.0" prefViewportHeight="369.0" prefViewportWidth="200.0" prefWidth="416.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <TreeView fx:id="fileView" prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="367.0" prefViewportHeight="369.0" prefViewportWidth="600.0" prefWidth="174.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <TextArea fx:id="outputArea" prefHeight="367.0" prefWidth="274.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>
