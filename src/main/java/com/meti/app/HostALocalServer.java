@@ -2,13 +2,17 @@ package com.meti.app;
 
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.net.Client;
 import com.meti.lib.net.Server;
+import com.meti.lib.net.SocketConnection;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 
 /**
  * @author SirMathhman
@@ -48,6 +52,13 @@ public class HostALocalServer extends Controller {
             state.firstOfType(Stage.class)
                     .orElse(new Stage())
                     .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), state)));
+
+            Client<SocketConnection> client = new Client<>(new SocketConnection(new Socket(InetAddress.getByName("localhost"), 80)));
+            state.addObject(client);
+
+            Stage clientStage = new Stage();
+            clientStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ClientDisplay.fxml"), state)));
+            state.addObject(clientStage);
         } catch (IOException e) {
             getLogger().error("", e);
         }
