@@ -58,6 +58,8 @@ public class HostALocalServer extends Controller {
 
             Stage clientStage = new Stage();
             clientStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ClientDisplay.fxml"), state)));
+            clientStage.show();
+
             state.addObject(clientStage);
         } catch (IOException e) {
             getLogger().error("", e);
