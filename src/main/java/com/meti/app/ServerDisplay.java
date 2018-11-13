@@ -86,12 +86,12 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
 
 
-            server.listener.clients.addListener(new SetChangeListener<Client<SocketConnection>>() {
-                @Override
-                public void onChanged(Change<? extends Client<SocketConnection>> change) {
-                    if(change.wasAdded()){
-                        clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());
-                    }
+            server.listener.clients.addListener((SetChangeListener<Client<SocketConnection>>) change -> {
+                if(change.wasAdded()){
+                    clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());
+                }
+                if(change.wasRemoved()){
+                    clientView.getItems().remove(change.getElementRemoved().connection.socket.getInetAddress());
                 }
             });
         } catch (Throwable throwable) {

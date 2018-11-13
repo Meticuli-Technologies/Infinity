@@ -19,7 +19,7 @@ import java.util.concurrent.Callable;
  */
 public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
     public final BooleanProperty runningProperty = new SimpleBooleanProperty();
-    public final ObservableSet<Client> clients = FXCollections.emptyObservableSet();
+    public final ObservableSet<Client<SocketConnection>> clients = FXCollections.emptyObservableSet();
     private final ClientConsumer clientConsumer;
     private final ServerSocket serverSocket;
 
@@ -33,7 +33,7 @@ public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
         try {
             while (runningProperty.get()) {
                 Socket socket = serverSocket.accept();
-                Client client = new Client(socket.getInputStream(), socket.getOutputStream());
+                Client<SocketConnection> client = new Client<>(new SocketConnection(socket));
                 clients.add(client);
                 clientConsumer.accept(client);
             }
