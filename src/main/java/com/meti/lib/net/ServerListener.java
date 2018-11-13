@@ -2,6 +2,8 @@ package com.meti.lib.net;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,9 +17,9 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 11/10/2018
  */
-class ServerListener implements Callable<Set<Client>> {
+public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
     public final BooleanProperty runningProperty = new SimpleBooleanProperty();
-    private final Set<Client> clients = new HashSet<>();
+    public final ObservableSet<Client> clients = FXCollections.emptyObservableSet();
     private final ClientConsumer clientConsumer;
     private final ServerSocket serverSocket;
 
@@ -27,7 +29,7 @@ class ServerListener implements Callable<Set<Client>> {
     }
 
     @Override
-    public Set<Client> call() throws Exception {
+    public Set<Client<SocketConnection>> call() throws Exception {
         try {
             while (runningProperty.get()) {
                 Socket socket = serverSocket.accept();

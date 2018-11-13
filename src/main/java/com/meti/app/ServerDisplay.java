@@ -3,20 +3,21 @@ package com.meti.app;
 import com.meti.lib.fx.BufferedConsole;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
+import com.meti.lib.net.Client;
 import com.meti.lib.net.Server;
+import com.meti.lib.net.SocketConnection;
 import com.meti.lib.util.Finalizable;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -31,6 +32,9 @@ import java.util.logging.Level;
  * @since 11/10/2018
  */
 public class ServerDisplay extends Controller implements Initializable, PostInitializable, Finalizable {
+    @FXML
+    private ListView<InetAddress> clientView;
+
     @FXML
     private TextField inputField;
 
@@ -79,6 +83,17 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
             console.log(Level.INFO, "Loaded server with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
 
             loadServerDirectory(server);
+
+
+
+            server.listener.clients.addListener(new SetChangeListener<Client<SocketConnection>>() {
+                @Override
+                public void onChanged(Change<? extends Client<SocketConnection>> change) {
+                    if(change.wasAdded()){
+                        clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());
+                    }
+                }
+            });
         } catch (Throwable throwable) {
             getLogger().error("", throwable);
         }

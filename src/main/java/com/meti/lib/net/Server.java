@@ -30,9 +30,10 @@ public class Server {
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
-    private Future<Set<Client>> future;
+    private Future<Set<Client<SocketConnection> >> future;
     private Path serverDirectory;
     private Set<Path> files;
+    public ServerListener listener;
 
     public Path getServerDirectory() {
         return serverDirectory;
@@ -49,17 +50,17 @@ public class Server {
     }
 
     public ServerListener start() {
-        ServerListener listener = new ServerListener(clientConsumer, serverSocket);
+        listener = new ServerListener(clientConsumer, serverSocket);
         listener.runningProperty.bindBidirectional(runningProperty);
         future = service.submit(listener);
         return listener;
     }
 
-    public Optional<Set<Client>> stop() throws Exception {
+    public Optional<Set<Client<SocketConnection> >> stop() throws Exception {
         return stop(Duration.ofSeconds(1));
     }
 
-    public Optional<Set<Client>> stop(Duration duration) throws Exception {
+    public Optional<Set<Client<SocketConnection> >> stop(Duration duration) throws Exception {
         runningProperty.set(false);
         service.shutdown();
 
@@ -78,7 +79,6 @@ public class Server {
             throw e;
         }
     }
-
 
     public boolean createServerDirectory(String serverDirectoryName) throws IOException {
         serverDirectory = Paths.get(".\\" + serverDirectoryName);
