@@ -84,8 +84,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
             loadServerDirectory(server);
 
-
-
             server.listener.clients.addListener((SetChangeListener<Client<SocketConnection>>) change -> {
                 if(change.wasAdded()){
                     clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());
