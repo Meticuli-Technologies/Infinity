@@ -11,6 +11,7 @@ import java.net.SocketException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 /**
  * @author SirMathhman
@@ -18,10 +19,12 @@ import java.util.concurrent.Callable;
  * @since 11/10/2018
  */
 public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
-    public final BooleanProperty runningProperty = new SimpleBooleanProperty();
     public final ObservableSet<Client<SocketConnection>> clients = FXCollections.emptyObservableSet();
+    public final BooleanProperty runningProperty = new SimpleBooleanProperty();
     private final ClientConsumer clientConsumer;
     private final ServerSocket serverSocket;
+
+    public Consumer<Client> onClientConnect;
 
     ServerListener(ClientConsumer clientConsumer, ServerSocket serverSocket) {
         this.clientConsumer = clientConsumer;
