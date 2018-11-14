@@ -12,6 +12,7 @@ public class ClientDisplay extends Controller implements PostInitializable  {
         Optional<Client> clientOptional = state.firstOfType(Client.class);
         if(clientOptional.isPresent()){
             Client<?> client = clientOptional.get();
+
         }
         else{
             throw new IllegalStateException("Client not found");
