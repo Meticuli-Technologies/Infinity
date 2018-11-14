@@ -24,8 +24,6 @@ public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
     private final ClientConsumer clientConsumer;
     private final ServerSocket serverSocket;
 
-    public Consumer<Client> onClientConnect;
-
     ServerListener(ClientConsumer clientConsumer, ServerSocket serverSocket) {
         this.clientConsumer = clientConsumer;
         this.serverSocket = serverSocket;
