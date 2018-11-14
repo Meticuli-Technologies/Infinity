@@ -5,7 +5,7 @@ import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
-import com.meti.lib.net.server.SocketConnection;
+import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.util.Finalizable;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;

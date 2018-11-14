@@ -2,6 +2,7 @@ package com.meti.lib.net.server;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.ClientConsumer;
+import com.meti.lib.net.connect.SocketConnection;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;

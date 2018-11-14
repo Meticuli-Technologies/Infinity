@@ -1,4 +1,4 @@
-package com.meti.lib.net;
+package com.meti.lib.net.connect;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,4 +30,14 @@ public abstract class Connection {
     }
 
     public abstract OutputStream constructOutputStream() throws IOException;
+
+    public void close() throws IOException {
+        inputStream.close();
+        outputStream.close();
+
+        closeSource();
+    }
+
+
+    public abstract void closeSource() throws IOException;
 }

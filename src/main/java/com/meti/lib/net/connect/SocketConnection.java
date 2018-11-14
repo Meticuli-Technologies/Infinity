@@ -1,6 +1,4 @@
-package com.meti.lib.net.server;
-
-import com.meti.lib.net.Connection;
+package com.meti.lib.net.connect;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,10 +10,11 @@ import java.net.Socket;
  * @version 0.0.0
  * @since 11/12/2018
  */
-public class SocketConnection extends Connection {
+public class SocketConnection extends ObjectConnection {
     public final Socket socket;
 
-    public SocketConnection(Socket socket) {
+    public SocketConnection(Socket socket) throws IOException {
+        super();
         this.socket = socket;
     }
 
@@ -27,5 +26,10 @@ public class SocketConnection extends Connection {
     @Override
     public OutputStream constructOutputStream() throws IOException {
         return socket.getOutputStream();
+    }
+
+    @Override
+    public void closeSource() throws IOException {
+        socket.close();
     }
 }
