@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.fx.BufferedConsole;
+import com.meti.lib.util.BufferedConsole;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.Client;
