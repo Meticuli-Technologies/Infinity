@@ -2,7 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.ControllerState;
-import com.meti.lib.net.Server;
+import com.meti.lib.net.server.Server;
 import com.meti.lib.util.Finalizable;
 import javafx.application.Application;
 import javafx.scene.Scene;

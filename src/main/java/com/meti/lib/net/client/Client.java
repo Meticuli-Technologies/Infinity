@@ -1,4 +1,6 @@
-package com.meti.lib.net;
+package com.meti.lib.net.client;
+
+import com.meti.lib.net.server.SocketConnection;
 
 /**
  * @author SirMathhman

@@ -1,5 +1,7 @@
-package com.meti.lib.net;
+package com.meti.lib.net.server;
 
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.ClientConsumer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -30,7 +32,7 @@ public class Server {
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
-    private Future<Set<Client<SocketConnection> >> future;
+    private Future<Set<Client<SocketConnection>>> future;
     private Path serverDirectory;
     private Set<Path> files;
     public ServerListener listener;

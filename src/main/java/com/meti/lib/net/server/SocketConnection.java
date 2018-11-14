@@ -1,4 +1,6 @@
-package com.meti.lib.net;
+package com.meti.lib.net.server;
+
+import com.meti.lib.net.Connection;
 
 import java.io.IOException;
 import java.io.InputStream;

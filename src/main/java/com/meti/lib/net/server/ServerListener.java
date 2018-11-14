@@ -1,5 +1,7 @@
-package com.meti.lib.net;
+package com.meti.lib.net.server;
 
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.ClientConsumer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -11,7 +13,6 @@ import java.net.SocketException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 /**
  * @author SirMathhman

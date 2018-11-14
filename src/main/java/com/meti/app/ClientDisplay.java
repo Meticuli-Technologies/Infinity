@@ -2,7 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
-import com.meti.lib.net.Client;
+import com.meti.lib.net.client.Client;
 
 import java.util.Optional;
 

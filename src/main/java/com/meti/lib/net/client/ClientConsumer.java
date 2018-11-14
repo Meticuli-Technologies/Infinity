@@ -1,4 +1,4 @@
-package com.meti.lib.net;
+package com.meti.lib.net.client;
 
 import java.util.function.Consumer;
 
