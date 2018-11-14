@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class Server {
     public static final String DEFAULT_DIRECTORY_NAME = "content";
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
-    private final ClientConsumer clientConsumer;
+    private ClientConsumer clientConsumer;
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
@@ -45,10 +45,14 @@ public class Server {
         return files;
     }
 
-    public Server(int port, ClientConsumer clientConsumer) throws IOException {
+    public Server(int port) throws IOException {
         this.service = Executors.newCachedThreadPool();
         this.serverSocket = new ServerSocket(port);
-        this.clientConsumer = clientConsumer;
+    }
+
+    public Server(int port, ClientConsumer consumer) throws IOException {
+        this(port);
+        this.clientConsumer = consumer;
     }
 
     public ServerListener start() {
@@ -58,11 +62,11 @@ public class Server {
         return listener;
     }
 
-    public Optional<Set<Client<SocketConnection> >> stop() throws Exception {
+    public Optional<Set<Client<SocketConnection>>> stop() throws Exception {
         return stop(Duration.ofSeconds(1));
     }
 
-    public Optional<Set<Client<SocketConnection> >> stop(Duration duration) throws Exception {
+    public Optional<Set<Client<SocketConnection>>> stop(Duration duration) throws Exception {
         runningProperty.set(false);
         service.shutdown();
 
