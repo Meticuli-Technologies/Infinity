@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * @since 11/10/2018
  */
 public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
-    public final ObservableSet<Client<SocketConnection>> clients = FXCollections.emptyObservableSet();
+    public final ObservableSet<Client<SocketConnection>> clients = FXCollections.observableSet(new HashSet<>());
     public final BooleanProperty runningProperty = new SimpleBooleanProperty();
     private final ClientConsumer clientConsumer;
     private final ServerSocket serverSocket;

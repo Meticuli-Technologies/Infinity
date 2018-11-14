@@ -53,7 +53,7 @@ public class HostALocalServer extends Controller {
                     .orElse(new Stage())
                     .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), state)));
 
-            Client<SocketConnection> client = new Client<>(new SocketConnection(new Socket(InetAddress.getByName("localhost"), 80)));
+            Client<SocketConnection> client = new Client<>(new SocketConnection(new Socket(InetAddress.getByName("localhost"), port)));
             state.addObject(client);
 
             Stage clientStage = new Stage();
