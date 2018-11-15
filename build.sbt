@@ -8,6 +8,7 @@ mainClass in (Compile, run) := Some("com.meti.app.main.ClientMain")
 
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.25"
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.25"
+libraryDependencies += "org.reflections" % "reflections" % "0.9.11"
 
 libraryDependencies += "org.junit.jupiter" % "junit-jupiter-api" % "5.3.1" % Test
 libraryDependencies += "org.junit.jupiter" % "junit-jupiter-engine" % "5.3.1" % Test

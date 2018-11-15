@@ -4,6 +4,7 @@ import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.command.GetCommand;
+import com.meti.lib.util.ListUtil;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ClientDisplay extends Controller implements PostInitializable  {
     }
 
     private void loadClient(Client<?> client) throws Exception {
-        GetCommand<String, ArrayList<String>, ArrayList> command = new GetCommand<>(new ArrayList<>(), ArrayList.class);
+        GetCommand<String, ArrayList<String>, ArrayList> command = new GetCommand<>(ListUtil.asArrayList("files"), ArrayList.class);
         ArrayList<?> result = client.runReturnableCommand(command, Executors.newSingleThreadExecutor(), Duration.ofSeconds(1));
 
         //TODO: load client in ClientDisplay.postInitialize()

@@ -24,6 +24,8 @@ public class Client<T extends ObjectConnection> implements Closeable  {
     }
 
     public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, ExecutorService service, Duration timeout) throws Exception {
+        runCommand(command);
+
         Future<?> future = service.submit(connection.objectInputStream::readObject);
         Object result = future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
         Class<R> returnClass = command.returnClass;

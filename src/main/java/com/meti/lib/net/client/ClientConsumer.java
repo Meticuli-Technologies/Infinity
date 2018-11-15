@@ -1,5 +1,8 @@
 package com.meti.lib.net.client;
 
+import com.meti.lib.net.connect.ObjectConnection;
+import com.meti.lib.net.server.Server;
+
 import java.util.function.Consumer;
 
 /**
@@ -7,8 +10,9 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 11/10/2018
  */
-public abstract class ClientConsumer implements Consumer<Client> {
+public abstract class ClientConsumer<T extends ObjectConnection> implements Consumer<Client<T>> {
     private final Consumer<Throwable> callback;
+    protected Server server;
 
     public ClientConsumer() {
         this(Throwable::printStackTrace);
@@ -19,7 +23,7 @@ public abstract class ClientConsumer implements Consumer<Client> {
     }
 
     @Override
-    public void accept(Client client) {
+    public void accept(Client<T> client) {
         try {
             acceptClient(client);
         } catch (Throwable throwable) {
@@ -27,5 +31,9 @@ public abstract class ClientConsumer implements Consumer<Client> {
         }
     }
 
-    public abstract void acceptClient(Client client) throws Throwable;
+    public abstract void acceptClient(Client<T> client) throws Throwable;
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
 }

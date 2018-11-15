@@ -8,11 +8,11 @@ import java.util.Collection;
  * @version 0.0.0
  * @since 11/15/2018
  */
-public abstract class ReturnableCommand<T extends Serializable, C extends Collection<? extends T> & Serializable, R> extends Command<T, C> {
+public abstract class ReturnableCommand<T extends Serializable, P extends Collection<? extends T> & Serializable, R> extends Command<T, P> {
     public final Class<R> returnClass;
 
-    public ReturnableCommand(C collection, Class<R> returnClass) {
-        super(collection);
+    public ReturnableCommand(P parameters, Class<R> returnClass) {
+        super(parameters);
         this.returnClass = returnClass;
     }
 }

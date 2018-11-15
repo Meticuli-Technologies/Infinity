@@ -54,6 +54,7 @@ public class Server {
     public Server(int port, ClientConsumer consumer) throws IOException {
         this(port);
         this.clientConsumer = consumer;
+        this.clientConsumer.setServer(this);
     }
 
     public ServerListener start() {

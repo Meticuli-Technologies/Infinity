@@ -3,8 +3,8 @@ package com.meti.lib.net.command;
 import java.io.Serializable;
 import java.util.Collection;
 
-public class GetCommand<T extends Serializable, C extends Collection<T> & Serializable, R> extends ReturnableCommand<T, C, R> {
-    public GetCommand(C collection, Class<R> returnClass) {
-        super(collection, returnClass);
+public class GetCommand<T extends Serializable, P extends Collection<T> & Serializable, R> extends ReturnableCommand<T, P, R> {
+    public GetCommand(P parameters, Class<R> returnClass) {
+        super(parameters, returnClass);
     }
 }
