@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Menu extends Controller {
     @FXML
     public void connectToAServer(){
-
+        //TODO: connect to a server
     }
 
     @FXML
@@ -32,5 +32,6 @@ public class Menu extends Controller {
 
     @FXML
     public void hostAServer(){
+        //TODO: host a server
     }
 }
