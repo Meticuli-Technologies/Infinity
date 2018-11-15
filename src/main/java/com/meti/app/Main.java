@@ -81,8 +81,7 @@ public class Main extends Application {
     }
 
     private void finalizeControllers() {
-        //TODO: workaround? rather not use static variables
-        ControllerLoader.finalizables.forEach(Finalizable::finalizeController);
+       state.ofType(Finalizable.class).forEach(Finalizable::finalizeController);
     }
 
     private void storeProperties() throws IOException {

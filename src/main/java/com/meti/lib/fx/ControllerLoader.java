@@ -15,7 +15,6 @@ import java.util.Set;
  * @since 11/10/2018
  */
 public class ControllerLoader extends FXMLLoader {
-    public static final Set<Finalizable> finalizables = new HashSet<>();
     private final ControllerState state;
 
     public ControllerLoader(URL location, ControllerState state) {
@@ -31,17 +30,16 @@ public class ControllerLoader extends FXMLLoader {
     public <T> T load() throws IOException {
         T parent = super.load();
 
-        Object controller = getController();
-        if (controller instanceof Controller) {
-            ((Controller) controller).setState(state);
+        Object controllerToken = getController();
+        if (controllerToken instanceof Controller) {
+            Controller controller = (Controller) controllerToken;
+            controller.setState(state);
+
+            state.addObject(controller);
         }
 
-        if(controller instanceof PostInitializable){
-            ((PostInitializable) controller).postInitialize();
-        }
-
-        if(controller instanceof Finalizable){
-            finalizables.add((Finalizable) controller);
+        if(controllerToken instanceof PostInitializable){
+            ((PostInitializable) controllerToken).postInitialize();
         }
 
         return parent;
