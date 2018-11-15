@@ -14,18 +14,8 @@ public class SocketConnection extends ObjectConnection {
     public final Socket socket;
 
     public SocketConnection(Socket socket) throws IOException {
-        super();
+        super(socket.getInputStream(), socket.getOutputStream());
         this.socket = socket;
-    }
-
-    @Override
-    public InputStream constructInputStream() throws IOException {
-        return socket.getInputStream();
-    }
-
-    @Override
-    public OutputStream constructOutputStream() throws IOException {
-        return socket.getOutputStream();
     }
 
     @Override

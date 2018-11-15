@@ -10,26 +10,13 @@ import java.io.OutputStream;
  * @since 11/12/2018
  */
 public abstract class Connection {
-    private InputStream inputStream;
-    private OutputStream outputStream;
+    public final InputStream inputStream;
+    public final OutputStream outputStream;
 
-    public InputStream getInputStream() throws IOException {
-        if (inputStream == null) {
-            inputStream = constructInputStream();
-        }
-        return inputStream;
+    public Connection(InputStream inputStream, OutputStream outputStream) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
     }
-
-    public abstract InputStream constructInputStream() throws IOException;
-
-    public OutputStream getOutputStream() throws IOException {
-        if (outputStream == null) {
-            outputStream = constructOutputStream();
-        }
-        return outputStream;
-    }
-
-    public abstract OutputStream constructOutputStream() throws IOException;
 
     public void close() throws IOException {
         inputStream.close();
@@ -37,7 +24,6 @@ public abstract class Connection {
 
         closeSource();
     }
-
 
     public abstract void closeSource() throws IOException;
 }
