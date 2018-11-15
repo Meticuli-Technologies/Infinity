@@ -106,11 +106,11 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         }
     }
 
-    public String writeClients(Set<Client<SocketConnection>> clients){
+    private String writeClients(Set<Client<SocketConnection>> clients){
         StringBuilder builder = new StringBuilder("Located " + clients.size() + " clients:");
         clients.stream()
                 .map(socketConnectionClient -> socketConnectionClient.connection.socket.getInetAddress())
-                .forEach(inetAddress -> builder.append("\n\t").append(inetAddress.toString()));
+                .forEach(internetAddress -> builder.append("\n\t").append(internetAddress.toString()));
         return builder.toString();
     }
 
@@ -163,7 +163,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         private final Map<Path, TreeItem<Path>> treeItemMap;
         private final Path path1;
 
-        public TreeBuilder(Map<Path, TreeItem<Path>> treeItemMap, Path path1) {
+        TreeBuilder(Map<Path, TreeItem<Path>> treeItemMap, Path path1) {
             this.treeItemMap = treeItemMap;
             this.path1 = path1;
         }

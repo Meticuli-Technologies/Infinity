@@ -45,7 +45,7 @@ public class HostALocalServer extends Controller {
                 port = DEFAULT_PORT;
             }
 
-            Server server = new Server(port, null);
+            Server server = new Server(port, new InfinityConsumer());
             server.start();
 
             state.addObject(server);
