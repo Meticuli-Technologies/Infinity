@@ -33,7 +33,7 @@ public class Server {
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
-    private Future<Set<Client<SocketConnection>>> future;
+    private Future<Optional<Set<Client<SocketConnection>>>> future;
     private Path serverDirectory;
     private Set<Path> files;
     public ServerListener listener;
@@ -74,7 +74,7 @@ public class Server {
         serverSocket.close();
 
         try {
-            return Optional.ofNullable(future.get(duration.toMillis(), TimeUnit.MILLISECONDS));
+            return future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             /*
             even though we caught an exception, we should shutdown the service

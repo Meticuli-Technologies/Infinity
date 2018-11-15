@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -20,7 +21,7 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 11/10/2018
  */
-public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
+public class ServerListener implements Callable<Optional<Set<Client<SocketConnection>>>> {
     public final ObservableSet<Client<SocketConnection>> clients = FXCollections.observableSet(new HashSet<>());
     public final BooleanProperty runningProperty = new SimpleBooleanProperty();
     private final ClientConsumer clientConsumer;
@@ -32,7 +33,7 @@ public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
     }
 
     @Override
-    public Set<Client<SocketConnection>> call() throws Exception {
+    public Optional<Set<Client<SocketConnection>>> call() throws Exception {
         try {
             while (runningProperty.get()) {
                 Socket socket = serverSocket.accept();
@@ -41,10 +42,9 @@ public class ServerListener implements Callable<Set<Client<SocketConnection>>> {
                 clientConsumer.accept(client);
             }
 
-            //TODO: not sure what to return in this instance...
-            return clients;
+            return Optional.empty();
         } catch (SocketException e) {
-            return clients;
+            return Optional.of(clients);
         }
     }
 }
