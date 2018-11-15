@@ -26,7 +26,7 @@ import java.util.Set;
  * @version 0.0.0
  * @since 11/10/2018
  */
-public class Main extends Application {
+public class Infinity extends Application {
     private static final Path PROPERTIES_PATH = Paths.get("Infinity.properties");
 
     private ControllerState state;
@@ -39,7 +39,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger = LoggerFactory.getLogger(Main.class);
+        logger = LoggerFactory.getLogger(Infinity.class);
 
         try {
             properties = loadProperties();
