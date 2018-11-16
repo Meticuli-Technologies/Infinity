@@ -38,7 +38,7 @@ public class Server {
     private Set<Path> files;
     public ServerListener listener;
 
-    public Path getServerDirectory() {
+    public Path getFileDirectory() {
         return serverDirectory;
     }
 

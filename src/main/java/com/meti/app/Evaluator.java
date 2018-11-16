@@ -1,11 +1,13 @@
 package com.meti.app;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 11/15/2018
+ * @since 11/16/2018
  */
-public interface  Evaluator {
-    boolean canEvaluate(Object obj);
-    void evaluate(Object obj) throws Exception;
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Evaluator {
 }

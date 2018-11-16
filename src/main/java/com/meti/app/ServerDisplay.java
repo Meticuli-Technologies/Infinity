@@ -130,17 +130,17 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         Map<Path, TreeItem<Path>> treeItemMap = new HashMap<>();
         files.forEach(path1 -> files.forEach(new TreeBuilder(treeItemMap, path1)));
         files.stream()
-                .filter(path -> path.startsWith(server.getServerDirectory()) &&
-                        path.getNameCount() == server.getServerDirectory().getNameCount())
+                .filter(path -> path.startsWith(server.getFileDirectory()) &&
+                        path.getNameCount() == server.getFileDirectory().getNameCount())
                 .forEach(path -> root.getChildren().add(treeItemMap.get(path)));
     }
 
     private Set<Path> loadProperties(Server server, String serverDirectoryName) throws IOException {
         boolean directoryCreated = server.createServerDirectory(serverDirectoryName);
         if (directoryCreated) {
-            console.log(Level.WARNING, "Directory created at " + server.getServerDirectory().toAbsolutePath().toString());
+            console.log(Level.WARNING, "Directory created at " + server.getFileDirectory().toAbsolutePath().toString());
         } else {
-            console.log(Level.INFO, "Directory loaded at " + server.getServerDirectory().toAbsolutePath().toString());
+            console.log(Level.INFO, "Directory loaded at " + server.getFileDirectory().toAbsolutePath().toString());
         }
 
         return server.loadServerDirectory();

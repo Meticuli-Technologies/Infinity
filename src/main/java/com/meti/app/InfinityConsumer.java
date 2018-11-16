@@ -7,7 +7,9 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,13 +22,14 @@ import java.util.stream.Collectors;
  * @since 11/15/2018
  */
 public class InfinityConsumer extends ClientConsumer<SocketConnection> {
-    private final Set<Evaluator> evaluatorSet = new HashSet<>();
+    private final Set<Evaluatable<?>> evaluatableSet = new HashSet<>();
     private final Logger logger = LoggerFactory.getLogger(InfinityConsumer.class);
 
     {
         Reflections reflections = new Reflections("com.meti");
-        evaluatorSet.addAll(reflections.getSubTypesOf(Evaluator.class).stream()
-                .map((Function<Class<? extends Evaluator>, Evaluator>) aClass -> {
+        evaluatableSet.addAll(reflections.getSubTypesOf(Evaluatable.class).stream()
+                .filter(aClass -> aClass.getAnnotation(Evaluator.class) != null)
+                .map((Function<Class<? extends Evaluatable>, Evaluatable<?>>) aClass -> {
                     try {
                         return aClass.newInstance();
                     } catch (Exception e) {
@@ -34,8 +37,7 @@ public class InfinityConsumer extends ClientConsumer<SocketConnection> {
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toSet())
-        );
+                .collect(Collectors.toSet()));
     }
 
     @Override
@@ -44,15 +46,27 @@ public class InfinityConsumer extends ClientConsumer<SocketConnection> {
         while (true) {
             try {
                 Object object = client.connection.objectInputStream.readObject();
-                Set<Evaluator> ableSet = evaluatorSet.stream().filter(evaluator -> evaluator.canEvaluate(object)).collect(Collectors.toSet());
+                Set<Evaluatable<?>> ableSet = evaluatableSet.stream().filter(evaluatable -> evaluatable.canEvaluate(object)).collect(Collectors.toSet());
 
+                Serializable result;
                 if (ableSet.size() == 0) {
-                    throw new IllegalStateException("Unable to evaluate object " + object.toString());
+                    result = new IllegalStateException("Unable to evaluate object " + object.toString());
                 } else {
-                    for (Evaluator evaluator : ableSet) {
-                        evaluator.evaluate(object);
+                    ArrayList<Serializable> serializables = new ArrayList<>();
+                    for (Evaluatable<?> evaluatable : ableSet) {
+                        if (evaluatable instanceof AbstractEvaluatable) {
+                            ((AbstractEvaluatable<?>) evaluatable).setClient(client);
+                            ((AbstractEvaluatable<?>) evaluatable).setServer(server);
+                        }
+
+                        serializables.add(evaluatable.evaluateObject(object));
                     }
+
+                    result = serializables.size() == 1 ? serializables.get(0) : serializables;
                 }
+
+                client.connection.objectOutputStream.writeObject(result);
+                client.connection.objectOutputStream.flush();
             } catch (SocketException e) {
                 break;
             }
