@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.app.evaluate;
 
 import com.meti.lib.net.command.GetCommand;
 import com.meti.lib.net.server.evaluate.AbstractEvaluatable;
