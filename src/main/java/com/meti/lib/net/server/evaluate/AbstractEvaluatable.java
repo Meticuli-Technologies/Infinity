@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.lib.net.server.evaluate;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;

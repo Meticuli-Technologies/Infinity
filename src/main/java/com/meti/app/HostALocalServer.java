@@ -5,6 +5,7 @@ import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.connect.SocketConnection;
+import com.meti.lib.net.server.evaluate.InfinityConsumer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
