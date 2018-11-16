@@ -6,6 +6,7 @@ import com.meti.lib.net.server.evaluate.Evaluator;
 import com.meti.lib.util.StreamUtil;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -21,7 +22,7 @@ public class GetCommandEvaluatable extends AbstractEvaluatable<GetCommand> {
     private final Map<Set<?>, Supplier<? extends Serializable>> map = new HashMap<>();
 
     {
-        map.put(StreamUtil.asSet("files"), () -> new ArrayList<>(server.getFiles().stream().map(path -> path.toString()).collect(Collectors.toList())));
+        map.put(StreamUtil.asSet("files"), () -> new ArrayList<>(server.getFiles().stream().map(Path::toString).collect(Collectors.toList())));
         map.put(StreamUtil.asSet("fileDirectory"), () -> server.getFileDirectory().toString());
     }
 
