@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,9 @@ public class InfinityConsumer extends ClientConsumer<SocketConnection> {
     @Override
     public void acceptClient(Client<SocketConnection> client) throws Exception {
         logger.info("Processing client " + client.connection.socket.getInetAddress());
-        while (true) {
+
+        boolean closed = false;
+        do {
             try {
                 Object object = client.connection.objectInputStream.readObject();
                 Set<Evaluatable<?>> ableSet = evaluatableSet.stream().filter(evaluatable -> evaluatable.canEvaluate(object)).collect(Collectors.toSet());
@@ -68,8 +71,9 @@ public class InfinityConsumer extends ClientConsumer<SocketConnection> {
                 client.connection.objectOutputStream.writeObject(result);
                 client.connection.objectOutputStream.flush();
             } catch (SocketException e) {
-                break;
+                logger.warn("Socket at " + client.connection.socket.getInetAddress() + " closed");
+                closed = true;
             }
-        }
+        } while (server.runningProperty.get() && !closed);
     }
 }

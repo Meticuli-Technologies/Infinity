@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class Server {
     public static final String DEFAULT_DIRECTORY_NAME = "content";
-    private final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
+    public final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
     private ClientConsumer<SocketConnection> clientConsumer;
     public final ServerSocket serverSocket;
     private final ExecutorService service;
@@ -73,6 +74,10 @@ public class Server {
         service.shutdown();
 
         serverSocket.close();
+
+        for (Client<SocketConnection> socketConnectionClient : listener.clients) {
+            socketConnectionClient.close();
+        }
 
         try {
             return future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
