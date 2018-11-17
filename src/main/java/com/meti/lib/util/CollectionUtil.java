@@ -8,8 +8,8 @@ import java.util.Arrays;
  * @version 0.0.0
  * @since 11/15/2018
  */
-public class ListUtil {
-    private ListUtil(){}
+public class CollectionUtil {
+    private CollectionUtil(){}
 
     public static <T> ArrayList<T> asArrayList(T... ts){
         return new ArrayList<>(Arrays.asList(ts));

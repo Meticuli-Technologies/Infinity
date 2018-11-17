@@ -4,15 +4,12 @@ import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.command.GetCommand;
-import com.meti.lib.util.ListUtil;
+import com.meti.lib.util.CollectionUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -31,8 +28,8 @@ public class ClientDisplay extends Controller implements PostInitializable  {
     }
 
     private void loadClient(Client<?> client) throws Exception {
-        Object directoryToken = client.runReturnableCommand(new GetCommand<>(ListUtil.asArrayList("fileDirectory"), String.class));
-        ArrayList<?> fileTokens = client.runReturnableCommand(new GetCommand<>(ListUtil.asArrayList("files"), ArrayList.class));
+        Object directoryToken = client.runReturnableCommand(new GetCommand<>(CollectionUtil.asArrayList("fileDirectory"), String.class));
+        ArrayList<?> fileTokens = client.runReturnableCommand(new GetCommand<>(CollectionUtil.asArrayList("files"), ArrayList.class));
 
         String fileDirectory = directoryToken.toString();
         List<String> files = fileTokens.stream()
