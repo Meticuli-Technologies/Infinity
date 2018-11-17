@@ -5,14 +5,16 @@ import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.command.GetCommand;
 import com.meti.lib.util.CollectionUtil;
+import com.meti.lib.util.StringConverter;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ClientDisplay extends Controller implements PostInitializable  {
     @FXML
@@ -28,15 +30,10 @@ public class ClientDisplay extends Controller implements PostInitializable  {
     }
 
     private void loadClient(Client<?> client) throws Exception {
-        Object directoryToken = client.runReturnableCommand(new GetCommand<>(CollectionUtil.asArrayList("fileDirectory"), String.class));
+        String fileDirectory = client.runReturnableCommand(new GetCommand<>(CollectionUtil.asArrayList("fileDirectory"), String.class));
         ArrayList<?> fileTokens = client.runReturnableCommand(new GetCommand<>(CollectionUtil.asArrayList("files"), ArrayList.class));
 
-        String fileDirectory = directoryToken.toString();
-        List<String> files = fileTokens.stream()
-                .map((Function<Object, String>) o -> o instanceof String ? o.toString() : null)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
+        List<String> files = CollectionUtil.convert(fileTokens, new StringConverter());
         buildTree(fileDirectory, files);
     }
 
