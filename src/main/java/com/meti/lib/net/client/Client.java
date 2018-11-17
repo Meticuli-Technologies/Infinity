@@ -8,6 +8,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -17,10 +18,26 @@ import java.util.concurrent.TimeUnit;
  * @since 11/10/2018
  */
 public class Client<T extends ObjectConnection> implements Closeable  {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(1);
     public final T connection;
 
+    private ExecutorService service;
+
     public Client(T connection) {
+        this(connection, Executors.newSingleThreadExecutor());
+    }
+
+    public Client(T connection, ExecutorService service) {
         this.connection = connection;
+        this.service = service;
+    }
+
+    public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command) throws Exception {
+        return runReturnableCommand(command, DEFAULT_TIMEOUT);
+    }
+
+    public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, Duration timeout) throws Exception {
+        return runReturnableCommand(command, service, timeout);
     }
 
     public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, ExecutorService service, Duration timeout) throws Exception {

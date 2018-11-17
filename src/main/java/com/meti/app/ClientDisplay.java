@@ -31,9 +31,8 @@ public class ClientDisplay extends Controller implements PostInitializable  {
     }
 
     private void loadClient(Client<?> client) throws Exception {
-        ExecutorService service = Executors.newSingleThreadExecutor();
-        Object directoryToken = client.runReturnableCommand(new GetCommand<>(ListUtil.asArrayList("fileDirectory"), String.class), service, Duration.ofSeconds(1));
-        ArrayList<?> fileTokens = client.runReturnableCommand(new GetCommand<>(ListUtil.asArrayList("files"), ArrayList.class), service, Duration.ofSeconds(1));
+        Object directoryToken = client.runReturnableCommand(new GetCommand<>(ListUtil.asArrayList("fileDirectory"), String.class));
+        ArrayList<?> fileTokens = client.runReturnableCommand(new GetCommand<>(ListUtil.asArrayList("files"), ArrayList.class));
 
         String fileDirectory = directoryToken.toString();
         List<String> files = fileTokens.stream()

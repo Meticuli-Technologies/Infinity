@@ -42,7 +42,7 @@ public class ServerListener implements Callable<Optional<Set<Client<SocketConnec
         try {
             while (runningProperty.get()) {
                 Socket socket = serverSocket.accept();
-                Client<SocketConnection> client = new Client<>(new SocketConnection(socket));
+                Client<SocketConnection> client = new Client<>(new SocketConnection(socket), service);
                 clients.add(client);
 
                 service.submit(() -> clientConsumer.accept(client));
