@@ -11,5 +11,4 @@ public class Controller {
     public void setState(InfinityState state) {
         this.state = state;
     }
-
 }
