@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -18,7 +19,10 @@ public class CollectionUtil {
         return new ArrayList<>(Arrays.asList(ts));
     }
 
-    public static <T> List<T> convert(Collection<?> collection){
-        return null;
+    public static <T> List<T> convert(Collection<?> collection, Converter<T> converter){
+        return collection.stream()
+                .filter(converter)
+                .map(converter)
+                .collect(Collectors.toList());
     }
 }
