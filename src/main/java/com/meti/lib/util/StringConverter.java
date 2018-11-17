@@ -9,4 +9,9 @@ public class StringConverter extends ClassConverter<String> {
     public StringConverter() {
         super(String.class);
     }
+
+    @Override
+    public String apply(Object o) {
+        return o.toString();
+    }
 }
