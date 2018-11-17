@@ -147,7 +147,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     }
 
     private String getServerDirectoryName(Server server) {
-        Optional<String> directoryName = server.getDirectoryName(state.getProperties(ServerDisplay.this));
+        Optional<String> directoryName = server.getDirectoryName(state.getProperties());
         String serverDirectoryName;
         if (directoryName.isPresent()) {
             serverDirectoryName = directoryName.get();
