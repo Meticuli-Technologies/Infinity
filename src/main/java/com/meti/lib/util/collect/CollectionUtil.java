@@ -1,4 +1,6 @@
-package com.meti.lib.util;
+package com.meti.lib.util.collect;
+
+import com.meti.lib.util.convert.Converter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

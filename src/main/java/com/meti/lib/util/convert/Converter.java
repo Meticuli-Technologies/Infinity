@@ -1,4 +1,4 @@
-package com.meti.lib.util;
+package com.meti.lib.util.convert;
 
 import java.util.function.Function;
 import java.util.function.Predicate;

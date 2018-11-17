@@ -1,12 +1,12 @@
 package com.meti.app;
 
-import com.meti.lib.util.BufferedConsole;
+import com.meti.lib.util.console.BufferedConsole;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.connect.SocketConnection;
-import com.meti.lib.util.Finalizable;
+import com.meti.lib.fx.Finalizable;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;

@@ -1,4 +1,4 @@
-package com.meti.lib.util;
+package com.meti.lib.fx;
 
 /**
  * @author SirMathhman

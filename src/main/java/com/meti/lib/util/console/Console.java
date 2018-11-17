@@ -1,4 +1,4 @@
-package com.meti.lib.util;
+package com.meti.lib.util.console;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;

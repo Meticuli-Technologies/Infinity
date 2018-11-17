@@ -5,7 +5,7 @@ import com.meti.lib.fx.InfinityState;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
-import com.meti.lib.util.Finalizable;
+import com.meti.lib.fx.Finalizable;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

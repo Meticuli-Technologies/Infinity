@@ -2,7 +2,7 @@ package com.meti.lib.fx;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
-import com.meti.lib.util.ClassMap;
+import com.meti.lib.util.collect.ClassMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
