@@ -3,12 +3,12 @@ package com.meti.app.evaluate;
 import com.meti.lib.net.command.GetCommand;
 import com.meti.lib.net.server.evaluate.AbstractEvaluatable;
 import com.meti.lib.net.server.evaluate.Evaluator;
-import com.meti.lib.util.StreamUtil;
+import com.meti.lib.util.ParameterizedMap;
 
 import java.io.Serializable;
 import java.nio.file.Path;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
  */
 @Evaluator
 public class GetCommandEvaluatable extends AbstractEvaluatable<GetCommand> {
-    private final Map<Set<?>, Supplier<? extends Serializable>> map = new HashMap<>();
+    private final ParameterizedMap<Serializable, Supplier<Serializable>> map = new ParameterizedMap<>();
 
     {
-        map.put(StreamUtil.asSet("files"), () -> new ArrayList<>(server.getFiles().stream().map(Path::toString).collect(Collectors.toList())));
-        map.put(StreamUtil.asSet("fileDirectory"), () -> server.getFileDirectory().toString());
+        map.put(() -> new ArrayList<>(server.getFiles().stream().map(Path::toString).collect(Collectors.toList())), "files");
+        map.put(() -> server.getFileDirectory().toString(), "fileDirectory");
     }
 
     public Class<GetCommand> getParameterClass() {
@@ -37,10 +37,9 @@ public class GetCommandEvaluatable extends AbstractEvaluatable<GetCommand> {
 
     @Override
     public Serializable evaluate(GetCommand obj) {
-        List<? extends Serializable> list = map.keySet().stream()
-                .filter(objects -> objects.size() == obj.parameters.size() && objects.containsAll(obj.parameters))
-                .map((Function<Set<?>, Supplier<? extends Serializable>>) map::get)
-                .map((Function<Supplier<? extends Serializable>, Serializable>) Supplier::get)
+        List<Serializable> list = map.getFromParametersNonGeneric(obj.parameters, Serializable.class)
+                .stream()
+                .map(Supplier::get)
                 .collect(Collectors.toList());
 
         if (list.size() == 0) {
