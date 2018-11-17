@@ -26,7 +26,7 @@ public class Menu extends Controller {
                     .orElse(new Stage())
                     .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
         } catch (IOException e) {
-            state.getLogger(Menu.this).error("", e);
+            state.getLogger(Menu.this.getClass()).error("", e);
         }
     }
 

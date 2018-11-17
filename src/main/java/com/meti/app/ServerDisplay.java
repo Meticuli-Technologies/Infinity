@@ -102,7 +102,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
                 }
             });
         } catch (Throwable throwable) {
-            state.getLogger(ServerDisplay.this).error("", throwable);
+            state.getLogger(ServerDisplay.this.getClass()).error("", throwable);
         }
     }
 
@@ -205,7 +205,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
         {
             inputMap.put(s -> s.startsWith("exit"), strings -> {
-                state.getLogger(this).info("Exiting application");
+                state.getLogger(this.getClass()).info("Exiting application");
                 Platform.exit();
             });
         }
