@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class Server {
     public static final String DEFAULT_DIRECTORY_NAME = "content";
     private final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
-    private ClientConsumer clientConsumer;
+    private ClientConsumer<SocketConnection> clientConsumer;
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
@@ -51,14 +51,14 @@ public class Server {
         this.serverSocket = new ServerSocket(port);
     }
 
-    public Server(int port, ClientConsumer consumer) throws IOException {
+    public Server(int port, ClientConsumer<SocketConnection> consumer) throws IOException {
         this(port);
         this.clientConsumer = consumer;
         this.clientConsumer.setServer(this);
     }
 
     public ServerListener start() {
-        listener = new ServerListener(clientConsumer, serverSocket);
+        listener = new ServerListener(clientConsumer, serverSocket, service);
         listener.runningProperty.bindBidirectional(runningProperty);
         future = service.submit(listener);
         return listener;

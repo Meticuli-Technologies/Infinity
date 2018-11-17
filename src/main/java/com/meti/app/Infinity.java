@@ -51,6 +51,21 @@ public class Infinity extends Application {
 
             primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
             primaryStage.show();
+
+            String mainStageXToken = properties.getProperty("mainStageX");
+            String mainStageYToken = properties.getProperty("mainStageY");
+
+            if (mainStageXToken != null && mainStageYToken != null) {
+                try {
+                    double mainStageX = Double.parseDouble(mainStageXToken);
+                    double mainStageY = Double.parseDouble(mainStageYToken);
+
+                    primaryStage.setX(mainStageX);
+                    primaryStage.setY(mainStageY);
+                } catch (NumberFormatException e) {
+                    logger.error("Invalid dimensions: " + mainStageXToken + ", " + mainStageYToken);
+                }
+            }
         } catch (IOException e) {
             logger.error("Failed to start application", e);
         }
@@ -68,10 +83,30 @@ public class Infinity extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
-        stopServer();
+    public void stop() {
+        boolean error = false;
+
+        try {
+            stopServer();
+        } catch (Exception e) {
+            logger.error("Failed to stop server", e);
+            error = true;
+        }
+
         finalizeControllers();
-        storeProperties();
+
+        try {
+            storeProperties();
+        } catch (IOException e) {
+            logger.error("Failed to store properties", e);
+            error = true;
+        }
+
+        if (!error) {
+            System.exit(0);
+        } else {
+            System.exit(-1);
+        }
     }
 
     private void stopServer() throws Exception {
@@ -112,6 +147,13 @@ public class Infinity extends Application {
     }
 
     private void storeProperties() throws IOException {
+        Optional<Stage> stageOptional = state.firstOfType(Stage.class);
+        if (stageOptional.isPresent()) {
+            Stage stage = stageOptional.get();
+            properties.setProperty("mainStageX", String.valueOf(stage.getX()));
+            properties.setProperty("mainStageY", String.valueOf(stage.getY()));
+        }
+
         properties.store(Files.newOutputStream(PROPERTIES_PATH), "");
     }
 }

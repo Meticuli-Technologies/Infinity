@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author SirMathhman
@@ -24,12 +25,16 @@ import java.util.concurrent.Callable;
 public class ServerListener implements Callable<Optional<Set<Client<SocketConnection>>>> {
     public final ObservableSet<Client<SocketConnection>> clients = FXCollections.observableSet(new HashSet<>());
     public final BooleanProperty runningProperty = new SimpleBooleanProperty();
-    private final ClientConsumer clientConsumer;
+    private final ClientConsumer<SocketConnection> clientConsumer;
     private final ServerSocket serverSocket;
 
-    ServerListener(ClientConsumer clientConsumer, ServerSocket serverSocket) {
+    private final ExecutorService service;
+
+
+    ServerListener(ClientConsumer<SocketConnection> clientConsumer, ServerSocket serverSocket, ExecutorService service) {
         this.clientConsumer = clientConsumer;
         this.serverSocket = serverSocket;
+        this.service = service;
     }
 
     @Override
@@ -39,7 +44,8 @@ public class ServerListener implements Callable<Optional<Set<Client<SocketConnec
                 Socket socket = serverSocket.accept();
                 Client<SocketConnection> client = new Client<>(new SocketConnection(socket));
                 clients.add(client);
-                clientConsumer.accept(client);
+
+                service.submit(() -> clientConsumer.accept(client));
             }
 
             return Optional.empty();

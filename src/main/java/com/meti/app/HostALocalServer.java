@@ -3,8 +3,8 @@ package com.meti.app;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.server.Server;
 import com.meti.lib.net.connect.SocketConnection;
+import com.meti.lib.net.server.Server;
 import com.meti.lib.net.server.evaluate.InfinityConsumer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -50,14 +50,15 @@ public class HostALocalServer extends Controller {
             server.start();
 
             state.addObject(server);
-            state.firstOfType(Stage.class)
-                    .orElse(new Stage())
-                    .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), state)));
+            Stage previousStage = state.firstOfType(Stage.class).orElse(new Stage());
+            previousStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), state)));
 
             Client<SocketConnection> client = new Client<>(new SocketConnection(new Socket(InetAddress.getByName("localhost"), port)));
             state.addObject(client);
 
             Stage clientStage = new Stage();
+            clientStage.setX(previousStage.getX());
+            clientStage.setY(previousStage.getY());
             clientStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/ClientDisplay.fxml"), state)));
             clientStage.show();
 
