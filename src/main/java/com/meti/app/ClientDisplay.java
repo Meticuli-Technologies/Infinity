@@ -23,17 +23,10 @@ public class ClientDisplay extends Controller implements PostInitializable  {
 
     @Override
     public void postInitialize() {
-        Optional<Client> clientOptional = state.firstOfType(Client.class);
-        if(clientOptional.isPresent()){
-            Client<?> client = clientOptional.get();
-            try {
-                loadClient(client);
-            } catch (Exception e) {
-                state.getLogger(ClientDisplay.this.getClass()).error("Failed to load client", e);
-            }
-        }
-        else{
-            throw new IllegalStateException("Client not found");
+        try {
+            loadClient(state.getClient());
+        } catch (Exception e) {
+            state.getLogger(ClientDisplay.this.getClass()).error("Failed to load client", e);
         }
     }
 
