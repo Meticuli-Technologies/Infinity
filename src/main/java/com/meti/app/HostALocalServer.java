@@ -32,7 +32,7 @@ public class HostALocalServer extends Controller {
                     .orElse(new Stage())
                     .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
         } catch (IOException e) {
-            getLogger().error("", e);
+            state.getLogger(HostALocalServer.this).error("", e);
         }
     }
 
@@ -64,7 +64,7 @@ public class HostALocalServer extends Controller {
 
             state.addObject(clientStage);
         } catch (IOException e) {
-            getLogger().error("", e);
+            state.getLogger(HostALocalServer.this).error("", e);
         }
     }
 }

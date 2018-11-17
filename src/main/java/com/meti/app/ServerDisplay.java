@@ -102,7 +102,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
                 }
             });
         } catch (Throwable throwable) {
-            getLogger().error("", throwable);
+            state.getLogger(ServerDisplay.this).error("", throwable);
         }
     }
 
@@ -147,7 +147,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     }
 
     private String getServerDirectoryName(Server server) {
-        Optional<String> directoryName = server.getDirectoryName(getProperties());
+        Optional<String> directoryName = server.getDirectoryName(state.getProperties(ServerDisplay.this));
         String serverDirectoryName;
         if (directoryName.isPresent()) {
             serverDirectoryName = directoryName.get();
@@ -205,7 +205,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
         {
             inputMap.put(s -> s.startsWith("exit"), strings -> {
-                getLogger().info("Exiting application");
+                state.getLogger(this).info("Exiting application");
                 Platform.exit();
             });
         }

@@ -1,13 +1,10 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.util.Finalizable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -15,14 +12,14 @@ import java.util.Set;
  * @since 11/10/2018
  */
 public class ControllerLoader extends FXMLLoader {
-    private final ControllerState state;
+    private final InfinityState state;
 
-    public ControllerLoader(URL location, ControllerState state) {
+    public ControllerLoader(URL location, InfinityState state) {
         super(location);
         this.state = state;
     }
 
-    public static Parent load(URL url, ControllerState state) throws IOException {
+    public static Parent load(URL url, InfinityState state) throws IOException {
         return new ControllerLoader(url, state).load();
     }
 

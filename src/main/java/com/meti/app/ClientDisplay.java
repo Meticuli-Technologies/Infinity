@@ -29,7 +29,7 @@ public class ClientDisplay extends Controller implements PostInitializable  {
             try {
                 loadClient(client);
             } catch (Exception e) {
-                getLogger().error("Failed to load client", e);
+                state.getLogger(ClientDisplay.this).error("Failed to load client", e);
             }
         }
         else{
