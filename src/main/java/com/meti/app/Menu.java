@@ -24,7 +24,7 @@ public class Menu extends Controller {
         try {
             state.firstOfType(Stage.class)
                     .orElse(new Stage())
-                    .setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
+                    .setScene(new Scene(ControllerLoader.loadToParent(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state)));
         } catch (IOException e) {
             state.getLogger(Menu.this.getClass()).error("", e);
         }

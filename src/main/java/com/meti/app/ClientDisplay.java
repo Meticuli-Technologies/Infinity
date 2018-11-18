@@ -23,7 +23,7 @@ public class ClientDisplay extends Controller implements PostInitializable  {
         try {
             loadClient(state.getClient());
         } catch (Exception e) {
-            state.getLogger(ClientDisplay.this.getClass()).error("Failed to load client", e);
+            state.getLogger(ClientDisplay.this.getClass()).error("Failed to loadToParent client", e);
         }
     }
 

@@ -49,7 +49,7 @@ public class Infinity extends Application {
                     properties
             );
 
-            primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
+            primaryStage.setScene(new Scene(ControllerLoader.loadToParent(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
             primaryStage.show();
 
             String mainStageXToken = properties.getProperty("mainStageX");

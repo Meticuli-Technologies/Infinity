@@ -79,7 +79,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     public void postInitialize() {
         try {
             Server server = state.firstOfType(Server.class)
-                    .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to load in display"));
+                    .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to loadToParent in display"));
 
             console.log(Level.INFO, "Loaded ServerDisplay with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
 

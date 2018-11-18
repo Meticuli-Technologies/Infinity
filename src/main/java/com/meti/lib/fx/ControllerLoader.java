@@ -2,6 +2,7 @@ package com.meti.lib.fx;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,8 +20,17 @@ public class ControllerLoader extends FXMLLoader {
         this.state = state;
     }
 
-    public static Parent load(URL url, State state) throws IOException {
+    public static Scene loadToScene(URL url, State state) throws IOException {
+        return new Scene(loadToParent(url, state));
+    }
+
+    public static Parent loadToParent(URL url, State state) throws IOException {
         return new ControllerLoader(url, state).load();
+    }
+
+    public static Scene loadToScene(URL url, State state, Scene scene) throws IOException {
+        scene.setRoot(loadToParent(url, state));
+        return scene;
     }
 
     @Override

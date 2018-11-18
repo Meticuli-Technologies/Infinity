@@ -1,8 +1,9 @@
 package com.meti.lib.fx;
 
+import com.meti.lib.collect.ClassMap;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
-import com.meti.lib.collect.ClassMap;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,10 @@ import java.util.Properties;
 public class State extends ClassMap {
     public State(Object... objects) {
         super(objects);
+    }
+
+    public Stage getPrimaryStage() {
+        return firstOfType(Stage.class).orElse(new Stage());
     }
 
     public Client<?> getClient() {
