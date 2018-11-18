@@ -7,6 +7,7 @@ import com.meti.lib.net.client.Client;
 import com.meti.lib.net.command.GetCommand;
 import com.meti.lib.collect.CollectionUtil;
 import com.meti.lib.convert.StringConverter;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -17,6 +18,11 @@ import java.util.List;
 public class ClientDisplay extends Controller implements PostInitializable  {
     @FXML
     private TreeView<String> fileView;
+
+    @FXML
+    public void exit(){
+        Platform.exit();
+    }
 
     @Override
     public void postInitialize() {
