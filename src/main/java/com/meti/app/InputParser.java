@@ -15,18 +15,14 @@ import java.util.function.Predicate;
  * @since 11/17/2018
  */
 class InputParser {
-    private State state;
     private final Map<Predicate<String>, Consumer<String[]>> inputMap = new HashMap<>();
+    public State state;
 
-    {
-        inputMap.put(s -> s.startsWith("exit"), strings -> {
+    public InputParser() {
+        this.inputMap.put(s -> s.startsWith("exit"), strings -> {
             state.getLogger().info("Exiting application");
             Platform.exit();
         });
-    }
-
-    public InputParser(State state) {
-        this.state = state;
     }
 
     void parseToken(String input) {

@@ -42,7 +42,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @FXML
     private TreeView<Path> fileView;
 
-    private final InputParser inputParser = new InputParser(state);
+    private final InputParser inputParser = new InputParser();
     private BufferedConsole console;
     private AnimationTimer timer;
 
@@ -79,6 +79,8 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
             loadServerDirectory(server);
             loadClientList(server);
+
+            inputParser.state = state;
         } catch (Exception exception) {
             state.getLogger(ServerDisplay.this.getClass()).error("", exception);
         }
