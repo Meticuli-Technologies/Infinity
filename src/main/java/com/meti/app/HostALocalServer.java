@@ -62,7 +62,8 @@ public class HostALocalServer extends Controller {
     private Server createServerDisplay(int port) throws IOException {
         Server server = createServer(port);
         state.addObject(server);
-        state.getPrimaryStage().setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), state));
+
+        onto(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), "Infinity Server");
         return server;
     }
 
@@ -88,8 +89,8 @@ public class HostALocalServer extends Controller {
     private Stage createClientStage() throws IOException {
         Stage primaryStage = state.getPrimaryStage();
         Stage clientStage = createClientStage(primaryStage.getX(), primaryStage.getY());
-        clientStage.setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/ClientDisplay.fxml"), state));
-        clientStage.show();
+        
+        onto(getClass().getResource("/com/meti/app/ClientDisplay.fxml"), "Infinity", clientStage);
         return clientStage;
     }
 

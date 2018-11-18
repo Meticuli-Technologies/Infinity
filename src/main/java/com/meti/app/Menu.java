@@ -5,6 +5,7 @@ import com.meti.lib.fx.ControllerLoader;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  * @author SirMathhman
@@ -20,7 +21,7 @@ public class Menu extends Controller {
     @FXML
     public void hostALocalServer(){
         try {
-            state.getPrimaryStage().setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), state));
+            onto(getClass().getResource("/com/meti/app/HostALocalServer.fxml"), "Host A Local Server");
         } catch (IOException e) {
             state.getLogger().error("Failed to load HostALocalServer.fxml", e);
         }

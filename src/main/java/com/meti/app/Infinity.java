@@ -62,6 +62,7 @@ public class Infinity extends Application {
         primaryStage.setY(Converter.fromProperties(properties, "mainStageY", new DoubleConverter()));
 
         primaryStage.setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/Menu.fxml"), state));
+        primaryStage.setTitle("Welcome to Infinity");
         primaryStage.show();
     }
 
