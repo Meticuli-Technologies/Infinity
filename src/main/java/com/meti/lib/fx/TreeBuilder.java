@@ -12,6 +12,27 @@ import java.util.HashMap;
  */
 public abstract class TreeBuilder<T> extends HashMap<T, TreeItem<T>> {
     public TreeItem<T> buildTree(Collection<? extends T> tCollection) {
+        buildItems(tCollection);
+        return buildRoot();
+    }
+
+    private TreeItem<T> buildRoot() {
+        TreeItem<T> root = new TreeItem<>();
+        for (TreeItem<T> child : values()) {
+            boolean isParent = true;
+            for (TreeItem<T> parent : values()) {
+                if (!child.equals(parent) && parent.getChildren().contains(child)) {
+                    isParent = false;
+                }
+            }
+            if (isParent) {
+                root.getChildren().add(child);
+            }
+        }
+        return root;
+    }
+
+    private Collection<TreeItem<T>> buildItems(Collection<? extends T> tCollection) {
         for (T t1 : tCollection) {
             ensureContains(t1);
 
@@ -19,17 +40,20 @@ public abstract class TreeBuilder<T> extends HashMap<T, TreeItem<T>> {
                 if (!t1.equals(t2)) {
                     ensureContains(t2);
 
-                    if (isParent(t1, t2)) {
+                    if (isParent(t1, t2) && !get(t1).getChildren().contains(get(t2))) {
+                        put(t2, detectParent(t1, t2));
                         get(t1).getChildren().add(get(t2));
                     }
 
-                    if (isParent(t2, t1)) {
+                    if (isParent(t2, t1) && !get(t2).getChildren().contains(get(t1))) {
+                        detectParent(t2, t1);
                         get(t2).getChildren().add(get(t1));
                     }
                 }
             }
         }
-        return null;
+
+        return values();
     }
 
     public TreeItem<T> ensureContains(T value) {
@@ -38,6 +62,8 @@ public abstract class TreeBuilder<T> extends HashMap<T, TreeItem<T>> {
         }
         return get(value);
     }
+
+    public abstract TreeItem<T> detectParent(T parent, T child);
 
     public abstract boolean isParent(T parent, T child);
 
