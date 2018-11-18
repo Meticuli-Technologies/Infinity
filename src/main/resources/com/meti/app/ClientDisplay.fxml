@@ -56,7 +56,7 @@
                       </AnchorPane>
                       <AnchorPane>
                          <children>
-                             <TabPane prefHeight="373.0" prefWidth="445.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                             <TabPane fx:id="tabPane" prefHeight="373.0" prefWidth="445.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <tabs>
                                     <Tab text="Chat" />
                                     <Tab text="Console">

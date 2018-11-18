@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.fx.Controller;
+import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.PostInitializable;
 import com.meti.lib.fx.TreeBuilder;
 import com.meti.lib.net.client.Client;
@@ -9,15 +10,21 @@ import com.meti.lib.collect.CollectionUtil;
 import com.meti.lib.convert.StringConverter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientDisplay extends Controller implements PostInitializable  {
     @FXML
     private TreeView<String> fileView;
+
+    @FXML
+    private TabPane tabPane;
 
     @FXML
     public void exit(){
@@ -28,9 +35,19 @@ public class ClientDisplay extends Controller implements PostInitializable  {
     public void postInitialize() {
         try {
             loadClient(state.getClient());
+            loadTabs();
         } catch (Exception e) {
             state.getLogger(ClientDisplay.this.getClass()).error("Failed to loadToParent client", e);
         }
+    }
+
+    private void loadTabs() throws IOException {
+        loadChat();
+    }
+
+    private void loadChat() throws IOException {
+        Tab chatTab = new Tab("Chat", ControllerLoader.loadToParent(getClass().getResource("/com/meti/app/Chat.fxml"), state));
+        tabPane.getTabs().add(chatTab);
     }
 
     private void loadClient(Client<?> client) throws Exception {

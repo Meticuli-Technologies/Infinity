@@ -25,7 +25,7 @@ public class ControllerLoader extends FXMLLoader {
         return new Scene(loadToParent(url, state));
     }
 
-    private static Parent loadToParent(URL url, State state) throws IOException {
+    public static Parent loadToParent(URL url, State state) throws IOException {
         return new ControllerLoader(url, state).load();
     }
 
