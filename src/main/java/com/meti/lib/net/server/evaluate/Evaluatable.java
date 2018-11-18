@@ -10,9 +10,9 @@ import java.io.Serializable;
 public interface Evaluatable<T> {
     Class<T> getParameterClass();
     boolean canEvaluate(Object obj);
-    Serializable evaluate(T obj) throws Exception;
+    Serializable evaluate(T obj);
 
-    default Serializable evaluateObject(Object obj) throws Exception {
+    default Serializable evaluateObject(Object obj) {
         if(getParameterClass().isAssignableFrom(obj.getClass())){
             return evaluate(getParameterClass().cast(obj));
         }
