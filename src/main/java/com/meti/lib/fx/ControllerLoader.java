@@ -1,13 +1,12 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.util.Finalizable;
+import com.meti.lib.State;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -15,33 +14,40 @@ import java.util.Set;
  * @since 11/10/2018
  */
 public class ControllerLoader extends FXMLLoader {
-    public static final Set<Finalizable> finalizables = new HashSet<>();
-    private final ControllerState state;
+    private final State state;
 
-    public ControllerLoader(URL location, ControllerState state) {
+    private ControllerLoader(URL location, State state) {
         super(location);
         this.state = state;
     }
 
-    public static Parent load(URL url, ControllerState state) throws IOException {
+    public static Scene loadToScene(URL url, State state) throws IOException {
+        return new Scene(loadToParent(url, state));
+    }
+
+    private static Parent loadToParent(URL url, State state) throws IOException {
         return new ControllerLoader(url, state).load();
+    }
+
+    public static Scene loadToScene(URL url, State state, Scene scene) throws IOException {
+        scene.setRoot(loadToParent(url, state));
+        return scene;
     }
 
     @Override
     public <T> T load() throws IOException {
         T parent = super.load();
 
-        Object controller = getController();
-        if (controller instanceof Controller) {
-            ((Controller) controller).setState(state);
+        Object controllerToken = getController();
+        if (controllerToken instanceof Controller) {
+            Controller controller = (Controller) controllerToken;
+            controller.setState(state);
+
+            state.addObject(controller);
         }
 
-        if(controller instanceof PostInitializable){
-            ((PostInitializable) controller).postInitialize();
-        }
-
-        if(controller instanceof Finalizable){
-            finalizables.add((Finalizable) controller);
+        if(controllerToken instanceof PostInitializable){
+            ((PostInitializable) controllerToken).postInitialize();
         }
 
         return parent;

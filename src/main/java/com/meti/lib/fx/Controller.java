@@ -1,9 +1,6 @@
 package com.meti.lib.fx;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Properties;
+import com.meti.lib.State;
 
 /**
  * @author SirMathhman
@@ -11,17 +8,9 @@ import java.util.Properties;
  * @since 11/10/2018
  */
 public class Controller {
-    protected ControllerState state;
+    protected State state;
 
-    public void setState(ControllerState state) {
+    public void setState(State state) {
         this.state = state;
-    }
-
-    public Logger getLogger() {
-        return state.firstOfType(Logger.class).orElse(LoggerFactory.getLogger(getClass()));
-    }
-
-    public Properties getProperties() {
-        return state.firstOfType(Properties.class).orElse(new Properties());
     }
 }

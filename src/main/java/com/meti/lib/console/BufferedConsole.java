@@ -1,6 +1,4 @@
-package com.meti.lib.fx;
-
-import com.meti.lib.util.Console;
+package com.meti.lib.console;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -13,11 +11,11 @@ import java.io.StringWriter;
 public class BufferedConsole extends Console {
     private final StringWriter buffer;
 
-    public BufferedConsole(){
+    public BufferedConsole() {
         this(new StringWriter());
     }
 
-    public BufferedConsole(StringWriter buffer) {
+    private BufferedConsole(StringWriter buffer) {
         super(new PrintWriter(buffer));
         this.buffer = buffer;
     }

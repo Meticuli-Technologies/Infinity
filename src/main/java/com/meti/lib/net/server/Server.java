@@ -1,5 +1,8 @@
-package com.meti.lib.net;
+package com.meti.lib.net.server;
 
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.ClientConsumer;
+import com.meti.lib.net.connect.SocketConnection;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -25,16 +28,19 @@ import java.util.stream.Collectors;
  */
 public class Server {
     public static final String DEFAULT_DIRECTORY_NAME = "content";
-    private final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
-    private final ClientConsumer clientConsumer;
+
+    public final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
-    private Future<Set<Client>> future;
+    public ServerListener listener;
+
+    private ClientConsumer<SocketConnection> clientConsumer;
+    private Future<Optional<Set<Client<SocketConnection>>>> future;
     private Path serverDirectory;
     private Set<Path> files;
 
-    public Path getServerDirectory() {
+    public Path getFileDirectory() {
         return serverDirectory;
     }
 
@@ -42,31 +48,40 @@ public class Server {
         return files;
     }
 
-    public Server(int port, ClientConsumer clientConsumer) throws IOException {
+    public Server(int port) throws IOException {
         this.service = Executors.newCachedThreadPool();
         this.serverSocket = new ServerSocket(port);
-        this.clientConsumer = clientConsumer;
+    }
+
+    public Server(int port, ClientConsumer<SocketConnection> consumer) throws IOException {
+        this(port);
+        this.clientConsumer = consumer;
+        this.clientConsumer.setServer(this);
     }
 
     public ServerListener start() {
-        ServerListener listener = new ServerListener(clientConsumer, serverSocket);
+        listener = new ServerListener(clientConsumer, serverSocket, service);
         listener.runningProperty.bindBidirectional(runningProperty);
         future = service.submit(listener);
         return listener;
     }
 
-    public Optional<Set<Client>> stop() throws Exception {
+    public Optional<Set<Client<SocketConnection>>> stop() throws Exception {
         return stop(Duration.ofSeconds(1));
     }
 
-    public Optional<Set<Client>> stop(Duration duration) throws Exception {
+    public Optional<Set<Client<SocketConnection>>> stop(Duration duration) throws Exception {
         runningProperty.set(false);
         service.shutdown();
 
         serverSocket.close();
 
+        for (Client<SocketConnection> socketConnectionClient : listener.clients) {
+            socketConnectionClient.close();
+        }
+
         try {
-            return Optional.ofNullable(future.get(duration.toMillis(), TimeUnit.MILLISECONDS));
+            return future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             /*
             even though we caught an exception, we should shutdown the service
@@ -78,7 +93,6 @@ public class Server {
             throw e;
         }
     }
-
 
     public boolean createServerDirectory(String serverDirectoryName) throws IOException {
         serverDirectory = Paths.get(".\\" + serverDirectoryName);

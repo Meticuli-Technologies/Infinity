@@ -1,4 +1,4 @@
-package com.meti.lib.util;
+package com.meti.lib.collect;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,15 +10,12 @@ import java.util.stream.Stream;
  * @version 0.0.0
  * @since 11/10/2018
  */
-public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
-    public ClassMap() {
-    }
-
-    public ClassMap(Object... objects){
+public class ClassMap extends HashSet<MapBinding<?>> {
+    protected ClassMap(Object... objects){
         addAllObjects(objects);
     }
 
-    public ClassMap addAllObjects(Object... objects) {
+    private ClassMap addAllObjects(Object... objects) {
         Arrays.stream(objects).forEach(this::addObject);
         return this;
     }
@@ -33,7 +30,7 @@ public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
     }
 
     public <T> List<T> ofType(Class<T> tClass) {
-        List<ClassMapBindings<?>> results = stream()
+        List<MapBinding<?>> results = stream()
                 .filter(controllerStateBindings -> tClass.isAssignableFrom(controllerStateBindings.tClass))
                 .collect(Collectors.toList());
 
@@ -41,7 +38,7 @@ public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
             return new ArrayList<>();
         } else {
             return results.stream()
-                    .flatMap((Function<ClassMapBindings<?>, Stream<?>>) controllerStateBindings -> controllerStateBindings.content.stream())
+                    .flatMap((Function<MapBinding<?>, Stream<?>>) controllerStateBindings -> controllerStateBindings.content.stream())
                     .filter(o -> o.getClass().isAssignableFrom(tClass))
                     .map(tClass::cast)
                     .collect(Collectors.toList());
@@ -49,37 +46,16 @@ public class ClassMap extends HashSet<ClassMap.ClassMapBindings<?>> {
     }
 
     public ClassMap addObject(Object object) {
-        Set<ClassMapBindings<?>> results = stream()
+        Set<MapBinding<?>> results = stream()
                 .filter(controllerStateBindings -> object.getClass().isAssignableFrom(controllerStateBindings.tClass))
                 .peek(controllerStateBinding -> controllerStateBinding.add(object))
                 .collect(Collectors.toSet());
 
         if (results.size() == 0) {
-            add(new ClassMapBindings<>(object.getClass(), object));
+            add(new MapBinding<>(object.getClass(), object));
         }
 
         return this;
     }
 
-    protected static class ClassMapBindings<T> {
-        private Class<T> tClass;
-        private ArrayList<T> content = new ArrayList<>();
-
-        public ClassMapBindings(Class<T> initialClass, Object initial) {
-            this(initialClass);
-            add(initial);
-        }
-
-        public ClassMapBindings(Class<T> tClass) {
-            this.tClass = tClass;
-        }
-
-        private void add(Object object) {
-            if (object.getClass().isAssignableFrom(tClass)) {
-                content.add(tClass.cast(object));
-            } else {
-                throw new IllegalArgumentException("Invalid type " + object.getClass() + ", should be type " + tClass.getSimpleName());
-            }
-        }
-    }
 }
