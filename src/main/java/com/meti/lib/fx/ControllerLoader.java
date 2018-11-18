@@ -12,14 +12,14 @@ import java.net.URL;
  * @since 11/10/2018
  */
 public class ControllerLoader extends FXMLLoader {
-    private final InfinityState state;
+    private final State state;
 
-    public ControllerLoader(URL location, InfinityState state) {
+    public ControllerLoader(URL location, State state) {
         super(location);
         this.state = state;
     }
 
-    public static Parent load(URL url, InfinityState state) throws IOException {
+    public static Parent load(URL url, State state) throws IOException {
         return new ControllerLoader(url, state).load();
     }
 

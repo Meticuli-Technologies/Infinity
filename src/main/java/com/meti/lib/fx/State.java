@@ -14,8 +14,8 @@ import java.util.Properties;
  * @version 0.0.0
  * @since 11/10/2018
  */
-public class InfinityState extends ClassMap {
-    public InfinityState(Object... objects) {
+public class State extends ClassMap {
+    public State(Object... objects) {
         super(objects);
     }
 
@@ -38,7 +38,7 @@ public class InfinityState extends ClassMap {
     }
 
     public Logger getLogger() {
-        return getLogger(InfinityState.class);
+        return getLogger(State.class);
     }
 
     public Logger getLogger(Class<?> aClass) {

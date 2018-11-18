@@ -1,7 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.fx.ControllerLoader;
-import com.meti.lib.fx.InfinityState;
+import com.meti.lib.fx.State;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
@@ -29,7 +29,7 @@ import java.util.Set;
 public class Infinity extends Application {
     private static final Path PROPERTIES_PATH = Paths.get("Infinity.properties");
 
-    private InfinityState state;
+    private State state;
     private Properties properties;
     private Logger logger;
 
@@ -43,7 +43,7 @@ public class Infinity extends Application {
 
         try {
             properties = loadProperties();
-            state = new InfinityState(
+            state = new State(
                     primaryStage,
                     logger,
                     properties
