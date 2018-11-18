@@ -29,15 +29,17 @@ import java.util.stream.Collectors;
  */
 public class Server {
     public static final String DEFAULT_DIRECTORY_NAME = "content";
+
     public final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
-    private ClientConsumer<SocketConnection> clientConsumer;
     public final ServerSocket serverSocket;
     private final ExecutorService service;
 
+    public ServerListener listener;
+
+    private ClientConsumer<SocketConnection> clientConsumer;
     private Future<Optional<Set<Client<SocketConnection>>>> future;
     private Path serverDirectory;
     private Set<Path> files;
-    public ServerListener listener;
 
     public Path getFileDirectory() {
         return serverDirectory;
