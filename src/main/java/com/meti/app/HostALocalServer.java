@@ -20,7 +20,7 @@ import java.net.Socket;
  * @since 11/10/2018
  */
 public class HostALocalServer extends Controller {
-    public static final int DEFAULT_PORT = 80;
+    private static final int DEFAULT_PORT = 80;
 
     @FXML
     private TextField portField;

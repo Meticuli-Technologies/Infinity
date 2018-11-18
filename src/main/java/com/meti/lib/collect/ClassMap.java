@@ -11,11 +11,11 @@ import java.util.stream.Stream;
  * @since 11/10/2018
  */
 public class ClassMap extends HashSet<MapBinding<?>> {
-    public ClassMap(Object... objects){
+    protected ClassMap(Object... objects){
         addAllObjects(objects);
     }
 
-    public ClassMap addAllObjects(Object... objects) {
+    private ClassMap addAllObjects(Object... objects) {
         Arrays.stream(objects).forEach(this::addObject);
         return this;
     }

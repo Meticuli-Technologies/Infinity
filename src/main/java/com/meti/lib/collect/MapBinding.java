@@ -8,15 +8,15 @@ import java.util.ArrayList;
  * @since 11/15/2018
  */
 class MapBinding<T> {
-    public Class<T> tClass;
-    public ArrayList<T> content = new ArrayList<>();
+    public final Class<T> tClass;
+    public final ArrayList<T> content = new ArrayList<>();
 
     public MapBinding(Class<T> initialClass, Object initial) {
         this(initialClass);
         add(initial);
     }
 
-    public MapBinding(Class<T> tClass) {
+    private MapBinding(Class<T> tClass) {
         this.tClass = tClass;
     }
 

@@ -16,7 +16,7 @@ import java.net.URL;
 public class ControllerLoader extends FXMLLoader {
     private final State state;
 
-    public ControllerLoader(URL location, State state) {
+    private ControllerLoader(URL location, State state) {
         super(location);
         this.state = state;
     }
@@ -25,7 +25,7 @@ public class ControllerLoader extends FXMLLoader {
         return new Scene(loadToParent(url, state));
     }
 
-    public static Parent loadToParent(URL url, State state) throws IOException {
+    private static Parent loadToParent(URL url, State state) throws IOException {
         return new ControllerLoader(url, state).load();
     }
 

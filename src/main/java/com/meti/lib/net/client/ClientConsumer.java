@@ -14,11 +14,11 @@ public abstract class ClientConsumer<T extends ObjectConnection> implements Cons
     private final Consumer<Throwable> callback;
     protected Server server;
 
-    public ClientConsumer() {
+    protected ClientConsumer() {
         this(Throwable::printStackTrace);
     }
 
-    public ClientConsumer(Consumer<Throwable> callback) {
+    private ClientConsumer(Consumer<Throwable> callback) {
         this.callback = callback;
     }
 
@@ -31,7 +31,7 @@ public abstract class ClientConsumer<T extends ObjectConnection> implements Cons
         }
     }
 
-    public abstract void acceptClient(Client<T> client) throws Throwable;
+    protected abstract void acceptClient(Client<T> client) throws Throwable;
 
     public void setServer(Server server) {
         this.server = server;

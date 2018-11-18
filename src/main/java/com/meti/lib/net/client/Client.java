@@ -21,7 +21,7 @@ public class Client<T extends ObjectConnection> implements Closeable  {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(1);
     public final T connection;
 
-    private ExecutorService service;
+    private final ExecutorService service;
 
     public Client(T connection) {
         this(connection, Executors.newSingleThreadExecutor());
@@ -36,11 +36,11 @@ public class Client<T extends ObjectConnection> implements Closeable  {
         return runReturnableCommand(command, DEFAULT_TIMEOUT);
     }
 
-    public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, Duration timeout) throws Exception {
+    private <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, Duration timeout) throws Exception {
         return runReturnableCommand(command, service, timeout);
     }
 
-    public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, ExecutorService service, Duration timeout) throws Exception {
+    private <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, ExecutorService service, Duration timeout) throws Exception {
         runCommand(command);
 
         return parseFuture(command, service, timeout);

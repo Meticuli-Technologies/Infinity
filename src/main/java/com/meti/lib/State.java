@@ -32,7 +32,7 @@ public class State extends ClassMap {
         return getAndThrowIfNotExists(Server.class);
     }
 
-    public <T> T getAndThrowIfNotExists(Class<T> aClass){
+    private <T> T getAndThrowIfNotExists(Class<T> aClass){
         Optional<T> tOptional = firstOfType(aClass);
         if(tOptional.isPresent()){
             return tOptional.get();

@@ -17,7 +17,7 @@ public class Console {
         this(new PrintWriter(outputStream));
     }
 
-    public Console(PrintWriter writer) {
+    Console(PrintWriter writer) {
         this.writer = writer;
     }
 

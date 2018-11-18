@@ -56,16 +56,16 @@ public abstract class TreeBuilder<T> extends HashMap<T, TreeItem<T>> {
         return values();
     }
 
-    public TreeItem<T> ensureContains(T value) {
+    private TreeItem<T> ensureContains(T value) {
         if (!containsKey(value)) {
             put(value, createTreeItem(value));
         }
         return get(value);
     }
 
-    public abstract TreeItem<T> detectParent(T parent, T child);
+    protected abstract TreeItem<T> detectParent(T parent, T child);
 
-    public abstract boolean isParent(T parent, T child);
+    protected abstract boolean isParent(T parent, T child);
 
-    public abstract TreeItem<T> createTreeItem(T value);
+    protected abstract TreeItem<T> createTreeItem(T value);
 }

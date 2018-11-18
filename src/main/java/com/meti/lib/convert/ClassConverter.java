@@ -5,10 +5,10 @@ package com.meti.lib.convert;
  * @version 0.0.0
  * @since 11/17/2018
  */
-public class ClassConverter<T> implements Converter<T> {
-    public final Class<T> tClass;
+class ClassConverter<T> implements Converter<T> {
+    private final Class<T> tClass;
 
-    public ClassConverter(Class<T> tClass) {
+    ClassConverter(Class<T> tClass) {
         this.tClass = tClass;
     }
 

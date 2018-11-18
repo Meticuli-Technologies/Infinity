@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
  * @since 11/17/2018
  */
 public class ParameterizedMap<P, V> extends HashMap<Set<P>, V> {
-    public void put(V value, P... parameters) {
+    @SafeVarargs
+    public final void put(V value, P... parameters) {
         put(StreamUtil.asSet(parameters), value);
     }
 
@@ -26,7 +27,7 @@ public class ParameterizedMap<P, V> extends HashMap<Set<P>, V> {
         );
     }
 
-    public Set<V> getFromParameters(Collection<P> parameters){
+    private Set<V> getFromParameters(Collection<P> parameters){
         return keySet().stream()
                 .filter(ps -> ps.size() == parameters.size() && ps.containsAll(parameters))
                 .map(this::get)

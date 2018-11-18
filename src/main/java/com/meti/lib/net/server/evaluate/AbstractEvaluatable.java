@@ -10,7 +10,7 @@ import com.meti.lib.net.server.Server;
  */
 public abstract class AbstractEvaluatable<T> implements Evaluatable<T> {
     protected Server server;
-    protected Client client;
+    private Client client;
 
     public void setServer(Server server) {
         this.server = server;

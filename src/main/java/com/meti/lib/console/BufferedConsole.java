@@ -15,7 +15,7 @@ public class BufferedConsole extends Console {
         this(new StringWriter());
     }
 
-    public BufferedConsole(StringWriter buffer) {
+    private BufferedConsole(StringWriter buffer) {
         super(new PrintWriter(buffer));
         this.buffer = buffer;
     }

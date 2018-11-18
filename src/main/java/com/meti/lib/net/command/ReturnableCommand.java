@@ -11,7 +11,7 @@ import java.util.Collection;
 public abstract class ReturnableCommand<T extends Serializable, P extends Collection<? extends T> & Serializable, R> extends Command<T, P> {
     public final Class<R> returnClass;
 
-    public ReturnableCommand(P parameters, Class<R> returnClass) {
+    ReturnableCommand(P parameters, Class<R> returnClass) {
         super(parameters);
         this.returnClass = returnClass;
     }

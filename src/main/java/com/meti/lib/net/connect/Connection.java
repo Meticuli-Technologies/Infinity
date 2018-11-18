@@ -9,21 +9,21 @@ import java.io.OutputStream;
  * @version 0.0.0
  * @since 11/12/2018
  */
-public abstract class Connection {
-    public final InputStream inputStream;
-    public final OutputStream outputStream;
+abstract class Connection {
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
 
-    public Connection(InputStream inputStream, OutputStream outputStream) {
+    Connection(InputStream inputStream, OutputStream outputStream) {
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }
 
-    public void close() throws IOException {
+    void close() throws IOException {
         inputStream.close();
         outputStream.close();
 
         closeSource();
     }
 
-    public abstract void closeSource() throws IOException;
+    protected abstract void closeSource() throws IOException;
 }

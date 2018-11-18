@@ -14,7 +14,7 @@ import java.util.function.Predicate;
  * @version 0.0.0
  * @since 11/17/2018
  */
-public class InputParser {
+class InputParser {
     private State state;
     private final Map<Predicate<String>, Consumer<String[]>> inputMap = new HashMap<>();
 

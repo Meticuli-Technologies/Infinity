@@ -10,14 +10,16 @@ import java.util.stream.Stream;
  * @version 0.0.0
  * @since 11/16/2018
  */
-public class StreamUtil {
+class StreamUtil {
     private StreamUtil(){}
 
-    public static <T> Set<T> asSet(T... objs){
-        return Stream.of(objs).collect(Collectors.toSet());
+    @SafeVarargs
+    public static <T> Set<T> asSet(T... objects){
+        return Stream.of(objects).collect(Collectors.toSet());
     }
 
-    public static <T>List<T> asList(T... objs){
-        return Stream.of(objs).collect(Collectors.toList());
+    @SafeVarargs
+    public static <T>List<T> asList(T... objects){
+        return Stream.of(objects).collect(Collectors.toList());
     }
 }
