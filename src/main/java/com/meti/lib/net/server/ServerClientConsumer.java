@@ -1,9 +1,11 @@
-package com.meti.lib.net.server.evaluate;
+package com.meti.lib.net.server;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.ClientConsumer;
 import com.meti.lib.net.connect.SocketConnection;
-import com.meti.lib.net.server.Server;
+import com.meti.lib.net.server.evaluate.AbstractEvaluatable;
+import com.meti.lib.net.server.evaluate.Evaluatable;
+import com.meti.lib.net.server.evaluate.Evaluator;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +24,9 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 11/15/2018
  */
-public class InfinityConsumer extends ClientConsumer<SocketConnection> {
+public class ServerClientConsumer extends ClientConsumer<SocketConnection> {
     private final Set<Evaluatable<?>> evaluatableSet = new HashSet<>();
-    private final Logger logger = LoggerFactory.getLogger(InfinityConsumer.class);
+    private final Logger logger = LoggerFactory.getLogger(ServerClientConsumer.class);
 
     {
         Reflections reflections = new Reflections("com.meti");

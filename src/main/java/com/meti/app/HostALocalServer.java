@@ -5,7 +5,7 @@ import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
-import com.meti.lib.net.server.evaluate.InfinityConsumer;
+import com.meti.lib.net.server.ServerClientConsumer;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -74,7 +74,7 @@ public class HostALocalServer extends Controller {
     }
 
     private Server createServer(int port) throws IOException {
-        Server server = new Server(port, new InfinityConsumer());
+        Server server = new Server(port, new ServerClientConsumer());
         server.start();
         return server;
     }
