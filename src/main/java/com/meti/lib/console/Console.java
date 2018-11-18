@@ -25,30 +25,47 @@ public class Console {
         return log(level, message, null);
     }
 
-    public String log(Level level, String message, Exception exception){
+    private String log(Level level, String message, Exception exception){
         StringBuilder builder = new StringBuilder();
-        builder.append("[")
-                .append(level.toString())
-                .append("]: ");
 
-        if(message != null){
-            builder.append(message);
-        }
+        appendLevel(level, builder);
+        appendMessage(message, builder, message != null);
+        appendMessage(" ==> ", builder, message != null && exception != null);
+        appendException(exception, builder);
 
-        if (message != null && exception != null) {
-            builder.append(" ==> ");
-        }
+        return writeBuilder(builder);
+    }
 
+    private String writeBuilder(StringBuilder builder) {
+        String string = builder.toString();
+        writer.println(string);
+        writer.flush();
+        return string;
+    }
+
+    private String appendException(Exception exception, StringBuilder builder) {
         if(exception != null){
             StringWriter writer = new StringWriter();
             exception.printStackTrace(new PrintWriter(writer));
             builder.append(writer.toString());
         }
 
-        String string = builder.toString();
-        writer.println(string);
-        writer.flush();
-        return string;
+        return builder.toString();
+    }
+
+    private String appendLevel(Level level, StringBuilder builder) {
+        builder.append("[")
+                .append(level.toString())
+                .append("]: ");
+        return builder.toString();
+    }
+
+    private String appendMessage(String message, StringBuilder builder, boolean condition) {
+        if (condition) {
+            builder.append(message);
+        }
+
+        return builder.toString();
     }
 
     public String log(Level level, Exception exception) {
