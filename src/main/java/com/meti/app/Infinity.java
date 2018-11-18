@@ -57,7 +57,7 @@ public class Infinity extends Application {
         }
     }
 
-    public void buildPrimaryStage(Stage primaryStage) throws IOException {
+    private void buildPrimaryStage(Stage primaryStage) throws IOException {
         primaryStage.setX(Converter.fromProperties(properties, "mainStageX", new DoubleConverter()));
         primaryStage.setY(Converter.fromProperties(properties, "mainStageY", new DoubleConverter()));
 
