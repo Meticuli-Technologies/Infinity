@@ -16,7 +16,6 @@ import java.util.function.Predicate;
  */
 public class InputParser {
     private State state;
-    private ServerDisplay serverDisplay;
     private final Map<Predicate<String>, Consumer<String[]>> inputMap = new HashMap<>();
 
     {
@@ -26,9 +25,8 @@ public class InputParser {
         });
     }
 
-    public InputParser(State state, ServerDisplay serverDisplay) {
+    public InputParser(State state) {
         this.state = state;
-        this.serverDisplay = serverDisplay;
     }
 
     void parseToken(String input) {

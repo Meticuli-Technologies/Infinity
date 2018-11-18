@@ -42,7 +42,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @FXML
     private TreeView<Path> fileView;
 
-    private final InputParser inputParser = new InputParser(state, this);
+    private final InputParser inputParser = new InputParser(state);
     private BufferedConsole console;
     private AnimationTimer timer;
 
