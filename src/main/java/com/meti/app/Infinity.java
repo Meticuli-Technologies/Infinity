@@ -1,13 +1,15 @@
 package com.meti.app;
 
+import com.meti.lib.convert.Converter;
+import com.meti.lib.convert.DoubleConverter;
+import com.meti.lib.convert.LongConverter;
 import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.fx.Finalizable;
 import com.meti.lib.fx.State;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
-import com.meti.lib.fx.Finalizable;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,26 +51,18 @@ public class Infinity extends Application {
                     properties
             );
 
-            primaryStage.setScene(new Scene(ControllerLoader.loadToParent(getClass().getResource("/com/meti/app/Menu.fxml"), state)));
-            primaryStage.show();
-
-            String mainStageXToken = properties.getProperty("mainStageX");
-            String mainStageYToken = properties.getProperty("mainStageY");
-
-            if (mainStageXToken != null && mainStageYToken != null) {
-                try {
-                    double mainStageX = Double.parseDouble(mainStageXToken);
-                    double mainStageY = Double.parseDouble(mainStageYToken);
-
-                    primaryStage.setX(mainStageX);
-                    primaryStage.setY(mainStageY);
-                } catch (NumberFormatException e) {
-                    logger.error("Invalid dimensions: " + mainStageXToken + ", " + mainStageYToken);
-                }
-            }
-        } catch (IOException e) {
+            buildPrimaryStage(primaryStage);
+        } catch (Exception e) {
             logger.error("Failed to start application", e);
         }
+    }
+
+    public void buildPrimaryStage(Stage primaryStage) throws IOException {
+        primaryStage.setX(Converter.fromProperties(properties, "mainStageX", new DoubleConverter()));
+        primaryStage.setY(Converter.fromProperties(properties, "mainStageY", new DoubleConverter()));
+
+        primaryStage.setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/Menu.fxml"), state));
+        primaryStage.show();
     }
 
     private Properties loadProperties() throws IOException {
@@ -84,62 +78,57 @@ public class Infinity extends Application {
 
     @Override
     public void stop() {
-        boolean error = false;
-
-        try {
-            stopServer();
-        } catch (Exception e) {
-            logger.error("Failed to stop server", e);
-            error = true;
-        }
-
         finalizeControllers();
 
         try {
+            stopServer();
             storeProperties();
-        } catch (IOException e) {
-            logger.error("Failed to store properties", e);
-            error = true;
-        }
-
-        if (!error) {
-            System.exit(0);
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Exception in stopping", e);
             System.exit(-1);
         }
+
+        System.exit(0);
     }
 
     private void stopServer() throws Exception {
         Optional<Server> serverOptional = state.firstOfType(Server.class);
         if (serverOptional.isPresent()) {
-            Optional<Set<Client<SocketConnection>>> clientSetOptional;
-            if (properties.containsKey("stop_duration")) {
-                long milis;
-                try {
-                    milis = Long.parseLong(properties.getProperty("stop_duration"));
-                } catch (NumberFormatException e) {
-                    milis = 1000;
-                }
-                clientSetOptional = serverOptional.get().stop(Duration.ofMillis(milis));
-            } else {
-                clientSetOptional = serverOptional.get().stop();
-            }
+            Server server = serverOptional.get();
+
+            Optional<Set<Client<SocketConnection>>> clientSetOptional = properties.containsKey("stop_duration") ?
+                    stopWithDuration(server) :
+                    stopWithoutDuration(server);
 
             if (clientSetOptional.isPresent()) {
-                Set<Client<SocketConnection>> clientSet = clientSetOptional.get();
-                StringBuilder builder = new StringBuilder();
-                builder.append("Located ")
-                        .append(clientSet.size())
-                        .append(" clients that did not stop cleanly: ");
-
-                clientSet.forEach(socketConnectionClient -> builder.append("\n\t")
-                        .append(socketConnectionClient.connection.socket.getInetAddress()));
-
-                logger.error(builder.toString());
+                logger.error(listClients(clientSetOptional.get()));
             } else {
                 logger.info("All clients stopped cleanly");
             }
+        } else {
+            logger.info("No server found to stop");
         }
+    }
+
+    private Optional<Set<Client<SocketConnection>>> stopWithDuration(Server server) throws Exception {
+        return server.stop(Duration.ofMillis(Converter.fromProperties(properties, "stop_duration", new LongConverter())));
+    }
+
+    private Optional<Set<Client<SocketConnection>>> stopWithoutDuration(Server server) throws Exception {
+        return server.stop();
+    }
+
+    private String listClients(Set<Client<SocketConnection>> clientSet) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Located ")
+                .append(clientSet.size())
+                .append(" clients that did not stop cleanly: ");
+
+        clientSet.forEach(socketConnectionClient -> builder.append("\n\t")
+                .append(socketConnectionClient.connection.socket.getInetAddress()));
+
+        return builder.toString();
     }
 
     private void finalizeControllers() {
