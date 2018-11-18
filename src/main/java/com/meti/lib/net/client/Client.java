@@ -43,9 +43,16 @@ public class Client<T extends ObjectConnection> implements Closeable  {
     public <R> R runReturnableCommand(ReturnableCommand<?, ?, R> command, ExecutorService service, Duration timeout) throws Exception {
         runCommand(command);
 
+        return parseFuture(command, service, timeout);
+    }
+
+    private <R> R parseFuture(ReturnableCommand<?, ?, R> command, ExecutorService service, Duration timeout) throws Exception {
         Future<?> future = service.submit(connection.objectInputStream::readObject);
         Object result = future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-        Class<R> returnClass = command.returnClass;
+        return parseResult(result, command.returnClass);
+    }
+
+    private <R> R parseResult(Object result, Class<R> returnClass) {
         if(returnClass.isAssignableFrom(result.getClass())){
             return returnClass.cast(result);
         }
@@ -54,7 +61,7 @@ public class Client<T extends ObjectConnection> implements Closeable  {
         }
     }
 
-    public void runCommand(Command<?, ?> command) throws Exception {
+    private void runCommand(Command<?, ?> command) throws Exception {
         connection.objectOutputStream.writeObject(command);
         connection.objectOutputStream.flush();
     }
