@@ -89,7 +89,7 @@ public class HostALocalServer extends Controller {
     private Stage createClientStage() throws IOException {
         Stage primaryStage = state.getPrimaryStage();
         Stage clientStage = createClientStage(primaryStage.getX(), primaryStage.getY());
-        
+
         onto(getClass().getResource("/com/meti/app/ClientDisplay.fxml"), "Infinity", clientStage);
         return clientStage;
     }
