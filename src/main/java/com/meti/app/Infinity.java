@@ -48,7 +48,8 @@ public class Infinity extends Application {
             state = new State(
                     primaryStage,
                     logger,
-                    properties
+                    properties,
+                    getHostServices()
             );
 
             buildPrimaryStage(primaryStage);
