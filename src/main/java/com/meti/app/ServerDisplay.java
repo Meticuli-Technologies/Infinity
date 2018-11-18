@@ -80,7 +80,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
             console.log(Level.INFO, "Loaded ServerDisplay with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
 
             loadServerDirectory(server);
-            loadClientList(server);
+            createClientView(server.listener.clients);
 
             inputParser.state = state;
         } catch (Exception exception) {
@@ -88,27 +88,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         }
     }
 
-    private void loadClientList(Server server) {
-        ObservableSet<Client<SocketConnection>> clientList = server.listener.clients;
-        List<InetAddress> previousAddresses = updateClientView(clientList);
-
-        String previousAddressesString = writePreviousAddresses(previousAddresses);
-        String clientListString = writeClients(clientList);
-
-        console.log(Level.INFO, previousAddressesString);
-        console.log(Level.INFO, clientListString);
-    }
-
-    private String writePreviousAddresses(List<InetAddress> previousAddresses) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Previous addresses: ");
-        previousAddresses.forEach(internetAddress -> builder.append("\n\t").append(internetAddress.toString()));
-        return builder.toString();
-    }
-
-    private List<InetAddress> updateClientView(ObservableSet<Client<SocketConnection>> clientList) {
-        List<InetAddress> previousAddresses = new ArrayList<>(clientView.getItems());
-
+    private void createClientView(ObservableSet<Client<SocketConnection>> clientList) {
         clientList.stream()
                 .map(socketConnectionClient -> socketConnectionClient.connection.socket.getInetAddress())
                 .forEach(internetAddress -> clientView.getItems().add(internetAddress));
@@ -121,16 +101,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
                 clientView.getItems().remove(change.getElementRemoved().connection.socket.getInetAddress());
             }
         });
-
-        return previousAddresses;
-    }
-
-    private String writeClients(Set<Client<SocketConnection>> clients){
-        StringBuilder builder = new StringBuilder("Located " + clients.size() + " clients:");
-        clients.stream()
-                .map(socketConnectionClient -> socketConnectionClient.connection.socket.getInetAddress())
-                .forEach(internetAddress -> builder.append("\n\t").append(internetAddress.toString()));
-        return builder.toString();
     }
 
     private void loadServerDirectory(Server server) throws IOException {
