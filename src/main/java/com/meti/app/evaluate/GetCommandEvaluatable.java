@@ -3,7 +3,7 @@ package com.meti.app.evaluate;
 import com.meti.lib.net.command.GetCommand;
 import com.meti.lib.net.server.evaluate.AbstractEvaluatable;
 import com.meti.lib.net.server.evaluate.Evaluator;
-import com.meti.lib.util.collect.ParameterizedMap;
+import com.meti.lib.collect.ParameterizedMap;
 
 import java.io.Serializable;
 import java.nio.file.Path;

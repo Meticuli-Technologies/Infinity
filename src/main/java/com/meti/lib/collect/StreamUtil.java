@@ -1,4 +1,4 @@
-package com.meti.lib.util.collect;
+package com.meti.lib.collect;
 
 import java.util.List;
 import java.util.Set;
