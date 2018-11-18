@@ -11,9 +11,6 @@ import java.util.stream.Stream;
  * @since 11/10/2018
  */
 public class ClassMap extends HashSet<MapBinding<?>> {
-    public ClassMap() {
-    }
-
     public ClassMap(Object... objects){
         addAllObjects(objects);
     }
