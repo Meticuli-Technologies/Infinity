@@ -59,7 +59,9 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                outputArea.setText(console.getBuffer().toString());
+                if (console.wasUpdated()) {
+                    outputArea.setText(console.getWriter().toString());
+                }
             }
         };
 
