@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.lib;
 
 import com.meti.lib.collect.ClassMap;
 import com.meti.lib.net.client.Client;

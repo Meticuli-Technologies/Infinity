@@ -5,7 +5,7 @@ import com.meti.lib.convert.DoubleConverter;
 import com.meti.lib.convert.LongConverter;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.Finalizable;
-import com.meti.lib.fx.State;
+import com.meti.lib.State;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;

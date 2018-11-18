@@ -2,13 +2,13 @@ package com.meti.app;
 
 import com.meti.lib.console.BufferedConsole;
 import com.meti.lib.fx.Controller;
-import com.meti.lib.fx.PostInitializable;
-import com.meti.lib.net.client.Client;
-import com.meti.lib.net.server.Server;
-import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.fx.Finalizable;
+import com.meti.lib.fx.PostInitializable;
+import com.meti.lib.fx.TreeBuilder;
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.connect.SocketConnection;
+import com.meti.lib.net.server.Server;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
@@ -22,11 +22,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -46,7 +42,7 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @FXML
     private TreeView<Path> fileView;
 
-    private final InputParser inputParser = new InputParser();
+    private final InputParser inputParser = new InputParser(state, this);
     private BufferedConsole console;
     private AnimationTimer timer;
 
@@ -78,32 +74,51 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     @Override
     public void postInitialize() {
         try {
-            Server server = state.firstOfType(Server.class)
-                    .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("Cannot find server to loadToParent in display"));
-
+            Server server = state.getServer();
             console.log(Level.INFO, "Loaded ServerDisplay with port " + server.serverSocket.getLocalPort() + " at " + server.serverSocket.getInetAddress());
 
             loadServerDirectory(server);
-
-            ObservableSet<Client<SocketConnection>> clientList = server.listener.clients;
-            console.log(Level.INFO, writeClients(clientList));
-
-            clientView.getItems()
-                    .addAll(clientList.stream()
-                            .map(socketConnectionClient -> socketConnectionClient.connection.socket.getInetAddress())
-                            .collect(Collectors.toSet()));
-
-            clientList.addListener((SetChangeListener<Client<SocketConnection>>) change -> {
-                if(change.wasAdded()){
-                    clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());
-                }
-                if(change.wasRemoved()){
-                    clientView.getItems().remove(change.getElementRemoved().connection.socket.getInetAddress());
-                }
-            });
-        } catch (Throwable throwable) {
-            state.getLogger(ServerDisplay.this.getClass()).error("", throwable);
+            loadClientList(server);
+        } catch (Exception exception) {
+            state.getLogger(ServerDisplay.this.getClass()).error("", exception);
         }
+    }
+
+    private void loadClientList(Server server) {
+        ObservableSet<Client<SocketConnection>> clientList = server.listener.clients;
+        List<InetAddress> previousAddresses = updateClientView(clientList);
+
+        String previousAddressesString = writePreviousAddresses(previousAddresses);
+        String clientListString = writeClients(clientList);
+
+        console.log(Level.INFO, previousAddressesString);
+        console.log(Level.INFO, clientListString);
+    }
+
+    private String writePreviousAddresses(List<InetAddress> previousAddresses) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Previous addresses: ");
+        previousAddresses.forEach(internetAddress -> builder.append("\n\t").append(internetAddress.toString()));
+        return builder.toString();
+    }
+
+    private List<InetAddress> updateClientView(ObservableSet<Client<SocketConnection>> clientList) {
+        List<InetAddress> previousAddresses = new ArrayList<>(clientView.getItems());
+
+        clientList.stream()
+                .map(socketConnectionClient -> socketConnectionClient.connection.socket.getInetAddress())
+                .forEach(internetAddress -> clientView.getItems().add(internetAddress));
+
+        clientList.addListener((SetChangeListener<Client<SocketConnection>>) change -> {
+            if (change.wasAdded()) {
+                clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());
+            }
+            if (change.wasRemoved()) {
+                clientView.getItems().remove(change.getElementRemoved().connection.socket.getInetAddress());
+            }
+        });
+
+        return previousAddresses;
     }
 
     private String writeClients(Set<Client<SocketConnection>> clients){
@@ -116,26 +131,19 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
 
     private void loadServerDirectory(Server server) throws IOException {
         String serverDirectoryName = getServerDirectoryName(server);
-        Set<Path> files = loadProperties(server, serverDirectoryName);
+        Set<Path> files = loadServerDirectory(server, serverDirectoryName);
         console.log(Level.INFO, server.printFiles());
 
-        buildTree(server, files);
+        buildTree(files);
     }
 
-    private void buildTree(Server server, Set<Path> files) {
-        TreeItem<Path> root = new TreeItem<>(null);
+    private void buildTree(Set<Path> files) {
+        TreeItem<Path> root = new PathTreeBuilder().buildTree(files);
         fileView.setShowRoot(false);
         fileView.setRoot(root);
-
-        Map<Path, TreeItem<Path>> treeItemMap = new HashMap<>();
-        files.forEach(path1 -> files.forEach(new TreeBuilder(treeItemMap, path1)));
-        files.stream()
-                .filter(path -> path.startsWith(server.getFileDirectory()) &&
-                        path.getNameCount() == server.getFileDirectory().getNameCount())
-                .forEach(path -> root.getChildren().add(treeItemMap.get(path)));
     }
 
-    private Set<Path> loadProperties(Server server, String serverDirectoryName) throws IOException {
+    private Set<Path> loadServerDirectory(Server server, String serverDirectoryName) throws IOException {
         boolean directoryCreated = server.createServerDirectory(serverDirectoryName);
         if (directoryCreated) {
             console.log(Level.WARNING, "Directory created at " + server.getFileDirectory().toAbsolutePath().toString());
@@ -159,70 +167,21 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
         return serverDirectoryName;
     }
 
-    private static class TreeBuilder implements Consumer<Path> {
-        private final Map<Path, TreeItem<Path>> treeItemMap;
-        private final Path path1;
+    private static class PathTreeBuilder extends TreeBuilder<Path> {
 
-        TreeBuilder(Map<Path, TreeItem<Path>> treeItemMap, Path path1) {
-            this.treeItemMap = treeItemMap;
-            this.path1 = path1;
+        @Override
+        public TreeItem<Path> detectParent(Path parent, Path child) {
+            return createTreeItem(child);
         }
 
         @Override
-        public void accept(Path path2) {
-            if(!treeItemMap.containsKey(path1)){
-                getTreeItem(path1);
-            }
-
-            if(!treeItemMap.containsKey(path2)){
-                getTreeItem(path2);
-            }
-
-            if (!path1.equals(path2)) {
-                if (isParent(path1, path2)) {
-                    getTreeItem(path1).getChildren().add(getTreeItem(path2));
-                }
-            }
-        }
-
-        boolean isParent(Path parent, Path child) {
+        public boolean isParent(Path parent, Path child) {
             return child.startsWith(parent);
         }
 
-        TreeItem<Path> getTreeItem(Path path) {
-            if (treeItemMap.containsKey(path)) {
-                return treeItemMap.get(path);
-            } else {
-                TreeItem<Path> item = new TreeItem<>(path.getName(path.getNameCount() - 1));
-                treeItemMap.put(path, item);
-                return item;
-            }
-        }
-    }
-
-    public class InputParser {
-        private final Map<Predicate<String>, Consumer<String[]>> inputMap = new HashMap<>();
-
-        {
-            inputMap.put(s -> s.startsWith("exit"), strings -> {
-                state.getLogger(this.getClass()).info("Exiting application");
-                Platform.exit();
-            });
-        }
-
-        void parseToken(String input){
-            if (inputMap.size() != 0) {
-                inputMap.keySet()
-                        .stream()
-                        .filter(stringPredicate -> stringPredicate.test(input))
-                        .map(inputMap::get)
-                        .forEach(consumer -> {
-                            String[] parts = input.split(" ");
-                            consumer.accept(Arrays.copyOfRange(parts, 1, parts.length));
-                        });
-            } else {
-                throw new IllegalStateException("No values found inside of inputMap!");
-            }
+        @Override
+        public TreeItem<Path> createTreeItem(Path value) {
+            return new TreeItem<>(value.getName(value.getNameCount() - 1));
         }
     }
 }
