@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author SirMathhman
@@ -39,7 +40,7 @@ public class HostALocalServer extends Controller {
         try {
             int port = getPort();
 
-            Server server = createServerDisplay(port);
+            Server server = createServerDisplay(port, state.getService());
             state.getLogger().info("Started server on port " + server.serverSocket.getLocalPort());
 
             Client<SocketConnection> client = createClientDisplay(port);
@@ -59,8 +60,8 @@ public class HostALocalServer extends Controller {
         return port;
     }
 
-    private Server createServerDisplay(int port) throws IOException {
-        Server server = createServer(port);
+    private Server createServerDisplay(int port, ExecutorService service) throws IOException {
+        Server server = createServer(port, service);
         state.addObject(server);
 
         onto(getClass().getResource("/com/meti/app/ServerDisplay.fxml"), "Infinity Server");
@@ -74,14 +75,15 @@ public class HostALocalServer extends Controller {
         return client;
     }
 
-    private Server createServer(int port) throws IOException {
+    private Server createServer(int port, ExecutorService service) throws IOException {
         Server server = new Server(port, new ServerClientConsumer());
-        server.start();
+        server.start(service);
         return server;
     }
 
     private Client<SocketConnection> createClient(int port) throws IOException {
         Client<SocketConnection> client = new Client<>(new SocketConnection(new Socket(InetAddress.getByName("localhost"), port)));
+        client.listen(state.getService());
         state.addObject(client);
         return client;
     }

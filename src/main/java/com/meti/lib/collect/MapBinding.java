@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @version 0.0.0
  * @since 11/15/2018
  */
-class MapBinding<T> {
+public class MapBinding<T> {
     public final Class<T> tClass;
     public final ArrayList<T> content = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.meti.lib.collect;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,13 +12,20 @@ import java.util.stream.Stream;
  * @since 11/10/2018
  */
 public class ClassMap extends HashSet<MapBinding<?>> {
-    protected ClassMap(Object... objects){
+    public ClassMap(Object... objects){
         addAllObjects(objects);
     }
 
     private ClassMap addAllObjects(Object... objects) {
         Arrays.stream(objects).forEach(this::addObject);
         return this;
+    }
+
+    public boolean containsClass(Class<?> c){
+        return !stream()
+                .filter(mapBinding -> c.isAssignableFrom(mapBinding.tClass))
+                .collect(Collectors.toList())
+                .isEmpty();
     }
 
     public <T> Optional<T> firstOfType(Class<T> tClass) {
@@ -39,7 +47,7 @@ public class ClassMap extends HashSet<MapBinding<?>> {
         } else {
             return results.stream()
                     .flatMap((Function<MapBinding<?>, Stream<?>>) controllerStateBindings -> controllerStateBindings.content.stream())
-                    .filter(o -> o.getClass().isAssignableFrom(tClass))
+                    .filter(o -> tClass.isAssignableFrom(o.getClass()))
                     .map(tClass::cast)
                     .collect(Collectors.toList());
         }

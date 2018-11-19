@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -31,7 +30,6 @@ public class Server {
 
     public final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
     public final ServerSocket serverSocket;
-    private final ExecutorService service;
 
     public ServerListener listener;
 
@@ -49,7 +47,6 @@ public class Server {
     }
 
     public Server(int port) throws IOException {
-        this.service = Executors.newCachedThreadPool();
         this.serverSocket = new ServerSocket(port);
     }
 
@@ -59,7 +56,7 @@ public class Server {
         this.clientConsumer.setServer(this);
     }
 
-    public ServerListener start() {
+    public ServerListener start(ExecutorService service) {
         listener = new ServerListener(clientConsumer, serverSocket, service);
         listener.runningProperty.bindBidirectional(runningProperty);
         future = service.submit(listener);
@@ -72,26 +69,13 @@ public class Server {
 
     public Optional<Set<Client<SocketConnection>>> stop(Duration duration) throws Exception {
         runningProperty.set(false);
-        service.shutdown();
-
         serverSocket.close();
 
         for (Client<SocketConnection> socketConnectionClient : listener.clients) {
             socketConnectionClient.close();
         }
 
-        try {
-            return future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
-        } catch (Exception e) {
-            /*
-            even though we caught an exception, we should shutdown the service
-            then send it back up to the user
-            can't use finally because if the try block is successful
-            the service will be shutdown properly and ExecutorService.shutdownNow() becomes redundant
-            */
-            service.shutdownNow();
-            throw e;
-        }
+        return future.get(duration.toMillis(), TimeUnit.MILLISECONDS);
     }
 
     public boolean createServerDirectory(String serverDirectoryName) throws IOException {

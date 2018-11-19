@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author SirMathhman
@@ -30,6 +31,10 @@ public class State extends ClassMap {
     
     public Server getServer(){
         return getAndThrowIfNotExists(Server.class);
+    }
+
+    public ExecutorService getService() {
+        return getAndThrowIfNotExists(ExecutorService.class);
     }
 
     private <T> T getAndThrowIfNotExists(Class<T> aClass){

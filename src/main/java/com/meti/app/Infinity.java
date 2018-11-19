@@ -22,6 +22,8 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -31,6 +33,7 @@ import java.util.Set;
 public class Infinity extends Application {
     private static final Path PROPERTIES_PATH = Paths.get("Infinity.properties");
 
+    private ExecutorService service = Executors.newCachedThreadPool();
     private State state;
     private Properties properties;
     private Logger logger;
@@ -48,6 +51,7 @@ public class Infinity extends Application {
             state = new State(
                     primaryStage,
                     logger,
+                    service,
                     properties,
                     getHostServices()
             );
