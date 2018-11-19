@@ -55,7 +55,7 @@ public class ClassMap extends HashSet<MapBinding<?>> {
 
     public ClassMap addObject(Object object) {
         Set<MapBinding<?>> results = stream()
-                .filter(controllerStateBindings -> object.getClass().isAssignableFrom(controllerStateBindings.tClass))
+                .filter(controllerStateBinding -> object.getClass().isAssignableFrom(controllerStateBinding.tClass))
                 .peek(controllerStateBinding -> controllerStateBinding.add(object))
                 .collect(Collectors.toSet());
 

@@ -63,7 +63,7 @@ public class Client<T extends ObjectConnection> implements Closeable {
     }
 
     private <R> R parseFuture(ReturnableCommand<?, ?, R> command) throws Exception {
-        resultConsumerConverter.await(command.returnClass, Duration.ofSeconds(2));
+        resultConsumerConverter.await(command.returnClass, Duration.ofDays(1));
         Optional<R> result = resultConsumerConverter.classMap.firstOfType(command.returnClass);
         if (result.isPresent()) {
             return result.get();
@@ -99,20 +99,17 @@ public class Client<T extends ObjectConnection> implements Closeable {
     }
 
     public class ClientInput implements Callable<Optional<Exception>> {
-        public final ObservableMap<Class<?>, ObservableList<Object>> classListMap = FXCollections.observableMap(new HashMap<>());
+        public final Map<Class<?>, ObservableList<Object>> classListMap = new HashMap<>();
 
         @Override
         public Optional<Exception> call() {
             try {
                 while (running.get()) {
                     Object input = connection.objectInputStream.readObject();
-                    System.out.println(input);
+                    //System.out.println(input);
 
                     Class<?> inputClass = input.getClass();
-                    if (!classListMap.containsKey(inputClass)) {
-                        classListMap.put(inputClass, FXCollections.observableList(new ArrayList<>()));
-                    }
-                    classListMap.get(inputClass).add(input);
+                    ensureContains(inputClass).add(input);
                 }
 
                 return Optional.empty();
@@ -127,10 +124,18 @@ public class Client<T extends ObjectConnection> implements Closeable {
             }
             return classListMap.get(c);
         }
+
+        public ObservableList<Object> ensureContains(Class<?> parameterClass) {
+            if(!classListMap.containsKey(parameterClass)){
+                classListMap.put(parameterClass, FXCollections.observableList(new ArrayList<>()));
+            }
+
+            return classListMap.get(parameterClass);
+        }
     }
 
     public class ClientOutput implements Callable<Optional<IOException>> {
-        public final Queue<Serializable> outputQueue = new PriorityQueue<>();
+        public final Queue<Serializable> outputQueue = new LinkedList<>();
 
         @Override
         public Optional<IOException> call() {

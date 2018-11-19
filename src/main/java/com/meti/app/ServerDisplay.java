@@ -9,6 +9,8 @@ import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
 import javafx.animation.AnimationTimer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
@@ -89,10 +91,6 @@ public class ServerDisplay extends Controller implements Initializable, PostInit
     }
 
     private void createClientView(ObservableSet<Client<SocketConnection>> clientList) {
-        clientList.stream()
-                .map(socketConnectionClient -> socketConnectionClient.connection.socket.getInetAddress())
-                .forEach(internetAddress -> clientView.getItems().add(internetAddress));
-
         clientList.addListener((SetChangeListener<Client<SocketConnection>>) change -> {
             if (change.wasAdded()) {
                 clientView.getItems().add(change.getElementAdded().connection.socket.getInetAddress());

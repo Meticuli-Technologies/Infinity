@@ -10,6 +10,8 @@ import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +51,11 @@ public class Infinity extends Application {
         try {
             properties = loadProperties();
             state = new State(
+                    getHostServices(),
                     primaryStage,
-                    logger,
-                    service,
                     properties,
-                    getHostServices()
+                    service,
+                    logger
             );
 
             buildPrimaryStage(primaryStage);
@@ -63,8 +65,19 @@ public class Infinity extends Application {
     }
 
     private void buildPrimaryStage(Stage primaryStage) throws IOException {
-        primaryStage.setX(Converter.fromProperties(properties, "mainStageX", new DoubleConverter()));
-        primaryStage.setY(Converter.fromProperties(properties, "mainStageY", new DoubleConverter()));
+        Double mainStageX = Converter.fromProperties(properties, "mainStageX", new DoubleConverter());
+        Double mainStageY = Converter.fromProperties(properties, "mainStageY", new DoubleConverter());
+
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        if(mainStageX > bounds.getWidth()){
+            mainStageX = 0d;
+        }
+        if(mainStageY > bounds.getHeight()){
+            mainStageY = 0d;
+        }
+
+        primaryStage.setX(mainStageX);
+        primaryStage.setY(mainStageY);
 
         primaryStage.setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/Menu.fxml"), state));
         primaryStage.setTitle("Welcome to Infinity");

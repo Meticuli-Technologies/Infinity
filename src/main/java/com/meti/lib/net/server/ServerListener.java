@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class ServerListener implements Callable<Optional<Set<Client<SocketConnection>>>> {
     public final ObservableSet<Client<SocketConnection>> clients = FXCollections.observableSet(new HashSet<>());
-    public final BooleanProperty runningProperty = new SimpleBooleanProperty();
+    public final BooleanProperty runningProperty = new SimpleBooleanProperty(true);
     private final ClientConsumer<SocketConnection> clientConsumer;
     private final ServerSocket serverSocket;
 

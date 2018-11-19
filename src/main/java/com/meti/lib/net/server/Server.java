@@ -38,14 +38,6 @@ public class Server {
     private Path serverDirectory;
     private Set<Path> files;
 
-    public Path getFileDirectory() {
-        return serverDirectory;
-    }
-
-    public Set<Path> getFiles() {
-        return files;
-    }
-
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
     }
@@ -115,5 +107,13 @@ public class Server {
         } else {
             return Optional.empty();
         }
+    }
+
+    public Path getFileDirectory() {
+        return serverDirectory;
+    }
+
+    public Set<Path> getFiles() {
+        return files;
     }
 }

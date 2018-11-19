@@ -3,16 +3,16 @@ package com.meti.lib.net.server;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.ClientConsumer;
 import com.meti.lib.net.connect.SocketConnection;
+import com.meti.lib.net.server.evaluate.AbstractEvaluatable;
 import com.meti.lib.net.server.evaluate.Evaluatable;
 import com.meti.lib.net.server.evaluate.Evaluator;
-import javafx.collections.MapChangeListener;
+import javafx.collections.ListChangeListener;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -35,7 +35,7 @@ public class ServerClientConsumer extends ClientConsumer<SocketConnection> {
                 .filter(aClass -> aClass.getAnnotation(Evaluator.class) != null)
                 .map((Function<Class<? extends Evaluatable>, Evaluatable<?>>) aClass -> {
                     try {
-                        return aClass.newInstance();
+                        return aClass.getDeclaredConstructor().newInstance();
                     } catch (Exception e) {
                         return null;
                     }
@@ -49,16 +49,26 @@ public class ServerClientConsumer extends ClientConsumer<SocketConnection> {
     public void acceptClient(Client<SocketConnection> client) {
         logger.info("Processing client " + client.connection.socket.getInetAddress());
 
-        client.input.classListMap.addListener((MapChangeListener<Class<?>, List<Object>>) change -> {
-            if (change.wasAdded()) {
-                List<Object> value = change.getValueAdded();
-
-                client.output.outputQueue.addAll(value.stream().flatMap((Function<Object, Stream<Serializable>>) o -> evaluatableSet.stream()
-                        .filter(evaluatable -> evaluatable.canEvaluate(o))
-                        .map(evaluatable -> evaluatable.evaluateObject(o))).collect(Collectors.toSet()));
-
-                change.getMap().clear();
-            }
-        });
+        StringBuilder builder = new StringBuilder();
+        builder.append("Located ").append(evaluatableSet.size()).append(" evaluatables to load");
+        evaluatableSet.stream()
+                .peek(evaluatable -> builder.append("\n\t").append(evaluatable.getParameterClass().getSimpleName()))
+                .map(evaluatable -> client.input.ensureContains(evaluatable.getParameterClass()))
+                .forEach(objects -> objects.addListener((ListChangeListener<Object>) c -> {
+                    c.next();
+                    Set<Serializable> collect = c.getAddedSubList().stream().flatMap((Function<Object, Stream<Serializable>>) o ->
+                            evaluatableSet.stream()
+                                    .peek(evaluatable -> {
+                                        if (AbstractEvaluatable.class.isAssignableFrom(evaluatable.getClass())) {
+                                            ((AbstractEvaluatable<?>) evaluatable).setServer(server);
+                                            ((AbstractEvaluatable<?>) evaluatable).setClient(client);
+                                        }
+                                    })
+                                    .filter(evaluatable -> evaluatable.canEvaluate(o))
+                                    .map(evaluatable -> evaluatable.evaluateObject(o))).collect(Collectors.toSet());
+                    client.output.outputQueue.addAll(collect);
+                }));
+        logger.info(builder.toString());
     }
+
 }
