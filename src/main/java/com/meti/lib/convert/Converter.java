@@ -10,9 +10,6 @@ import java.util.function.Predicate;
  * @since 11/17/2018
  */
 public interface Converter<T> extends Predicate<Object>, Function<Object, T> {
-    static <T> T fromProperties(Properties properties, String propertyKey, Converter<T> converter) {
-        return applyConverter(properties.get(propertyKey), converter);
-    }
 
     static <T> T applyConverter(Object applicant, Converter<T> converter) {
         return converter.apply(applicant);

@@ -1,11 +1,10 @@
 package com.meti.app;
 
-import com.meti.lib.convert.Converter;
+import com.meti.lib.State;
 import com.meti.lib.convert.DoubleConverter;
 import com.meti.lib.convert.LongConverter;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.Finalizable;
-import com.meti.lib.State;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.connect.SocketConnection;
 import com.meti.lib.net.server.Server;
@@ -24,8 +23,9 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.meti.lib.util.PropertiesUtil.fromProperties;
 
 /**
  * @author SirMathhman
@@ -34,11 +34,7 @@ import java.util.concurrent.Executors;
  */
 public class Infinity extends Application {
     private static final Path PROPERTIES_PATH = Paths.get("Infinity.properties");
-
-    private ExecutorService service = Executors.newCachedThreadPool();
     private State state;
-    private Properties properties;
-    private Logger logger;
 
     public static void main(String[] args) {
         launch(args);
@@ -46,39 +42,53 @@ public class Infinity extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger = LoggerFactory.getLogger(Infinity.class);
+        Logger logger = LoggerFactory.getLogger(Infinity.class);
 
+        //load properties
+        Properties properties;
         try {
             properties = loadProperties();
-            state = new State(
-                    getHostServices(),
-                    primaryStage,
-                    properties,
-                    service,
-                    logger
-            );
-
-            buildPrimaryStage(primaryStage);
         } catch (Exception e) {
-            logger.error("Failed to start application", e);
+            logger.error("Failed to load properties, continuing with empty set!", e);
+            properties = new Properties();
+        }
+
+        //load stage position
+        Double mainStageX = fromProperties(properties, "mainStageX", new DoubleConverter());
+        Double mainStageY = fromProperties(properties, "mainStageY", new DoubleConverter());
+        loadPrimaryStage(primaryStage, mainStageX, mainStageY);
+
+        //assemble state
+        state = new State(
+                logger,
+                properties,
+                primaryStage,
+                getHostServices(),
+                Executors.newCachedThreadPool()
+        );
+
+        //load menu
+        try {
+            loadMenu(primaryStage);
+        } catch (IOException e) {
+            logger.error("Failed to load Menu.fxml", e);
         }
     }
 
-    private void buildPrimaryStage(Stage primaryStage) throws IOException {
-        Double mainStageX = Converter.fromProperties(properties, "mainStageX", new DoubleConverter());
-        Double mainStageY = Converter.fromProperties(properties, "mainStageY", new DoubleConverter());
-
+    private void loadPrimaryStage(Stage primaryStage, double mainStageX, double mainStageY) {
         Rectangle2D bounds = Screen.getPrimary().getBounds();
-        if(mainStageX > bounds.getWidth()){
+        if (mainStageX > bounds.getWidth()) {
             mainStageX = 0d;
         }
-        if(mainStageY > bounds.getHeight()){
+        if (mainStageY > bounds.getHeight()) {
             mainStageY = 0d;
         }
 
         primaryStage.setX(mainStageX);
         primaryStage.setY(mainStageY);
+    }
 
+    private void loadMenu(Stage primaryStage) throws IOException {
         primaryStage.setScene(ControllerLoader.loadToScene(getClass().getResource("/com/meti/app/Menu.fxml"), state));
         primaryStage.setTitle("Welcome to Infinity");
         primaryStage.show();
@@ -104,7 +114,7 @@ public class Infinity extends Application {
             storeProperties();
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("Exception in stopping", e);
+            state.getLogger().error("Exception in stopping", e);
             System.exit(-1);
         }
 
@@ -116,22 +126,22 @@ public class Infinity extends Application {
         if (serverOptional.isPresent()) {
             Server server = serverOptional.get();
 
-            Optional<Set<Client<SocketConnection>>> clientSetOptional = properties.containsKey("stop_duration") ?
+            Optional<Set<Client<SocketConnection>>> clientSetOptional = state.getProperties().containsKey("stop_duration") ?
                     stopWithDuration(server) :
                     stopWithoutDuration(server);
 
             if (clientSetOptional.isPresent()) {
-                logger.error(listClients(clientSetOptional.get()));
+                state.getLogger().error(listClients(clientSetOptional.get()));
             } else {
-                logger.info("All clients stopped cleanly");
+                state.getLogger().info("All clients stopped cleanly");
             }
         } else {
-            logger.info("No server found to stop");
+            state.getLogger().info("No server found to stop");
         }
     }
 
     private Optional<Set<Client<SocketConnection>>> stopWithDuration(Server server) throws Exception {
-        return server.stop(Duration.ofMillis(Converter.fromProperties(properties, "stop_duration", new LongConverter())));
+        return server.stop(Duration.ofMillis(fromProperties(state.getProperties(), "stop_duration", new LongConverter())));
     }
 
     private Optional<Set<Client<SocketConnection>>> stopWithoutDuration(Server server) throws Exception {
@@ -151,17 +161,17 @@ public class Infinity extends Application {
     }
 
     private void finalizeControllers() {
-       state.ofType(Finalizable.class).forEach(Finalizable::finalizeController);
+        state.ofType(Finalizable.class).forEach(Finalizable::finalizeController);
     }
 
     private void storeProperties() throws IOException {
         Optional<Stage> stageOptional = state.firstOfType(Stage.class);
         if (stageOptional.isPresent()) {
             Stage stage = stageOptional.get();
-            properties.setProperty("mainStageX", String.valueOf(stage.getX()));
-            properties.setProperty("mainStageY", String.valueOf(stage.getY()));
+            state.getProperties().setProperty("mainStageX", String.valueOf(stage.getX()));
+            state.getProperties().setProperty("mainStageY", String.valueOf(stage.getY()));
         }
 
-        properties.store(Files.newOutputStream(PROPERTIES_PATH), "");
+        state.getProperties().store(Files.newOutputStream(PROPERTIES_PATH), "");
     }
 }
