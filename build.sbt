@@ -1,4 +1,4 @@
-name := "com.meti.app.Infinity"
+name := "Infinity"
 
 version := "0.0"
 
