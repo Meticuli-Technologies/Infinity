@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -9,10 +7,16 @@ import javafx.stage.Stage;
  * @since 12/19/2018
  */
 public class Main extends Application {
+    private final Infinity infinity = new Infinity();
+
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setScene(new Scene(new AnchorPane()));
-        primaryStage.show();
+        infinity.start(primaryStage);
+    }
+
+    @Override
+    public void stop() {
+        infinity.stop();
     }
 
     public static void main(String[] args) {
