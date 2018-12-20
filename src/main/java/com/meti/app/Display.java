@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.fx.Controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
@@ -9,7 +10,7 @@ import javafx.scene.control.TabPane;
  * @version 0.0.0
  * @since 12/19/2018
  */
-public class Display {
+public class Display extends Controller<InfinityState> {
     @FXML
     private TabPane contentPane;
 
