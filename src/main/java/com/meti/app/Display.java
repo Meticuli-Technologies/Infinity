@@ -14,6 +14,21 @@ public class Display {
     private TabPane contentPane;
 
     @FXML
+    public void findAConnection() {
+
+    }
+
+    @FXML
+    public void hostAServer() {
+
+    }
+
+    @FXML
+    public void createALocalServer() {
+
+    }
+
+    @FXML
     public void exit() {
         Platform.exit();
     }

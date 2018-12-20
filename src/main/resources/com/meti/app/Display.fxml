@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8"
@@ -13,6 +12,10 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
+                                <MenuItem mnemonicParsing="false" onAction="#findAConnection" text="Find a Connection"/>
+                                <MenuItem mnemonicParsing="false" onAction="#hostALocalServer" text="Host A Server"/>
+                                <MenuItem mnemonicParsing="false" onAction="#createALocalServer"
+                                          text="Create a Local Server"/>
                                 <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit"/>
                             </items>
                         </Menu>
