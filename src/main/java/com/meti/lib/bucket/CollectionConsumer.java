@@ -1,4 +1,6 @@
-package com.meti.lib;
+package com.meti.lib.bucket;
+
+import com.meti.lib.CollectionUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;

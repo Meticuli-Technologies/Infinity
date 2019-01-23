@@ -1,4 +1,4 @@
-package com.meti.lib;
+package com.meti.lib.bucket;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.meti.lib;
+package com.meti.lib.bucket;
 
 import java.util.Set;
 import java.util.function.Predicate;
@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public class TypePredicate<T> implements Parameterized<Class>, Predicate<Object> {
     private final Class<T> testClass;
-    private boolean useSubClass;
+    private final boolean useSubClass;
 
     public TypePredicate(Class<T> testClass) {
         this(testClass, true);

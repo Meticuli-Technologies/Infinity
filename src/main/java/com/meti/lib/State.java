@@ -1,5 +1,10 @@
 package com.meti.lib;
 
+import com.meti.lib.bucket.Bucket;
+import com.meti.lib.bucket.BucketManager;
+import com.meti.lib.bucket.CollectionConsumer;
+import com.meti.lib.bucket.TypePredicate;
+
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
