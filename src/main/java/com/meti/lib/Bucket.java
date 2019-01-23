@@ -1,5 +1,6 @@
 package com.meti.lib;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -18,6 +19,14 @@ public class Bucket<T> {
             return ((Parameterized) validator).getParameters();
         } else {
             throw new UnsupportedOperationException(validator + " does not contain any parameters");
+        }
+    }
+
+    public Collection<?> getElements() {
+        if (handler instanceof Container<?, ?>) {
+            return ((Container) handler).getElements();
+        } else {
+            throw new UnsupportedOperationException(handler + " does not contain any elements");
         }
     }
 
