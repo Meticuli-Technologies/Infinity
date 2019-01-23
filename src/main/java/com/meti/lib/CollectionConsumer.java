@@ -23,4 +23,9 @@ public class CollectionConsumer<T, C extends Collection<T>> implements Container
     public T toSingle() {
         return CollectionUtil.toSingle(collection);
     }
+
+    @Override
+    public void accept(T t) {
+        collection.add(t);
+    }
 }
