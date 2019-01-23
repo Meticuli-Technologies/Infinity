@@ -21,6 +21,7 @@ public class BucketManager<T> {
 
         if (added.isEmpty()) {
             Bucket<T> allocated = allocator.apply(t);
+            allocated.handle(t);
             buckets.add(allocated);
         }
 
