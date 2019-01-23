@@ -1,5 +1,7 @@
 package com.meti.lib;
 
+import java.util.Set;
+
 public interface Parameterized<T> {
-    T[] getParameters();
+    Set<T> getParameters();
 }
