@@ -15,6 +15,7 @@ public class Infinity {
         state.add(primaryStage);
 
         primaryStage.setScene(new Scene(ControllerLoader.load(checkDisplayURL(), state)));
+        primaryStage.setTitle("Infinity");
         primaryStage.show();
     }
 
