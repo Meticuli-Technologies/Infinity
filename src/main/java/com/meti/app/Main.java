@@ -1,9 +1,9 @@
 package com.meti.app;
 
 import com.meti.lib.State;
+import com.meti.lib.fx.ControllerLoader;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -15,7 +15,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(new Scene(new AnchorPane()));
+        state.add(primaryStage);
+
+        primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Display.fxml"), state)));
         primaryStage.show();
     }
 }
