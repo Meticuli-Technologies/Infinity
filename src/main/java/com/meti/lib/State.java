@@ -6,6 +6,7 @@ import com.meti.lib.bucket.CollectionConsumer;
 import com.meti.lib.bucket.TypePredicate;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -18,16 +19,20 @@ public class State {
         Arrays.stream(initial).forEach(manager::add);
     }
 
-    public <T> T storedElement(Class<T> tClass) {
-        return CollectionUtil.toSingle(storedSet(tClass));
+    public Set<Bucket<Object>> add(Object o) {
+        return manager.add(o);
     }
 
-    public <T> Set<T> storedSet(Class<T> tClass) {
+    public <T> T storedElement(Class<T> tClass) {
+        return CollectionUtil.toSingle(storedList(tClass));
+    }
+
+    public <T> List<T> storedList(Class<T> tClass) {
         return manager.search(tClass)
                 .stream()
                 .flatMap((Function<Bucket<Object>, Stream<?>>) objectBucket -> objectBucket.getElements().stream())
                 .filter(o -> tClass.isAssignableFrom(o.getClass()))
                 .map(tClass::cast)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }
