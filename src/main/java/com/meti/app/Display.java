@@ -1,5 +1,11 @@
 package com.meti.app;
 
-public class Display {
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 
+public class Display {
+    @FXML
+    public void exit() {
+        Platform.exit();
+    }
 }
