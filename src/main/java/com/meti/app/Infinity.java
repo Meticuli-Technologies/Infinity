@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class Infinity {
     private final State state = new State();
@@ -14,12 +13,8 @@ public class Infinity {
     public void start(Stage primaryStage) throws IOException {
         state.add(primaryStage);
 
-        primaryStage.setScene(new Scene(ControllerLoader.load(checkDisplayURL(), state)));
+        primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/app/Menu.fxml"))));
         primaryStage.setTitle("Infinity");
         primaryStage.show();
-    }
-
-    public URL checkDisplayURL() {
-        return getClass().getResource("/com/meti/app/Display.fxml");
     }
 }

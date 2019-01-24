@@ -1,33 +1,18 @@
 package com.meti.lib.math;
 
-import java.util.HashMap;
-import java.util.Map;
+public class VectorGrid<T, V extends VectorNode<T, V>> {
+    private V current;
 
-public class VectorGrid<T> {
-    public final Map<Vector, T> content = new HashMap<>();
-
-    private Vector current;
-
-    public VectorGrid() {
-        this(2);
+    public VectorGrid(V current) {
+        this.current = current;
     }
 
-    public VectorGrid(int dimensions) {
-        this.current = Vector.empty(dimensions);
+    public V reload() {
+        return current;
     }
 
-    public T move(Vector direction) {
-        if (current == null) {
-            throw new IllegalStateException("Why is current null?");
-        }
-
-        Vector transformed = current.add(direction);
-        T result = content.get(transformed);
-        if (result == null) {
-            throw new IllegalArgumentException("Could not find anything at  " + transformed);
-        }
-
-        current = transformed;
-        return result;
+    public V move(Vector vector) {
+        current = current.get(vector);
+        return current;
     }
 }
