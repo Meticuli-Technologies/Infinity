@@ -1,6 +1,7 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.state.State;
+import com.meti.lib.util.Singleton;
 
 /**
  * @author SirMathhman
@@ -8,17 +9,5 @@ import com.meti.lib.state.State;
  * @since 1/27/2019
  */
 public class Controller<S extends State> {
-    private State state;
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        if (this.state == null) {
-            this.state = state;
-        } else {
-            throw new IllegalArgumentException("State has already been set");
-        }
-    }
+    private final Singleton<S> state = new Singleton<>();
 }
