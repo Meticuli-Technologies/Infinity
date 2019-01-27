@@ -17,6 +17,10 @@ public class Bucket<T> {
         this.handler = handler;
     }
 
+    public boolean test(T t) {
+        return filter.test(t);
+    }
+
     public boolean process(T t) {
         if (filter.test(t)) {
             handler.accept(t);
