@@ -11,8 +11,8 @@ import java.util.Map;
  * @version 0.0.0
  * @since 1/27/2019
  */
-public class WizardController<S extends State> extends Controller<S> {
-    private final Map<String, Wizard<?>> wizards = new HashMap<>();
+public abstract class WizardController<S extends State, W extends Wizard<?>> extends Controller<S> {
+    private final Map<String, W> wizards = new HashMap<>();
     private Parent root;
 
     public Parent getRoot() {
@@ -28,11 +28,15 @@ public class WizardController<S extends State> extends Controller<S> {
         }
     }
 
+    public void add(W wizard) {
+        wizards.put(wizard.getName(), wizard);
+    }
+
     public Object load(String name) {
         if (root == null) {
             throw new IllegalStateException("Root is null, cannot proceed");
         } else {
-            Wizard<?> wizard = wizards.get(name);
+            W wizard = wizards.get(name);
             wizard.open();
 
             while (wizard.isRunning()) {
@@ -45,4 +49,6 @@ public class WizardController<S extends State> extends Controller<S> {
             return wizard.getResult();
         }
     }
+
+    public abstract Class<? extends Wizard> getWizardClass();
 }
