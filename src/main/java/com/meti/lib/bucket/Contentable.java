@@ -1,6 +1,6 @@
 package com.meti.lib.bucket;
 
-import com.meti.util.CollectionUtil;
+import com.meti.lib.util.CollectionUtil;
 
 import java.util.Collection;
 
