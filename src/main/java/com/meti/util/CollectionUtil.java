@@ -13,6 +13,10 @@ public class CollectionUtil {
     }
 
     public static <T> T toSingle(Collection<? extends T> ts) {
-        return new ArrayList<>(ts).get(0);
+        if (ts.size() == 1) {
+            return new ArrayList<>(ts).get(0);
+        } else {
+            throw new IllegalArgumentException("Size of " + ts + " must be 1, otherwise cannot convert to single element");
+        }
     }
 }

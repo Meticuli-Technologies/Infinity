@@ -1,5 +1,6 @@
 package com.meti.lib.bucket;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -36,6 +37,14 @@ public class Bucket<T> {
             }
         }
         return false;
+    }
+
+    public Optional<Contentable<?, ?>> getContent() {
+        if (handler instanceof Contentable) {
+            return Optional.of((Contentable<?, ?>) handler);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public boolean test(T t) {

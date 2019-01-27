@@ -1,5 +1,7 @@
 package com.meti.lib.bucket;
 
+import com.meti.util.CollectionUtil;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,5 +45,9 @@ public class BucketManager<T> {
         return buckets.stream()
                 .filter(tBucket -> tBucket.containsAllParameters(parameters))
                 .collect(Collectors.toSet());
+    }
+
+    public Bucket<T> searchForSingle(Object... parameters){
+        return CollectionUtil.toSingle(search(parameters));
     }
 }

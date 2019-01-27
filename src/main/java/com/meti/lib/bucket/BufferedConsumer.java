@@ -9,11 +9,16 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 1/27/2019
  */
-public class BufferedConsumer<T> implements Consumer<T> {
+public class BufferedConsumer<T> implements Consumer<T>, Contentable<T, Queue<T>> {
     public final Queue<T> queue = new LinkedList<>();
 
     @Override
     public void accept(T t) {
         queue.add(t);
+    }
+
+    @Override
+    public Queue<T> getContent() {
+        return queue;
     }
 }
