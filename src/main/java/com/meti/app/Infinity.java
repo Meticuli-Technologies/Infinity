@@ -11,7 +11,7 @@ public class Infinity {
     private final InfinityState state = new InfinityState();
 
     public void start(Stage primaryStage) {
-
+        state.buckets.add(primaryStage);
     }
 
     public void stop() {
