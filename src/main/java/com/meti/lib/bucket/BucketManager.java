@@ -2,6 +2,7 @@ package com.meti.lib.bucket;
 
 import com.meti.util.CollectionUtil;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,5 +50,9 @@ public class BucketManager<T> {
 
     public Bucket<T> searchForSingle(Object... parameters){
         return CollectionUtil.toSingle(search(parameters));
+    }
+
+    public void addAll(Collection<T> collection) {
+        collection.forEach(this::add);
     }
 }

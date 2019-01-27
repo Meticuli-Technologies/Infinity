@@ -8,6 +8,8 @@ import javafx.stage.Stage;
  * @since 1/27/2019
  */
 public class Infinity {
+    private final InfinityState state = new InfinityState();
+
     public void start(Stage primaryStage) {
 
     }
