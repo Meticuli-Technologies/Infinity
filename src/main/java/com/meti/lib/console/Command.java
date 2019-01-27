@@ -9,9 +9,10 @@ import java.util.stream.StreamSupport;
  * @since 1/27/2019
  */
 public class Command {
-    private final String[] args;
+    public final String[] args;
 
     public Command(String line) {
+        //separates the line by a tokenizer and converts the elements to an array
         Iterable<Object> iterable = () -> new StringTokenizer(line).asIterator();
         this.args = StreamSupport.stream(iterable.spliterator(), false)
                 .map(Object::toString)
