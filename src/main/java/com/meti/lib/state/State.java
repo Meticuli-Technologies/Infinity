@@ -18,7 +18,7 @@ public class State {
     public final BucketManager<Object> buckets = new BucketManager<>(new BucketAllocator());
 
     public State(Object... objects){
-        buckets.addAll(Arrays.asList(objects));
+        buckets.handleAll(Arrays.asList(objects));
     }
 
     public <T> T singleContent(Class<T> typeClass) {

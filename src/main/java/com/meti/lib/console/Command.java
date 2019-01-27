@@ -1,8 +1,6 @@
 package com.meti.lib.console;
 
-import java.util.Iterator;
 import java.util.StringTokenizer;
-import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
 /**
@@ -22,5 +20,10 @@ public class Command {
 
     public Command(String[] args) {
         this.args = args;
+    }
+
+    @Override
+    public String toString() {
+        return String.join(" ", args);
     }
 }
