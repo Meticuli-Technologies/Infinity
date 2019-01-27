@@ -17,6 +17,27 @@ public class Bucket<T> {
         this.handler = handler;
     }
 
+    public boolean containsAllParameters(Object... objects) {
+        for (int i = 0; i < objects.length; i++) {
+            if (!containsParameter(objects[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean containsParameter(Object obj) {
+        if (filter instanceof Parameterized<?>) {
+            Object[] parameters = ((Parameterized) filter).getParameters();
+            for (int i = 0; i < parameters.length; i++) {
+                if (parameters[i].equals(obj)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public boolean test(T t) {
         return filter.test(t);
     }

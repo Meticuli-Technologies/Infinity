@@ -38,4 +38,10 @@ public class BucketManager<T> {
             return collect;
         }
     }
+
+    public Set<Bucket<T>> search(Object... parameters) {
+        return buckets.stream()
+                .filter(tBucket -> tBucket.containsAllParameters(parameters))
+                .collect(Collectors.toSet());
+    }
 }
