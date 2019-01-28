@@ -1,6 +1,6 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.clazz.ClassSource;
+import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
 import javafx.fxml.FXMLLoader;
 

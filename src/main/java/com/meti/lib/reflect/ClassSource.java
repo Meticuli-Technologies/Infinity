@@ -1,4 +1,4 @@
-package com.meti.lib.clazz;
+package com.meti.lib.reflect;
 
 import java.util.Set;
 
