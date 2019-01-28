@@ -4,6 +4,8 @@ import com.meti.lib.fx.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
+import java.util.Properties;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -12,6 +14,13 @@ import javafx.scene.text.Text;
 public class Menu extends Controller {
     @FXML
     private Text versionText;
+
+    @Override
+    public void confirm() {
+        Properties properties = state.get().singleContent(Properties.class);
+        String version = properties.getProperty("version");
+        versionText.setText("Version: " + version);
+    }
 
     @FXML
     public void findAConnection() {

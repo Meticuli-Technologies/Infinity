@@ -46,7 +46,7 @@ public class Infinity {
 
     private Properties loadProperties() throws IOException {
         Properties properties = new Properties();
-        if (Files.exists(PROPERTIES_DEFAULT_PATH)) {
+        if (!Files.exists(PROPERTIES_DEFAULT_PATH)) {
             Files.createFile(PROPERTIES_DEFAULT_PATH);
 
             loadDefaultProperties(properties);
