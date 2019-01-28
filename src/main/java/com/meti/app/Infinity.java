@@ -48,10 +48,16 @@ public class Infinity {
         Properties properties = new Properties();
         if (Files.exists(PROPERTIES_DEFAULT_PATH)) {
             Files.createFile(PROPERTIES_DEFAULT_PATH);
+
+            loadDefaultProperties(properties);
         } else {
             properties.load(Files.newInputStream(PROPERTIES_DEFAULT_PATH));
         }
         return properties;
+    }
+
+    private void loadDefaultProperties(Properties properties) {
+        properties.setProperty("version", "1.0");
     }
 
     private void loadMenu(Stage primaryStage) throws java.io.IOException {

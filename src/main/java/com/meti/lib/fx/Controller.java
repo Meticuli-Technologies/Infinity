@@ -41,6 +41,9 @@ public class Controller {
         }
     }
 
+    public void confirm() {
+    }
+
     public Optional<Class<? extends Wizard>> getWizardClass() {
         return Optional.empty();
     }

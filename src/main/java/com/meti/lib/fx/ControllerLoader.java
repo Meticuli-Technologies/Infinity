@@ -48,6 +48,8 @@ public class ControllerLoader extends FXMLLoader {
                 Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
                 wizardClass.ifPresent(aClass -> loadWizards(controller, aClass));
             }
+
+            controller.confirm();
         }
 
         return parent;
