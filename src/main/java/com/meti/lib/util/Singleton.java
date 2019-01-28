@@ -14,9 +14,9 @@ public class Singleton<T> {
 
     public void set(T item) {
         if (this.item == null) {
-            throw new IllegalArgumentException("Item has already been set");
-        } else {
             this.item = item;
+        } else {
+            throw new IllegalArgumentException("Item has already been set");
         }
     }
 }

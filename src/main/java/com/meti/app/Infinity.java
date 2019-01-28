@@ -1,8 +1,11 @@
 package com.meti.app;
 
 import com.meti.lib.console.Console;
+import com.meti.lib.fx.ControllerLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.logging.Level;
 
 /**
@@ -24,9 +27,16 @@ public class Infinity {
                     primaryStage,
                     console
             );
+
+            primaryStage.setScene(new Scene(ControllerLoader.load(getMenuURL(), state)));
+            primaryStage.show();
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
         }
+    }
+
+    private URL getMenuURL() {
+        return getClass().getResource("/com/meti/app/Menu.fxml");
     }
 
     public void stop() {

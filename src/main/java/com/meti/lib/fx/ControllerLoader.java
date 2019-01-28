@@ -2,7 +2,6 @@ package com.meti.lib.fx;
 
 import com.meti.lib.clazz.ClassSource;
 import com.meti.lib.state.State;
-import com.meti.lib.util.Clause;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.meti.lib.util.Clause.*;
+import static com.meti.lib.util.Clause.wrap;
 
 /**
  * @author SirMathhman
@@ -28,6 +27,14 @@ public class ControllerLoader extends FXMLLoader {
         this.classSource = classSource;
     }
 
+    public static <T> T load(URL location, State state) throws IOException {
+        return load(location, state, null);
+    }
+
+    public static <T> T load(URL location, State state, ClassSource classSource) throws IOException {
+        return new ControllerLoader(location, state, classSource).load();
+    }
+
     @Override
     public <T> T load() throws IOException {
         T parent = super.load();
@@ -37,8 +44,10 @@ public class ControllerLoader extends FXMLLoader {
             Controller controller = (Controller) controllerToken;
             controller.state.set(state);
 
-            Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
-            wizardClass.ifPresent(aClass -> loadWizards(controller, aClass));
+            if (classSource != null) {
+                Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
+                wizardClass.ifPresent(aClass -> loadWizards(controller, aClass));
+            }
         }
 
         return parent;
