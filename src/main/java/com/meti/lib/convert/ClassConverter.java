@@ -3,22 +3,32 @@ package com.meti.lib.convert;
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 11/17/2018
+ * @since 12/19/2018
  */
-class ClassConverter<T> implements Converter<T> {
-    private final Class<T> tClass;
+public class ClassConverter<T> extends Converter<Object, T> {
+    private final Class<T> typeClass;
+    private final boolean useSubClass;
 
-    ClassConverter(Class<T> tClass) {
-        this.tClass = tClass;
+    public ClassConverter(Class<T> typeClass) {
+        this(typeClass, true);
+    }
+
+    public ClassConverter(Class<T> typeClass, boolean useSubClass) {
+        this.typeClass = typeClass;
+        this.useSubClass = useSubClass;
     }
 
     @Override
     public T apply(Object o) {
-        return tClass.cast(o);
+        return typeClass.cast(o);
     }
 
     @Override
     public boolean test(Object o) {
-        return tClass.isAssignableFrom(o.getClass());
+        if (useSubClass) {
+            return typeClass.isAssignableFrom(o.getClass());
+        } else {
+            return typeClass.equals(o.getClass());
+        }
     }
 }

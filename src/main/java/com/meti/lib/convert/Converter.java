@@ -1,20 +1,23 @@
 package com.meti.lib.convert;
 
-import java.util.Properties;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 11/17/2018
+ * @since 12/19/2018
  */
-public interface Converter<T> extends Predicate<Object>, Function<Object, T> {
-    static <T> T fromProperties(Properties properties, String propertyKey, Converter<T> converter) {
-        return applyConverter(properties.get(propertyKey), converter);
+public abstract class Converter<I, O> implements Predicate<I>, Function<I, O> {
+    public O convert(I input) {
+        if (canConvert(input)) {
+            return apply(input);
+        } else {
+            throw new IllegalArgumentException("Cannot parse input " + input);
+        }
     }
 
-    static <T> T applyConverter(Object applicant, Converter<T> converter) {
-        return converter.apply(applicant);
+    public boolean canConvert(I input) {
+        return test(input);
     }
 }

@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.app;
 
 import com.meti.lib.core.State;
 
@@ -7,6 +7,5 @@ import com.meti.lib.core.State;
  * @version 0.0.0
  * @since 12/19/2018
  */
-public class Controller<S extends State> {
-    protected S state;
+public class InfinityState extends State {
 }
