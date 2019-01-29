@@ -1,10 +1,10 @@
 name := "Infinity"
 
-version := "0.1"
+version := "0.0"
 
 scalaVersion := "2.12.7"
 
-mainClass in (Compile, run) := Some("com.meti.app.main.ClientMain")
+mainClass in(Compile, run) := Some("com.meti.app.Main")
 
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.25"
 
