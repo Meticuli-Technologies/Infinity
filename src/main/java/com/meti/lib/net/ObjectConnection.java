@@ -13,6 +13,12 @@ public class ObjectConnection implements Connection<Object, ObjectInputStream, O
         this.outputStream = outputStream;
     }
 
+    public static ObjectConnection from(Connection<?, ?, ?> connection) throws IOException {
+        ObjectOutputStream outputStream = new ObjectOutputStream(connection.getOutputStream());
+        ObjectInputStream inputStream = new ObjectInputStream(connection.getInputStream());
+        return new ObjectConnection(inputStream, outputStream);
+    }
+
     @Override
     public ObjectInputStream getInputStream() {
         return inputStream;
