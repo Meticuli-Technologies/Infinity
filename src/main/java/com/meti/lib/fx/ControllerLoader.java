@@ -8,9 +8,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.meti.lib.util.Clause.wrap;
 
 /**
  * @author SirMathhman
@@ -59,9 +58,15 @@ public class ControllerLoader extends FXMLLoader {
         Set<Class<?>> filtered = filterForWizards(wizardClass);
 
         Set<Wizard> wizards = filtered.stream()
-                .map(wrap(aClass -> aClass.getDeclaredConstructor(state.getClass())))
-                .flatMap(Optional::stream)
-                .map(wrap(constructor -> constructor.newInstance(state)))
+                .map(aClass -> {
+                    try {
+                        Object o = aClass.getDeclaredConstructor().newInstance();
+                        Object wizardToken = aClass.getMethod("load", state.getClass()).invoke(o, state);
+                        return Optional.ofNullable(wizardToken);
+                    } catch (Exception e) {
+                        return Optional.empty();
+                    }
+                })
                 .flatMap(Optional::stream)
                 .filter(o -> Wizard.class.isAssignableFrom(o.getClass()))
                 .map(Wizard.class::cast)

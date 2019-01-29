@@ -4,6 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Optional;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -11,19 +13,29 @@ import javafx.stage.Stage;
  */
 public abstract class FXWizard<T> extends AbstractWizard<T> {
     private final Stage stage = new Stage();
-    private final Parent root;
-
-    public FXWizard(String name, Parent root) {
-        super(name);
-        this.root = root;
-    }
+    private Parent root;
 
     @Override
     public void open() {
-        super.open();
+        Optional<Parent> rootOptional = getRoot();
+        if (rootOptional.isPresent()) {
+            super.open();
 
-        stage.setScene(new Scene(root));
-        stage.show();
+            stage.setScene(new Scene(rootOptional.get()));
+            stage.show();
+        } else {
+            throw new IllegalStateException("Root has not been set!");
+        }
+    }
+
+    public Optional<Parent> getRoot() {
+        return Optional.ofNullable(root);
+    }
+
+    public Wizard<T> load(String name, Parent root) {
+        Wizard<T> parent = load(name);
+        this.root = root;
+        return parent;
     }
 
     @Override
