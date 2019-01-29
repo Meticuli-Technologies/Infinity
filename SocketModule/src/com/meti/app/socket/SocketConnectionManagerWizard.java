@@ -1,6 +1,6 @@
 package com.meti.app.socket;
 
-import com.meti.app.ConnectionFinderWizard;
+import com.meti.app.ConnectionManagerWizard;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.Wizard;
 import com.meti.lib.net.Client;
@@ -14,13 +14,13 @@ import java.net.URL;
  * @version 0.0.0
  * @since 1/29/2019
  */
-public class SocketConnectionFinderWizard extends ConnectionFinderWizard {
+public class SocketConnectionManagerWizard extends ConnectionManagerWizard {
     public Wizard<Client> load(State state) throws IOException {
         return super.load("Sockets", ControllerLoader.load(getResource(), state));
     }
 
     private static URL getResource() {
-        return SocketConnectionFinderWizard.class.getResource("/com/meti/app/socket/SocketConnectionFinderWizardDisplay.fxml");
+        return SocketConnectionManagerWizard.class.getResource("/com/meti/app/socket/SocketConnectionFinderWizardDisplay.fxml");
     }
 
     @Override

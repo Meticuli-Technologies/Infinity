@@ -1,8 +1,11 @@
 package com.meti.app;
 
 import com.meti.lib.fx.Controller;
+import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+
+import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -15,4 +18,9 @@ public class ConnectionManager extends Controller {
 
     @FXML
     private ListView<String> currentConnectionsView;
+
+    @Override
+    public Optional<Class<? extends Wizard>> getWizardClass() {
+        return Optional.of(ConnectionManagerWizard.class);
+    }
 }

@@ -52,6 +52,6 @@ public class Menu extends Controller {
 
     @Override
     public Optional<Class<? extends Wizard>> getWizardClass() {
-        return Optional.of(ConnectionFinderWizard.class);
+        return Optional.of(ConnectionManagerWizard.class);
     }
 }

@@ -1,5 +1,6 @@
 package com.meti.lib.fx;
 
+import com.meti.lib.module.ModuleManager;
 import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
 import javafx.fxml.FXMLLoader;
@@ -17,20 +18,27 @@ import java.util.stream.Collectors;
  */
 public class ControllerLoader extends FXMLLoader {
     private final State state;
-    private final ClassSource classSource;
+    private final ClassSource[] classSources;
 
-    public ControllerLoader(URL location, State state, ClassSource classSource) {
+    public ControllerLoader(URL location, State state, ClassSource... classSources) {
         super(location);
         this.state = state;
-        this.classSource = classSource;
+        this.classSources = classSources;
     }
 
     public static <T> T load(URL location, State state) throws IOException {
-        return load(location, state, null);
+        return load(location, state, state.singleContent(ModuleManager.class)
+                .modules
+                .values()
+                .stream()
+                .map(module -> module.source)
+                .distinct()
+                .toArray(ClassSource[]::new)
+        );
     }
 
-    public static <T> T load(URL location, State state, ClassSource classSource) throws IOException {
-        return new ControllerLoader(location, state, classSource).load();
+    public static <T> T load(URL location, State state, ClassSource... classSources) throws IOException {
+        return new ControllerLoader(location, state, classSources).load();
     }
 
     @Override
@@ -42,9 +50,11 @@ public class ControllerLoader extends FXMLLoader {
             Controller controller = (Controller) controllerToken;
             controller.state.set(state);
 
-            if (classSource != null) {
+            if (classSources.length != 0) {
                 Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
-                wizardClass.ifPresent(aClass -> loadWizards(controller, aClass));
+                for (ClassSource classSource : classSources) {
+                    wizardClass.ifPresent(aClass -> loadWizards(controller, aClass, classSource));
+                }
             }
 
             controller.confirm();
@@ -53,8 +63,8 @@ public class ControllerLoader extends FXMLLoader {
         return parent;
     }
 
-    private void loadWizards(Controller controller, Class<? extends Wizard> wizardClass) {
-        Set<Class<?>> filtered = filterForWizards(wizardClass);
+    private void loadWizards(Controller controller, Class<? extends Wizard> wizardClass, ClassSource classSource) {
+        Set<Class<?>> filtered = filterForWizards(wizardClass, classSource);
 
         Set<Wizard> wizards = filtered.stream()
                 .map(aClass -> {
@@ -74,7 +84,7 @@ public class ControllerLoader extends FXMLLoader {
         wizards.forEach(controller::addWizard);
     }
 
-    private Set<Class<?>> filterForWizards(Class<? extends Wizard> wizardClass) {
+    private Set<Class<?>> filterForWizards(Class<? extends Wizard> wizardClass, ClassSource classSource) {
         Set<Class<?>> classes = classSource.bySuper(wizardClass);
         Set<Class<?>> filtered = classes.stream()
                 .filter(wizardClass::isAssignableFrom)
