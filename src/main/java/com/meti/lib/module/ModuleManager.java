@@ -21,16 +21,22 @@ import java.util.zip.ZipFile;
  * @since 1/29/2019
  */
 public class ModuleManager {
-    private final Map<String, Module> modules = new HashMap<>();
+    public final Map<String, Module> modules = new HashMap<>();
 
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
-        Set<Module> loaded = Files.list(modulesDirectory)
-                .map(Clause.wrap(this::loadModule))
-                .flatMap(Optional::stream)
-                .collect(Collectors.toSet());
+        if(Files.exists(modulesDirectory)) {
+            Set<Module> loaded = Files.list(modulesDirectory)
+                    .map(Clause.wrap(this::loadModule))
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toSet());
 
-        loaded.forEach(module -> modules.put(module.name, module));
-        return loaded;
+            loaded.forEach(module -> modules.put(module.name, module));
+            return loaded;
+        }
+        else{
+            Files.createDirectory(modulesDirectory);
+            return new HashSet<>();
+        }
     }
 
     public Set<String> getClassNames(Path jar) throws IOException {

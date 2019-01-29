@@ -57,7 +57,7 @@ public class Infinity {
             return manager;
         }
         else{
-            throw new IllegalStateException("Cannot find module directory");
+            throw new IllegalStateException("Cannot find the property of \"module directory\"");
         }
     }
 

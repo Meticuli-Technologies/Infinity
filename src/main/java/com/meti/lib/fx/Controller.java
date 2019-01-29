@@ -20,7 +20,7 @@ public class Controller {
     private Singleton<Parent> root = new Singleton<>();
 
     public void add(Wizard<?> wizard) {
-        wizards.put(wizard.getName(), wizard);
+        wizards.put(wizard.getName().orElse("null"), wizard);
     }
 
     public Object load(String name) {

@@ -9,7 +9,7 @@ import com.meti.lib.reflect.ClassSource;
  */
 public class Module {
     public final String name;
-    private final ClassSource source;
+    public final ClassSource source;
 
     public Module(String name, ClassSource source) {
         this.name = name;
