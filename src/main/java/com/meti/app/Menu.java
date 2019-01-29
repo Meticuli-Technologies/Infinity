@@ -2,12 +2,10 @@ package com.meti.app;
 
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.Controller;
-import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -48,10 +46,5 @@ public class Menu extends Controller {
 
     @FXML
     public void openSettings() {
-    }
-
-    @Override
-    public Optional<Class<? extends Wizard>> getWizardClass() {
-        return Optional.of(ConnectionManagerWizard.class);
     }
 }
