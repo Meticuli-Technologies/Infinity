@@ -1,11 +1,14 @@
 package com.meti.app;
 
-import com.meti.lib.core.State;
+import com.meti.lib.state.State;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 12/19/2018
+ * @since 1/27/2019
  */
 public class InfinityState extends State {
+    public InfinityState(Object... objects) {
+        super(objects);
+    }
 }

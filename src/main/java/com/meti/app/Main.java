@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 12/19/2018
+ * @since 1/27/2019
  */
 public class Main extends Application {
     private final Infinity infinity = new Infinity();
