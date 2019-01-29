@@ -29,8 +29,7 @@ public class SetClassSource implements ClassSource {
     }
 
     @Override
-    public Set<Class<?>> bySuper(String superClassName) {
-        Class<?> superClass = byName(superClassName);
+    public Set<Class<?>> bySuper(Class<?> superClass) {
         return classes.stream()
                 .filter(superClass::isAssignableFrom)
                 .collect(Collectors.toSet());

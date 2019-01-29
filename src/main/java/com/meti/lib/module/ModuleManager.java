@@ -11,8 +11,6 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -28,12 +26,7 @@ public class ModuleManager {
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
         if(Files.exists(modulesDirectory)) {
             Set<Module> loaded = Files.list(modulesDirectory)
-                    .map(Clause.wrap(new Clause<Path, Module>() {
-                        @Override
-                        public Module applyThrows(Path moduleDirectory) throws Throwable {
-                            return ModuleManager.this.loadModule(moduleDirectory);
-                        }
-                    }))
+                    .map(Clause.wrap(ModuleManager.this::loadModule))
                     .flatMap(Optional::stream)
                     .collect(Collectors.toSet());
 
@@ -105,7 +98,7 @@ public class ModuleManager {
     }
 
     private URL loadBinary(Path jar) throws MalformedURLException {
-        if (!jar.endsWith("jar")) {
+        if (!jar.toString().endsWith("jar")) {
             throw new IllegalArgumentException(jar + " is an invalid binary");
         }
         return jar.toUri().toURL();

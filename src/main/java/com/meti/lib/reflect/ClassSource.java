@@ -10,9 +10,9 @@ import java.util.Set;
 public interface ClassSource {
     Class<?> byName(String name);
 
-    default Set<Class<?>> bySuper(Class<?> superClass) {
-        return bySuper(superClass.getSimpleName());
+    default Set<Class<?>> bySuper(String superClassName) {
+        return bySuper(byName(superClassName));
     }
 
-    Set<Class<?>> bySuper(String superClassName);
+    Set<Class<?>> bySuper(Class<?> superClass);
 }

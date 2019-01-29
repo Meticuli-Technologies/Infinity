@@ -17,6 +17,7 @@ public interface Clause<P, R> {
             try {
                 return Optional.of(clause.applyThrows(p));
             } catch (Throwable throwable) {
+                throwable.printStackTrace();
                 return Optional.empty();
             }
         };
