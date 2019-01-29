@@ -3,7 +3,11 @@ package com.meti.lib.fx;
 import com.meti.lib.state.State;
 import com.meti.lib.util.Singleton;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,11 +23,16 @@ public class Controller {
     private final Map<String, Wizard<?>> wizards = new HashMap<>();
     private Singleton<Parent> root = new Singleton<>();
 
-    public void add(Wizard<?> wizard) {
+    public void onto(URL url) throws IOException {
+        Parent parent = ControllerLoader.load(url, state.get());
+        state.get().multipleContent(Stage.class).get(0).setScene(new Scene(parent));
+    }
+
+    public void addWizard(Wizard<?> wizard) {
         wizards.put(wizard.getName().orElse("null"), wizard);
     }
 
-    public Object load(String name) {
+    public Object loadWizard(String name) {
         if (root == null) {
             throw new IllegalStateException("Root is null, cannot proceed");
         } else {
@@ -49,6 +58,6 @@ public class Controller {
     }
 
     public void addAll(Set<Wizard<?>> wizards) {
-        wizards.forEach(this::add);
+        wizards.forEach(this::addWizard);
     }
 }

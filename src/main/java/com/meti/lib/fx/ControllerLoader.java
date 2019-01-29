@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +71,7 @@ public class ControllerLoader extends FXMLLoader {
                 .map(Wizard.class::cast)
                 .collect(Collectors.toSet());
 
-        wizards.forEach(controller::add);
+        wizards.forEach(controller::addWizard);
     }
 
     private Set<Class<?>> filterForWizards(Class<? extends Wizard> wizardClass) {

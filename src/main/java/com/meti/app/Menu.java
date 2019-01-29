@@ -1,12 +1,15 @@
 package com.meti.app;
 
+import com.meti.lib.console.Console;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -25,7 +28,12 @@ public class Menu extends Controller {
     }
 
     @FXML
-    public void findAConnection() {
+    public void openConnectionManager() {
+        try {
+            onto(getClass().getResource("/com/meti/app/ConnectionManager.fxml"));
+        } catch (IOException e) {
+            state.get().singleContent(Console.class).log(Level.WARNING, e);
+        }
     }
 
     @FXML

@@ -37,7 +37,7 @@ public class State {
                 .flatMap((Function<Optional<Contentable<?, ?>>, Stream<Contentable<?, ?>>>) Optional::stream)
                 .flatMap((Function<Contentable<?, ?>, Stream<?>>) contentable -> contentable.getContent().stream())
                 .filter(o -> typeClass.isAssignableFrom(o.getClass()))
-                .map(o -> typeClass.cast(o.getClass()))
+                .map(typeClass::cast)
                 .collect(Collectors.toList());
     }
 
