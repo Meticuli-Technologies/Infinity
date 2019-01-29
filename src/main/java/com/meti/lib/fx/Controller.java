@@ -1,67 +1,63 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.State;
+import com.meti.lib.state.State;
+import com.meti.lib.util.Singleton;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
+/**
+ * @author SirMathhman
+ * @version 0.0.0
+ * @since 1/27/2019
+ */
 public class Controller {
-    /*
-    this variable is effectively final
+    protected final Singleton<State> state = new Singleton<>();
+    private final Map<String, Wizard<?>> wizards = new HashMap<>();
+    private Singleton<Parent> root = new Singleton<>();
 
-    we want this variable to be unmodifiable, however still injectable
-    from ControllerLoader
-
-    as a result, we can't initialize this field in the constructor
-     */
-    private State state;
-
-    public State getState() {
-        return state;
+    public void onto(URL url) throws IOException {
+        Parent parent = ControllerLoader.load(url, state.get());
+        state.get().multipleContent(Stage.class).get(0).setScene(new Scene(parent));
     }
 
-    public void setState(State state) {
-        if (this.state != null) {
-            throw new IllegalStateException("State has already been set!");
+    public void addWizard(Wizard<?> wizard) {
+        wizards.put(wizard.getName().orElse("null"), wizard);
+    }
+
+    public Object loadWizard(String name) {
+        if (root == null) {
+            throw new IllegalStateException("Root is null, cannot proceed");
         } else {
-            this.state = state;
+            Wizard<?> wizard = wizards.get(name);
+            wizard.open();
+
+            while (wizard.isRunning()) {
+                root.get().setDisable(true);
+            }
+
+            root.get().setDisable(false);
+            wizard.close();
+
+            return wizard.getResult();
         }
     }
 
-    public void loadNew(URL url) throws IOException {
-        state.add(new Stage());
-
-        load(url, stageSize() - 1);
+    public void confirm() {
     }
 
-    public void load(URL url, int index) throws IOException {
-        if (stageSize() < index + 1) {
-            throw new IllegalArgumentException(index + " is less than " + stageSize());
-        }
-
-        Parent parent = ControllerLoader.load(url);
-        List<Stage> stages = state.storedList(Stage.class);
-        stages.get(index).setScene(new Scene(parent));
+    public Optional<Class<? extends Wizard>> getWizardClass() {
+        return Optional.empty();
     }
 
-    private int stageSize() {
-        return state.storedList(Stage.class).size();
-    }
-
-    public void load(URL url) throws IOException {
-        load(url, 0);
-    }
-
-    /**
-     * <p>
-     * This method is intentionally left empty, and exists to be overridden.
-     * This method is called after {@link ControllerLoader#load}
-     * </p>
-     */
-    public void complete() {
+    public void addAll(Set<Wizard<?>> wizards) {
+        wizards.forEach(this::addWizard);
     }
 }
