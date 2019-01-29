@@ -38,6 +38,7 @@ public class Infinity {
             state = new InfinityState(
                     primaryStage,
                     properties,
+                    moduleManager,
                     console
             );
 
@@ -47,12 +48,12 @@ public class Infinity {
         }
     }
 
-    private ModuleManager loadModules(Properties properties) {
+    private ModuleManager loadModules(Properties properties) throws IOException {
         String moduleDirectoryString = properties.getProperty("module_directory");
 
         if (moduleDirectoryString != null) {
             ModuleManager manager = new ModuleManager();
-            manager.index(Paths.get(moduleDirectoryString));
+            manager.loadModules(Paths.get(moduleDirectoryString));
             return manager;
         }
         else{

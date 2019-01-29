@@ -61,7 +61,7 @@ public class ControllerLoader extends FXMLLoader {
                 .map(aClass -> {
                     try {
                         Object o = aClass.getDeclaredConstructor().newInstance();
-                        Object wizardToken = aClass.getMethod("load", state.getClass()).invoke(o, state);
+                        Object wizardToken = aClass.getMethod("loadModules", state.getClass()).invoke(o, state);
                         return Optional.ofNullable(wizardToken);
                     } catch (Exception e) {
                         return Optional.empty();
