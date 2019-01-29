@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.module.ModuleManager;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -25,6 +26,7 @@ public class Infinity {
     private InfinityState state;
     private Console console;
     private Properties properties;
+    private ModuleManager moduleManager;
 
     public void start(Stage primaryStage) {
         console = new Console(Infinity.class.getSimpleName());
@@ -32,6 +34,7 @@ public class Infinity {
 
         try {
             properties = loadProperties();
+            moduleManager = loadModules(properties);
             state = new InfinityState(
                     primaryStage,
                     properties,
@@ -41,6 +44,19 @@ public class Infinity {
             loadMenu(primaryStage);
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
+        }
+    }
+
+    private ModuleManager loadModules(Properties properties) {
+        String moduleDirectoryString = properties.getProperty("module_directory");
+
+        if (moduleDirectoryString != null) {
+            ModuleManager manager = new ModuleManager();
+            manager.index(Paths.get(moduleDirectoryString));
+            return manager;
+        }
+        else{
+            throw new IllegalStateException("Cannot find module directory");
         }
     }
 
@@ -58,6 +74,7 @@ public class Infinity {
 
     private void loadDefaultProperties(Properties properties) {
         properties.setProperty("version", "1.0");
+        properties.setProperty("module_directory", ".\\modules");
     }
 
     private void loadMenu(Stage primaryStage) throws java.io.IOException {
