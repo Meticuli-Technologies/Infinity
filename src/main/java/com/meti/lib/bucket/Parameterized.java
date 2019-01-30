@@ -1,6 +1,6 @@
 package com.meti.lib.bucket;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author SirMathhman
@@ -8,5 +8,5 @@ import java.util.Set;
  * @since 1/27/2019
  */
 public interface Parameterized<T> {
-    Set<T> getParameters();
+    Collection<T> getParameters();
 }
