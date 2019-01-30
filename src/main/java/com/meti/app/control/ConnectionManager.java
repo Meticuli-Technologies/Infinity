@@ -1,6 +1,6 @@
-package com.meti.app;
+package com.meti.app.control;
 
-import com.meti.lib.fx.Controller;
+import com.meti.app.ConnectionManagerWizard;
 import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -12,7 +12,7 @@ import java.util.Optional;
  * @version 0.0.0
  * @since 1/29/2019
  */
-public class ConnectionManager extends Controller {
+public class ConnectionManager extends InfinityController {
     @FXML
     private ListView<String> connectionWizardsView;
 

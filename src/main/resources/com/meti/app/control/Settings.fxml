@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.app.Settings">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.app.control.Settings">
    <children>
       <BorderPane prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -27,6 +26,9 @@
                     </rowConstraints>
                   </GridPane>
                </content>
+               <BorderPane.margin>
+                  <Insets left="25.0" right="25.0" />
+               </BorderPane.margin>
             </ScrollPane>
          </center>
          <top>
@@ -36,6 +38,13 @@
                </BorderPane.margin>
             </Text>
          </top>
+         <bottom>
+            <Button mnemonicParsing="false" onAction="#back" text="Back" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" top="25.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>

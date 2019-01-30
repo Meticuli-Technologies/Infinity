@@ -110,7 +110,7 @@ public class Infinity {
     }
 
     private URL getMenuURL() {
-        return getClass().getResource("/com/meti/app/Menu.fxml");
+        return getClass().getResource("/com/meti/app/control/Menu.fxml");
     }
 
     public void stop() {

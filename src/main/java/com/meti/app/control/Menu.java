@@ -1,13 +1,10 @@
-package com.meti.app;
+package com.meti.app.control;
 
-import com.meti.lib.console.Console;
-import com.meti.lib.fx.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -15,13 +12,12 @@ import java.util.logging.Level;
  * @version 0.0.0
  * @since 1/27/2019
  */
-public class Menu extends Controller {
+public class Menu extends InfinityController {
     @FXML
     private Text versionText;
 
     @Override
     public void confirm() {
-        Properties properties = state.get().singleContent(Properties.class);
         String version = properties.getProperty("version");
         versionText.setText("Version: " + version);
     }
@@ -31,12 +27,12 @@ public class Menu extends Controller {
         try {
             onto(getConnectionManagerURL());
         } catch (IOException e) {
-            state.get().singleContent(Console.class).log(Level.WARNING, e);
+            console.log(Level.WARNING, e);
         }
     }
 
     private URL getConnectionManagerURL() {
-        return getClass().getResource("/com/meti/app/ConnectionManager.fxml");
+        return getClass().getResource("/com/meti/app/control/ConnectionManager.fxml");
     }
 
     @FXML
@@ -52,13 +48,14 @@ public class Menu extends Controller {
     @FXML
     public void openSettings() {
         try {
-            onto(getSettingsURL());
+            Settings settings = onto(getSettingsURL());
+            settings.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
         } catch (IOException e) {
-            state.get().singleContent(Console.class).log(Level.WARNING, e);
+            console.log(Level.WARNING, e);
         }
     }
 
     private URL getSettingsURL() {
-        return getClass().getResource("/com/meti/app/Settings.fxml");
+        return getClass().getResource("/com/meti/app/control/Settings.fxml");
     }
 }

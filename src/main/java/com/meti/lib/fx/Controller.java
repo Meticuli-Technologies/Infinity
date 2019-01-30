@@ -23,8 +23,10 @@ public class Controller {
     private final Map<String, Wizard<?>> wizards = new HashMap<>();
     private final Singleton<Parent> root = new Singleton<>();
 
-    public void onto(URL url) throws IOException {
-        Parent parent = ControllerLoader.load(url, state.get());
+    public <T> T onto(URL url) throws IOException {
+        ControllerLoader loader = new ControllerLoader(url, state.get());
+        Parent parent = loader.load();
+
         Stage stage = state.get().singleContent(StageManager.class).getPrimaryStage();
         double previousWidth = stage.getWidth();
         double previousHeight = stage.getHeight();
@@ -32,6 +34,8 @@ public class Controller {
         stage.setScene(new Scene(parent));
         stage.setWidth(previousWidth);
         stage.setHeight(previousHeight);
+
+        return loader.getController();
     }
 
     public void addWizard(Wizard<?> wizard) {
