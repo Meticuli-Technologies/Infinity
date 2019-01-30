@@ -9,10 +9,14 @@ import com.meti.lib.reflect.ClassSource;
  */
 public class Module {
     public final String name;
-    public final ClassSource source;
+    private final ClassSource source;
 
     public Module(String name, ClassSource source) {
         this.name = name;
         this.source = source;
+    }
+
+    public ClassSource getSource() {
+        return source;
     }
 }
