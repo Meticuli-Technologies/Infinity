@@ -1,10 +1,6 @@
 package com.meti.app.control;
 
-import com.meti.lib.console.Console;
-import com.meti.lib.fx.Controller;
 import com.meti.lib.util.Counter;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -13,10 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -26,21 +19,11 @@ import java.util.logging.Level;
 public class Settings extends InfinityController {
     @FXML
     private GridPane contentPane;
-
-    public final ObjectProperty<URL> backURLProperty = new SimpleObjectProperty<>();
     private final Counter counter = new Counter();
 
     @FXML
     public void back() {
-        URL url = backURLProperty.get();
-        if (url == null) {
-            console.log(Level.WARNING, "Back URL not set!");
-        }
-        try {
-            onto(url);
-        } catch (IOException e) {
-            console.log(Level.WARNING, e);
-        }
+        ontoBack();
     }
 
     @Override

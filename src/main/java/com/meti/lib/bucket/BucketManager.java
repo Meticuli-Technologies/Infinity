@@ -28,11 +28,12 @@ public class BucketManager<T> {
     }
 
     public Map<T, Set<Bucket<T>>> handleAll(Collection<T> collection) {
-        Map<T, Set<Bucket<T>>> map = new HashMap<>();
-        for (T t : collection) {
-            map.put(t, handle(t));
-        }
-        return map;
+        return collection.stream()
+                .collect(Collectors.toMap(t -> t, this::handle, (a, b) -> b));
+    }
+
+    public Optional<Function<T, Bucket<T>>> getAllocator(){
+        return Optional.ofNullable(allocator);
     }
 
     public Set<Bucket<T>> handle(T obj) {
@@ -41,18 +42,31 @@ public class BucketManager<T> {
                 .peek(tBucket -> tBucket.process(obj))
                 .collect(Collectors.toSet());
 
-        if (collect.isEmpty() && allocator != null) {
-            Bucket<T> applied = allocator.apply(obj);
-            if (!applied.test(obj)) {
-                throw new IllegalStateException(applied + " returned by allocator does not accept " + obj);
-            }
-
-            applied.process(obj);
-            buckets.add(applied);
-            return Collections.singleton(applied);
-        } else {
+        if (!collect.isEmpty()) {
             return collect;
         }
+
+        if (getAllocator().isPresent()) {
+            return Collections.singleton(allocate(obj));
+        }
+        else{
+            /*
+            this method should return an empty set if no buckets
+            qualified for the object and there was no allocator present
+             */
+            return new HashSet<>();
+        }
+    }
+
+    private Bucket<T> allocate(T obj) {
+        Bucket<T> applied = allocator.apply(obj);
+        if (!applied.test(obj)) {
+            throw new IllegalStateException(applied + " returned by allocator does not accept " + obj);
+        }
+
+        applied.process(obj);
+        buckets.add(applied);
+        return applied;
     }
 
     public Bucket<T> searchForSingle(Object... parameters) {

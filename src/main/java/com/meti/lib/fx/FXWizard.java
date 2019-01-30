@@ -1,6 +1,8 @@
 package com.meti.lib.fx;
 
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -11,37 +13,63 @@ import java.util.function.Consumer;
  * @since 1/29/2019
  */
 public abstract class FXWizard<T> extends AbstractWizard<T> {
-    private Consumer<Parent> rootConsumer;
-    private Parent root;
+    private final Consumer<Parent> handler;
+    private final Parent root;
+
+    /*
+    These two constructors can't be merged, as far as I know.
+     */
+    public FXWizard(String name, Parent root) {
+        super(name);
+
+        this.handler = new StageConsumer();
+        this.root = root;
+    }
+
+    public FXWizard(String name, Consumer<Parent> handler, Parent root) {
+        super(name);
+
+        this.handler = handler;
+        this.root = root;
+    }
 
     @Override
     public void open() {
         Optional<Parent> rootOptional = getRoot();
-        if (rootOptional.isPresent()) {
-            super.open();
+        Optional<Consumer<Parent>> handlerOptional = getHandler();
 
-            Optional<Consumer<Parent>> consumerOptional = getRootConsumer();
-            if (consumerOptional.isPresent()) {
-                consumerOptional.get().accept(rootOptional.get());
-            } else {
-                throw new IllegalStateException("Consumer has not been set");
-            }
+        if (rootOptional.isPresent() && handlerOptional.isPresent()) {
+            super.open();
+            handlerOptional.get().accept(rootOptional.get());
         } else {
-            throw new IllegalStateException("Root has not been set");
+            if (!rootOptional.isPresent() && !handlerOptional.isPresent()) {
+                throw new IllegalStateException("Root and handler are unspecified");
+            }
+
+            if (!rootOptional.isPresent()) {
+                throw new IllegalStateException("Root is unspecified");
+            }
+
+            throw new IllegalStateException("Handler is unspecified");
         }
     }
 
-    public Optional<Consumer<Parent>> getRootConsumer() {
-        return Optional.ofNullable(rootConsumer);
+    public Optional<Consumer<Parent>> getHandler() {
+        return Optional.ofNullable(handler);
     }
 
     public Optional<Parent> getRoot() {
         return Optional.ofNullable(root);
     }
 
-    public Wizard<T> load(String name, Parent root) {
-        Wizard<T> parent = load(name);
-        this.root = root;
-        return parent;
+    public class StageConsumer implements Consumer<Parent> {
+        private Stage stage = new Stage();
+
+        @Override
+        public void accept(Parent parent) {
+            stage.setOnCloseRequest(event -> close());
+            stage.setScene(new Scene(parent));
+            stage.show();
+        }
     }
 }

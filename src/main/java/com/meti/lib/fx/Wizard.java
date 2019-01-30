@@ -1,5 +1,6 @@
 package com.meti.lib.fx;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -14,5 +15,5 @@ public interface Wizard<T> {
     boolean isRunning();
     void close();
 
-    T getResult();
+    T getResult() throws IOException;
 }

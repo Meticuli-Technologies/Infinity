@@ -8,18 +8,16 @@ import java.util.Optional;
  * @since 1/29/2019
  */
 public abstract class AbstractWizard<T> implements Wizard<T> {
-    private String name;
+    private final String name;
     private boolean running;
+
+    public AbstractWizard(String name) {
+        this.name = name;
+    }
 
     @Override
     public Optional<String> getName() {
         return Optional.ofNullable(name);
-    }
-
-    public Wizard<T> load(String name) {
-        this.name = name;
-
-        return this;
     }
 
     @Override

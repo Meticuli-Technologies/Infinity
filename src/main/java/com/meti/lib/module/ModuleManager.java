@@ -23,15 +23,20 @@ import java.util.zip.ZipFile;
 public class ModuleManager {
     public final Map<String, Module> modules = new HashMap<>();
 
+    public Set<ClassSource> getClassSources() {
+        return modules.values()
+                .stream()
+                .map(Module::getSource)
+                .collect(Collectors.toSet());
+    }
+
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
         if(Files.exists(modulesDirectory)) {
-            Set<Module> loaded = Files.list(modulesDirectory)
+            return Files.list(modulesDirectory)
                     .map(Clause.wrap(ModuleManager.this::loadModule))
                     .flatMap(Optional::stream)
+                    .peek(module -> modules.put(module.name, module))
                     .collect(Collectors.toSet());
-
-            loaded.forEach(module -> modules.put(module.name, module));
-            return loaded;
         }
         else{
             Files.createDirectory(modulesDirectory);
@@ -53,51 +58,45 @@ public class ModuleManager {
             throw new IllegalArgumentException(moduleDirectory + " must be a directory");
         }
 
-        ClassSource classSource = loadBinaries(moduleDirectory);
-        return new Module(moduleDirectory.getFileName().toString(), classSource);
+        return new Module(moduleDirectory.getFileName().toString(), loadBinaries(moduleDirectory));
     }
 
     private ClassSource loadBinaries(Path moduleDirectory) throws Exception {
         Path binaryDirectory = getBinaryDirectory(moduleDirectory);
-        Set<Path> jars = Files.list(binaryDirectory)
+
+        Set<Path> jarNames = Files.list(binaryDirectory)
                 .filter(path -> path.toString().endsWith("jar"))
                 .collect(Collectors.toSet());
 
-        Set<String> allClassNames = jars.stream()
+        Set<String> collectedClassNames = jarNames.stream()
                 .map(Clause.wrap(this::getClassNames))
                 .flatMap(Optional::stream)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
 
-        URLClassLoader classLoader = getClassLoader(jars);
-        Set<Class<?>> classes = new HashSet<>();
-        for (String className : allClassNames) {
-            try {
-                classes.add(classLoader.loadClass(className));
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException("Loaded binaries and class names, but their contents do not match");
-            }
-        }
-
-        return new SetClassSource(classes);
+        URLClassLoader classLoader = getClassLoader(jarNames);
+        return new SetClassSource(collectedClassNames.stream()
+                .map(Clause.wrap(classLoader::loadClass))
+                .flatMap(Optional::stream)
+                .collect(Collectors.toSet()));
     }
 
-    private Path getBinaryDirectory(Path moduleDirectory) {
+    private Path getBinaryDirectory(Path moduleDirectory) throws IOException {
         Path binaries = moduleDirectory.resolve("bin");
         if (!Files.exists(binaries)) {
-            throw new IllegalArgumentException("Could not find binaries for " + moduleDirectory + " at " + binaries);
+            Files.createDirectory(binaries);
         }
         return binaries;
     }
 
     private URLClassLoader getClassLoader(Set<Path> jars) {
         return new URLClassLoader(jars.stream()
-                .map(Clause.wrap(this::loadBinary))
+                .map(Clause.wrap(this::jarToURL))
                 .flatMap(Optional::stream)
                 .toArray(URL[]::new));
     }
 
-    private URL loadBinary(Path jar) throws MalformedURLException {
+    private URL jarToURL(Path jar) throws MalformedURLException {
         if (!jar.toString().endsWith("jar")) {
             throw new IllegalArgumentException(jar + " is an invalid binary");
         }
