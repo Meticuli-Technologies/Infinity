@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -59,10 +60,14 @@ public class Console {
         manager.add(new Bucket<>(predicate, consumer));
     }
 
-    public void run(Command command) {
+    public Set<Consumer<Command>> run(Command command) {
         Set<Bucket<Command>> result = manager.handle(command);
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Invalid command: " + command);
         }
+
+        return result.stream()
+                .map(commandBucket -> commandBucket.handler)
+                .collect(Collectors.toSet());
     }
 }

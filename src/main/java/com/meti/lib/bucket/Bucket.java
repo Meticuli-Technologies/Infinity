@@ -12,7 +12,7 @@ import java.util.function.Predicate;
  */
 public class Bucket<T> {
     private final Predicate<T> filter;
-    private final Consumer<T> handler;
+    public final Consumer<T> handler;
 
     public Bucket(Predicate<T> filter, Consumer<T> handler) {
         this.filter = filter;
