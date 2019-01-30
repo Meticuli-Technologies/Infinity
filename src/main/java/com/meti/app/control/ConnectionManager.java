@@ -87,4 +87,9 @@ public class ConnectionManager extends InfinityController implements Initializab
         dataPane.setVisible(b);
         continueButton.setDisable(!b);
     }
+
+    @Override
+    public void confirm() {
+        super.confirm();
+    }
 }
