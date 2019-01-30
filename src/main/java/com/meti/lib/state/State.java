@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -23,19 +22,19 @@ public class State {
 
     public <T> T singleContent(Class<T> typeClass) {
         Optional<Contentable<?, ?>> content = buckets.searchForSingle(typeClass).getContent();
-        if (content.isPresent()) {
-            return typeClass.cast(content.get().toSingle());
-        } else {
+        if (!content.isPresent()) {
             throw new IllegalStateException(buckets + " does not contain instances of " + Contentable.class);
         }
+
+        return typeClass.cast(content.get().toSingle());
     }
 
     public <T> List<T> multipleContent(Class<T> typeClass) {
         return buckets.search(typeClass)
                 .stream()
                 .map(Bucket::getContent)
-                .flatMap((Function<Optional<Contentable<?, ?>>, Stream<Contentable<?, ?>>>) Optional::stream)
-                .flatMap((Function<Contentable<?, ?>, Stream<?>>) contentable -> contentable.getContent().stream())
+                .flatMap(Optional::stream)
+                .flatMap(contentable -> contentable.getContent().stream())
                 .filter(o -> typeClass.isAssignableFrom(o.getClass()))
                 .map(typeClass::cast)
                 .collect(Collectors.toList());
