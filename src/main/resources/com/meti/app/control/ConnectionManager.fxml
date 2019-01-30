@@ -14,7 +14,7 @@
                <content>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="768.0" prefViewportWidth="200.0">
                      <content>
-                        <ListView fx:id="connectionList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <ListView fx:id="connectionListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <contextMenu>
                               <ContextMenu>
                                 <items>

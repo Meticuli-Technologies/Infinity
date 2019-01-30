@@ -3,6 +3,8 @@ package com.meti.app.control;
 import com.meti.lib.net.Connection;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,7 +22,7 @@ import java.util.ResourceBundle;
  */
 public class ConnectionManager extends InfinityController implements Initializable  {
     @FXML
-    private ListView<String> connectionList;
+    private ListView<String> connectionListView;
 
     @FXML
     private Text nameText;
@@ -34,6 +36,7 @@ public class ConnectionManager extends InfinityController implements Initializab
     @FXML
     private Button continueButton;
 
+    private final ObservableList<Connection<?, ?, ?>> connectionList = FXCollections.observableArrayList();
     private final ObjectProperty<Connection<?, ?, ?>> currentConnection = new SimpleObjectProperty<>();
 
     @FXML
