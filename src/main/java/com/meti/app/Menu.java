@@ -53,6 +53,7 @@ public class Menu extends Controller {
     public void openSettings() {
         try {
             Settings settings = onto(getSettingsURL());
+            settings.backURLProperty.set(getClass().getResource("/com/meti/app/Menu.fxml"));
         } catch (IOException e) {
             state.get().singleContent(Console.class).log(Level.WARNING, e);
         }

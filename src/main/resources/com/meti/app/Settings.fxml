@@ -26,6 +26,9 @@
                     </rowConstraints>
                   </GridPane>
                </content>
+               <BorderPane.margin>
+                  <Insets left="25.0" right="25.0" />
+               </BorderPane.margin>
             </ScrollPane>
          </center>
          <top>
@@ -35,6 +38,13 @@
                </BorderPane.margin>
             </Text>
          </top>
+         <bottom>
+            <Button mnemonicParsing="false" onAction="#back" text="Back" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" top="25.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>
