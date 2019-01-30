@@ -11,7 +11,9 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -45,6 +47,12 @@ public class ModuleManager {
                 .filter(s -> s.endsWith("class"))
                 .map(s -> s.replaceAll("\\.class", ""))
                 .map(s -> s.replace("/", "."))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Class<?>> implementationsOf(Class<?> clazz) {
+        return modules.values().stream()
+                .flatMap(module -> module.source.bySuper(clazz).stream())
                 .collect(Collectors.toSet());
     }
 
