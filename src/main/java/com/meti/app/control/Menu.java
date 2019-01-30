@@ -26,7 +26,8 @@ public class Menu extends InfinityController {
     @FXML
     public void openConnectionManager() {
         try {
-            onto(getConnectionManagerURL());
+            ConnectionManager manager = onto(getConnectionManagerURL());
+            manager.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }

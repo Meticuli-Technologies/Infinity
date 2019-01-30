@@ -63,7 +63,7 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @FXML
     public void back() {
-
+        ontoBack();
     }
 
     @Override
