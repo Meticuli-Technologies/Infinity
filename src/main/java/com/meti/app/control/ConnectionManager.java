@@ -1,11 +1,9 @@
 package com.meti.app.control;
 
-import com.meti.app.ConnectionManagerWizard;
-import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-
-import java.util.Optional;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 /**
  * @author SirMathhman
@@ -14,13 +12,44 @@ import java.util.Optional;
  */
 public class ConnectionManager extends InfinityController {
     @FXML
-    private ListView<String> connectionWizardsView;
+    private ListView<String> connectionList;
 
     @FXML
-    private ListView<String> currentConnectionsView;
+    private Text nameText;
 
-    @Override
-    public Optional<Class<? extends Wizard>> getWizardClass() {
-        return Optional.of(ConnectionManagerWizard.class);
+    @FXML
+    private Text statusText;
+
+    @FXML
+    private AnchorPane dataPane;
+
+    @FXML
+    public void addConnection() {
+
+    }
+
+    @FXML
+    public void closeConnection() {
+
+    }
+
+    @FXML
+    public void clearConnections() {
+
+    }
+
+    @FXML
+    public void reset() {
+
+    }
+
+    @FXML
+    public void doContinue() {
+
+    }
+
+    @FXML
+    public void back() {
+
     }
 }
