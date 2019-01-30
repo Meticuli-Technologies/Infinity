@@ -1,5 +1,6 @@
-package com.meti.app;
+package com.meti.app.control;
 
+import com.meti.app.ConnectionManagerWizard;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;

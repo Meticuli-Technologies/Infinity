@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.app.control;
 
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.Controller;
@@ -36,7 +36,7 @@ public class Menu extends Controller {
     }
 
     private URL getConnectionManagerURL() {
-        return getClass().getResource("/com/meti/app/ConnectionManager.fxml");
+        return getClass().getResource("/com/meti/app/control/ConnectionManager.fxml");
     }
 
     @FXML
@@ -53,13 +53,13 @@ public class Menu extends Controller {
     public void openSettings() {
         try {
             Settings settings = onto(getSettingsURL());
-            settings.backURLProperty.set(getClass().getResource("/com/meti/app/Menu.fxml"));
+            settings.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
         } catch (IOException e) {
             state.get().singleContent(Console.class).log(Level.WARNING, e);
         }
     }
 
     private URL getSettingsURL() {
-        return getClass().getResource("/com/meti/app/Settings.fxml");
+        return getClass().getResource("/com/meti/app/control/Settings.fxml");
     }
 }
