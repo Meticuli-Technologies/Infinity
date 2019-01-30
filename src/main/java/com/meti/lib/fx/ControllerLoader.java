@@ -27,14 +27,7 @@ public class ControllerLoader extends FXMLLoader {
     }
 
     public static <T> T load(URL location, State state) throws IOException {
-        return load(location, state, state.singleContent(ModuleManager.class)
-                .modules
-                .values()
-                .stream()
-                .map(module -> module.source)
-                .distinct()
-                .toArray(ClassSource[]::new)
-        );
+        return load(location, state, state.singleContent(ModuleManager.class).getClassSources().toArray(new ClassSource[0]));
     }
 
     public static <T> T load(URL location, State state, ClassSource... classSources) throws IOException {
@@ -70,9 +63,9 @@ public class ControllerLoader extends FXMLLoader {
                 .map(aClass -> {
                     try {
                         Object o = aClass.getDeclaredConstructor().newInstance();
-                        Object wizardToken = aClass.getMethod("loadModules", state.getClass()).invoke(o, state);
-                        return Optional.ofNullable(wizardToken);
+                        return Optional.ofNullable(o);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         return Optional.empty();
                     }
                 })

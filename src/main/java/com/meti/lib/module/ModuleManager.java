@@ -11,9 +11,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -24,6 +22,14 @@ import java.util.zip.ZipFile;
  */
 public class ModuleManager {
     public final Map<String, Module> modules = new HashMap<>();
+
+    public Set<ClassSource> getClassSources() {
+        return modules
+                .values()
+                .stream()
+                .map(module -> module.source)
+                .collect(Collectors.toSet());
+    }
 
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
         if(Files.exists(modulesDirectory)) {

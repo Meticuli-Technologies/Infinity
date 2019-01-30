@@ -48,7 +48,9 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @FXML
     public void addConnection() {
-
+        int selectedItem = connectionListView.getSelectionModel().getSelectedIndex();
+        ConnectionCreator connectionCreator = connectionCreators.get(selectedItem);
+        connectionCreator.open();
     }
 
     @FXML
