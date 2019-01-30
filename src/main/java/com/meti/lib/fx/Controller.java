@@ -4,7 +4,6 @@ import com.meti.lib.state.State;
 import com.meti.lib.util.Singleton;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +24,7 @@ public class Controller {
 
     public void onto(URL url) throws IOException {
         Parent parent = ControllerLoader.load(url, state.get());
-        state.get().singleContent(StageManager.class).stages.get(0).setScene(new Scene(parent));
+        state.get().singleContent(StageManager.class).getPrimaryStage().setScene(new Scene(parent));
     }
 
     public void addWizard(Wizard<?> wizard) {

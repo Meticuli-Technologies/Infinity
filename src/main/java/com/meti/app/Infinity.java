@@ -49,7 +49,7 @@ public class Infinity {
                     console
             );
 
-            loadMenu(stageManager.get());
+            loadMenu(stageManager.getPrimaryStage());
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
         }
