@@ -37,6 +37,7 @@ public class Infinity {
 
         try {
             properties = loadProperties();
+            primaryStage.setTitle("Infinity " + properties.getProperty("version"));
 
             ModuleManager moduleManager = loadModules(properties);
             stageManager = loadStageManager(properties);
