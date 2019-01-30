@@ -11,11 +11,16 @@ import java.util.Properties;
  * @since 1/30/2019
  */
 public class InfinityController extends Controller {
-    public Console getConsole() {
-        return state.get().singleContent(Console.class);
+    protected Console console;
+    protected Properties properties;
+
+    @Override
+    public void confirm() {
+        console = getItem(Console.class);
+        properties = getItem(Properties.class);
     }
 
-    public Properties getProperties() {
-        return state.get().singleContent(Properties.class);
+    public <T> T getItem(Class<T> itemClass) {
+        return state.get().singleContent(itemClass);
     }
 }

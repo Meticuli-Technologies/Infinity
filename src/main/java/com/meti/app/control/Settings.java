@@ -23,24 +23,23 @@ import java.util.logging.Level;
  * @version 0.0.0
  * @since 1/29/2019
  */
-public class Settings extends Controller {
+public class Settings extends InfinityController {
     @FXML
     private GridPane contentPane;
 
     public final ObjectProperty<URL> backURLProperty = new SimpleObjectProperty<>();
     private final Counter counter = new Counter();
-    private Properties properties;
 
     @FXML
     public void back() {
         URL url = backURLProperty.get();
         if (url == null) {
-            state.get().singleContent(Console.class).log(Level.WARNING, "Back URL not set!");
+            console.log(Level.WARNING, "Back URL not set!");
         }
         try {
             onto(url);
         } catch (IOException e) {
-            state.get().singleContent(Console.class).log(Level.WARNING, e);
+            console.log(Level.WARNING, e);
         }
     }
 
