@@ -2,6 +2,7 @@ package com.meti.lib.bucket;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -26,8 +27,9 @@ public class Bucket<T> {
 
     public boolean containsParameter(Object obj) {
         if (filter instanceof Parameterized<?>) {
-            Object[] parameters = ((Parameterized) filter).getParameters();
-            return IntStream.range(0, parameters.length).anyMatch(i -> parameters[i].equals(obj));
+            return ((Parameterized<?>) filter).getParameters()
+                    .stream()
+                    .anyMatch((Predicate<Object>) obj::equals);
         }
         return false;
     }

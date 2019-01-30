@@ -1,5 +1,8 @@
 package com.meti.lib.bucket;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -15,8 +18,8 @@ public class TypePredicate<T> implements Parameterized<Class<?>>, Predicate<Obje
     }
 
     @Override
-    public Class<?>[] getParameters() {
-        return new Class[]{typeClass};
+    public Set<Class<?>> getParameters() {
+        return Collections.singleton(typeClass);
     }
 
     @Override
