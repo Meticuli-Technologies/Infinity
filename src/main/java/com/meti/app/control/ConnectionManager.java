@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.lib.fx.Wizard;
 import com.meti.lib.net.Connection;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,7 +14,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -36,7 +42,7 @@ public class ConnectionManager extends InfinityController implements Initializab
     @FXML
     private Button continueButton;
 
-    private final ObservableList<Connection<?, ?, ?>> connectionList = FXCollections.observableArrayList();
+    private final ObservableList<ConnectionCreator> connectionCreators = FXCollections.observableArrayList();
     private final ObjectProperty<Connection<?, ?, ?>> currentConnection = new SimpleObjectProperty<>();
 
     @FXML
@@ -90,6 +96,15 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @Override
     public void confirm() {
-        moduleManager.implementationsOf(ConnectionCreator.class);
+        List<ConnectionCreator> connectionCreators = wizards.values().stream().map(ConnectionCreator.class::cast).collect(Collectors.toList());
+        this.connectionCreators.addAll(connectionCreators);
+
+        List<String> names = connectionCreators.stream().map((Function<ConnectionCreator<?>, String>) connectionCreator -> connectionCreator.getName().orElse("null")).collect(Collectors.toList());
+        connectionListView.getItems().addAll(names);
+    }
+
+    @Override
+    public Optional<Class<? extends Wizard>> getWizardClass() {
+        return Optional.of(ConnectionCreator.class);
     }
 }

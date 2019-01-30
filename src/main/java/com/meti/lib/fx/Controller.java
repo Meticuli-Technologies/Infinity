@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class Controller {
     protected final Singleton<State> state = new Singleton<>();
-    private final Map<String, Wizard<?>> wizards = new HashMap<>();
+    protected final Map<String, Wizard<?>> wizards = new HashMap<>();
     private final Singleton<Parent> root = new Singleton<>();
 
     public <T> T onto(URL url) throws IOException {

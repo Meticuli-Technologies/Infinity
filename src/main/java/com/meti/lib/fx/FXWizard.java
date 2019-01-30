@@ -1,6 +1,8 @@
 package com.meti.lib.fx;
 
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -11,8 +13,20 @@ import java.util.function.Consumer;
  * @since 1/29/2019
  */
 public abstract class FXWizard<T> extends AbstractWizard<T> {
-    private Consumer<Parent> rootConsumer;
-    private Parent root;
+    private final Consumer<Parent> rootConsumer;
+    private final Parent root;
+
+    public FXWizard(String name, Parent root) {
+        super(name);
+        this.rootConsumer = new StageConsumer(this);
+        this.root = root;
+    }
+
+    public FXWizard(String name, Consumer<Parent> rootConsumer, Parent root) {
+        super(name);
+        this.rootConsumer = rootConsumer;
+        this.root = root;
+    }
 
     @Override
     public void open() {
@@ -39,9 +53,20 @@ public abstract class FXWizard<T> extends AbstractWizard<T> {
         return Optional.ofNullable(root);
     }
 
-    public Wizard<T> load(String name, Parent root) {
-        Wizard<T> parent = load(name);
-        this.root = root;
-        return parent;
+    public static class StageConsumer implements Consumer<Parent> {
+        private final FXWizard<?> wizard;
+        private Stage stage = new Stage();
+
+        public StageConsumer(FXWizard<?> wizard) {
+            this.wizard = wizard;
+        }
+
+        @Override
+        public void accept(Parent parent) {
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+            stage.setOnCloseRequest(event -> wizard.close());
+        }
     }
 }
