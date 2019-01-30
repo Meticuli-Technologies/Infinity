@@ -5,6 +5,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -29,6 +30,9 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @FXML
     private AnchorPane dataPane;
+
+    @FXML
+    private Button continueButton;
 
     private final ObjectProperty<Connection<?, ?, ?>> currentConnection = new SimpleObjectProperty<>();
 
@@ -66,13 +70,18 @@ public class ConnectionManager extends InfinityController implements Initializab
     public void initialize(URL location, ResourceBundle resources) {
         currentConnection.addListener((observable, oldValue, newValue) -> {
             if(newValue == null){
-                dataPane.setVisible(false);
+                setContentAccessible(false);
             }
             else{
-                dataPane.setVisible(true);
+                setContentAccessible(true);
             }
         });
 
-        dataPane.setVisible(false);
+        setContentAccessible(false);
+    }
+
+    private void setContentAccessible(boolean b) {
+        dataPane.setVisible(b);
+        continueButton.setDisable(!b);
     }
 }

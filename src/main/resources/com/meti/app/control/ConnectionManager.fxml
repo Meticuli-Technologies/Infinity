@@ -43,7 +43,7 @@
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Button mnemonicParsing="false" onAction="#reset" text="Reset" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -51,6 +51,7 @@
                               <Text fx:id="statusText" strokeType="OUTSIDE" strokeWidth="0.0" text="[status]" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -67,7 +68,7 @@
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
          <right>
-            <Button mnemonicParsing="false" onAction="#doContinue" text="Continue" BorderPane.alignment="CENTER">
+            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#doContinue" text="Continue" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="25.0" />
                </BorderPane.margin>
