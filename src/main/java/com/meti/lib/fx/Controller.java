@@ -21,7 +21,7 @@ import java.util.Set;
 public class Controller {
     protected final Singleton<State> state = new Singleton<>();
     private final Map<String, Wizard<?>> wizards = new HashMap<>();
-    private Singleton<Parent> root = new Singleton<>();
+    private final Singleton<Parent> root = new Singleton<>();
 
     public void onto(URL url) throws IOException {
         Parent parent = ControllerLoader.load(url, state.get());
