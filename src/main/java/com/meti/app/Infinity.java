@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.fx.StageManager;
 import com.meti.lib.module.ModuleManager;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,8 +12,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -27,6 +30,7 @@ public class Infinity {
     private Console console;
     private Properties properties;
     private ModuleManager moduleManager;
+    private StageManager stageManager;
 
     public void start(Stage primaryStage) {
         console = new Console(Infinity.class.getSimpleName());
@@ -35,16 +39,37 @@ public class Infinity {
         try {
             properties = loadProperties();
             moduleManager = loadModules(properties);
+            stageManager = loadStageManager(properties);
+            stageManager.add(primaryStage);
+
             state = new InfinityState(
-                    primaryStage,
                     properties,
                     moduleManager,
+                    stageManager,
                     console
             );
 
-            loadMenu(primaryStage);
+            loadMenu(stageManager.get());
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
+        }
+    }
+
+    private StageManager loadStageManager(Properties properties) {
+        String initial_coordinates = properties.getProperty("initial_coordinates");
+        if (initial_coordinates != null) {
+            return new StageManager(Arrays.stream(initial_coordinates.split(","))
+                    .map(s -> s.split(" "))
+                    .map(strings -> {
+                        int[] array = new int[strings.length];
+                        array[0] = Integer.parseInt(strings[0]);
+                        array[1] = Integer.parseInt(strings[1]);
+                        return array;
+                    })
+                    .collect(Collectors.toSet()));
+        }
+        else{
+            return new StageManager();
         }
     }
 
@@ -98,6 +123,13 @@ public class Infinity {
     }
 
     private void storeProperties() throws IOException {
+        String coordinateString = stageManager.stages.stream()
+                .map(stage -> new int[]{(int) stage.getX(), (int) stage.getY()})
+                .map(ints -> new String[]{String.valueOf(ints[0]), String.valueOf(ints[1])})
+                .map(strings -> strings[0] + " " + strings[1])
+                .collect(Collectors.joining(","));
+        properties.setProperty("initial_coordinates", coordinateString);
+
         properties.store(Files.newOutputStream(PROPERTIES_DEFAULT_PATH), null);
     }
 }
