@@ -3,13 +3,16 @@ package com.meti.lib.fx;
 import com.meti.lib.module.ModuleManager;
 import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
+import com.meti.lib.util.Clause;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -18,12 +21,17 @@ import java.util.stream.Collectors;
  */
 public class ControllerLoader extends FXMLLoader {
     private final State state;
-    private final ClassSource[] classSources;
+    private final Set<ClassSource> classSources;
 
     public ControllerLoader(URL location, State state, ClassSource... classSources) {
         super(location);
+
         this.state = state;
-        this.classSources = classSources;
+
+        /*
+        Probably not the best way from ClassSource[] to Set<ClassSource>, just saying.
+         */
+        this.classSources = Stream.of(classSources).collect(Collectors.toSet());
     }
 
     public static <T> T load(URL location, State state) throws IOException {
@@ -40,52 +48,45 @@ public class ControllerLoader extends FXMLLoader {
 
         Object controllerToken = getController();
         if (controllerToken instanceof Controller) {
-            Controller controller = (Controller) controllerToken;
-            controller.state.set(state);
-
-            if (classSources.length != 0) {
-                Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
-                for (ClassSource classSource : classSources) {
-                    wizardClass.ifPresent(aClass -> loadWizards(controller, aClass, classSource));
-                }
-            }
-
-            controller.confirm();
+            loadController((Controller) controllerToken);
         }
 
         return parent;
     }
 
-    private void loadWizards(Controller controller, Class<? extends Wizard> wizardClass, ClassSource classSource) {
-        Set<Class<?>> filtered = filterForWizards(wizardClass, classSource);
+    private Set<Wizard> loadController(Controller controller) {
+        controller.state.set(state);
 
-        Set<Wizard> wizards = filtered.stream()
-                .map(aClass -> {
-                    try {
-                        Object o = aClass.getDeclaredConstructor().newInstance();
-                        return Optional.ofNullable(o);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return Optional.empty();
-                    }
-                })
-                .flatMap(Optional::stream)
-                .filter(o -> Wizard.class.isAssignableFrom(o.getClass()))
-                .map(Wizard.class::cast)
-                .collect(Collectors.toSet());
+        Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
+        Set<Wizard> wizards = new HashSet<>();
 
-        wizards.forEach(controller::addWizard);
+        if (wizardClass.isPresent()) {
+            WizardLoader wizardLoader = new WizardLoader(controller, wizardClass.get());
+            wizards = classSources.stream()
+                    .flatMap(wizardLoader::load)
+                    .collect(Collectors.toSet());
+        }
+
+        controller.confirm();
+        return wizards;
     }
 
-    private Set<Class<?>> filterForWizards(Class<? extends Wizard> wizardClass, ClassSource classSource) {
-        Set<Class<?>> classes = classSource.bySuper(wizardClass);
-        Set<Class<?>> filtered = classes.stream()
-                .filter(wizardClass::isAssignableFrom)
-                .collect(Collectors.toSet());
+    private class WizardLoader {
+        private final Class<? extends Wizard> wizardClass;
+        private final Controller controller;
 
-        if (classes.size() != filtered.size()) {
-            throw new IllegalStateException("Classes found do not equal classes filtered");
+        public WizardLoader(Controller controller, Class<? extends Wizard> wizardClass) {
+            this.wizardClass = wizardClass;
+            this.controller = controller;
         }
-        return filtered;
+
+        private Stream<Wizard> load(ClassSource classSource) {
+            return classSource.bySuper(wizardClass)
+                    .stream()
+                    .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor().newInstance()))
+                    .flatMap(Optional::stream)
+                    .map(Wizard.class::cast)
+                    .peek(controller::addWizard);
+        }
     }
 }
