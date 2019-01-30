@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -96,11 +97,10 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @Override
     public void confirm() {
-        List<ConnectionCreator> connectionCreators = wizards.values().stream().map(ConnectionCreator.class::cast).collect(Collectors.toList());
-        this.connectionCreators.addAll(connectionCreators);
-
-        List<String> names = connectionCreators.stream().map((Function<ConnectionCreator<?>, String>) connectionCreator -> connectionCreator.getName().orElse("null")).collect(Collectors.toList());
-        connectionListView.getItems().addAll(names);
+        wizards.keySet().forEach(s -> {
+            connectionListView.getItems().add(s);
+            connectionCreators.add((ConnectionCreator) wizards.get(s));
+        });
     }
 
     @Override
