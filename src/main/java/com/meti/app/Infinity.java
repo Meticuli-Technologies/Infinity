@@ -37,6 +37,7 @@ public class Infinity {
 
         try {
             properties = loadProperties();
+            primaryStage.setTitle("Infinity " + properties.getProperty("version"));
 
             ModuleManager moduleManager = loadModules(properties);
             stageManager = loadStageManager(properties);
@@ -49,7 +50,7 @@ public class Infinity {
                     console
             );
 
-            loadMenu(stageManager.get());
+            loadMenu(stageManager.getPrimaryStage());
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
         }

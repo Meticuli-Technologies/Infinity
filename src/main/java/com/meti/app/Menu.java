@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -28,10 +29,14 @@ public class Menu extends Controller {
     @FXML
     public void openConnectionManager() {
         try {
-            onto(getClass().getResource("/com/meti/app/ConnectionManager.fxml"));
+            onto(getConnectionManagerURL());
         } catch (IOException e) {
             state.get().singleContent(Console.class).log(Level.WARNING, e);
         }
+    }
+
+    private URL getConnectionManagerURL() {
+        return getClass().getResource("/com/meti/app/ConnectionManager.fxml");
     }
 
     @FXML
@@ -46,5 +51,14 @@ public class Menu extends Controller {
 
     @FXML
     public void openSettings() {
+        try {
+            onto(getSettingsURL());
+        } catch (IOException e) {
+            state.get().singleContent(Console.class).log(Level.WARNING, e);
+        }
+    }
+
+    private URL getSettingsURL() {
+        return getClass().getResource("/com/meti/app/Settings.fxml");
     }
 }

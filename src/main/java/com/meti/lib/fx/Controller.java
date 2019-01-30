@@ -25,7 +25,13 @@ public class Controller {
 
     public void onto(URL url) throws IOException {
         Parent parent = ControllerLoader.load(url, state.get());
-        state.get().multipleContent(Stage.class).get(0).setScene(new Scene(parent));
+        Stage stage = state.get().singleContent(StageManager.class).getPrimaryStage();
+        double previousWidth = stage.getWidth();
+        double previousHeight = stage.getHeight();
+
+        stage.setScene(new Scene(parent));
+        stage.setWidth(previousWidth);
+        stage.setHeight(previousHeight);
     }
 
     public void addWizard(Wizard<?> wizard) {
@@ -33,7 +39,7 @@ public class Controller {
     }
 
     public Object loadWizard(String name) {
-        if (root == null) {
+        if (root.get() == null) {
             throw new IllegalStateException("Root is null, cannot proceed");
         } else {
             Wizard<?> wizard = wizards.get(name);
