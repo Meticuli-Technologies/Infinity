@@ -3,6 +3,9 @@ package com.meti.app;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.util.Counter;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -33,10 +36,16 @@ public class Settings extends Controller {
 
     private void handleProperty(String key, String value) {
         Text name = new Text(key);
+        GridPane.setHalignment(name, HPos.CENTER);
+        GridPane.setValignment(name, VPos.CENTER);
         contentPane.add(name, 0, counter.increment());
 
         TextField input = new TextField(value);
-        contentPane.add(input, 1, counter.get());
+        GridPane.setHalignment(input, HPos.CENTER);
+        GridPane.setValignment(input, VPos.CENTER);
+        contentPane.add(input, 1, counter.get() - 1);
+
+        GridPane.setMargin(input, new Insets(0, 25, 0, 0));
 
         input.setOnKeyPressed(event -> properties.setProperty(key, input.getText()));
     }
