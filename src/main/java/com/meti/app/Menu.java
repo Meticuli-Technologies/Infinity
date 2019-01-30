@@ -52,7 +52,7 @@ public class Menu extends Controller {
     @FXML
     public void openSettings() {
         try {
-            onto(getSettingsURL());
+            Settings settings = onto(getSettingsURL());
         } catch (IOException e) {
             state.get().singleContent(Console.class).log(Level.WARNING, e);
         }
