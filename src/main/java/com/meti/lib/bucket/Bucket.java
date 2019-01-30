@@ -34,6 +34,8 @@ public class Bucket<T> {
 
     public Optional<Contentable<?, ?>> getContent() {
         if (handler instanceof Contentable) {
+
+            //wildcards are required here because of the return type
             return Optional.of((Contentable<?, ?>) handler);
         } else {
             return Optional.empty();
@@ -44,11 +46,11 @@ public class Bucket<T> {
         return filter.test(t);
     }
 
-    public boolean process(T t) {
-        if (filter.test(t)) {
-            handler.accept(t);
-            return true;
+    public void process(T t) {
+        if (!filter.test(t)) {
+            throw new IllegalArgumentException("Cannot process " + t + " because it fails to qualify for " + filter);
         }
-        return false;
+
+        handler.accept(t);
     }
 }
