@@ -1,6 +1,7 @@
 package com.meti.lib.util;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -13,11 +14,15 @@ public interface Clause<P, R> {
     R applyThrows(P p) throws Throwable;
 
     static <P, R> Function<P, Optional<R>> wrap(Clause<P, R> clause){
-        return p -> {
+        return wrap(clause, Throwable::printStackTrace);
+    }
+
+    static <P, R> Function<P, Optional<R>> wrap(Clause<P, R> clause, Consumer<Throwable> handler) {
+        return parameter -> {
             try {
-                return Optional.of(clause.applyThrows(p));
+                return Optional.of(clause.applyThrows(parameter));
             } catch (Throwable throwable) {
-                throwable.printStackTrace();
+                handler.accept(throwable);
                 return Optional.empty();
             }
         };
