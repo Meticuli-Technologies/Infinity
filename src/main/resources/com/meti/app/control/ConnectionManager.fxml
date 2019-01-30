@@ -18,7 +18,10 @@
                            <contextMenu>
                               <ContextMenu>
                                 <items>
-                                  <MenuItem mnemonicParsing="false" onAction="#addConnection" text="Add" />
+                                  <MenuItem mnemonicParsing="false" onAction="#addConnection" text="Add">
+                                       <graphic>
+                                          <ListView prefHeight="200.0" prefWidth="200.0" />
+                                       </graphic></MenuItem>
                                     <MenuItem mnemonicParsing="false" onAction="#closeConnection" text="Close" />
                                     <MenuItem mnemonicParsing="false" onAction="#clearConnections" text="Clear" />
                                 </items>
