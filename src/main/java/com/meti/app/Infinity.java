@@ -29,7 +29,6 @@ public class Infinity {
     private InfinityState state;
     private Console console;
     private Properties properties;
-    private ModuleManager moduleManager;
     private StageManager stageManager;
 
     public void start(Stage primaryStage) {
@@ -38,7 +37,8 @@ public class Infinity {
 
         try {
             properties = loadProperties();
-            moduleManager = loadModules(properties);
+
+            ModuleManager moduleManager = loadModules(properties);
             stageManager = loadStageManager(properties);
             stageManager.add(primaryStage);
 

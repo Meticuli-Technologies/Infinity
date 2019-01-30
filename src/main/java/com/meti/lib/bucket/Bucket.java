@@ -1,8 +1,10 @@
 package com.meti.lib.bucket;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
 
 /**
  * @author SirMathhman
@@ -19,22 +21,13 @@ public class Bucket<T> {
     }
 
     public boolean containsAllParameters(Object... objects) {
-        for (int i = 0; i < objects.length; i++) {
-            if (!containsParameter(objects[i])) {
-                return false;
-            }
-        }
-        return true;
+        return Arrays.stream(objects).allMatch(this::containsParameter);
     }
 
     public boolean containsParameter(Object obj) {
         if (filter instanceof Parameterized<?>) {
             Object[] parameters = ((Parameterized) filter).getParameters();
-            for (int i = 0; i < parameters.length; i++) {
-                if (parameters[i].equals(obj)) {
-                    return true;
-                }
-            }
+            return IntStream.range(0, parameters.length).anyMatch(i -> parameters[i].equals(obj));
         }
         return false;
     }

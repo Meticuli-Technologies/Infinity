@@ -10,7 +10,7 @@ public interface Connection<T, I extends InputStream, O extends OutputStream> ex
 
     O getOutputStream();
 
-    T read() throws IOException, ClassNotFoundException, Exception;
+    T read() throws Exception;
 
     void write(T t) throws IOException;
 
