@@ -3,8 +3,6 @@ package com.meti.app.control;
 import com.meti.lib.net.Connection;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -74,5 +72,7 @@ public class ConnectionManager extends InfinityController implements Initializab
                 dataPane.setVisible(true);
             }
         });
+
+        dataPane.setVisible(false);
     }
 }
