@@ -2,6 +2,7 @@ package com.meti.app.control;
 
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.Controller;
+import com.meti.lib.module.ModuleManager;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -16,11 +17,11 @@ import java.util.logging.Level;
  * @since 1/30/2019
  */
 public class InfinityController extends Controller {
-    protected Console console;
-    protected Properties properties;
-
     public final ObjectProperty<URL> backURLProperty = new SimpleObjectProperty<>();
 
+    protected Console console;
+    protected Properties properties;
+    protected ModuleManager moduleManager;
 
     public void ontoBack() {
         URL url = backURLProperty.get();
@@ -38,6 +39,7 @@ public class InfinityController extends Controller {
     public void confirm() {
         console = getItem(Console.class);
         properties = getItem(Properties.class);
+        moduleManager = getItem(ModuleManager.class);
     }
 
     public <T> T getItem(Class<T> itemClass) {
