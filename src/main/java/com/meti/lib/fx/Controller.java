@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -67,9 +66,5 @@ public class Controller {
 
     public Optional<Class<? extends Wizard>> getWizardClass() {
         return Optional.empty();
-    }
-
-    public void addAll(Set<Wizard<?>> wizards) {
-        wizards.forEach(this::addWizard);
     }
 }

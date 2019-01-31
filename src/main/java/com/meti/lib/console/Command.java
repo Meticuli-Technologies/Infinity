@@ -1,6 +1,8 @@
 package com.meti.lib.console;
 
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -9,17 +11,17 @@ import java.util.stream.StreamSupport;
  * @since 1/27/2019
  */
 public class Command {
-    public final String[] args;
+    public final List<String> args;
 
     public Command(String line) {
         //separates the line by a tokenizer and converts the elements to an array
         Iterable<Object> iterable = () -> new StringTokenizer(line).asIterator();
         this.args = StreamSupport.stream(iterable.spliterator(), false)
                 .map(Object::toString)
-                .toArray(String[]::new);
+                .collect(Collectors.toList());
     }
 
-    public Command(String[] args) {
+    public Command(List<String> args) {
         this.args = args;
     }
 

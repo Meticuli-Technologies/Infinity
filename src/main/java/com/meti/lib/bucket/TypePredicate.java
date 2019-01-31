@@ -1,26 +1,17 @@
 package com.meti.lib.bucket;
 
-import java.util.function.Predicate;
-
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 1/27/2019
  */
-public class TypePredicate<T> implements Parameterized<Class<?>>, Predicate<Object> {
-    private final Class<T> typeClass;
-
+public class TypePredicate<T> extends ParameterizedPredicate<Object, Class<T>> {
     public TypePredicate(Class<T> typeClass) {
-        this.typeClass = typeClass;
-    }
-
-    @Override
-    public Class<?>[] getParameters() {
-        return new Class[]{typeClass};
+        super(typeClass);
     }
 
     @Override
     public boolean test(Object object) {
-        return typeClass.isAssignableFrom(object.getClass());
+        return parameters.get(0).isAssignableFrom(object.getClass());
     }
 }
