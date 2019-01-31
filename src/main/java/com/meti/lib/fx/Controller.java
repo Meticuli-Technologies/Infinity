@@ -47,9 +47,12 @@ public class Controller {
         if (root.get() == null) {
             throw new IllegalStateException("Root is null, cannot proceed");
         } else {
+            root.get().setDisable(true);
+
             Wizard<?> wizard = wizards.get(name);
             wizard.open();
 
+            root.get().setDisable(false);
             return wizard.getResult();
         }
     }
