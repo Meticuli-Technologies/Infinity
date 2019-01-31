@@ -16,9 +16,6 @@ public abstract class FXWizard<T> extends AbstractWizard<T> {
     private final Consumer<Parent> handler;
     private final Parent root;
 
-    /*
-    These two constructors can't be merged, as far as I know.
-     */
     public FXWizard(String name, Parent root) {
         super(name);
 

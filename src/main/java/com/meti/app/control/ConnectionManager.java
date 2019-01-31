@@ -116,9 +116,4 @@ public class ConnectionManager extends InfinityController implements Initializab
     public URL getConnectionAdderURL() {
         return getClass().getResource("/com/meti/app/control/ConnectionAdder.fxml");
     }
-
-    @Override
-    public Optional<Class<? extends Wizard>> getWizardClass() {
-        return Optional.of(ConnectionCreator.class);
-    }
 }
