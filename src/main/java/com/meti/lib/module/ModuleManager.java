@@ -30,6 +30,14 @@ public class ModuleManager {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Class<?>> implementationsOf(Class<?> clazz) {
+        return modules.values().stream()
+                .map(Module::getSource)
+                .map(classSource -> classSource.bySuper(clazz))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+    }
+
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
         if(Files.exists(modulesDirectory)) {
             return Files.list(modulesDirectory)
