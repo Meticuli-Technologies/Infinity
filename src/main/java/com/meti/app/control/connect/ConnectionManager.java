@@ -100,12 +100,12 @@ public class ConnectionManager extends InfinityController implements Initializab
             connectionCreators.add((ConnectionCreator) wizards.get(s));
         });
 
-        try {
+       /* try {
             State state = ConnectionManager.this.state.get();
-            addWizard(new ConnectionAdderWizard(getConnectionAdderURL(), state));
+            //(new ConnectionAdderWizard(getConnectionAdderURL(), handler, state));
         } catch (IOException e) {
             console.log(Level.WARNING, e);
-        }
+        }*/
     }
 
     public URL getConnectionAdderURL() {
