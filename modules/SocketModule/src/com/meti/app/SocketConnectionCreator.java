@@ -2,8 +2,8 @@ package com.meti.app;
 
 import com.meti.app.control.ConnectionCreator;
 import com.meti.lib.SocketConnection;
+import com.meti.lib.state.State;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
@@ -13,8 +13,8 @@ import java.io.IOException;
  * @since 1/30/2019
  */
 public class SocketConnectionCreator extends ConnectionCreator<SocketConnection> {
-    public SocketConnectionCreator() throws IOException {
-        super("Socket", FXMLLoader.load(SocketConnectionCreator.class.getResource("/com/meti/app/SocketConnectionCreatorView.fxml")));
+    public SocketConnectionCreator(State state) throws IOException {
+        super("Socket", state, FXMLLoader.load(SocketConnectionCreator.class.getResource("/com/meti/app/SocketConnectionCreatorView.fxml")));
     }
 
     @Override

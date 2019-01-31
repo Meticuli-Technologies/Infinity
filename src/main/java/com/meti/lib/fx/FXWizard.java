@@ -1,5 +1,6 @@
 package com.meti.lib.fx;
 
+import com.meti.lib.state.State;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -14,19 +15,26 @@ import java.util.function.Consumer;
  */
 public abstract class FXWizard<T> extends AbstractWizard<T> {
     private final Consumer<Parent> handler;
+    private final State state;
     private final Parent root;
 
-    public FXWizard(String name, Parent root) {
+    public FXWizard(String name, State state, Parent root) {
         super(name);
 
-        this.handler = new StageConsumer();
+        this.state = state;
         this.root = root;
+        /*
+        handler should be the last field to initialize
+        because it depends on state to initialize a field
+         */
+        this.handler = new StageConsumer();
     }
 
-    public FXWizard(String name, Consumer<Parent> handler, Parent root) {
+    public FXWizard(String name, Consumer<Parent> handler, State state, Parent root) {
         super(name);
 
         this.handler = handler;
+        this.state = state;
         this.root = root;
     }
 
@@ -60,7 +68,11 @@ public abstract class FXWizard<T> extends AbstractWizard<T> {
     }
 
     public class StageConsumer implements Consumer<Parent> {
-        private Stage stage = new Stage();
+        private final Stage stage;
+
+        public StageConsumer() {
+            stage = state.singleContent(StageManager.class).allocate();
+        }
 
         @Override
         public void accept(Parent parent) {

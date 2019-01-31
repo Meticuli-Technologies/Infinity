@@ -3,12 +3,14 @@ package com.meti.app.control;
 import com.meti.lib.fx.FXWizard;
 import com.meti.lib.fx.Wizard;
 import com.meti.lib.net.Connection;
+import com.meti.lib.state.State;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -102,7 +104,8 @@ public class ConnectionManager extends InfinityController implements Initializab
         });
 
         try {
-            addWizard(new FXWizard<>("Connection Adder", load(getConnectionAdderURL(), state.get())) {
+            State state = ConnectionManager.this.state.get();
+            addWizard(new FXWizard<Connection<?, ?, ?>>("Connection Adder", state, load(getConnectionAdderURL(), state)) {
                 @Override
                 public Connection<?, ?, ?> getResult() {
                     return null;

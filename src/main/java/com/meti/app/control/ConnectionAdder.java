@@ -24,4 +24,11 @@ public class ConnectionAdder extends InfinityController {
     public Optional<Class<? extends Wizard>> getWizardClass() {
         return Optional.of(ConnectionCreator.class);
     }
+
+    @Override
+    public void confirm() {
+        super.confirm();
+
+        wizardNameList.getItems().addAll(wizards.keySet());
+    }
 }

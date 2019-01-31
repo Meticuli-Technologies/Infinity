@@ -92,7 +92,7 @@ public class ControllerLoader extends FXMLLoader {
         private Stream<Wizard> load(ClassSource classSource) {
             return classSource.bySuper(wizardClass)
                     .stream()
-                    .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor().newInstance()))
+                    .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor(State.class).newInstance(state)))
                     .flatMap(Optional::stream)
                     .map(Wizard.class::cast)
                     .peek(controller::addWizard);
