@@ -69,7 +69,7 @@ public abstract class FXWizard<T> extends AbstractWizard<T> {
         public void accept(Parent parent) {
             stage.setOnCloseRequest(event -> close());
             stage.setScene(new Scene(parent));
-            stage.show();
+            stage.showAndWait();
         }
     }
 }

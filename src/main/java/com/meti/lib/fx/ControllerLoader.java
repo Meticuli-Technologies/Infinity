@@ -5,6 +5,7 @@ import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
 import com.meti.lib.util.Clause;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,7 +49,15 @@ public class ControllerLoader extends FXMLLoader {
 
         Object controllerToken = getController();
         if (controllerToken instanceof Controller) {
-            loadController((Controller) controllerToken);
+            Controller controller = (Controller) controllerToken;
+
+            if (!(parent instanceof Parent)) {
+                throw new IllegalStateException(parent + " is not an instanceof " + Parent.class);
+            } else {
+                controller.root.set((Parent) parent);
+            }
+
+            loadController(controller);
         }
 
         return parent;

@@ -22,7 +22,7 @@ import java.util.Optional;
 public class Controller {
     protected final Singleton<State> state = new Singleton<>();
     protected final Map<String, Wizard<?>> wizards = new HashMap<>();
-    private final Singleton<Parent> root = new Singleton<>();
+    public final Singleton<Parent> root = new Singleton<>();
 
     public <T> T onto(URL url) throws IOException {
         ControllerLoader loader = new ControllerLoader(url, state.get(), state.get().singleContent(ModuleManager.class).getClassSources().toArray(new ClassSource[0]));
@@ -49,13 +49,6 @@ public class Controller {
         } else {
             Wizard<?> wizard = wizards.get(name);
             wizard.open();
-
-            while (wizard.isRunning()) {
-                root.get().setDisable(true);
-            }
-
-            root.get().setDisable(false);
-            wizard.close();
 
             return wizard.getResult();
         }
