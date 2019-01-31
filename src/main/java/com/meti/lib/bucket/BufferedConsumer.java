@@ -1,5 +1,6 @@
 package com.meti.lib.bucket;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Consumer;
@@ -11,6 +12,10 @@ import java.util.function.Consumer;
  */
 public class BufferedConsumer<T> implements Consumer<T>, Contentable<T, Queue<T>> {
     public final Queue<T> queue = new LinkedList<>();
+
+    public BufferedConsumer(T... initial){
+        queue.addAll(Arrays.asList(initial));
+    }
 
     @Override
     public void accept(T t) {
