@@ -1,5 +1,6 @@
-package com.meti.app.control;
+package com.meti.app.control.connect;
 
+import com.meti.app.control.InfinityController;
 import com.meti.lib.fx.Wizard;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;

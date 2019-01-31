@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.app.control.connect.ConnectionManager;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 

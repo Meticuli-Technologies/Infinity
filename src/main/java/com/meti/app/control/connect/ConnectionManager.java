@@ -1,5 +1,6 @@
-package com.meti.app.control;
+package com.meti.app.control.connect;
 
+import com.meti.app.control.InfinityController;
 import com.meti.lib.net.Connection;
 import com.meti.lib.state.State;
 import javafx.beans.property.ObjectProperty;

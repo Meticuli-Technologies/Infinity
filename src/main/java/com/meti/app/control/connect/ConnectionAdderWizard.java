@@ -1,4 +1,4 @@
-package com.meti.app.control;
+package com.meti.app.control.connect;
 
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.FXWizard;

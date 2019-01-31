@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.app.control.ConnectionCreator;
+import com.meti.app.control.connect.ConnectionCreator;
 import com.meti.lib.SocketConnection;
 import com.meti.lib.state.State;
 import javafx.fxml.FXMLLoader;
