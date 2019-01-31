@@ -13,8 +13,7 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 1/29/2019
  */
-public abstract class FXWizard<T> extends AbstractWizard<T> {
-    private final Consumer<Parent> handler;
+public abstract class FXWizard<T> extends AbstractWizard<Consumer<Parent>, T> {
     private final State state;
     private final Parent root;
 
@@ -23,31 +22,18 @@ public abstract class FXWizard<T> extends AbstractWizard<T> {
 
         this.state = state;
         this.root = root;
-        /*
-        handler should be the last field to initialize
-        because it depends on state to initialize a field
-         */
-        this.handler = new StageConsumer();
-    }
-
-    public FXWizard(String name, Consumer<Parent> handler, State state, Parent root) {
-        super(name);
-
-        this.handler = handler;
-        this.state = state;
-        this.root = root;
     }
 
     @Override
-    public void open() {
+    public void open(Consumer<Parent>... handlers) {
         Optional<Parent> rootOptional = getRoot();
-        Optional<Consumer<Parent>> handlerOptional = getHandler();
 
-        if (rootOptional.isPresent() && handlerOptional.isPresent()) {
-            super.open();
-            handlerOptional.get().accept(rootOptional.get());
+        Consumer<Parent> handler = handlers[0];
+        if (rootOptional.isPresent() && handler != null) {
+            setRunning(true);
+            handler.accept(rootOptional.get());
         } else {
-            if (!rootOptional.isPresent() && !handlerOptional.isPresent()) {
+            if (!rootOptional.isPresent() && handler == null) {
                 throw new IllegalStateException("Root and handler are unspecified");
             }
 
@@ -57,10 +43,6 @@ public abstract class FXWizard<T> extends AbstractWizard<T> {
 
             throw new IllegalStateException("Handler is unspecified");
         }
-    }
-
-    public Optional<Consumer<Parent>> getHandler() {
-        return Optional.ofNullable(handler);
     }
 
     public Optional<Parent> getRoot() {

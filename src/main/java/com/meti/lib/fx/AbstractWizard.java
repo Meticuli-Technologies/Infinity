@@ -1,13 +1,14 @@
 package com.meti.lib.fx;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 1/29/2019
  */
-public abstract class AbstractWizard<T> implements Wizard<T> {
+public abstract class AbstractWizard<P, R> implements Wizard<P, R> {
     private final String name;
     private boolean running;
 
@@ -21,8 +22,12 @@ public abstract class AbstractWizard<T> implements Wizard<T> {
     }
 
     @Override
-    public void open() {
-        running = true;
+    public void open(P... parameters) {
+        setRunning(true);
+    }
+
+    public void setRunning(boolean b) {
+        running = b;
     }
 
     @Override
@@ -32,6 +37,6 @@ public abstract class AbstractWizard<T> implements Wizard<T> {
 
     @Override
     public void close() {
-        running = false;
+        setRunning(false);
     }
 }

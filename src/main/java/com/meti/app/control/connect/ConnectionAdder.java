@@ -31,10 +31,10 @@ public class ConnectionAdder extends InfinityController {
             }
         }
         else{
-            Wizard<?> selectedWizard = wizards.get(wizardNameList.getSelectionModel().getSelectedItem());
+            Wizard<?, ?> selectedWizard = wizards.get(wizardNameList.getSelectionModel().getSelectedItem());
             selectedWizard.open();
 
-            //changeContent(wizards.get(wizardNameList.getSelectionModel().getSelectedItem()).open());
+            wizards.get(wizardNameList.getSelectionModel().getSelectedItem()).open();
         }
     }
 
