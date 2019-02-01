@@ -4,10 +4,8 @@ import com.meti.app.control.connect.ConnectionCreatorView;
 import com.meti.lib.SocketConnection;
 import com.meti.lib.fx.Controller;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -36,10 +34,13 @@ public class SocketConnectionCreator extends Controller implements ConnectionCre
     @Override
     public SocketConnection get() {
         try {
-            InetAddress address = InetAddress.getByName(socketConnectionCreatorView.addressField.getText());
-            int port = Integer.parseInt(socketConnectionCreatorView.portField.getText());
-            return new SocketConnection(new Socket(address, port));
-        } catch (IOException e) {
+            Optional<SocketConnection> connection = socketConnectionCreatorView.getConnection();
+            if (connection.isPresent()) {
+                return connection.get();
+            } else {
+                throw new IllegalStateException("No connection found");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
