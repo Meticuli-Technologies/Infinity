@@ -21,5 +21,5 @@ public abstract class Server extends LoopHandler {
         };
     }
 
-    public abstract Client accept() throws Exception;
+    public abstract Client accept();
 }

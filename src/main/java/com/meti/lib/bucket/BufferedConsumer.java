@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 public class BufferedConsumer<T> implements Consumer<T>, Contentable<T, Queue<T>> {
     public final Queue<T> queue = new LinkedList<>();
 
+    @SafeVarargs
     public BufferedConsumer(T... initial){
         queue.addAll(Arrays.asList(initial));
     }

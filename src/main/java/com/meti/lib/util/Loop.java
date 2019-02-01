@@ -21,11 +21,11 @@ public abstract class Loop implements Callable<Optional<Exception>> {
         }
     }
 
-    public void start() throws Exception {
+    public void start() {
     }
 
     public abstract void loop() throws Exception;
 
-    public void stop() throws Exception {
+    public void stop() {
     }
 }

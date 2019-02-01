@@ -1,16 +1,11 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.module.ModuleManager;
-import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -19,25 +14,15 @@ import java.util.stream.Stream;
  */
 public class ControllerLoader extends FXMLLoader {
     private final State state;
-    private final Set<ClassSource> classSources;
 
-    public ControllerLoader(URL location, State state, ClassSource... classSources) {
+    public ControllerLoader(URL location, State state) {
         super(location);
 
         this.state = state;
-
-        /*
-        Probably not the best way from ClassSource[] to Set<ClassSource>, just saying.
-         */
-        this.classSources = Stream.of(classSources).collect(Collectors.toSet());
     }
 
     public static <T> T load(URL location, State state) throws IOException {
-        return load(location, state, state.singleContent(ModuleManager.class).getClassSources().toArray(new ClassSource[0]));
-    }
-
-    public static <T> T load(URL location, State state, ClassSource... classSources) throws IOException {
-        return new ControllerLoader(location, state, classSources).load();
+        return new ControllerLoader(location, state).load();
     }
 
     @Override
@@ -62,6 +47,9 @@ public class ControllerLoader extends FXMLLoader {
 
     private void loadController(Controller controller) {
         controller.state.set(state);
-        controller.confirm();
+
+        if (controller instanceof Confirmable) {
+            ((Confirmable) controller).confirm();
+        }
     }
 }

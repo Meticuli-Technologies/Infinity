@@ -1,6 +1,7 @@
 package com.meti.app.control;
 
 import com.meti.lib.console.Console;
+import com.meti.lib.fx.Confirmable;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.module.ModuleManager;
@@ -17,7 +18,7 @@ import java.util.logging.Level;
  * @version 0.0.0
  * @since 1/30/2019
  */
-public class InfinityController extends Controller {
+public class InfinityController extends Controller implements Confirmable {
     public final ObjectProperty<URL> backURLProperty = new SimpleObjectProperty<>();
 
     protected Console console;
@@ -37,7 +38,6 @@ public class InfinityController extends Controller {
         }
     }
 
-    @Override
     public void confirm() {
         console = getItem(Console.class);
         properties = getItem(Properties.class);
