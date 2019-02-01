@@ -28,9 +28,7 @@ public class ControllerLoader extends FXMLLoader {
     }
 
     public ControllerLoader(ExternalFXML<?> externalFXML, State state) {
-        super(externalFXML.getURL());
-        this.externalFXML = externalFXML;
-        this.state = state;
+        this(externalFXML.getURL(), state);
 
         String className = externalFXML.getClass().getName();
         Set<ClassSource> collect = state.singleContent(ModuleManager.class)
@@ -39,8 +37,7 @@ public class ControllerLoader extends FXMLLoader {
                 .filter(classSource -> classSource.byName(className).isPresent())
                 .collect(Collectors.toSet());
 
-        ClassSource classSource = CollectionUtil.toSingle(collect);
-        setClassLoader(classSource.getClassLoader());
+        setClassLoader(CollectionUtil.toSingle(collect).getClassLoader());
     }
 
     public static <T> T load(URL location, State state) throws IOException {
