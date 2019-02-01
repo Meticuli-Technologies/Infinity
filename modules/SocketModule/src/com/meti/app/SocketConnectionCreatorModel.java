@@ -1,8 +1,7 @@
 package com.meti.app;
 
-import com.meti.app.control.connect.ConnectionCreatorView;
+import com.meti.app.control.connect.ConnectionCreator;
 import com.meti.lib.SocketConnection;
-import com.meti.lib.fx.Controller;
 
 import java.net.URL;
 import java.util.Optional;
@@ -12,9 +11,7 @@ import java.util.Optional;
  * @version 0.0.0
  * @since 2/1/2019
  */
-public class SocketConnectionCreator extends Controller implements ConnectionCreatorView.ConnectionCreator<SocketConnectionCreatorView, SocketConnection> {
-    private SocketConnectionCreatorView socketConnectionCreatorView;
-
+public class SocketConnectionCreatorModel extends ConnectionCreator<SocketConnectionCreatorView, SocketConnection> {
     @Override
     public String getName() {
         return "Sockets";
@@ -34,7 +31,7 @@ public class SocketConnectionCreator extends Controller implements ConnectionCre
     @Override
     public SocketConnection get() {
         try {
-            Optional<SocketConnection> connection = socketConnectionCreatorView.getConnection();
+            Optional<SocketConnection> connection = controller.getConnection();
             if (connection.isPresent()) {
                 return connection.get();
             } else {
@@ -44,10 +41,5 @@ public class SocketConnectionCreator extends Controller implements ConnectionCre
             e.printStackTrace();
             return null;
         }
-    }
-
-    @Override
-    public void accept(SocketConnectionCreatorView socketConnectionCreatorView) {
-        this.socketConnectionCreatorView = socketConnectionCreatorView;
     }
 }

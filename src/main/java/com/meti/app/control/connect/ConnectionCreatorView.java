@@ -1,9 +1,7 @@
 package com.meti.app.control.connect;
 
 import com.meti.app.control.InfinityController;
-import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.ControllerLoader;
-import com.meti.lib.fx.ExternalFXML;
 import com.meti.lib.net.Connection;
 import com.meti.lib.util.FXUtil;
 import javafx.collections.FXCollections;
@@ -16,7 +14,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.util.function.Supplier;
 import java.util.logging.Level;
 
 /**
@@ -87,14 +84,5 @@ public class ConnectionCreatorView extends InfinityController {
 
     public Connection<?, ?, ?> getConnection() {
         return currentCreator.get();
-    }
-
-    /**
-     * @author SirMathhman
-     * @version 0.0.0
-     * @since 1/31/2019
-     */
-    public interface ConnectionCreator<T extends Controller, C extends Connection<?, ?, ?>> extends ExternalFXML<T>, Supplier<C> {
-        String getName();
     }
 }
