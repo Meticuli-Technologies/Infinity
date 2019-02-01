@@ -27,7 +27,7 @@ public class Settings extends InfinityController {
     }
 
     @Override
-    public void confirm() {
+    public void confirmInfinity() {
         properties = state.get().singleContent(Properties.class);
         properties.keySet().forEach(o -> {
             String key = o.toString();

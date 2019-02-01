@@ -18,8 +18,7 @@ public class Menu extends InfinityController {
     private Text versionText;
 
     @Override
-    public void confirm() {
-        super.confirm();
+    public void confirmInfinity() {
         String version = properties.getProperty("version");
         versionText.setText("Version: " + version);
     }

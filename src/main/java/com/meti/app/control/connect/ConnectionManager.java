@@ -80,7 +80,6 @@ public class ConnectionManager extends InfinityController implements Initializab
     }
 
     @Override
-    public void confirm() {
-        super.confirm();
+    public void confirmInfinity() {
     }
 }

@@ -38,11 +38,17 @@ public class InfinityController extends Controller implements Confirmable {
         }
     }
 
-    public void confirm() {
+    public final void confirm() {
         console = getItem(Console.class);
         properties = getItem(Properties.class);
         stageManager = getItem(StageManager.class);
         moduleManager = getItem(ModuleManager.class);
+
+        confirmInfinity();
+    }
+
+    public void confirmInfinity(){
+
     }
 
     public <T> T getItem(Class<T> itemClass) {
