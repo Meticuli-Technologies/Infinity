@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.concurrent.ThreadManager;
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.StageManager;
@@ -32,33 +33,29 @@ public class Infinity {
     private Console console;
     private Properties properties;
     private StageManager stageManager;
+    private ThreadManager threadManager;
 
     public void start(Stage primaryStage) {
+        setTitle(primaryStage);
+
         console = new Console(Infinity.class.getSimpleName());
         console.log(Level.INFO, "Starting Infinity!");
-
         try {
             properties = loadProperties();
-            console.log(Level.INFO, "Located " + properties.size() + " property entries.");
-            setTitle(primaryStage);
+            printProperties();
 
             ModuleManager moduleManager = loadModules(properties);
-            Map<String, Module> modules = moduleManager.modules;
-            StringBuilder builder = new StringBuilder();
-            modules.keySet().forEach(name -> builder
-                    .append("\n\t")
-                    .append(name)
-                    .append(" ")
-                    .append(modules.get(name)));
-            console.log(Level.INFO, "Located " + modules.size() + " modules:" + builder.toString());
+            printModules(moduleManager);
 
             stageManager = loadStageManager(properties);
             stageManager.add(primaryStage);
 
+            threadManager = new ThreadManager();
             state = new InfinityState(
                     properties,
                     moduleManager,
                     stageManager,
+                    threadManager,
                     console
             );
 
@@ -66,6 +63,21 @@ public class Infinity {
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
         }
+    }
+
+    public void printProperties() {
+        console.log(Level.INFO, "Located " + properties.size() + " property entries.");
+    }
+
+    public void printModules(ModuleManager moduleManager) {
+        Map<String, Module> modules = moduleManager.modules;
+        StringBuilder builder = new StringBuilder();
+        modules.keySet().forEach(name -> builder
+                .append("\n\t")
+                .append(name)
+                .append(" ")
+                .append(modules.get(name)));
+        console.log(Level.INFO, "Located " + modules.size() + " modules:" + builder.toString());
     }
 
     public void setTitle(Stage primaryStage) {
@@ -140,8 +152,9 @@ public class Infinity {
         console.log(Level.INFO, "Stopping Infinity");
 
         try {
+            threadManager.stop();
             storeProperties();
-        } catch (IOException e) {
+        } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in stopping Infinity", e);
         }
     }
