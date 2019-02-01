@@ -83,8 +83,4 @@ public class ConnectionManager extends InfinityController implements Initializab
     public void confirm() {
         super.confirm();
     }
-
-  /*  public URL getConnectionAdderURL() {
-        return getClass().getResource("/com/meti/app/control/ConnectionAdder.fxml");
-    }*/
 }
