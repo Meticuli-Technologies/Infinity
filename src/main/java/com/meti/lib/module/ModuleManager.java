@@ -11,6 +11,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -38,7 +39,7 @@ public class ModuleManager {
                 .collect(Collectors.toSet());
     }
 
-    public Set<Object> instancesOf(Class<?> clazz, Object... parameters) {
+    public <T> Set<T> instancesOf(Class<T> clazz, Object... parameters) {
         Class[] classes = Arrays.stream(parameters)
                 .map(Object::getClass)
                 .toArray(Class[]::new);
@@ -49,6 +50,7 @@ public class ModuleManager {
                 .flatMap(Optional::stream)
                 .map(Clause.wrap(constructor -> constructor.newInstance(parameters)))
                 .flatMap(Optional::stream)
+                .map(clazz::cast)
                 .collect(Collectors.toSet());
     }
 

@@ -10,4 +10,5 @@ import java.util.function.Supplier;
  * @since 1/31/2019
  */
 public interface ConnectionCreator<C extends Connection<?, ?, ?>> extends Supplier<C> {
+    String getName();
 }

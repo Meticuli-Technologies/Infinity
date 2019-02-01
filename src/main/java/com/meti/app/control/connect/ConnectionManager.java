@@ -12,7 +12,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -31,6 +35,9 @@ public class ConnectionManager extends InfinityController implements Initializab
     private AnchorPane dataPane;
     @FXML
     private Button continueButton;
+
+    //can't have wildcard here because there's apparently an inequality constraint
+    private Map<String, ConnectionCreator<?>> creatorMap;
 
     @FXML
     public void addConnection() {
@@ -81,5 +88,7 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @Override
     public void confirmInfinity() {
+        moduleManager.instancesOf(ConnectionCreator.class)
+                .forEach(connectionCreator -> creatorMap.put(connectionCreator.getName(), connectionCreator));
     }
 }
