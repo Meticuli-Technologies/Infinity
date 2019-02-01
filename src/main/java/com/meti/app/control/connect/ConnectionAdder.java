@@ -1,15 +1,18 @@
 package com.meti.app.control.connect;
 
 import com.meti.app.control.InfinityController;
+import com.meti.lib.fx.FXWizard;
 import com.meti.lib.fx.Wizard;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 public class ConnectionAdder extends InfinityController {
@@ -31,10 +34,8 @@ public class ConnectionAdder extends InfinityController {
             }
         }
         else{
-            Wizard<?, ?> selectedWizard = wizards.get(wizardNameList.getSelectionModel().getSelectedItem());
-            selectedWizard.open();
-
-            wizards.get(wizardNameList.getSelectionModel().getSelectedItem()).open();
+            FXWizard<?> selectedWizard = (FXWizard<?>) wizards.get(wizardNameList.getSelectionModel().getSelectedItem());
+            selectedWizard.open((Consumer<Parent>) this::changeContent);
         }
     }
 

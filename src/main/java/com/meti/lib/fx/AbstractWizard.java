@@ -1,7 +1,6 @@
 package com.meti.lib.fx;
 
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author SirMathhman

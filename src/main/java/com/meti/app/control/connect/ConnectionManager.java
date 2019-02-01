@@ -1,8 +1,9 @@
 package com.meti.app.control.connect;
 
 import com.meti.app.control.InfinityController;
+import com.meti.lib.fx.FXWizard;
+import com.meti.lib.fx.StageConsumer;
 import com.meti.lib.net.Connection;
-import com.meti.lib.state.State;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -43,7 +44,7 @@ public class ConnectionManager extends InfinityController implements Initializab
     @FXML
     public void addConnection() {
         try {
-            loadWizard("Connection Adder");
+            loadWizard("Connection Adder", new StageConsumer());
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }
@@ -100,12 +101,11 @@ public class ConnectionManager extends InfinityController implements Initializab
             connectionCreators.add((ConnectionCreator) wizards.get(s));
         });
 
-       /* try {
-            State state = ConnectionManager.this.state.get();
-            //(new ConnectionAdderWizard(getConnectionAdderURL(), handler, state));
+        try {
+            addWizard(new ConnectionAdderWizard(getConnectionAdderURL(), state.get()));
         } catch (IOException e) {
             console.log(Level.WARNING, e);
-        }*/
+        }
     }
 
     public URL getConnectionAdderURL() {

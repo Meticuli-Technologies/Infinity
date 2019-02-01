@@ -1,9 +1,7 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.state.State;
+import com.meti.lib.tuple.Tuple3;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -13,25 +11,24 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 1/29/2019
  */
-public abstract class FXWizard<T> extends AbstractWizard<Consumer<Parent>, T> {
-    private final State state;
+public abstract class FXWizard<T> extends AbstractWizard<FXConsumer, T> {
     private final Parent root;
 
-    public FXWizard(String name, State state, Parent root) {
+    public FXWizard(String name, Parent root) {
         super(name);
 
-        this.state = state;
         this.root = root;
     }
 
     @Override
-    public void open(Consumer<Parent>... handlers) {
+    @SafeVarargs
+    public final void open(FXConsumer... handlers) {
         Optional<Parent> rootOptional = getRoot();
 
-        Consumer<Parent> handler = handlers[0];
+        FXConsumer handler = handlers[0];
         if (rootOptional.isPresent() && handler != null) {
             setRunning(true);
-            handler.accept(rootOptional.get());
+            handler.accept(new Tuple3<>());
         } else {
             if (!rootOptional.isPresent() && handler == null) {
                 throw new IllegalStateException("Root and handler are unspecified");
@@ -47,20 +44,5 @@ public abstract class FXWizard<T> extends AbstractWizard<Consumer<Parent>, T> {
 
     public Optional<Parent> getRoot() {
         return Optional.ofNullable(root);
-    }
-
-    public class StageConsumer implements Consumer<Parent> {
-        private final Stage stage;
-
-        public StageConsumer() {
-            stage = state.singleContent(StageManager.class).allocate();
-        }
-
-        @Override
-        public void accept(Parent parent) {
-            stage.setOnCloseRequest(event -> close());
-            stage.setScene(new Scene(parent));
-            stage.showAndWait();
-        }
     }
 }
