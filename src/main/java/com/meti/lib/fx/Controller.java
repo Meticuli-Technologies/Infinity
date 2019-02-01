@@ -21,7 +21,6 @@ import java.util.Optional;
  */
 public class Controller {
     protected final Singleton<State> state = new Singleton<>();
-    protected final Map<String, Wizard<?, ?>> wizards = new HashMap<>();
     public final Singleton<Parent> root = new Singleton<>();
 
     public <T> T onto(URL url) throws IOException {
@@ -39,28 +38,6 @@ public class Controller {
         return loader.getController();
     }
 
-    public void addWizard(Wizard<?, ?> wizard) {
-        wizards.put(wizard.getName().orElse("null"), wizard);
-    }
-
-    public <P, R> R loadWizard(String name, P... parameters) throws IOException {
-        if (root.get() == null) {
-            throw new IllegalStateException("Root is null, cannot proceed");
-        } else {
-            root.get().setDisable(true);
-
-            Wizard<P, R> wizard = (Wizard<P, R>) wizards.get(name);
-            wizard.open(parameters);
-
-            root.get().setDisable(false);
-            return wizard.getResult();
-        }
-    }
-
     public void confirm() {
-    }
-
-    public Optional<Class<? extends Wizard>> getWizardClass() {
-        return Optional.empty();
     }
 }

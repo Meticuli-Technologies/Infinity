@@ -3,14 +3,11 @@ package com.meti.lib.fx;
 import com.meti.lib.module.ModuleManager;
 import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
-import com.meti.lib.util.Clause;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -63,39 +60,8 @@ public class ControllerLoader extends FXMLLoader {
         return parent;
     }
 
-    private Set<Wizard> loadController(Controller controller) {
+    private void loadController(Controller controller) {
         controller.state.set(state);
-
-        Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
-        Set<Wizard> wizards = new HashSet<>();
-
-        if (wizardClass.isPresent()) {
-            WizardLoader wizardLoader = new WizardLoader(controller, wizardClass.get());
-            wizards = classSources.stream()
-                    .flatMap(wizardLoader::load)
-                    .collect(Collectors.toSet());
-        }
-
         controller.confirm();
-        return wizards;
-    }
-
-    private class WizardLoader {
-        private final Class<? extends Wizard> wizardClass;
-        private final Controller controller;
-
-        public WizardLoader(Controller controller, Class<? extends Wizard> wizardClass) {
-            this.wizardClass = wizardClass;
-            this.controller = controller;
-        }
-
-        private Stream<Wizard> load(ClassSource classSource) {
-            return classSource.bySuper(wizardClass)
-                    .stream()
-                    .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor(State.class).newInstance(state)))
-                    .flatMap(Optional::stream)
-                    .map(Wizard.class::cast)
-                    .peek(controller::addWizard);
-        }
     }
 }

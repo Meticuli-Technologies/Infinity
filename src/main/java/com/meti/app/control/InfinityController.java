@@ -25,7 +25,6 @@ public class InfinityController extends Controller {
     protected StageManager stageManager;
     protected ModuleManager moduleManager;
 
-
     public void ontoBack() {
         URL url = backURLProperty.get();
         if (url == null) {
