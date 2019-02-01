@@ -18,15 +18,18 @@ import java.util.stream.Collectors;
  * @since 1/27/2019
  */
 public class ControllerLoader extends FXMLLoader {
+    private final ExternalFXML<?> externalFXML;
     private final State state;
 
     public ControllerLoader(URL location, State state) {
         super(location);
+        this.externalFXML = null;
         this.state = state;
     }
 
-    public ControllerLoader(ExternalFXML externalFXML, State state) throws Exception {
+    public ControllerLoader(ExternalFXML<?> externalFXML, State state) {
         super(externalFXML.getURL());
+        this.externalFXML = externalFXML;
         this.state = state;
 
         String className = externalFXML.getClass().getName();
@@ -73,6 +76,10 @@ public class ControllerLoader extends FXMLLoader {
 
         if (controller instanceof Confirmable) {
             ((Confirmable) controller).confirm();
+        }
+
+        if(externalFXML != null){
+            externalFXML.acceptObject(controller);
         }
     }
 }

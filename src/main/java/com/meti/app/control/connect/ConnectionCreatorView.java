@@ -1,6 +1,7 @@
 package com.meti.app.control.connect;
 
 import com.meti.app.control.InfinityController;
+import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.ExternalFXML;
 import com.meti.lib.net.Connection;
@@ -30,12 +31,13 @@ public class ConnectionCreatorView extends InfinityController {
     @FXML
     private ListView<String> creatorNameList;
 
-    private ObservableMap<String, ConnectionCreator<?>> creatorMap = FXCollections.observableHashMap();
+    private ObservableMap<String, ConnectionCreator<?, ?>> creatorMap = FXCollections.observableHashMap();
     private boolean listVisible = true;
+    private ConnectionCreator<?, ?> currentCreator;
 
     @Override
     public void confirmInfinity() {
-        creatorMap.addListener((MapChangeListener<String, ConnectionCreator<?>>) change -> {
+        creatorMap.addListener((MapChangeListener<String, ConnectionCreator<?, ?>>) change -> {
             ObservableList<String> items = creatorNameList.getItems();
             if (change.wasAdded()) {
                 items.add(change.getKey());
@@ -64,11 +66,15 @@ public class ConnectionCreatorView extends InfinityController {
         if (listVisible) {
             try {
                 String selectedItem = creatorNameList.getSelectionModel().getSelectedItem();
-                Node root = ControllerLoader.load(creatorMap.get(selectedItem), state.get());
+                currentCreator = creatorMap.get(selectedItem);
+
+                ControllerLoader loader = new ControllerLoader(currentCreator, state.get());
+                Node root = loader.load();
                 FXUtil.zeroAnchors(root);
 
                 contentPane.getChildren().clear();
                 contentPane.getChildren().add(root);
+
             } catch (Exception e) {
                 console.log(Level.WARNING, e);
             }
@@ -79,12 +85,16 @@ public class ConnectionCreatorView extends InfinityController {
         }
     }
 
+    public Connection<?, ?, ?> getConnection() {
+        return currentCreator.get();
+    }
+
     /**
      * @author SirMathhman
      * @version 0.0.0
      * @since 1/31/2019
      */
-    public interface ConnectionCreator<C extends Connection<?, ?, ?>> extends ExternalFXML, Supplier<C> {
+    public interface ConnectionCreator<T extends Controller, C extends Connection<?, ?, ?>> extends ExternalFXML<T>, Supplier<C> {
         String getName();
     }
 }

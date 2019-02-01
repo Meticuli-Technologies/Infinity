@@ -53,6 +53,9 @@ public class ConnectionManager extends InfinityController implements Initializab
             Stage allocate = stageManager.allocate();
             allocate.setScene(new Scene(root));
             allocate.showAndWait();
+
+            ConnectionCreatorView view = loader.getController();
+            view.getConnection();
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }
