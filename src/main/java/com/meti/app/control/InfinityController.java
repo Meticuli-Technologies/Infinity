@@ -19,17 +19,30 @@ import java.util.logging.Level;
  * @since 1/30/2019
  */
 public class InfinityController extends Controller implements Confirmable {
-    public final ObjectProperty<URL> backURLProperty = new SimpleObjectProperty<>();
+    public final ObjectProperty<URL> backURL = new SimpleObjectProperty<>();
+    public final ObjectProperty<URL> nextURL = new SimpleObjectProperty<>();
 
     protected Console console;
     protected Properties properties;
     protected StageManager stageManager;
     protected ModuleManager moduleManager;
 
-    public void ontoBack() {
-        URL url = backURLProperty.get();
+    public void toBack() {
+        URL url = backURL.get();
         if (url == null) {
             console.log(Level.WARNING, "Back URL not set!");
+        }
+        try {
+            onto(url);
+        } catch (IOException e) {
+            console.log(Level.WARNING, e);
+        }
+    }
+
+    public void toNext() {
+        URL url = nextURL.get();
+        if (url == null) {
+            console.log(Level.WARNING, "Next URL not set!");
         }
         try {
             onto(url);

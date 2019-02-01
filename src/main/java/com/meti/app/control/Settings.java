@@ -23,7 +23,7 @@ public class Settings extends InfinityController {
 
     @FXML
     public void back() {
-        ontoBack();
+        toBack();
     }
 
     @Override

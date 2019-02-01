@@ -27,7 +27,7 @@ public class Menu extends InfinityController {
     public void openConnectionManager() {
         try {
             ConnectionManager manager = onto(getConnectionManagerURL());
-            manager.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
+            manager.backURL.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }
@@ -51,7 +51,7 @@ public class Menu extends InfinityController {
     public void openSettings() {
         try {
             Settings settings = onto(getSettingsURL());
-            settings.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
+            settings.backURL.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }

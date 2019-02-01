@@ -1,6 +1,7 @@
 package com.meti.app.control.connect;
 
 import com.meti.lib.net.Connection;
+import javafx.scene.Node;
 
 import java.util.function.Supplier;
 
@@ -11,4 +12,5 @@ import java.util.function.Supplier;
  */
 public interface ConnectionCreator<C extends Connection<?, ?, ?>> extends Supplier<C> {
     String getName();
+    Node getRoot();
 }
