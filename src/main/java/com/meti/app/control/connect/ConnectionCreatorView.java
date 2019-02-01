@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -71,8 +72,10 @@ public class ConnectionCreatorView extends InfinityController {
             } catch (Exception e) {
                 console.log(Level.WARNING, e);
             }
+
+            listVisible = false;
         } else {
-            //TODO: to display
+            ((Stage) contentPane.getScene().getWindow()).close();
         }
     }
 
