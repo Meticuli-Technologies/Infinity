@@ -38,6 +38,20 @@ public class ModuleManager {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Object> instancesOf(Class<?> clazz, Object... parameters) {
+        Class[] classes = Arrays.stream(parameters)
+                .map(Object::getClass)
+                .toArray(Class[]::new);
+
+        return implementationsOf(clazz)
+                .stream()
+                .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor(classes)))
+                .flatMap(Optional::stream)
+                .map(Clause.wrap(constructor -> constructor.newInstance(parameters)))
+                .flatMap(Optional::stream)
+                .collect(Collectors.toSet());
+    }
+
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
         if(Files.exists(modulesDirectory)) {
             return Files.list(modulesDirectory)
