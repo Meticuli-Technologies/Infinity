@@ -1,11 +1,16 @@
 package com.meti.lib.fx;
 
+import com.meti.lib.module.ModuleManager;
+import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
+import com.meti.lib.util.CollectionUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -17,12 +22,31 @@ public class ControllerLoader extends FXMLLoader {
 
     public ControllerLoader(URL location, State state) {
         super(location);
-
         this.state = state;
+    }
+
+    public ControllerLoader(URL location, State state, String controllerClassName) throws Exception {
+        super(location);
+        this.state = state;
+
+        if (controllerClassName != null) {
+            Set<ClassSource> collect = state.singleContent(ModuleManager.class)
+                    .getClassSources()
+                    .stream()
+                    .filter(classSource -> classSource.byName(controllerClassName).isPresent())
+                    .collect(Collectors.toSet());
+
+            ClassSource classSource = CollectionUtil.toSingle(collect);
+            setClassLoader(classSource.getClassLoader());
+        }
     }
 
     public static <T> T load(URL location, State state) throws IOException {
         return new ControllerLoader(location, state).load();
+    }
+
+    public static <T> T load(URL location, State state, String controllerClassName) throws Exception {
+        return new ControllerLoader(location, state, controllerClassName).load();
     }
 
     @Override

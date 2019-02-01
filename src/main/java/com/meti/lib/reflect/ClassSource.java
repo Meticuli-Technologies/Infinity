@@ -1,5 +1,6 @@
 package com.meti.lib.reflect;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -8,11 +9,18 @@ import java.util.Set;
  * @since 1/27/2019
  */
 public interface ClassSource {
-    Class<?> byName(String name);
+    ClassLoader getClassLoader();
 
     default Set<Class<?>> bySuper(String superClassName) {
-        return bySuper(byName(superClassName));
+        Optional<Class<?>> superClass = byName(superClassName);
+        if (superClass.isPresent()) {
+            return bySuper(superClass.get());
+        } else {
+            throw new IllegalArgumentException("Superclass not found for name " + superClassName);
+        }
     }
+
+    Optional<Class<?>> byName(String name);
 
     Set<Class<?>> bySuper(Class<?> superClass);
 }

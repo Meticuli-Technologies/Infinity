@@ -98,6 +98,8 @@ public class ConnectionManager extends InfinityController implements Initializab
         });
 
         setContentAccessible(false);
+
+        backURL.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
     }
 
     private void setContentAccessible(boolean b) {
