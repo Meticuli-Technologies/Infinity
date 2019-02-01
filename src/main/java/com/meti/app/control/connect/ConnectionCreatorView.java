@@ -4,17 +4,16 @@ import com.meti.app.control.InfinityController;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.ExternalFXML;
 import com.meti.lib.net.Connection;
-import com.meti.lib.state.State;
+import com.meti.lib.util.FXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 
-import java.net.URL;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 
@@ -45,7 +44,8 @@ public class ConnectionCreatorView extends InfinityController {
             }
         });
 
-        moduleManager.instancesOf(ConnectionCreator.class).forEach((Consumer<ConnectionCreator>) connectionCreator -> creatorMap.put(connectionCreator.getName(), connectionCreator));
+        moduleManager.instancesOf(ConnectionCreator.class)
+                .forEach(connectionCreator -> creatorMap.put(connectionCreator.getName(), connectionCreator));
     }
 
     @FXML
@@ -63,10 +63,11 @@ public class ConnectionCreatorView extends InfinityController {
         if (listVisible) {
             try {
                 String selectedItem = creatorNameList.getSelectionModel().getSelectedItem();
-                contentPane.getChildren().clear();
+                Node root = ControllerLoader.load(creatorMap.get(selectedItem), state.get());
+                FXUtil.zeroAnchors(root);
 
-                ConnectionCreator<?> connectionCreator = creatorMap.get(selectedItem);
-                contentPane.getChildren().add(ControllerLoader.load(connectionCreator, state.get()));
+                contentPane.getChildren().clear();
+                contentPane.getChildren().add(root);
             } catch (Exception e) {
                 console.log(Level.WARNING, e);
             }
