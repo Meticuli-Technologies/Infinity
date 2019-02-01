@@ -2,6 +2,7 @@ package com.meti.app.control.connect;
 
 import com.meti.app.control.InfinityController;
 import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.fx.ExternalFXML;
 import com.meti.lib.net.Connection;
 import com.meti.lib.state.State;
 import javafx.collections.FXCollections;
@@ -12,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -66,11 +66,7 @@ public class ConnectionCreatorView extends InfinityController {
                 contentPane.getChildren().clear();
 
                 ConnectionCreator<?> connectionCreator = creatorMap.get(selectedItem);
-                URL url = connectionCreator.getURL();
-                State state = this.state.get();
-                String controllerClassName = connectionCreator.getClass().getName();
-
-                contentPane.getChildren().add(ControllerLoader.load(url, state, controllerClassName));
+                contentPane.getChildren().add(ControllerLoader.load(connectionCreator, state.get()));
             } catch (Exception e) {
                 console.log(Level.WARNING, e);
             }
@@ -84,9 +80,7 @@ public class ConnectionCreatorView extends InfinityController {
      * @version 0.0.0
      * @since 1/31/2019
      */
-    public interface ConnectionCreator<C extends Connection<?, ?, ?>> extends Supplier<C> {
+    public interface ConnectionCreator<C extends Connection<?, ?, ?>> extends ExternalFXML, Supplier<C> {
         String getName();
-
-        URL getURL();
     }
 }

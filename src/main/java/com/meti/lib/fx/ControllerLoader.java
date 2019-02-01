@@ -25,28 +25,27 @@ public class ControllerLoader extends FXMLLoader {
         this.state = state;
     }
 
-    public ControllerLoader(URL location, State state, String controllerClassName) throws Exception {
-        super(location);
+    public ControllerLoader(ExternalFXML externalFXML, State state) throws Exception {
+        super(externalFXML.getURL());
         this.state = state;
 
-        if (controllerClassName != null) {
-            Set<ClassSource> collect = state.singleContent(ModuleManager.class)
-                    .getClassSources()
-                    .stream()
-                    .filter(classSource -> classSource.byName(controllerClassName).isPresent())
-                    .collect(Collectors.toSet());
+        String className = externalFXML.getClass().getName();
+        Set<ClassSource> collect = state.singleContent(ModuleManager.class)
+                .getClassSources()
+                .stream()
+                .filter(classSource -> classSource.byName(className).isPresent())
+                .collect(Collectors.toSet());
 
-            ClassSource classSource = CollectionUtil.toSingle(collect);
-            setClassLoader(classSource.getClassLoader());
-        }
+        ClassSource classSource = CollectionUtil.toSingle(collect);
+        setClassLoader(classSource.getClassLoader());
     }
 
     public static <T> T load(URL location, State state) throws IOException {
         return new ControllerLoader(location, state).load();
     }
 
-    public static <T> T load(URL location, State state, String controllerClassName) throws Exception {
-        return new ControllerLoader(location, state, controllerClassName).load();
+    public static <T> T load(ExternalFXML externalFXML, State state) throws Exception {
+        return new ControllerLoader(externalFXML, state).load();
     }
 
     @Override

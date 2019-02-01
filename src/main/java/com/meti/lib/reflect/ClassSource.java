@@ -11,6 +11,14 @@ import java.util.Set;
 public interface ClassSource {
     ClassLoader getClassLoader();
 
+    default boolean contains(Class<?> clazz){
+        return contains(clazz.getName());
+    }
+
+    default boolean contains(String name){
+        return byName(name).isPresent();
+    }
+
     default Set<Class<?>> bySuper(String superClassName) {
         Optional<Class<?>> superClass = byName(superClassName);
         if (superClass.isPresent()) {
