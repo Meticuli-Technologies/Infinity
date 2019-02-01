@@ -1,24 +1,46 @@
 package com.meti.app;
 
-import com.meti.app.control.ConnectionCreator;
+import com.meti.app.control.connect.ConnectionCreatorView;
 import com.meti.lib.SocketConnection;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
+import com.meti.lib.fx.Controller;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 1/30/2019
+ * @since 2/1/2019
  */
-public class SocketConnectionCreator extends ConnectionCreator<SocketConnection> {
-    public SocketConnectionCreator() throws IOException {
-        super("Socket", FXMLLoader.load(SocketConnectionCreator.class.getResource("/com/meti/app/SocketConnectionCreatorView.fxml")));
+public class SocketConnectionCreator extends Controller implements ConnectionCreatorView.ConnectionCreator<SocketConnection> {
+
+    @FXML
+    private TextField addressField;
+
+    @FXML
+    private TextField portField;
+
+    @Override
+    public String getName() {
+        return "Sockets";
     }
 
     @Override
-    public SocketConnection getResult() throws IOException {
-        return new SocketConnection(null);
+    public URL getURL() {
+        return getClass().getResource("/com/meti/app/SocketConnectionCreator.fxml");
+    }
+
+    @Override
+    public SocketConnection get() {
+        try {
+            return new SocketConnection(new Socket(InetAddress.getByName(addressField.getText()), Integer.parseInt(portField.getText())));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

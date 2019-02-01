@@ -2,6 +2,7 @@ package com.meti.lib.reflect;
 
 import com.meti.lib.util.CollectionUtil;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,20 +13,29 @@ import java.util.stream.Collectors;
  */
 public class SetClassSource implements ClassSource {
     private final Set<Class<?>> classes;
+    private final ClassLoader classLoader;
 
-    public SetClassSource(Set<Class<?>> classes) {
+    public SetClassSource(Set<Class<?>> classes, ClassLoader classLoader) {
         this.classes = classes;
+        this.classLoader = classLoader;
     }
 
     @Override
-    public Class<?> byName(String name) {
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    @Override
+    public Optional<Class<?>> byName(String name) {
         Set<Class<?>> foundClasses = classes.stream()
-                .filter(aClass -> aClass.getSimpleName().equals(name))
+                .filter(aClass -> aClass.getName().equals(name))
                 .collect(Collectors.toSet());
+
         if (foundClasses.isEmpty()) {
-            throw new IllegalArgumentException("No classes found for name " + name);
+            return Optional.empty();
         }
-        return CollectionUtil.toSingle(foundClasses);
+
+        return Optional.of(CollectionUtil.toSingle(foundClasses));
     }
 
     @Override

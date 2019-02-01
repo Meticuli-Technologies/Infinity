@@ -30,6 +30,29 @@ public class ModuleManager {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Class<?>> implementationsOf(Class<?> clazz) {
+        return modules.values().stream()
+                .map(Module::getSource)
+                .map(classSource -> classSource.bySuper(clazz))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+    }
+
+    public <T> Set<? extends T> instancesOf(Class<T> clazz, Object... parameters) {
+        Class[] classes = Arrays.stream(parameters)
+                .map(Object::getClass)
+                .toArray(Class[]::new);
+
+        return implementationsOf(clazz)
+                .stream()
+                .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor(classes)))
+                .flatMap(Optional::stream)
+                .map(Clause.wrap(constructor -> constructor.newInstance(parameters)))
+                .flatMap(Optional::stream)
+                .map(clazz::cast)
+                .collect(Collectors.toSet());
+    }
+
     public Set<Module> loadModules(Path modulesDirectory) throws IOException {
         if(Files.exists(modulesDirectory)) {
             return Files.list(modulesDirectory)
@@ -78,7 +101,7 @@ public class ModuleManager {
         return new SetClassSource(collectedClassNames.stream()
                 .map(Clause.wrap(classLoader::loadClass))
                 .flatMap(Optional::stream)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet()), classLoader);
     }
 
     private Path getBinaryDirectory(Path moduleDirectory) throws IOException {

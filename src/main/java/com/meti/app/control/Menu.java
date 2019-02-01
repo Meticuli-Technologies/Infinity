@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.app.control.connect.ConnectionManager;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
@@ -17,8 +18,7 @@ public class Menu extends InfinityController {
     private Text versionText;
 
     @Override
-    public void confirm() {
-        super.confirm();
+    public void confirmInfinity() {
         String version = properties.getProperty("version");
         versionText.setText("Version: " + version);
     }
@@ -26,8 +26,7 @@ public class Menu extends InfinityController {
     @FXML
     public void openConnectionManager() {
         try {
-            ConnectionManager manager = onto(getConnectionManagerURL());
-            manager.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
+            onto(getConnectionManagerURL());
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }
@@ -51,7 +50,7 @@ public class Menu extends InfinityController {
     public void openSettings() {
         try {
             Settings settings = onto(getSettingsURL());
-            settings.backURLProperty.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
+            settings.backURL.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }

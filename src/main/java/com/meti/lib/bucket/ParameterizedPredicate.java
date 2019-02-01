@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 public abstract class ParameterizedPredicate<T, P> implements Parameterized<P>, Predicate<T> {
     protected final List<P> parameters = new ArrayList<>();
 
+    @SafeVarargs
     public ParameterizedPredicate(P... parameters) {
         this.parameters.addAll(Arrays.asList(parameters));
     }
