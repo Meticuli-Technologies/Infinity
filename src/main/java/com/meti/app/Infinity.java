@@ -36,13 +36,12 @@ public class Infinity {
     private ThreadManager threadManager;
 
     public void start(Stage primaryStage) {
-        setTitle(primaryStage);
-
         console = new Console(Infinity.class.getSimpleName());
         console.log(Level.INFO, "Starting Infinity!");
         try {
             properties = loadProperties();
             printProperties();
+            setTitle(primaryStage);
 
             ModuleManager moduleManager = loadModules(properties);
             printModules(moduleManager);

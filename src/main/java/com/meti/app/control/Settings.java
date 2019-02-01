@@ -40,7 +40,7 @@ public class Settings extends InfinityController {
         Text name = new Text(key);
         GridPane.setHalignment(name, HPos.CENTER);
         GridPane.setValignment(name, VPos.CENTER);
-        contentPane.add(name, 0, counter.increment());
+        contentPane.add(name, 0, counter.adjust());
 
         TextField input = new TextField(value);
         GridPane.setHalignment(input, HPos.CENTER);

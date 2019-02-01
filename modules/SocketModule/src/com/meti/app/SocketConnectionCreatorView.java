@@ -2,13 +2,13 @@ package com.meti.app;
 
 import com.meti.lib.SocketConnection;
 import com.meti.lib.fx.Controller;
+import com.meti.lib.util.Counter;
+import javafx.animation.AnimationTimer;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -37,21 +37,30 @@ public class SocketConnectionCreatorView extends Controller implements Initializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addressField.setOnKeyPressed(event -> refreshSocket());
-        portField.setOnKeyPressed(event -> refreshSocket());
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (now % 512 == 0) {
+                    refreshSocket();
+                }
+            }
+        };
+        timer.start();
     }
 
     public void refreshSocket() {
         try {
-            socketProperty.set(new Socket(InetAddress.getByName(portField.getText()), Integer.parseInt(statusText.getText())));
+            socketProperty.set(new Socket(InetAddress.getByName(addressField.getText()), Integer.parseInt(portField.getText())));
             statusText.setText("Nominal");
-        } catch (IOException e) {
+        } catch (Exception e) {
             socketProperty.set(null);
             statusText.setText(e.getMessage());
         }
     }
 
     public Optional<SocketConnection> getConnection() throws IOException {
+        refreshSocket();
+
         Socket socket = socketProperty.get();
         if (socket != null) {
             return Optional.of(new SocketConnection(socket));
