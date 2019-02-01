@@ -3,16 +3,14 @@ package com.meti.lib.fx;
 import com.meti.lib.module.ModuleManager;
 import com.meti.lib.reflect.ClassSource;
 import com.meti.lib.state.State;
-import com.meti.lib.util.Clause;
+import com.meti.lib.util.CollectionUtil;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -21,25 +19,33 @@ import java.util.stream.Stream;
  */
 public class ControllerLoader extends FXMLLoader {
     private final State state;
-    private final Set<ClassSource> classSources;
 
-    public ControllerLoader(URL location, State state, ClassSource... classSources) {
+    public ControllerLoader(URL location, State state) {
         super(location);
+        this.state = state;
+    }
 
+    public ControllerLoader(ExternalFXML externalFXML, State state) throws Exception {
+        super(externalFXML.getURL());
         this.state = state;
 
-        /*
-        Probably not the best way from ClassSource[] to Set<ClassSource>, just saying.
-         */
-        this.classSources = Stream.of(classSources).collect(Collectors.toSet());
+        String className = externalFXML.getClass().getName();
+        Set<ClassSource> collect = state.singleContent(ModuleManager.class)
+                .getClassSources()
+                .stream()
+                .filter(classSource -> classSource.byName(className).isPresent())
+                .collect(Collectors.toSet());
+
+        ClassSource classSource = CollectionUtil.toSingle(collect);
+        setClassLoader(classSource.getClassLoader());
     }
 
     public static <T> T load(URL location, State state) throws IOException {
-        return load(location, state, state.singleContent(ModuleManager.class).getClassSources().toArray(new ClassSource[0]));
+        return new ControllerLoader(location, state).load();
     }
 
-    public static <T> T load(URL location, State state, ClassSource... classSources) throws IOException {
-        return new ControllerLoader(location, state, classSources).load();
+    public static <T> T load(ExternalFXML externalFXML, State state) throws Exception {
+        return new ControllerLoader(externalFXML, state).load();
     }
 
     @Override
@@ -48,45 +54,25 @@ public class ControllerLoader extends FXMLLoader {
 
         Object controllerToken = getController();
         if (controllerToken instanceof Controller) {
-            loadController((Controller) controllerToken);
+            Controller controller = (Controller) controllerToken;
+
+            if (!(parent instanceof Parent)) {
+                throw new IllegalStateException(parent + " is not an instanceof " + Parent.class);
+            } else {
+                controller.root.set((Parent) parent);
+            }
+
+            loadController(controller);
         }
 
         return parent;
     }
 
-    private Set<Wizard> loadController(Controller controller) {
+    private void loadController(Controller controller) {
         controller.state.set(state);
 
-        Optional<Class<? extends Wizard>> wizardClass = controller.getWizardClass();
-        Set<Wizard> wizards = new HashSet<>();
-
-        if (wizardClass.isPresent()) {
-            WizardLoader wizardLoader = new WizardLoader(controller, wizardClass.get());
-            wizards = classSources.stream()
-                    .flatMap(wizardLoader::load)
-                    .collect(Collectors.toSet());
-        }
-
-        controller.confirm();
-        return wizards;
-    }
-
-    private class WizardLoader {
-        private final Class<? extends Wizard> wizardClass;
-        private final Controller controller;
-
-        public WizardLoader(Controller controller, Class<? extends Wizard> wizardClass) {
-            this.wizardClass = wizardClass;
-            this.controller = controller;
-        }
-
-        private Stream<Wizard> load(ClassSource classSource) {
-            return classSource.bySuper(wizardClass)
-                    .stream()
-                    .map(Clause.wrap(aClass -> aClass.getDeclaredConstructor().newInstance()))
-                    .flatMap(Optional::stream)
-                    .map(Wizard.class::cast)
-                    .peek(controller::addWizard);
+        if (controller instanceof Confirmable) {
+            ((Confirmable) controller).confirm();
         }
     }
 }

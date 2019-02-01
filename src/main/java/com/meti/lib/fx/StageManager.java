@@ -49,7 +49,7 @@ public class StageManager {
         }
     }
 
-    private Stage allocate() {
+    public Stage allocate() {
         Stage stage = new Stage();
         stages.add(stage);
         assignCoordinates(stage);

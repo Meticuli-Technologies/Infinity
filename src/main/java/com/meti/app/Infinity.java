@@ -3,6 +3,7 @@ package com.meti.app;
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.StageManager;
+import com.meti.lib.module.Module;
 import com.meti.lib.module.ModuleManager;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -33,13 +35,23 @@ public class Infinity {
 
     public void start(Stage primaryStage) {
         console = new Console(Infinity.class.getSimpleName());
-        console.log(Level.INFO, "Starting Infinity");
+        console.log(Level.INFO, "Starting Infinity!");
 
         try {
             properties = loadProperties();
-            primaryStage.setTitle("Infinity " + properties.getProperty("version"));
+            console.log(Level.INFO, "Located " + properties.size() + " property entries.");
+            setTitle(primaryStage);
 
             ModuleManager moduleManager = loadModules(properties);
+            Map<String, Module> modules = moduleManager.modules;
+            StringBuilder builder = new StringBuilder();
+            modules.keySet().forEach(name -> builder
+                    .append("\n\t")
+                    .append(name)
+                    .append(" ")
+                    .append(modules.get(name)));
+            console.log(Level.INFO, "Located " + modules.size() + " modules:" + builder.toString());
+
             stageManager = loadStageManager(properties);
             stageManager.add(primaryStage);
 
@@ -53,6 +65,15 @@ public class Infinity {
             loadMenu(stageManager.getPrimaryStage());
         } catch (Exception e) {
             console.log(Level.SEVERE, "Exception in starting Infinity", e);
+        }
+    }
+
+    public void setTitle(Stage primaryStage) {
+        String version = properties.getProperty("version");
+        if (version == null) {
+            console.log(Level.WARNING, "Unable to locate Infinity version, assuming 1.0.");
+        } else {
+            primaryStage.setTitle("Infinity " + version);
         }
     }
 
@@ -90,10 +111,12 @@ public class Infinity {
     private Properties loadProperties() throws IOException {
         Properties properties = new Properties();
         if (!Files.exists(PROPERTIES_DEFAULT_PATH)) {
+            console.log(Level.WARNING, PROPERTIES_DEFAULT_PATH + " not found and is being created");
             Files.createFile(PROPERTIES_DEFAULT_PATH);
 
             loadDefaultProperties(properties);
         } else {
+            console.log(Level.INFO, "Located properties at " + PROPERTIES_DEFAULT_PATH);
             properties.load(Files.newInputStream(PROPERTIES_DEFAULT_PATH));
         }
         return properties;

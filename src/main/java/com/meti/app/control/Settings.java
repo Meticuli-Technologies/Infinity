@@ -23,11 +23,11 @@ public class Settings extends InfinityController {
 
     @FXML
     public void back() {
-        ontoBack();
+        toBack();
     }
 
     @Override
-    public void confirm() {
+    public void confirmInfinity() {
         properties = state.get().singleContent(Properties.class);
         properties.keySet().forEach(o -> {
             String key = o.toString();
