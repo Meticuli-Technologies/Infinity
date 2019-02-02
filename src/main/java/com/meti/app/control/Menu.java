@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.lib.fx.Sequencer;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
@@ -20,19 +21,29 @@ public class Menu extends InfinityController {
     public void confirmInfinity() {
         String version = properties.getProperty("version");
         versionText.setText("Version: " + version);
+
+        sequencerManager.sequences.put("EntryViewer", new Sequencer<>(
+                getClass().getResource("/com/meti/app/control/Menu.fxml"),
+                getClass().getResource("/com/meti/app/control/EntryViewer.fxml"),
+                getClass().getResource("/com/meti/app/control/Display.fxml"))
+        );
+
+        setSequence("EntryViewer", 0);
     }
 
     @FXML
-    public void openConnectionManager() {
+    public void openConnections() {
+        toNext();
     }
 
     @FXML
-    public void hostAServer() {
+    public void openServers() {
+        toNext();
     }
 
     @FXML
-    public void useLocally() {
-
+    public void openLocals() {
+        toNext();
     }
 
     @FXML

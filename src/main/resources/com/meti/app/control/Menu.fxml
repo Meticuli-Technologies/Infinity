@@ -21,11 +21,11 @@
         </rowConstraints>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Infinity!" GridPane.columnSpan="2"
               GridPane.halignment="CENTER"/>
-        <Button mnemonicParsing="false" onAction="#openConnectionManager" text="Find a Connection"
+        <Button mnemonicParsing="false" onAction="#openConnections" text="Find a Connection"
                 GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
-        <Button mnemonicParsing="false" onAction="#hostAServer" text="Host a Server" GridPane.columnSpan="2"
+        <Button mnemonicParsing="false" onAction="#openServers" text="Host a Server" GridPane.columnSpan="2"
                 GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
-        <Button mnemonicParsing="false" onAction="#useLocally" text="Use Locally" GridPane.columnSpan="2"
+        <Button mnemonicParsing="false" onAction="#openLocals" text="Use Locally" GridPane.columnSpan="2"
                 GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
         <Button mnemonicParsing="false" onAction="#openSettings" text="Settings" GridPane.columnIndex="1"
                 GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
