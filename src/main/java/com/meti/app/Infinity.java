@@ -3,7 +3,7 @@ package com.meti.app;
 import com.meti.lib.concurrent.ThreadManager;
 import com.meti.lib.console.Console;
 import com.meti.lib.fx.ControllerLoader;
-import com.meti.lib.fx.SequencerManager;
+import com.meti.lib.fx.FXMLSequencerManager;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.module.Module;
 import com.meti.lib.module.ModuleManager;
@@ -52,7 +52,7 @@ public class Infinity {
 
             threadManager = new ThreadManager();
 
-            SequencerManager<Object> sequencerManager = new SequencerManager<>();
+            FXMLSequencerManager sequencerManager = new FXMLSequencerManager();
             state = new InfinityState(
                     properties,
                     moduleManager,
