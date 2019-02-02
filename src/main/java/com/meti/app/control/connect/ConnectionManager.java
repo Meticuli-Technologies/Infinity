@@ -46,23 +46,23 @@ public class ConnectionManager extends InfinityController implements Initializab
     @FXML
     public void addConnection() {
         try {
-            ControllerLoader loader = new ControllerLoader(getCreatorViewURL(), state.get());
+            ControllerLoader loader = new ControllerLoader(getURL("/com/meti/app/control/ConnectionCreatorView.fxml"), state.get());
             Parent root = loader.load();
-            ((InfinityController) loader.getController()).backURL.set(getClass().getResource("/com/meti/app/control/ConnectionManager.fxml"));
+            ((InfinityController) loader.getController()).backURL.set(getURL("/com/meti/app/control/ConnectionManager.fxml"));
 
             Stage allocate = stageManager.allocate();
             allocate.setScene(new Scene(root));
             allocate.showAndWait();
 
             ConnectionCreatorView view = loader.getController();
-            view.getConnection();
+            Connection<?, ?, ?> connection = view.getConnection();
         } catch (IOException e) {
             console.log(Level.WARNING, e);
         }
     }
 
-    public URL getCreatorViewURL() {
-        return getClass().getResource("/com/meti/app/control/ConnectionCreatorView.fxml");
+    public URL getURL(String s) {
+        return getClass().getResource(s);
     }
 
     @FXML
@@ -77,7 +77,7 @@ public class ConnectionManager extends InfinityController implements Initializab
 
     @FXML
     public void reset() {
-
+        connectionListView.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -102,7 +102,7 @@ public class ConnectionManager extends InfinityController implements Initializab
 
         setContentAccessible(false);
 
-        backURL.set(getClass().getResource("/com/meti/app/control/Menu.fxml"));
+        backURL.set(getURL("/com/meti/app/control/Menu.fxml"));
     }
 
     private void setContentAccessible(boolean b) {
