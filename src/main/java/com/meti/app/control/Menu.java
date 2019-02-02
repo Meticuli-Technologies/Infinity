@@ -1,6 +1,5 @@
 package com.meti.app.control;
 
-import com.meti.app.control.connect.ConnectionManager;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
@@ -25,30 +24,10 @@ public class Menu extends InfinityController {
 
     @FXML
     public void openConnectionManager() {
-        try {
-            onto(getConnectionManagerURL());
-        } catch (IOException e) {
-            console.log(Level.WARNING, e);
-        }
     }
-
-    private URL getConnectionManagerURL() {
-        return getClass().getResource("/com/meti/app/control/ConnectionManager.fxml");
-    }
-
-
-    private URL getServerManagerURL() {
-        return getClass().getResource("/com/meti/app/control/ServerManager.fxml");
-    }
-
 
     @FXML
     public void hostAServer() {
-        try {
-            onto(getServerManagerURL());
-        } catch (IOException e) {
-            console.log(Level.WARNING, e);
-        }
     }
 
     @FXML
