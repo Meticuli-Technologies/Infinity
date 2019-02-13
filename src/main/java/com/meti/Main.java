@@ -9,24 +9,38 @@ import javafx.stage.Stage;
  * @since 2/13/2019
  */
 public class Main extends Application {
-    private final Infinity infinity;
+    private final Infinity context;
 
+    /**
+     * <p>
+     *     The default constructor is called by {@link Application#launch(String...)},
+     *     which is then called in {@link #main(String[])}.
+     * </p>
+     */
+    @SuppressWarnings("unused")
     public Main() {
         this(new Infinity());
     }
 
-    public Main(Infinity infinity) {
-        this.infinity = infinity;
+    /**
+     * <p>
+     *     This constructor is not instantiated by JavaFX application and only serves
+     *     to verify that components inside of Main are successfully being tested.
+     * </p>
+     * @param context The context to use.
+     */
+    public Main(Infinity context) {
+        this.context = context;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        infinity.start(primaryStage);
+        context.start(primaryStage);
     }
 
     @Override
     public void stop() {
-        infinity.stop();
+        context.stop();
     }
 
     public static void main(String[] args) {
