@@ -3,7 +3,10 @@ package com.meti;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +34,7 @@ class MainTest {
 
     @Test
     void main() {
-        assertDoesNotThrow(() -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
             Main.main(new String[]{});
             assertTrue(Main.launched);
         });
