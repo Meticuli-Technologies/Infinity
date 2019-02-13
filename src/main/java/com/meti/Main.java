@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -6,19 +6,21 @@ import javafx.stage.Stage;
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 1/27/2019
+ * @since 2/13/2019
  */
 public class Main extends Application {
-    private final Infinity infinity = new Infinity();
+    static boolean launched;
+    static InfinityContext context = new Infinity();
 
     @Override
     public void start(Stage primaryStage) {
-        infinity.start(primaryStage);
+        launched = true;
+        context.start(primaryStage);
     }
 
     @Override
     public void stop() {
-        infinity.stop();
+        context.stop();
     }
 
     public static void main(String[] args) {
