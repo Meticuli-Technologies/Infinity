@@ -1,5 +1,6 @@
 package com.meti;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -7,9 +8,10 @@ import javafx.stage.Stage;
  * @version 0.0.0
  * @since 2/13/2019
  */
-public class Infinity implements InfinityLauncher {
+public class Infinity implements InfinityContext {
     @Override
     public void start(Stage primaryStage) {
+        Platform.exit();
     }
 
     @Override

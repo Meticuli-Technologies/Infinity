@@ -7,7 +7,7 @@ import javafx.stage.Stage;
  * @version 0.0.0
  * @since 2/13/2019
  */
-public interface InfinityLauncher {
+public interface InfinityContext {
     void start(Stage primaryStage);
     void stop();
 }

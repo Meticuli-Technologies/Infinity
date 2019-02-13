@@ -9,7 +9,8 @@ import javafx.stage.Stage;
  * @since 2/13/2019
  */
 public class Main extends Application {
-    private final InfinityLauncher context;
+    static boolean launched;
+    final InfinityContext context;
 
     /**
      * <p>
@@ -29,12 +30,13 @@ public class Main extends Application {
      * </p>
      * @param context The context to use.
      */
-    public Main(InfinityLauncher context) {
+    public Main(InfinityContext context) {
         this.context = context;
     }
 
     @Override
     public void start(Stage primaryStage) {
+        launched = true;
         context.start(primaryStage);
     }
 
