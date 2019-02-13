@@ -9,7 +9,7 @@ import javafx.stage.Stage;
  * @since 2/13/2019
  */
 public class Main extends Application {
-    private final Infinity context;
+    private final InfinityLauncher context;
 
     /**
      * <p>
@@ -29,7 +29,7 @@ public class Main extends Application {
      * </p>
      * @param context The context to use.
      */
-    public Main(Infinity context) {
+    public Main(InfinityLauncher context) {
         this.context = context;
     }
 

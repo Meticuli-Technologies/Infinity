@@ -7,10 +7,12 @@ import javafx.stage.Stage;
  * @version 0.0.0
  * @since 2/13/2019
  */
-public class Infinity {
+public class Infinity implements InfinityLauncher {
+    @Override
     public void start(Stage primaryStage) {
     }
 
+    @Override
     public void stop() {
     }
 }
