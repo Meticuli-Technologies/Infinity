@@ -1,6 +1,5 @@
 package com.meti;
 
-import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -11,7 +10,7 @@ import javafx.stage.Stage;
 public class Infinity implements InfinityContext {
     @Override
     public void start(Stage primaryStage) {
-        
+
     }
 
     @Override
