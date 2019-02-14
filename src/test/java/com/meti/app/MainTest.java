@@ -1,5 +1,8 @@
-package com.meti;
+package com.meti.app;
 
+import com.meti.app.Infinity;
+import com.meti.app.InfinityContext;
+import com.meti.app.Main;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;

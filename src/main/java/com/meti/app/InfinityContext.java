@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.app;
 
 import javafx.stage.Stage;
 
