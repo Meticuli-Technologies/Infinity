@@ -31,12 +31,7 @@ class InfinityTest {
 
     @Test
     void construct() {
-        assertDoesNotThrow(new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                infinity.start(primaryStage);
-            }
-        });
+        assertDoesNotThrow(() -> infinity.start(primaryStage));
     }
 
     @Test
