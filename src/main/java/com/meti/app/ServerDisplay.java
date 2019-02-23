@@ -35,13 +35,29 @@ public class ServerDisplay implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            backConsumer = event -> Platform.exit();
-            backButton.setText("Exit");
-
-            contentPane.setCenter(FXMLLoader.load(getClass().getResource("/com/meti/app/ServerMenu.fxml")));
+            loadMenu();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadMenu() throws IOException {
+        backConsumer = event -> Platform.exit();
+        backButton.setText("Exit");
+
+        contentPane.setCenter(FXMLLoader.load(getClass().getResource("/com/meti/app/ServerMenu.fxml")));
+        nextConsumer = event -> loadConsole();
+    }
+
+    private void loadConsole(){
+        backConsumer = event -> {
+            try {
+                loadMenu();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        backButton.setText("Back");
     }
 
     @FXML
