@@ -2,10 +2,12 @@ package com.meti.app;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -31,13 +33,18 @@ public class Main extends Application {
 
         Text welcomeText = new Text("Welcome to Infinity!");
         grid.add(welcomeText, 0, 0);
-        GridPane.setColumnSpan(welcomeText, 2);
+        GridPane.setRowSpan(welcomeText, 2);
+        center(welcomeText);
 
         Button connectButton = new Button("Connect to a Server");
         grid.add(connectButton, 0, 1);
+        center(connectButton);
 
         Button createButton = new Button("Create a Server");
         grid.add(createButton, 1, 1);
+        center(createButton);
+
+        createButton.setAlignment(Pos.CENTER);
 
         AnchorPane root = new AnchorPane();
         root.getChildren().add(grid);
@@ -52,6 +59,11 @@ public class Main extends Application {
         primaryStage.close();
 
         Platform.exit();
+    }
+
+    public void center(Node node) {
+        GridPane.setValignment(node, VPos.CENTER);
+        GridPane.setHalignment(node, HPos.CENTER);
     }
 
     public void zeroConstraints(GridPane grid) {
