@@ -33,6 +33,8 @@ public class Main extends Application {
         root.getChildren().add(grid);
 
         Stage stage = new Stage();
+        stage.setWidth(1024);
+        stage.setHeight(768);
         stage.setScene(new Scene(root));
         stage.showAndWait();
 
