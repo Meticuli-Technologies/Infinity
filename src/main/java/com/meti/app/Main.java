@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     @Override
-    public void start(Stage stage) {
+    public void start(Stage primaryStage) {
         GridPane grid = new GridPane();
 
         Text welcomeText = new Text("Welcome to Infinity!");
@@ -31,8 +32,14 @@ public class Main extends Application {
         AnchorPane root = new AnchorPane();
         root.getChildren().add(grid);
 
+        Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.showAndWait();
+
+        primaryStage.show();
+        primaryStage.close();
+
+        Platform.exit();
     }
 
     public static void main(String[] args) {
