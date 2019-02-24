@@ -1,6 +1,8 @@
 package com.meti.lib;
 
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author SirMathhman
@@ -14,5 +16,14 @@ public class TryableFactory<C extends Consumer<Exception>> {
         this.callback = callback;
     }
 
-
+    public <T, R>Function<T, Optional<R>> apply(TryableFunction<T, R> function){
+        return t -> {
+            try {
+                return Optional.ofNullable(function.apply(t));
+            } catch (Exception e) {
+                callback.accept(e);
+                return Optional.empty();
+            }
+        };
+    }
 }
