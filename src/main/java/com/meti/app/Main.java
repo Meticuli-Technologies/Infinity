@@ -2,10 +2,11 @@ package com.meti.app;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -18,6 +19,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         GridPane grid = new GridPane();
+        zeroConstraints(grid);
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        grid.getRowConstraints().add(rowConstraints);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        grid.getColumnConstraints().add(columnConstraints);
 
         Text welcomeText = new Text("Welcome to Infinity!");
         grid.add(welcomeText, 0, 0);
@@ -42,6 +52,13 @@ public class Main extends Application {
         primaryStage.close();
 
         Platform.exit();
+    }
+
+    public void zeroConstraints(GridPane grid) {
+        AnchorPane.setTopAnchor(grid, 0d);
+        AnchorPane.setBottomAnchor(grid, 0d);
+        AnchorPane.setLeftAnchor(grid, 0d);
+        AnchorPane.setRightAnchor(grid, 0d);
     }
 
     public static void main(String[] args) {
