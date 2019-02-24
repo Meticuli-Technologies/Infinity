@@ -13,17 +13,11 @@ import java.util.stream.Stream;
  * @since 2/24/2019
  */
 public class State extends ArrayList<Object> {
-    public <T> List<T> byClass(Class<T> tClass) {
-        return stream()
+    public <T> List<T> byClass(Class<T> tClass) throws Exception {
+        TryableFactory factory = new TryableFactory();
+        return factory.checkAll(stream()
                 .filter(o -> tClass.isAssignableFrom(o.getClass()))
-                .map((Function<Object, Optional<T>>) o -> {
-                    try {
-                        return Optional.of(tClass.cast(o));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return Optional.empty();
-                    }
-                })
+                .map(factory.apply(tClass::cast))
                 .flatMap(new Function<Optional<T>, Stream<T>>() {
                     @Override
                     public Stream<T> apply(Optional<T> optionalT) {
@@ -31,6 +25,6 @@ public class State extends ArrayList<Object> {
                                 .orElseGet(Stream::empty);
                     }
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }
