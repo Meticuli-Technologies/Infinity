@@ -6,5 +6,5 @@ package com.meti.lib;
  * @since 2/24/2019
  */
 public interface TryableFunction<T, R> {
-    R apply(T t) throws Exception;
+    R apply(T t);
 }

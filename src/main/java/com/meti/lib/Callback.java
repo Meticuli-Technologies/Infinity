@@ -29,14 +29,18 @@ public class Callback implements Consumer<Exception> {
         }
     }
 
-    public Exception getAll() {
-        String message = exceptions.stream()
-                .map(e -> {
-                    StringWriter writer = new StringWriter();
-                    e.printStackTrace(new PrintWriter(writer));
-                    return writer.toString();
-                })
-                .collect(Collectors.joining("\n"));
-        return new Exception(message);
+    public Optional<Exception> getAll() {
+        if (exceptions.isEmpty()) {
+            return Optional.empty();
+        } else {
+            String message = exceptions.stream()
+                    .map(e -> {
+                        StringWriter writer = new StringWriter();
+                        e.printStackTrace(new PrintWriter(writer));
+                        return writer.toString();
+                    })
+                    .collect(Collectors.joining("\n"));
+            return Optional.of(new Exception(message));
+        }
     }
 }
