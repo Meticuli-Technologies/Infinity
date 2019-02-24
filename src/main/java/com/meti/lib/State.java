@@ -2,10 +2,7 @@ package com.meti.lib;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -18,13 +15,7 @@ public class State extends ArrayList<Object> {
         return factory.checkAll(stream()
                 .filter(o -> tClass.isAssignableFrom(o.getClass()))
                 .map(factory.apply(tClass::cast))
-                .flatMap(new Function<Optional<T>, Stream<T>>() {
-                    @Override
-                    public Stream<T> apply(Optional<T> optionalT) {
-                        return optionalT.map(Stream::of)
-                                .orElseGet(Stream::empty);
-                    }
-                })
+                .flatMap(OptionalUtil::stream)
                 .collect(Collectors.toList()));
     }
 }
