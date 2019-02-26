@@ -9,12 +9,12 @@ import javafx.fxml.FXML;
  */
 public class Menu {
     @FXML
-    public void connect(){
+    public void connect() {
 
     }
 
     @FXML
-    public void host(){
+    public void host() {
 
     }
 }
