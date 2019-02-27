@@ -1,7 +1,8 @@
 package com.meti.app;
 
+import com.meti.lib.State;
+import com.meti.lib.fx.ControllerLoader;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,6 +15,8 @@ import java.net.URL;
  * @since 2/24/2019
  */
 public class Main extends Application {
+    private final State state = new State();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -21,9 +24,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            state.add(primaryStage);
+
             URL resource = getClass().getResource("/com/meti/app/Menu.fxml");
-            FXMLLoader loader = new FXMLLoader(resource);
-            primaryStage.setScene(new Scene(loader.load()));
+            primaryStage.setScene(new Scene(ControllerLoader.load(resource, state)));
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();

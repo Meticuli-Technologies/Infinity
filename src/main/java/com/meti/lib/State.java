@@ -1,10 +1,10 @@
 package com.meti.lib;
 
-import com.meti.lib.OptionalUtil;
-import com.meti.lib.TryableFactory;
+import com.meti.lib.util.CollectionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -13,6 +13,11 @@ import java.util.stream.Collectors;
  * @since 2/24/2019
  */
 public class State extends ArrayList<Object> {
+    public <T> Optional<T> byClassToSingle(Class<T> tClass) throws Exception {
+        List<T> list = byClass(tClass);
+        return CollectionUtil.toSingle(list);
+    }
+
     public <T> List<T> byClass(Class<T> tClass) throws Exception {
         TryableFactory factory = new TryableFactory();
         return factory.checkAll(stream()
