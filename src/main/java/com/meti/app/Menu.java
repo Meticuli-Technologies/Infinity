@@ -2,7 +2,6 @@ package com.meti.app;
 
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
-import com.meti.lib.fx.ControllerLoader;
 import javafx.fxml.FXML;
 
 /**
@@ -18,7 +17,7 @@ public class Menu extends Controller {
     @FXML
     public void connect() {
         try {
-            onto(ControllerLoader.load(getClass().getResource("/com/meti/app/ClientMenu.fxml")));
+            ontoURL(getClass().getResource("/com/meti/app/ClientMenu.fxml"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,7 +26,7 @@ public class Menu extends Controller {
     @FXML
     public void host() {
         try {
-            onto(ControllerLoader.load(getClass().getResource("/com/meti/app/ServerMenu.fxml")));
+            ontoURL(getClass().getResource("/com/meti/app/ServerMenu.fxml"));
         } catch (Exception e) {
             e.printStackTrace();
         }

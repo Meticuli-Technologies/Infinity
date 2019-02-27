@@ -25,7 +25,7 @@ public class ClientMenu extends Controller {
     @FXML
     public void back() {
         try {
-            onto(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml")));
+            ontoURL(getClass().getResource("/com/meti/app/Menu.fxml"));
         } catch (Exception e) {
             e.printStackTrace();
         }

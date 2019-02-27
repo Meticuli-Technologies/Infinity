@@ -26,12 +26,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField onAction="#address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="address" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </TextField>
-                  <TextField onAction="#port" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connect to a Server" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />

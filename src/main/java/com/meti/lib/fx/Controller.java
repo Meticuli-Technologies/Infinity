@@ -5,6 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+
 public class Controller {
     protected final State state;
 
@@ -12,11 +15,15 @@ public class Controller {
         this.state = state;
     }
 
-    public Stage onto(Parent parent) throws Exception {
-        return onto(parent, 0);
+    public Stage ontoURL(URL url) throws Exception {
+        return ontoParent(ControllerLoader.load(url, state));
     }
 
-    public Stage onto(Parent parent, int index) throws Exception {
+    public Stage ontoParent(Parent parent) throws Exception {
+        return ontoParent(parent, 0);
+    }
+
+    public Stage ontoParent(Parent parent, int index) throws Exception {
         Stage stage = state.byClass(Stage.class).get(index);
         stage.setScene(new Scene(parent));
         return stage;
