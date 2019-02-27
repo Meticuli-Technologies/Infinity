@@ -23,12 +23,16 @@ public class ClientMenu extends Controller {
     }
 
     @FXML
-    public void back(){
-
+    public void back() {
+        try {
+            onto(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void next(){
-
+    public void next() {
+        throw new UnsupportedOperationException();
     }
 }
