@@ -4,11 +4,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
 
 /**
  * @author SirMathhman
@@ -30,36 +28,5 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private class ControllerLoader extends FXMLLoader {
-        private final State state;
-
-        public ControllerLoader(URL location, State state) {
-            super(location);
-            this.state = state;
-
-            setControllerFactory(param -> {
-                if (!Controller.class.isAssignableFrom(param)) {
-                    throw new IllegalArgumentException(param.getName() + " is not assignable to " + Controller.class);
-                }
-                try {
-                    return param.getConstructor(State.class).newInstance(state);
-                } catch (Exception e) {
-                    throw new IllegalArgumentException("Failed to instantiate " + param.getName());
-                }
-            });
-        }
-
-        private class Controller {
-            protected final State state;
-
-            public Controller(State state) {
-                this.state = state;
-            }
-        }
-    }
-
-    private class State extends HashSet<Object> {
     }
 }
