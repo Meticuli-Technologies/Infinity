@@ -15,8 +15,10 @@ public class Controller {
         this.state = state;
     }
 
-    public Stage ontoURL(URL url) throws Exception {
-        return ontoParent(ControllerLoader.load(url, state));
+    public <T> T ontoURL(URL url) throws Exception {
+        ControllerLoader loader = new ControllerLoader(url, state);
+        ontoParent(loader.load());
+        return loader.getController();
     }
 
     public Stage ontoParent(Parent parent) throws Exception {

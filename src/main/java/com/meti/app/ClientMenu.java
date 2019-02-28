@@ -6,6 +6,11 @@ import com.meti.lib.fx.ControllerLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -33,6 +38,10 @@ public class ClientMenu extends Controller {
 
     @FXML
     public void next() {
-        throw new UnsupportedOperationException();
+        try {
+            Socket socket = new Socket(InetAddress.getByName(address.getText()), Integer.parseInt(port.getText()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
