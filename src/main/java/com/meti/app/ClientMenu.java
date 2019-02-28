@@ -40,7 +40,9 @@ public class ClientMenu extends Controller {
     public void next() {
         try {
             Socket socket = new Socket(InetAddress.getByName(address.getText()), Integer.parseInt(port.getText()));
-        } catch (IOException e) {
+            ClientDisplay menu = ontoURL(getClass().getResource("/com/meti/app/ClientMenu.fxml"));
+            menu.load(socket);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
