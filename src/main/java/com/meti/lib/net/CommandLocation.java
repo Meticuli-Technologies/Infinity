@@ -8,7 +8,7 @@ package com.meti.lib.net;
 public class CommandLocation {
     private final String[] args;
 
-    public CommandLocation(String[] args) {
+    public CommandLocation(String... args) {
         this.args = args;
     }
 }

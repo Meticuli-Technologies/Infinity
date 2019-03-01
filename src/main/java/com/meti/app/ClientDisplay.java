@@ -4,6 +4,7 @@ import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Command;
+import com.meti.lib.net.CommandLocation;
 import com.meti.lib.net.CommandType;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -57,8 +58,8 @@ public class ClientDisplay extends Controller  {
     }
 
     public void processToken(String line) throws IOException {
-  /*      new Command<>(CommandType.ADD, );
-        client.write();
-        client.flush();*/
+        Command<CommandLocation> command = new Command<>(CommandType.ADD, new CommandLocation("chat", "add", line));
+        client.write(command);
+        client.flush();
     }
 }
