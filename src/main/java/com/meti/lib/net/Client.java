@@ -23,5 +23,12 @@ public class Client {
         this.inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-
+    public Command<?> read() throws Exception {
+        Object token = inputStream.readObject();
+        if (token instanceof Command<?>) {
+            return (Command) token;
+        } else {
+            throw new IllegalStateException("Token " + token + " is not an instance of " + Command.class);
+        }
+    }
 }
