@@ -5,12 +5,10 @@ package com.meti.lib.net;
  * @version 0.0.0
  * @since 2/28/2019
  */
-public class Command<L extends CommandLocation> {
-    public final CommandType type;
-    public final L location;
+public class Command {
+    private final String[] args;
 
-    public Command(CommandType type, L location) {
-        this.type = type;
-        this.location = location;
+    public Command(String... args) {
+        this.args = args;
     }
 }
