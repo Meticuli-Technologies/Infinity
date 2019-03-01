@@ -31,4 +31,12 @@ public class Client {
             throw new IllegalStateException("Token " + token + " is not an instance of " + Command.class);
         }
     }
+
+    public void write(Command<?> command) throws IOException {
+        outputStream.writeObject(command);
+    }
+
+    public void flush() throws IOException {
+        outputStream.flush();
+    }
 }
