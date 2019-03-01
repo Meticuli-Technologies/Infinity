@@ -57,6 +57,7 @@ public class ClientDisplay extends Controller  {
 
     public void processToken(String line) throws IOException {
         Command command = new Command("chat", "add", line);
+        Client client = getClient().orElseThrow(() -> new IllegalStateException("Client has not been set!"));
         client.write(command);
         client.flush();
     }
