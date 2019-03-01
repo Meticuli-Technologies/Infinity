@@ -2,13 +2,16 @@ package com.meti.app;
 
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
+import com.meti.lib.net.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -22,11 +25,22 @@ public class ClientDisplay extends Controller  {
     @FXML
     private TextArea output;
 
+    private Client client;
+
     public ClientDisplay(State state) {
         super(state);
     }
 
     public void load(Socket socket) {
+        try {
+            this.client = new Client(socket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Optional<Client> getClient() {
+        return Optional.ofNullable(client);
     }
 
     @FXML
