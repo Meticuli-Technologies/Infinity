@@ -5,5 +5,10 @@ package com.meti.lib.net;
  * @version 0.0.0
  * @since 2/28/2019
  */
-public enum CommandLocation {
+public class CommandLocation {
+    private final String[] args;
+
+    public CommandLocation(String[] args) {
+        this.args = args;
+    }
 }
