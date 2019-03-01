@@ -56,7 +56,7 @@ public class ClientDisplay extends Controller  {
     }
 
     public void processToken(String line) throws IOException {
-        Command command = new Comand("chat", "add", line);
+        Command command = new Command("chat", "add", line);
         client.write(command);
         client.flush();
     }
