@@ -5,6 +5,7 @@ import com.meti.lib.fx.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.net.Socket;
@@ -30,6 +31,12 @@ public class ClientDisplay extends Controller  {
 
     @FXML
     public void handleInput(KeyEvent event){
+        if(event.getCode().equals(KeyCode.ENTER)){
+            processToken(input.getText());
+        }
+    }
+
+    public void processToken(String line){
 
     }
 }
