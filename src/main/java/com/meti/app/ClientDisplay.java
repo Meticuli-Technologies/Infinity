@@ -3,6 +3,8 @@ package com.meti.app;
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
+import com.meti.lib.net.Command;
+import com.meti.lib.net.CommandType;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -46,11 +48,17 @@ public class ClientDisplay extends Controller  {
     @FXML
     public void handleInput(KeyEvent event){
         if(event.getCode().equals(KeyCode.ENTER)){
-            processToken(input.getText());
+            try {
+                processToken(input.getText());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void processToken(String line){
-
+    public void processToken(String line) throws IOException {
+  /*      new Command<>(CommandType.ADD, );
+        client.write();
+        client.flush();*/
     }
 }

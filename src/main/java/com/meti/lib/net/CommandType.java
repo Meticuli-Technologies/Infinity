@@ -9,5 +9,10 @@ public enum CommandType {
     GET,
     POST,
     PUT,
-    DELETE
+    DELETE,
+
+    ADD,
+    REMOVE,
+    CLEAR,
+    SIZE
 }
