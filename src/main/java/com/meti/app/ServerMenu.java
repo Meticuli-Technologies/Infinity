@@ -5,9 +5,7 @@ import com.meti.lib.fx.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * @author SirMathhman
@@ -33,12 +31,12 @@ public class ServerMenu extends Controller {
 
     @FXML
     public void next(){
-   /*     try {
+        try {
             ServerSocket serverSocket = new ServerSocket(Integer.parseInt(portField.getText()));
             ServerDisplay menu = ontoURL(getClass().getResource("/com/meti/app/ServerDisplay.fxml"));
             menu.load(serverSocket);
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }
