@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.Callback;
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
@@ -13,6 +14,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +35,7 @@ public class ServerDisplay extends Controller {
 
     public void load(ServerSocket serverSocket) {
         this.server = new Server(serverSocket);
+        this.server.listen(Executors.newCachedThreadPool(), Throwable::printStackTrace);
 
         loadClients();
     }

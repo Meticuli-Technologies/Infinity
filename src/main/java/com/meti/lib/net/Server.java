@@ -8,6 +8,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 
 /**
  * @author SirMathhman
@@ -27,7 +28,7 @@ public class Server implements Closeable {
         serverSocket.close();
     }
 
-    public void listen(ExecutorService service, Callback callback) {
+    public void listen(ExecutorService service, Consumer<Exception> callback) {
         service.submit(() -> {
             while (!Thread.interrupted()) {
                 try {
