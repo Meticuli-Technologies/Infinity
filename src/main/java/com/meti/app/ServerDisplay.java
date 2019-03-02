@@ -1,6 +1,5 @@
 package com.meti.app;
 
-import com.meti.lib.Callback;
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
@@ -15,7 +14,6 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -60,12 +58,16 @@ public class ServerDisplay extends Controller {
     private class ClientListListener implements ListChangeListener<Client> {
         @Override
         public void onChanged(Change<? extends Client> c) {
-            if (c.wasAdded()) {
-                clientListView.getItems().addAll(mapClients(c.getAddedSubList()));
-            } else if (c.wasRemoved()) {
-                clientListView.getItems().removeAll(mapClients(c.getRemoved()));
+            if (c.next()) {
+                if (c.wasAdded()) {
+                    clientListView.getItems().addAll(mapClients(c.getAddedSubList()));
+                } else if (c.wasRemoved()) {
+                    clientListView.getItems().removeAll(mapClients(c.getRemoved()));
+                } else {
+                    throw new UnsupportedOperationException("Invalid change " + c + " for listener");
+                }
             } else {
-                throw new UnsupportedOperationException("Invalid change " + c + " for listener");
+                throw new IllegalStateException("Next change could not be found");
             }
         }
     }
