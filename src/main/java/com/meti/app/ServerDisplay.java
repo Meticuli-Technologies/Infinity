@@ -1,9 +1,11 @@
 package com.meti.app;
 
+import com.meti.lib.net.Server;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 import java.net.ServerSocket;
+import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -14,7 +16,13 @@ public class ServerDisplay {
     @FXML
     private ListView<String> clientListView;
 
-    public void load(ServerSocket serverSocket) {
+    private Server server;
 
+    public void load(ServerSocket serverSocket) {
+        this.server = new Server(serverSocket);
+    }
+
+    private Optional<Server> getServer(){
+        return Optional.ofNullable(server);
     }
 }
