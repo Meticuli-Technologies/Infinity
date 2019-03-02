@@ -31,7 +31,7 @@ public class Server implements Closeable {
         service.submit(() -> {
             while (!Thread.interrupted()) {
                 try {
-                    clients.add(new Client(serverSocket.accept());
+                    clients.add(new Client(serverSocket.accept()));
                 } catch (IOException e) {
                     callback.accept(e);
                 }
