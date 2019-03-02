@@ -31,6 +31,7 @@ public class ServerDisplay {
     }
 
     private void loadClients() {
+        Server server = getServer().orElseThrow(() -> new IllegalStateException("Server has not been set"));
         clientListView.getItems().addAll(mapClients(server.clients));
         server.clients.addListener(new ClientListListener());
     }
