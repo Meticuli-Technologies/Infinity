@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class Server implements Closeable {
     private final ServerSocket serverSocket;
-    private final ObservableList<Client> clients = FXCollections.observableArrayList();
+    public final ObservableList<Client> clients = FXCollections.observableArrayList();
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;

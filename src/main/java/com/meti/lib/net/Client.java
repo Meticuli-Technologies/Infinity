@@ -12,7 +12,7 @@ import java.net.Socket;
  * @since 2/28/2019
  */
 public class Client implements Closeable {
-    private final Socket socket;
+    public final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
