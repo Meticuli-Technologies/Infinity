@@ -24,16 +24,16 @@ public class Client implements Closeable {
         this.inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public Command<?> read() throws Exception {
+    public Command read() throws Exception {
         Object token = inputStream.readObject();
-        if (token instanceof Command<?>) {
+        if (token instanceof Command) {
             return (Command) token;
         } else {
             throw new IllegalStateException("Token " + token + " is not an instance of " + Command.class);
         }
     }
 
-    public void write(Command<?> command) throws IOException {
+    public void write(Command command) throws IOException {
         outputStream.writeObject(command);
     }
 
