@@ -1,5 +1,7 @@
 package com.meti.app;
 
+import com.meti.lib.State;
+import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Server;
 import javafx.collections.ListChangeListener;
@@ -18,11 +20,15 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 3/2/2019
  */
-public class ServerDisplay {
+public class ServerDisplay extends Controller {
     @FXML
     private ListView<String> clientListView;
 
     private Server server;
+
+    public ServerDisplay(State state) {
+        super(state);
+    }
 
     public void load(ServerSocket serverSocket) {
         this.server = new Server(serverSocket);
