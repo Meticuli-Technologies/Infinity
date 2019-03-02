@@ -33,6 +33,8 @@ public class Server implements Closeable {
             while (!Thread.interrupted()) {
                 try {
                     clients.add(new Client(serverSocket.accept()));
+
+                    //TODO: start individual client threads
                 } catch (IOException e) {
                     callback.accept(e);
                 }
