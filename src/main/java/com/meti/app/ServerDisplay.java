@@ -3,7 +3,6 @@ package com.meti.app;
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
-import com.meti.lib.net.ClientHandler;
 import com.meti.lib.net.Server;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +26,7 @@ public class ServerDisplay extends Controller {
     @FXML
     private ListView<String> clientListView;
 
-    private Server<?> server;
+    private Server server;
 
     public ServerDisplay(State state) {
         super(state);
@@ -46,7 +44,7 @@ public class ServerDisplay extends Controller {
     }
 
     private void loadClients() {
-        Server<? extends ClientHandler> server = getServer().orElseThrow(() -> new IllegalStateException("Server has not been set"));
+        Server server = getServer().orElseThrow(() -> new IllegalStateException("Server has not been set"));
         clientListView.getItems().addAll(mapClients(server.clients));
         server.clients.addListener(new ClientListListener());
     }
@@ -58,7 +56,7 @@ public class ServerDisplay extends Controller {
                 .collect(Collectors.toList());
     }
 
-    private Optional<Server<? extends ClientHandler>> getServer(){
+    private Optional<Server> getServer() {
         return Optional.ofNullable(server);
     }
 
@@ -79,14 +77,4 @@ public class ServerDisplay extends Controller {
         }
     }
 
-    private class InfinityServer extends Server {
-        public InfinityServer(ServerSocket serverSocket) {
-            super(serverSocket);
-        }
-
-        @Override
-        public ClientHandler createHandler(Consumer callback, Client client) {
-            return null;
-        }
-    }
 }
