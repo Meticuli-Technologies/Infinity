@@ -1,12 +1,16 @@
 package com.meti.lib.net;
 
+import com.meti.lib.TryableFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -23,6 +27,22 @@ public class Server implements Closeable {
 
     @Override
     public void close() throws IOException {
+        if (!clients.isEmpty()) {
+            TryableFactory factory = new TryableFactory();
+            try {
+                Set<Socket> collect = factory.checkAll(clients.stream()
+                        .map(client -> client.socket)
+                        .peek(factory.accept(Socket::close))
+                ).collect(Collectors.toSet());
+
+                if (collect.isEmpty()) {
+                    throw new IllegalStateException("There are clients present, yet no sockets were closed");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         serverSocket.close();
     }
 
