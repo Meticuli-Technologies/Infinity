@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 3/2/2019
  */
-public class Server implements Closeable {
+public abstract class Server<C extends ClientHandler> implements Closeable {
     private final ServerSocket serverSocket;
     public final ObservableList<Client> clients = FXCollections.observableArrayList();
 
@@ -51,7 +51,7 @@ public class Server implements Closeable {
             while (!Thread.interrupted()) {
                 try {
                     Client client = new Client(serverSocket.accept());
-                    runnableConsumer.accept(new ClientHandler(callback, client));
+                    runnableConsumer.accept(createHandler(callback, client));
 
                     clients.add(client);
                 } catch (IOException e) {
@@ -60,4 +60,6 @@ public class Server implements Closeable {
             }
         });
     }
+
+    public abstract C createHandler(Consumer<Exception> callback, Client client);
 }
