@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,11 @@ public class ServerDisplay extends Controller {
         super(state);
     }
 
+    private final ExecutorService service = Executors.newCachedThreadPool();
+
     public void load(ServerSocket serverSocket) {
         this.server = new Server(serverSocket);
-        this.server.listen(Executors.newCachedThreadPool(), Throwable::printStackTrace);
+        this.server.listen(service::submit, Throwable::printStackTrace);
 
         loadClients();
     }

@@ -28,8 +28,8 @@ public class Server implements Closeable {
         serverSocket.close();
     }
 
-    public void listen(ExecutorService service, Consumer<Exception> callback) {
-        service.submit(() -> {
+    public void listen(Consumer<Runnable> runnableConsumer, Consumer<Exception> callback) {
+        runnableConsumer.accept(() -> {
             while (!Thread.interrupted()) {
                 try {
                     clients.add(new Client(serverSocket.accept()));
