@@ -1,5 +1,6 @@
 package com.meti.lib.net;
 
+import java.net.SocketException;
 import java.util.function.Consumer;
 
 /**
@@ -20,10 +21,14 @@ public class ClientHandler implements Runnable {
     public void run() {
         while (!Thread.interrupted() && !client.socket.isClosed()) {
             try {
-                Command read = client.read();
+                Object read = client.read();
                 //TODO: handle read
             } catch (Exception e) {
-                callback.accept(e);
+                if (e instanceof SocketException) {
+                    break;
+                } else {
+                    callback.accept(e);
+                }
             }
         }
     }
