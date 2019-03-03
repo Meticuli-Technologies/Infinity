@@ -1,13 +1,11 @@
 package com.meti.lib.net;
 
-import com.meti.lib.Callback;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -32,9 +30,10 @@ public class Server implements Closeable {
         runnableConsumer.accept(() -> {
             while (!Thread.interrupted()) {
                 try {
-                    clients.add(new Client(serverSocket.accept()));
+                    Client client = new Client(serverSocket.accept());
+                    runnableConsumer.accept(new ClientHandler(client));
 
-                    //TODO: start individual client threads
+                    clients.add(client);
                 } catch (IOException e) {
                     callback.accept(e);
                 }
