@@ -33,11 +33,4 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public abstract class TokenHandler<T> implements Consumer<T> {
-        private final Class<T> tClass;
-
-        public TokenHandler(Class<T> tClass) {
-            this.tClass = tClass;
-        }
-    }
 }
