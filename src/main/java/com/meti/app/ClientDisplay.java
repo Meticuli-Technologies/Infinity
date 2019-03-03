@@ -4,11 +4,10 @@ import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Command;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -47,13 +46,11 @@ public class ClientDisplay extends Controller  {
     }
 
     @FXML
-    public void handleInput(KeyEvent event){
-        if(event.getCode().equals(KeyCode.ENTER)){
-            try {
-                processToken(input.getText());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void handleInput(ActionEvent event) {
+        try {
+            processToken(input.getText());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
