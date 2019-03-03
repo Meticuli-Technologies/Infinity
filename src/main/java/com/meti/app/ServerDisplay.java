@@ -38,6 +38,8 @@ public class ServerDisplay extends Controller {
         this.server = new Server(serverSocket);
         this.server.listen(service::submit, Throwable::printStackTrace);
 
+        state.add(server);
+
         loadClients();
     }
 

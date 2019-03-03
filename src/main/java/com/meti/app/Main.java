@@ -1,13 +1,17 @@
 package com.meti.app;
 
 import com.meti.lib.State;
+import com.meti.lib.TryableFactory;
 import com.meti.lib.fx.ControllerLoader;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -32,5 +36,17 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop() throws Exception {
+        TryableFactory factory = new TryableFactory();
+        List<Closeable> closeables = factory.checkAll(state.stream()
+                .filter(o -> o instanceof Closeable)
+                .map(o -> (Closeable) o)
+                .peek(factory.accept(Closeable::close))
+        ).collect(Collectors.toList());
+
+        System.out.println("Ended Infinity with " + closeables.size() + " closeables");
     }
 }

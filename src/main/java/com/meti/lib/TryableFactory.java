@@ -1,6 +1,7 @@
 package com.meti.lib;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -36,6 +37,16 @@ public class TryableFactory {
             } catch (Exception e) {
                 callback.accept(e);
                 return Optional.empty();
+            }
+        };
+    }
+
+    public <T> Consumer<T> accept(TryableConsumer<T> consumer) {
+        return t -> {
+            try {
+                consumer.accept(t);
+            } catch (Exception e) {
+                callback.accept(e);
             }
         };
     }

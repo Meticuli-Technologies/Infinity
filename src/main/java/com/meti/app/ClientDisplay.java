@@ -35,6 +35,8 @@ public class ClientDisplay extends Controller  {
     public void load(Socket socket) {
         try {
             this.client = new Client(socket);
+
+            state.add(client);
         } catch (IOException e) {
             e.printStackTrace();
         }
