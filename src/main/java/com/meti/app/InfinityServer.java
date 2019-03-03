@@ -19,7 +19,7 @@ class InfinityServer extends Server {
 
     @Override
     protected ClientHandler createHandler(Consumer<Exception> callback, Client client) {
-        callback.accept(new Exception());
-        return null;
+        ClientHandler handler = new ClientHandler(callback, client);
+        return handler;
     }
 }
