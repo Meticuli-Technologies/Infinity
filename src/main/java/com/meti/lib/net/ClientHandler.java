@@ -1,7 +1,12 @@
 package com.meti.lib.net;
 
+import com.meti.lib.net.token.TokenHandler;
+
 import java.net.SocketException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -9,6 +14,7 @@ import java.util.function.Consumer;
  * @since 3/3/2019
  */
 public class ClientHandler implements Runnable {
+    private final Set<TokenHandler<?>> handlers = new HashSet<>();
     private final Consumer<Exception> callback;
     private final Client client;
 
@@ -22,7 +28,7 @@ public class ClientHandler implements Runnable {
         while (!Thread.interrupted() && !client.socket.isClosed()) {
             try {
                 Object read = client.read();
-                //TODO: handle read
+                handleToken(read);
             } catch (Exception e) {
                 if (e instanceof SocketException) {
                     break;
@@ -33,4 +39,14 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    private void handleToken(Object token) {
+        Set<TokenHandler<?>> processors = handlers.stream()
+                .filter(tokenHandler -> tokenHandler.tClass.isAssignableFrom(token.getClass()))
+                .peek(tokenHandler -> tokenHandler.process(token))
+                .collect(Collectors.toSet());
+
+        if (processors.isEmpty()) {
+            throw new IllegalArgumentException("Cannot process " + token + ", no valid processors found");
+        }
+    }
 }

@@ -8,9 +8,17 @@ import java.util.function.Consumer;
  * @since 3/3/2019
  */
 public abstract class TokenHandler<T> implements Consumer<T> {
-    private final Class<T> tClass;
+    public final Class<T> tClass;
 
     public TokenHandler(Class<T> tClass) {
         this.tClass = tClass;
+    }
+
+    public void process(Object token) {
+        if (tClass.isAssignableFrom(token.getClass())) {
+            accept(tClass.cast(token));
+        } else {
+            throw new IllegalArgumentException("Token is not an instance of " + tClass);
+        }
     }
 }
