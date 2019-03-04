@@ -8,6 +8,8 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,22 +25,40 @@ import java.util.stream.Collectors;
  * @since 3/2/2019
  */
 public class ServerDisplay extends Controller {
+    private final ExecutorService service = Executors.newCachedThreadPool();
     @FXML
     private ListView<String> clientListView;
-
     private Server server;
 
     public ServerDisplay(State state) {
         super(state);
     }
 
-    private final ExecutorService service = Executors.newCachedThreadPool();
-
     public void load(ServerSocket serverSocket) {
         this.server = new InfinityServer(serverSocket);
         this.server.listen(service::submit, Throwable::printStackTrace);
 
         state.add(server);
+        state.add((Closeable) () -> {
+            service.shutdown();
+
+            if (!service.isTerminated()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                List<Runnable> runnables = service.shutdownNow();
+                StringBuilder builder = new StringBuilder();
+                builder.append("Shutdown service with ").append(runnables.size()).append(" runnables:\n");
+                builder.append(runnables.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining("\n")));
+
+                System.err.println(builder);
+            }
+        });
 
         loadClients();
     }
