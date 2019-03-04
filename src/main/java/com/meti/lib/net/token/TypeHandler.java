@@ -10,7 +10,7 @@ public abstract class TypeHandler<T> extends PredicateHandler<Object> {
 
     @Override
     public void accept(Object o) {
-        acceptCast(tClass.cast(o.getClass()));
+        acceptCast(tClass.cast(o));
     }
 
     public abstract void acceptCast(T obj);

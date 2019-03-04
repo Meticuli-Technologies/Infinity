@@ -26,6 +26,7 @@ public class CommandHandler extends TypeHandler<Command> {
         List<Consumer<Command>> list = map.keySet()
                 .stream()
                 .filter(commandPredicate -> commandPredicate.test(obj))
+                .peek(this::checkForHandler)
                 .map(map::get)
                 .peek(commandConsumer -> commandConsumer.accept(obj))
                 .collect(Collectors.toList());
@@ -33,6 +34,9 @@ public class CommandHandler extends TypeHandler<Command> {
         if (list.isEmpty()) {
             throw new IllegalArgumentException(obj + " is an unprocessable command");
         }
+    }
+
+    private void checkForHandler(Predicate<Command> commandPredicate) {
     }
 
     public static abstract class CommandHandlerImpl implements Predicate<Command>, Consumer<Command> {
