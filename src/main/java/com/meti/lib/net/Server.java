@@ -8,6 +8,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
  * @since 3/2/2019
  */
 public abstract class Server implements Closeable {
-    private final ServerSocket serverSocket;
     public final ObservableList<Client> clients = FXCollections.observableArrayList();
+    private final ServerSocket serverSocket;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -55,7 +56,11 @@ public abstract class Server implements Closeable {
 
                     clients.add(client);
                 } catch (IOException e) {
-                    callback.accept(e);
+                    if (e instanceof SocketException) {
+                        break;
+                    } else {
+                        callback.accept(e);
+                    }
                 }
             }
         });
