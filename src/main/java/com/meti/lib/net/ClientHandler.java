@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @since 3/3/2019
  */
 public class ClientHandler implements Runnable {
-    private final Set<TokenHandler<?>> handlers = new HashSet<>();
+    public final Set<TokenHandler<?>> handlers = new HashSet<>();
     private final Consumer<Exception> callback;
     private final Client client;
 
