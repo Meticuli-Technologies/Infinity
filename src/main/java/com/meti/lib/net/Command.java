@@ -13,4 +13,9 @@ public class Command implements Serializable {
     public Command(String... args) {
         this.args = args;
     }
+
+    @Override
+    public String toString() {
+        return String.join(" ", args);
+    }
 }
