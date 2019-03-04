@@ -2,6 +2,7 @@ package com.meti.lib.net;
 
 import com.meti.lib.net.token.TokenHandler;
 
+import java.io.EOFException;
 import java.net.SocketException;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +31,7 @@ public class ClientHandler implements Runnable {
                 Object read = client.read();
                 handleToken(read);
             } catch (Exception e) {
-                if (e instanceof SocketException) {
+                if (e instanceof SocketException || e instanceof EOFException) {
                     break;
                 } else {
                     callback.accept(e);
