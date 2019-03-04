@@ -26,4 +26,10 @@ public class State extends ArrayList<Object> {
                 .flatMap(OptionalUtil::stream)
                 .collect(Collectors.toList()));
     }
+
+    public State createSubState() {
+        State state = new State();
+        add(state);
+        return state;
+    }
 }

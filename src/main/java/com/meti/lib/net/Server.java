@@ -1,5 +1,6 @@
 package com.meti.lib.net;
 
+import com.meti.lib.State;
 import com.meti.lib.TryableFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,9 +22,11 @@ import java.util.stream.Collectors;
 public abstract class Server implements Closeable {
     public final ObservableList<Client> clients = FXCollections.observableArrayList();
     private final ServerSocket serverSocket;
+    private final State state;
 
-    public Server(ServerSocket serverSocket) {
+    public Server(ServerSocket serverSocket, State state) {
         this.serverSocket = serverSocket;
+        this.state = state;
     }
 
     @Override
@@ -52,7 +55,7 @@ public abstract class Server implements Closeable {
             while (!Thread.interrupted()) {
                 try {
                     Client client = new Client(serverSocket.accept());
-                    runnableConsumer.accept(createHandler(callback, client));
+                    runnableConsumer.accept(createHandler(callback, client, state));
 
                     clients.add(client);
                 } catch (IOException e) {
@@ -66,5 +69,5 @@ public abstract class Server implements Closeable {
         });
     }
 
-    protected abstract ClientHandler createHandler(Consumer<Exception> callback, Client client);
+    protected abstract ClientHandler createHandler(Consumer<Exception> callback, Client client, State state);
 }

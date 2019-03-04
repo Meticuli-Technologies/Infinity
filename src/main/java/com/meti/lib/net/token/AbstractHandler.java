@@ -7,6 +7,7 @@ import java.util.Optional;
 public abstract class AbstractHandler<T> implements TokenHandler<T> {
     private State state;
 
+    @Override
     public Optional<State> getState() {
         return Optional.ofNullable(state);
     }

@@ -15,17 +15,14 @@ import java.util.function.Consumer;
  * @since 3/3/2019
  */
 class InfinityServer extends Server {
-    private final State state = new State();
-
-    public InfinityServer(ServerSocket serverSocket) {
-        super(serverSocket);
+    public InfinityServer(ServerSocket serverSocket, State state) {
+        super(serverSocket, state);
     }
 
     @Override
-    protected ClientHandler createHandler(Consumer<Exception> callback, Client client) {
-        ClientHandler handler = new ClientHandler(callback, client);
+    protected ClientHandler createHandler(Consumer<Exception> callback, Client client, State state) {
+        ClientHandler handler = new ClientHandler(callback, client, state);
         handler.tokenHandlers.add(new CommandHandler());
         return handler;
     }
-
 }

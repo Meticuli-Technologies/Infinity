@@ -35,7 +35,9 @@ public class ServerDisplay extends Controller {
     }
 
     public void load(ServerSocket serverSocket) {
-        this.server = new InfinityServer(serverSocket);
+        State subState = state.createSubState();
+
+        this.server = new InfinityServer(serverSocket, subState);
         this.server.listen(service::submit, Throwable::printStackTrace);
 
         state.add(server);
