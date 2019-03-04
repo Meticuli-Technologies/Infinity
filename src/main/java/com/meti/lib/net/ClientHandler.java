@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @since 3/3/2019
  */
 public class ClientHandler implements Runnable {
-    public final Set<TokenHandler<?>> handlers = new HashSet<>();
+    public final Set<TokenHandler<Object>> tokenHandlers = new HashSet<>();
     private final Consumer<Exception> callback;
     private final Client client;
 
@@ -41,9 +41,9 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleToken(Object token) {
-        Set<TokenHandler<?>> processors = handlers.stream()
-                .filter(tokenHandler -> tokenHandler.tClass.isAssignableFrom(token.getClass()))
-                .peek(tokenHandler -> tokenHandler.process(token))
+        Set<TokenHandler<Object>> processors = tokenHandlers.stream()
+                .filter(tokenHandler -> tokenHandler.test(token))
+                .peek(tokenHandler -> tokenHandler.accept(token))
                 .collect(Collectors.toSet());
 
         if (processors.isEmpty()) {
