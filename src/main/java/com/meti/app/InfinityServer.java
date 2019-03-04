@@ -20,6 +20,12 @@ class InfinityServer extends Server {
     }
 
     @Override
+    public State buildState(State state) {
+        state.add(new Chat());
+        return state;
+    }
+
+    @Override
     protected ClientHandler createHandler(Consumer<Exception> callback, Client client, State state) {
         ClientHandler clientHandler = new ClientHandler(callback, client, state);
         CommandHandler commandHandler = new CommandHandler();

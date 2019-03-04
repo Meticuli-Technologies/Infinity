@@ -12,7 +12,7 @@ public class CollectionUtil {
         if (collection.size() == 1) {
             return Optional.ofNullable(new ArrayList<>(collection).get(0));
         } else {
-            return Optional.empty();
+            throw new IllegalArgumentException(collection.size() + " is not equal to 1");
         }
     }
 }

@@ -26,7 +26,11 @@ public abstract class Server implements Closeable {
 
     public Server(ServerSocket serverSocket, State state) {
         this.serverSocket = serverSocket;
-        this.state = state;
+        this.state = buildState(state);
+    }
+
+    public State buildState(State state) {
+        return state;
     }
 
     @Override
