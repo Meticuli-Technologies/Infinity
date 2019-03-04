@@ -7,7 +7,7 @@ import java.util.function.Predicate;
  * @version 0.0.0
  * @since 3/3/2019
  */
-public abstract class PredicateHandler<T> implements TokenHandler<T> {
+public abstract class PredicateHandler<T> extends AbstractHandler<T> {
     private final Predicate<T> predicate;
 
     protected PredicateHandler(Predicate<T> predicate) {
