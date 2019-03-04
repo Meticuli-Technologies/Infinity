@@ -46,7 +46,7 @@ public class ClientDisplay extends Controller  {
     }
 
     @FXML
-    public void handleInput(ActionEvent event) {
+    public void handleInput() {
         try {
             processToken(input.getText());
         } catch (IOException e) {
