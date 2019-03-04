@@ -49,6 +49,7 @@ public class ClientDisplay extends Controller  {
     public void handleInput() {
         try {
             processToken(input.getText());
+            input.setText(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
