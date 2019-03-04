@@ -1,10 +1,11 @@
 package com.meti.lib.net.token;
 
+import com.meti.app.Chat;
+import com.meti.lib.State;
 import com.meti.lib.net.Command;
+import com.meti.lib.util.StateNotSetException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -14,6 +15,17 @@ public class CommandHandler extends TypeHandler<Command> {
 
     public CommandHandler() {
         super(Command.class);
+
+        map.put(command -> command.args.get(0).equals("chat") && command.args.get(1).equals("add"), command -> {
+            State state = getState().orElseThrow(new StateNotSetException());
+            try {
+                state.byClassToSingle(Chat.class)
+                        .orElseThrow(() -> new NoSuchElementException("Chat not found"))
+                        .add(command.args.get(2));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -29,4 +41,5 @@ public class CommandHandler extends TypeHandler<Command> {
             throw new IllegalArgumentException(obj + " is an unprocessable command");
         }
     }
+
 }
