@@ -23,7 +23,7 @@ class InfinityServer extends Server {
     protected ClientHandler createHandler(Consumer<Exception> callback, Client client, State state) {
         ClientHandler clientHandler = new ClientHandler(callback, client, state);
         CommandHandler commandHandler = new CommandHandler();
-        commandHandler.add(new Chat.Add());
+        commandHandler.implementations.add(new Chat.Add());
 
         clientHandler.tokenHandlers.add(commandHandler);
         return clientHandler;
