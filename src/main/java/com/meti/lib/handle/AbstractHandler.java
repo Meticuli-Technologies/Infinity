@@ -4,11 +4,11 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class AbstractHandler<T> implements Handler<T> {
-    private Predicate<T> predicate;
-    private Consumer<T> consumer;
+public class AbstractHandler<T, P extends Predicate<T>, C extends Consumer<T>> implements Handler<T> {
+    private P predicate;
+    private C consumer;
 
-    public AbstractHandler(Predicate<T> predicate, Consumer<T> consumer) {
+    public AbstractHandler(P predicate, C consumer) {
         this.predicate = predicate;
         this.consumer = consumer;
     }
@@ -18,15 +18,15 @@ public class AbstractHandler<T> implements Handler<T> {
         getConsumer().orElseThrow().accept(t);
     }
 
-    private Optional<Consumer<T>> getConsumer() {
+    private Optional<C> getConsumer() {
         return Optional.ofNullable(consumer);
     }
 
-    public void setConsumer(Consumer<T> consumer) {
+    public void setConsumer(C consumer) {
         this.consumer = consumer;
     }
 
-    public void setPredicate(Predicate<T> predicate) {
+    public void setPredicate(P predicate) {
         this.predicate = predicate;
     }
 
@@ -35,7 +35,7 @@ public class AbstractHandler<T> implements Handler<T> {
         return getPredicate().orElseThrow().test(t);
     }
 
-    private Optional<Predicate<T>> getPredicate() {
+    private Optional<P> getPredicate() {
         return Optional.ofNullable(predicate);
     }
 }
