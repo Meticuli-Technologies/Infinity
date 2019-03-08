@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * @since 2/24/2019
  */
 public class State {
-    private final HandlerMap<Object, ?> map = new HandlerMap<>();
+    private final HandlerMap<Object, StateHandler<?>> map = new HandlerMap<>();
 
     public void add(Object obj) {
     }
