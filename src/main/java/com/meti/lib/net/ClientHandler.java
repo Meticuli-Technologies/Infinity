@@ -1,6 +1,7 @@
 package com.meti.lib.net;
 
 import com.meti.lib.State;
+import com.meti.lib.net.Client;
 import com.meti.lib.net.token.TokenHandler;
 
 import java.io.EOFException;
