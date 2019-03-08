@@ -2,5 +2,3 @@ language: scala
 
 jdk:
   openjdk10
-
-CODECOV_TOKEN="48115f01-8c1b-4932-b0f9-9bf600b24855"
