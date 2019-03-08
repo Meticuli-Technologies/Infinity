@@ -1,6 +1,9 @@
 package com.meti.lib;
 
+import com.meti.lib.handle.AbstractHandler;
+import com.meti.lib.handle.CollectionConsumer;
 import com.meti.lib.handle.HandlerMap;
+import com.meti.lib.handle.TypePredicate;
 import com.meti.lib.util.CollectionUtil;
 
 import java.util.ArrayList;
@@ -42,5 +45,11 @@ public class State {
 
     public Stream<Object> stream() {
         return Stream.empty();
+    }
+
+    private class StateHandler<T> extends AbstractHandler<Object, TypePredicate<T>, CollectionConsumer<Object, List<Object>>> {
+        public StateHandler(Class<T> tClass) {
+            super(new TypePredicate<>(tClass), CollectionConsumer.asList());
+        }
     }
 }
