@@ -35,7 +35,7 @@ public class AbstractHandler<T, P extends Predicate<T>, C extends Consumer<T>> i
         return getPredicate().orElseThrow().test(t);
     }
 
-    private Optional<P> getPredicate() {
+    public Optional<P> getPredicate() {
         return Optional.ofNullable(predicate);
     }
 }

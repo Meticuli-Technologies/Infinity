@@ -14,6 +14,10 @@ public class TypePredicate<T> implements Predicate<Object> {
         this.equal = equal;
     }
 
+    public Class<T> gettClass() {
+        return tClass;
+    }
+
     @Override
     public boolean test(Object o) {
         if (isEqual()) {

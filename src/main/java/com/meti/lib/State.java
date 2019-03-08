@@ -9,6 +9,7 @@ import com.meti.lib.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -20,6 +21,12 @@ public class State {
     private final HandlerMap<Object, StateHandler<?>> map = new HandlerMap<>();
 
     public void add(Object obj) {
+        map.stream().anyMatch(new Predicate<StateHandler<?>>() {
+            @Override
+            public boolean test(StateHandler<?> stateHandler) {
+                return stateHandler.getPredicate().orElseThrow().getTClass()
+            }
+        })
     }
 
     public <T> Optional<T> byClassToSingle(Class<T> tClass) throws Exception {
