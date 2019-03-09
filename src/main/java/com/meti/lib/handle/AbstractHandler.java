@@ -1,5 +1,6 @@
 package com.meti.lib.handle;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -18,7 +19,7 @@ public class AbstractHandler<T, P extends Predicate<T>, C extends Consumer<T>> i
         getConsumer().orElseThrow().accept(t);
     }
 
-    private Optional<C> getConsumer() {
+    public CollectionConsumer<Object, List<Object>> getConsumer() {
         return Optional.ofNullable(consumer);
     }
 

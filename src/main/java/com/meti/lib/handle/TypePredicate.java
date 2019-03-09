@@ -20,14 +20,18 @@ public class TypePredicate<T> implements Predicate<Object> {
 
     @Override
     public boolean test(Object o) {
-        if (isEqual()) {
-            return tClass.equals(o.getClass());
-        } else {
-            return tClass.isAssignableFrom(o.getClass());
-        }
+        return testClass(o.getClass());
     }
 
     public boolean isEqual() {
         return equal;
+    }
+
+    public <T> boolean testClass(Class<T> aClass) {
+        if (isEqual()) {
+            return tClass.equals(aClass);
+        } else {
+            return tClass.isAssignableFrom(aClass);
+        }
     }
 }

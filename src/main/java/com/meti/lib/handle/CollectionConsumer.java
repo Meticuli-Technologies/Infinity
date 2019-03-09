@@ -20,4 +20,8 @@ public class CollectionConsumer<T, C extends Collection<T>> implements Consumer<
     public void accept(T t) {
         collection.add(t);
     }
+
+    public C getCollection() {
+        return collection;
+    }
 }
