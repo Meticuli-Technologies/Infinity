@@ -30,7 +30,7 @@ public class ClientHandler implements Runnable {
         while (!Thread.interrupted() && !client.socket.isClosed()) {
             try {
                 Object read = client.read();
-                handleToken(read);
+                handlers.accept(read);
             } catch (Exception e) {
                 if (e instanceof SocketException || e instanceof EOFException) {
                     break;
@@ -40,23 +40,4 @@ public class ClientHandler implements Runnable {
             }
         }
     }
-
-    private void handleToken(Object token) {
- /*       Set<TokenHandler<Object>> processors = tokenHandlers.stream()
-                .filter(tokenHandler -> tokenHandler.test(token))
-                .peek(this::checkHandlerState)
-                .peek(tokenHandler -> tokenHandler.accept(token))
-                .collect(Collectors.toSet());
-
-        if (processors.isEmpty()) {
-            throw new IllegalArgumentException("Cannot process " + token + ", no valid processors found");
-        }*/
-    }
-
-/*    private void checkHandlerState(TokenHandler<Object> objectTokenHandler) {
-        Optional<State> optional = objectTokenHandler.getState();
-        if (!optional.isPresent()) {
-            objectTokenHandler.setState(state);
-        }
-    }*/
 }
