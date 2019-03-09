@@ -1,5 +1,7 @@
 package com.meti.lib.handle;
 
+import com.meti.lib.State;
+
 import java.util.HashSet;
 
 public class HandlerMap<T, H extends Handler<T>> extends HashSet<H> implements Handler<T> {
@@ -12,5 +14,10 @@ public class HandlerMap<T, H extends Handler<T>> extends HashSet<H> implements H
     @Override
     public boolean test(T t) {
         return stream().anyMatch(h -> h.test(t));
+    }
+
+    @Override
+    public void setState(State state) {
+        forEach(h -> h.setState(state));
     }
 }

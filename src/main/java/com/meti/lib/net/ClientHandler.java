@@ -27,6 +27,8 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+        handlers.setState(state);
+
         while (!Thread.interrupted() && !client.socket.isClosed()) {
             try {
                 Object read = client.read();

@@ -1,5 +1,7 @@
 package com.meti.lib.handle;
 
+import com.meti.lib.State;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -7,6 +9,7 @@ import java.util.function.Predicate;
 public class AbstractHandler<T, P extends Predicate<T>, C extends Consumer<T>> implements Handler<T> {
     private P predicate;
     private C consumer;
+    private State state;
 
     public AbstractHandler(P predicate, C consumer) {
         this.predicate = predicate;
@@ -37,5 +40,10 @@ public class AbstractHandler<T, P extends Predicate<T>, C extends Consumer<T>> i
 
     public Optional<P> getPredicate() {
         return Optional.ofNullable(predicate);
+    }
+
+    @Override
+    public void setState(State state) {
+        this.state = state;
     }
 }
