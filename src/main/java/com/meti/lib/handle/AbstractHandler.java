@@ -19,7 +19,7 @@ public class AbstractHandler<T, P extends Predicate<T>, C extends Consumer<T>> i
         getConsumer().orElseThrow().accept(t);
     }
 
-    public CollectionConsumer<Object, List<Object>> getConsumer() {
+    public Optional<C> getConsumer() {
         return Optional.ofNullable(consumer);
     }
 

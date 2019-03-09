@@ -30,10 +30,11 @@ public class State {
         return factory.checkAll(map.stream()
                         .filter(stateHandler -> stateHandler.getPredicate().orElseThrow().testClass(tClass))
                         .map(AbstractHandler::getConsumer)
+                .flatMap(Optional::stream)
                         .map(CollectionConsumer::getCollection)
                         .flatMap(Collection::stream)
                         .map(factory.apply(tClass::cast))
-                        .flatMap(Optional::stream)
+                .flatMap(Optional::stream)
                         .collect(Collectors.toList()));
     }
 
