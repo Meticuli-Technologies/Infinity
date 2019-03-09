@@ -1,6 +1,8 @@
 package com.meti.lib.net;
 
 import com.meti.lib.State;
+import com.meti.lib.handle.Handler;
+import com.meti.lib.handle.HandlerMap;
 
 import java.io.EOFException;
 import java.net.SocketException;
@@ -12,7 +14,7 @@ import java.util.function.Consumer;
  * @since 3/3/2019
  */
 public class ClientHandler implements Runnable {
-    /*    public final Set<TokenHandler<Object>> tokenHandlers = new HashSet<>();*/
+    public final HandlerMap<Object, Handler<Object>> handlers = new HandlerMap<>();
     private final Consumer<Exception> callback;
     private final Client client;
     private final State state;
