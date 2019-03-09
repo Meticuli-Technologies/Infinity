@@ -1,18 +1,12 @@
 package com.meti.app;
 
-import com.meti.lib.net.Client;
-import com.meti.lib.net.Command;
-import com.meti.lib.net.Updater;
-import com.meti.lib.net.token.CommandHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.NoSuchElementException;
 
 public class Chat {
     private final ObservableList<String> messages = FXCollections.observableArrayList();
 
-    public static class Add extends CommandHandler.CommandHandlerImpl {
+    /*public static class Add extends CommandHandler.CommandHandlerImpl {
         @Override
         public boolean test(Command command) {
             return command.args.get(0).equals("chat") && command.args.get(1).equals("add");
@@ -28,5 +22,5 @@ public class Chat {
         }
 
 
-    }
+    }*/
 }

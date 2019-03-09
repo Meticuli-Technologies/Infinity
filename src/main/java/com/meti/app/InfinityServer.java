@@ -4,7 +4,6 @@ import com.meti.lib.State;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.ClientHandler;
 import com.meti.lib.net.Server;
-import com.meti.lib.net.token.CommandHandler;
 
 import java.net.ServerSocket;
 import java.util.function.Consumer;
@@ -28,10 +27,10 @@ class InfinityServer extends Server {
     @Override
     protected ClientHandler createHandler(Consumer<Exception> callback, Client client, State state) {
         ClientHandler clientHandler = new ClientHandler(callback, client, state);
-        CommandHandler commandHandler = new CommandHandler();
+  /*      CommandHandler commandHandler = new CommandHandler();
         commandHandler.implementations.add(new Chat.Add());
 
-        clientHandler.tokenHandlers.add(commandHandler);
+        clientHandler.tokenHandlers.add(commandHandler);*/
         return clientHandler;
     }
 }

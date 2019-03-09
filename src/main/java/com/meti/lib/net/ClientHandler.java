@@ -1,16 +1,10 @@
 package com.meti.lib.net;
 
 import com.meti.lib.State;
-import com.meti.lib.net.Client;
-import com.meti.lib.net.token.TokenHandler;
 
 import java.io.EOFException;
 import java.net.SocketException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -18,7 +12,7 @@ import java.util.stream.Collectors;
  * @since 3/3/2019
  */
 public class ClientHandler implements Runnable {
-    public final Set<TokenHandler<Object>> tokenHandlers = new HashSet<>();
+    /*    public final Set<TokenHandler<Object>> tokenHandlers = new HashSet<>();*/
     private final Consumer<Exception> callback;
     private final Client client;
     private final State state;
@@ -46,7 +40,7 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleToken(Object token) {
-        Set<TokenHandler<Object>> processors = tokenHandlers.stream()
+ /*       Set<TokenHandler<Object>> processors = tokenHandlers.stream()
                 .filter(tokenHandler -> tokenHandler.test(token))
                 .peek(this::checkHandlerState)
                 .peek(tokenHandler -> tokenHandler.accept(token))
@@ -54,13 +48,13 @@ public class ClientHandler implements Runnable {
 
         if (processors.isEmpty()) {
             throw new IllegalArgumentException("Cannot process " + token + ", no valid processors found");
-        }
+        }*/
     }
 
-    private void checkHandlerState(TokenHandler<Object> objectTokenHandler) {
+/*    private void checkHandlerState(TokenHandler<Object> objectTokenHandler) {
         Optional<State> optional = objectTokenHandler.getState();
         if (!optional.isPresent()) {
             objectTokenHandler.setState(state);
         }
-    }
+    }*/
 }
