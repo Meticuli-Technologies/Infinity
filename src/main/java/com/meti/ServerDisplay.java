@@ -22,6 +22,13 @@ public class ServerDisplay {
 
     @FXML
     public void handleInput() {
+        String command = input.getText();
+        if (!command.startsWith("/")) {
+            logMessage("server", command);
+        }
+    }
 
+    public void logMessage(String user, String name){
+        chatArea.appendText("[" + user + "]: " + name);
     }
 }
