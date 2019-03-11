@@ -6,9 +6,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.meti.ServerDisplay"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.ServerDisplay">
+   <children>
+      <BorderPane layoutX="277.0" layoutY="184.0" prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+         <left>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="768.0" prefViewportWidth="200.0">
+               <content>
+                  <ListView fx:id="clientListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </content>
+            </ScrollPane>
+         </left>
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="768.0" prefViewportWidth="824.0">
+               <content>
+                  <TextArea fx:id="chatArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>
