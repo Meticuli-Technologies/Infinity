@@ -8,7 +8,9 @@ import javafx.scene.control.TextField;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +28,8 @@ public class ServerDisplay {
 
     @FXML
     private TextField input;
+
+    private final List<Socket> sockets = new ArrayList<>();
 
     @FXML
     public void handleInput() {
@@ -48,6 +52,8 @@ public class ServerDisplay {
                     while(!serverSocket.isClosed()){
                         try {
                             Socket socket = serverSocket.accept();
+                            sockets.add(socket);
+
                             logMessage("Located user " + socket.getInetAddress());
                             service.submit(() -> {
                                 try {
@@ -106,6 +112,7 @@ public class ServerDisplay {
     }
 
     public void logMessage(String user, String name){
-        chatArea.appendText("[" + user + "]: " + name);
+        String text = "[" + user + "]: " + name;
+        chatArea.appendText(text);
     }
 }
