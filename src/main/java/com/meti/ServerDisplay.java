@@ -5,9 +5,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -49,6 +47,24 @@ public class ServerDisplay {
                     while(!serverSocket.isClosed()){
                         try {
                             Socket socket = serverSocket.accept();
+                            service.submit(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                                        while (!socket.isClosed()) {
+                                            String line;
+                                            while ((line = reader.readLine()) != null) {
+                                                processLine(line);
+                                            }
+                                        }
+
+                                    } catch (IOException e) {
+                                        logMessage("Failed to read " + socket.toString(), e);
+                                    }
+                                }
+                            });
                         } catch (IOException e) {
                             logMessage("Failed to accept socket", e);
                         }
@@ -58,6 +74,10 @@ public class ServerDisplay {
                 logMessage("Failed to start server on " + port, e);
             }
         }
+    }
+
+    private void processLine(String line) {
+
     }
 
     public void logMessage(String name) {
