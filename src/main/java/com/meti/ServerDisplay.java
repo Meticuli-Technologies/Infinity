@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -47,22 +48,24 @@ public class ServerDisplay {
                     while(!serverSocket.isClosed()){
                         try {
                             Socket socket = serverSocket.accept();
-                            service.submit(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                            logMessage("Located user " + socket.getInetAddress());
+                            service.submit(() -> {
+                                try {
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                                        while (!socket.isClosed()) {
-                                            String line;
-                                            while ((line = reader.readLine()) != null) {
+                                    while (!socket.isClosed()) {
+                                        String line;
+                                        while ((line = reader.readLine()) != null) {
+                                            try {
                                                 processLine(line);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
                                             }
                                         }
-
-                                    } catch (IOException e) {
-                                        logMessage("Failed to read " + socket.toString(), e);
                                     }
+
+                                } catch (IOException e) {
+                                    logMessage("Failed to read " + socket.toString(), e);
                                 }
                             });
                         } catch (IOException e) {
@@ -77,7 +80,14 @@ public class ServerDisplay {
     }
 
     private void processLine(String line) {
-
+        String[] args = line.split(" ");
+        switch (args[0]) {
+            case "log":
+                logMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
+                break;
+            default:
+                throw new IllegalArgumentException("Cannot process " + line);
+        }
     }
 
     public void logMessage(String name) {
