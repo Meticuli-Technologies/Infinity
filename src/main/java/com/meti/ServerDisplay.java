@@ -48,37 +48,7 @@ public class ServerDisplay {
                 ServerSocket serverSocket = new ServerSocket(port);
 
                 ExecutorService service = Executors.newCachedThreadPool();
-                service.submit(() -> {
-                    while(!serverSocket.isClosed()){
-                        try {
-                            Socket socket = serverSocket.accept();
-                            sockets.add(socket);
-
-                            logMessage("Located user " + socket.getInetAddress());
-                            service.submit(() -> {
-                                try {
-                                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                                    while (!socket.isClosed()) {
-                                        String line;
-                                        while ((line = reader.readLine()) != null) {
-                                            try {
-                                                processLine(line);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
-
-                                } catch (IOException e) {
-                                    logMessage("Failed to read " + socket.toString(), e);
-                                }
-                            });
-                        } catch (IOException e) {
-                            logMessage("Failed to accept socket", e);
-                        }
-                    }
-                });
+                service.submit(new ServerHandler(serverSocket, service));
             } catch (IOException e) {
                 logMessage("Failed to start server on " + port, e);
             }
@@ -114,5 +84,48 @@ public class ServerDisplay {
     public void logMessage(String user, String name){
         String text = "[" + user + "]: " + name;
         chatArea.appendText(text);
+    }
+
+    private class ServerHandler implements Runnable {
+        private final ServerSocket serverSocket;
+        private final ExecutorService service;
+
+        public ServerHandler(ServerSocket serverSocket, ExecutorService service) {
+            this.serverSocket = serverSocket;
+            this.service = service;
+        }
+
+        @Override
+        public void run() {
+            while (!serverSocket.isClosed()) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    sockets.add(socket);
+
+                    ServerDisplay.this.logMessage("Located user " + socket.getInetAddress());
+                    service.submit(() -> {
+                        try {
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                            while (!socket.isClosed()) {
+                                String line;
+                                while ((line = reader.readLine()) != null) {
+                                    try {
+                                        ServerDisplay.this.processLine(line);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                        } catch (IOException e) {
+                            ServerDisplay.this.logMessage("Failed to read " + socket.toString(), e);
+                        }
+                    });
+                } catch (IOException e) {
+                    ServerDisplay.this.logMessage("Failed to accept socket", e);
+                }
+            }
+        }
     }
 }
