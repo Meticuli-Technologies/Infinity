@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -40,6 +43,17 @@ public class ServerDisplay {
 
             try {
                 ServerSocket serverSocket = new ServerSocket(port);
+
+                ExecutorService service = Executors.newCachedThreadPool();
+                service.submit(() -> {
+                    while(!serverSocket.isClosed()){
+                        try {
+                            Socket socket = serverSocket.accept();
+                        } catch (IOException e) {
+                            logMessage("Failed to accept socket", e);
+                        }
+                    }
+                });
             } catch (IOException e) {
                 logMessage("Failed to start server on " + port, e);
             }
