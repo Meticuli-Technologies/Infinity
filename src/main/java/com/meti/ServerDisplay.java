@@ -25,6 +25,13 @@ public class ServerDisplay {
 
     @FXML
     public void handleInput() {
+        String text = input.getText();
+        if (!text.startsWith("/")) {
+            log(text.substring(1));
+        }
+    }
 
+    public void log(String message) {
+        chatArea.appendText(message + "\n");
     }
 }
