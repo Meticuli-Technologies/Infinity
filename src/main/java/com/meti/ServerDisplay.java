@@ -29,6 +29,15 @@ public class ServerDisplay {
         if (!text.startsWith("/")) {
             log(text.substring(1));
         }
+
+        String[] args = text.split(" ");
+        switch (args[0]) {
+            case "start":
+                break;
+            default:
+                log("Unknown command: " + text);
+                break;
+        }
     }
 
     public void log(String message) {
