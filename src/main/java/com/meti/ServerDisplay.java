@@ -1,10 +1,15 @@
 package com.meti;
 
+import com.meti.lib.Server;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +21,15 @@ import java.util.List;
  */
 public class ServerDisplay {
     private final List<Socket> sockets = new ArrayList<>();
+
+    private Server server;
+
     @FXML
     private ListView<String> clientListView;
+
     @FXML
     private TextArea chatArea;
+    
     @FXML
     private TextField input;
 
@@ -33,6 +43,11 @@ public class ServerDisplay {
         String[] args = text.split(" ");
         switch (args[0]) {
             case "start":
+                try {
+                    server = new Server(new ServerSocket(Integer.parseInt(args[1])));
+                } catch (IOException e) {
+                    log(e);
+                }
                 break;
             default:
                 log("Unknown command: " + text);
@@ -42,5 +57,11 @@ public class ServerDisplay {
 
     public void log(String message) {
         chatArea.appendText(message + "\n");
+    }
+
+    public void log(Exception exception) {
+        StringWriter writer = new StringWriter();
+        exception.printStackTrace(new PrintWriter(writer));
+        log(writer.toString());
     }
 }
