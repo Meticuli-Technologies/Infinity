@@ -44,7 +44,13 @@ public class ServerDisplay {
         switch (args[0]) {
             case "start":
                 try {
-                    server = new Server(new ServerSocket(Integer.parseInt(args[1])));
+                    server = new Server(new ServerSocket(Integer.parseInt(args[1]))) {
+                        @Override
+                        protected Runnable handle(Socket socket) {
+                            log("Client " + socket.getInetAddress() + " successfully connected");
+                            return null;
+                        }
+                    };
                 } catch (IOException e) {
                     log(e);
                 }
