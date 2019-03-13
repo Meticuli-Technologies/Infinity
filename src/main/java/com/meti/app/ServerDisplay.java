@@ -86,6 +86,7 @@ public class ServerDisplay {
     public void log(Exception exception) {
         StringWriter writer = new StringWriter();
         exception.printStackTrace(new PrintWriter(writer));
+        exception.printStackTrace();
         log(writer.toString());
     }
 
