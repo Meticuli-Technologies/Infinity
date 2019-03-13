@@ -36,7 +36,7 @@ public class ServerDisplay {
     @FXML
     public void handleInput() {
         String text = input.getText();
-        if (!text.startsWith("/")) {
+        if (text.startsWith("/")) {
             log(text.substring(1));
         } else {
             String[] args = text.split(" ");
