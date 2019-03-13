@@ -38,23 +38,23 @@ public class ServerDisplay {
         String text = input.getText();
         if (!text.startsWith("/")) {
             log(text.substring(1));
-        }
+        } else {
+            String[] args = text.split(" ");
+            switch (args[0]) {
+                case "start":
+                    try {
+                        server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
 
-        String[] args = text.split(" ");
-        switch (args[0]) {
-            case "start":
-                try {
-                    server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
-
-                    log("Successfully started server on " + server.serverSocket.getLocalPort());
-                    log("Listening for clients at " + server.serverSocket.getInetAddress());
-                } catch (IOException e) {
-                    log(e);
-                }
-                break;
-            default:
-                log("Unknown command: " + text);
-                break;
+                        log("Successfully started server on " + server.serverSocket.getLocalPort());
+                        log("Listening for clients at " + server.serverSocket.getInetAddress());
+                    } catch (IOException e) {
+                        log(e);
+                    }
+                    break;
+                default:
+                    log("Unknown command: " + text);
+                    break;
+            }
         }
     }
 
