@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -41,6 +42,10 @@ public abstract class Client implements Closeable, Callable<Optional<Exception>>
 
             return Optional.empty();
         } catch (IOException | ClassNotFoundException e) {
+            if(e instanceof SocketException){
+                return Optional.empty();
+            }
+
             return Optional.of(e);
         }
     }
