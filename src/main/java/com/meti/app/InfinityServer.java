@@ -1,37 +1,37 @@
 package com.meti.app;
 
-import com.meti.lib.State;
-import com.meti.lib.net.Client;
-import com.meti.lib.net.ClientHandler;
-import com.meti.lib.net.Server;
-import com.meti.lib.net.token.CommandHandler;
+import com.meti.lib.Server;
 
 import java.net.ServerSocket;
-import java.util.function.Consumer;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.function.Function;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 3/3/2019
+ * @since 3/12/2019
  */
-class InfinityServer extends Server {
-    public InfinityServer(ServerSocket serverSocket, State state) {
-        super(serverSocket, state);
+public class InfinityServer extends Server<InfinityClient, InfinityServer.InfinityExecutor> {
+    public InfinityServer(ServerSocket serverSocket) {
+        super(serverSocket, new InfinityExecutor(), InfinityClient.builder);
     }
 
     @Override
-    public State buildState(State state) {
-        state.add(new Chat());
-        return state;
+    public void handleClient(InfinityClient client) {
+        Objects.requireNonNull(client);
     }
 
-    @Override
-    protected ClientHandler createHandler(Consumer<Exception> callback, Client client, State state) {
-        ClientHandler clientHandler = new ClientHandler(callback, client, state);
-        CommandHandler commandHandler = new CommandHandler();
-        commandHandler.implementations.add(new Chat.Add());
+    public static class InfinityExecutor implements Function<Callable<Optional<Exception>>, Future<Optional<Exception>>> {
+        private final ExecutorService service = Executors.newCachedThreadPool();
 
-        clientHandler.tokenHandlers.add(commandHandler);
-        return clientHandler;
+        @Override
+        public Future<Optional<Exception>> apply(Callable<Optional<Exception>> optionalCallable) {
+            return service.submit(optionalCallable);
+        }
     }
 }
