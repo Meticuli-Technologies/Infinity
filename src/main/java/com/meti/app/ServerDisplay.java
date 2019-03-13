@@ -159,7 +159,9 @@ public class ServerDisplay {
     private class ServerConsole extends Console {
         @Override
         public void handle(User user, String message) {
-            output.appendText(message);
+            if (user.equals(User.ADMIN)) {
+                output.appendText(message);
+            }
         }
     }
 }
