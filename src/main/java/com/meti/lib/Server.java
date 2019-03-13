@@ -3,27 +3,26 @@ package com.meti.lib;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.function.Consumer;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 
-public abstract class Server {
+public class Server implements Callable<Optional<Exception>> {
     private ServerSocket serverSocket;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
-    public void listen(Consumer<Runnable> runnableConsumer, Consumer<Exception> callback){
-        runnableConsumer.accept(() -> {
-            while(!serverSocket.isClosed()){
-                try {
-                    Socket socket = serverSocket.accept();
-                    runnableConsumer.accept(handle(socket));
-                } catch (IOException e) {
-                    callback.accept(e);
-                }
+    @Override
+    public Optional<Exception> call() {
+        try {
+            while (!serverSocket.isClosed()) {
+                Socket socket = serverSocket.accept();
             }
-        });
-    }
 
-    protected abstract Runnable handle(Socket socket);
+            return Optional.empty();
+        } catch (IOException e) {
+            return Optional.of(e);
+        }
+    }
 }
