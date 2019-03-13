@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.Server;
 import com.meti.lib.ServiceSubmitter;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -54,18 +55,27 @@ public class ServerDisplay {
                     }
                     break;
                 case "stop":
-                    try {
-                        server.close();
+                    stop();
+                    break;
+                case "exit":
+                    stop();
 
-                        log("Successfully stopped server and disconnected clients");
-                    } catch (Exception e) {
-                        log(e);
-                    }
+                    Platform.exit();
                     break;
                 default:
                     log("Unknown command: " + text);
                     break;
             }
+        }
+    }
+
+    public void stop() {
+        try {
+            server.close();
+
+            log("Successfully stopped server and disconnected clients");
+        } catch (Exception e) {
+            log(e);
         }
     }
 
