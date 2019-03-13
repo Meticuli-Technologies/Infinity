@@ -45,6 +45,9 @@ public class ServerDisplay {
             case "start":
                 try {
                     server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])));
+
+                    log("Successfully started server on " + server.serverSocket.getLocalPort());
+                    log("Listening for clients at " + server.serverSocket.getInetAddress());
                 } catch (IOException e) {
                     log(e);
                 }
