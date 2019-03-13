@@ -8,8 +8,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.util.List;
 import java.util.Optional;
@@ -43,12 +41,12 @@ public class ServerDisplay {
         input.setText(null);
 
         if (!text.startsWith("/")) {
-            log(Level.INFO, text);
+            console.log(User.ADMIN, Level.INFO, text);
         } else {
             try {
                 handleCommand(text);
             } catch (IOException e) {
-                log(Level.ERROR, "Failed to process command.", e);
+                console.log(User.ADMIN, Level.ERROR, "Failed to process command.", e);
             }
         }
     }
@@ -68,7 +66,7 @@ public class ServerDisplay {
                 Platform.exit();
                 break;
             default:
-                log(Level.WARNING, "Unknown command: " + text);
+                console.log(User.ADMIN, Level.WARNING, "Unknown command: " + text);
                 break;
         }
     }
@@ -77,20 +75,20 @@ public class ServerDisplay {
         server = new InfinityServer(new ServerSocket(port), new ServiceSubmitter(service));
         service.submit(new SimpleFutureConsumer(server.listen()));
 
-        log(Level.INFO, "Successfully started server on " + server.serverSocket.getLocalPort());
-        log(Level.INFO, "Listening for clients at " + server.serverSocket.getInetAddress());
+        console.log(User.ADMIN, Level.INFO, "Successfully started server on " + server.serverSocket.getLocalPort());
+        console.log(User.ADMIN, Level.INFO, "Listening for clients at " + server.serverSocket.getInetAddress());
     }
 
     public void stop() throws IOException {
-            getServer().close();
+        getServer().close();
 
-            service.shutdown();
-            if (!service.isTerminated()) {
-                List<Runnable> runnables = service.shutdownNow();
-                log(Level.WARNING, "Stopped server with " + runnables.size() + " tasks still running");
-            }
+        service.shutdown();
+        if (!service.isTerminated()) {
+            List<Runnable> runnables = service.shutdownNow();
+            console.log(User.ADMIN, Level.WARNING, "Stopped server with " + runnables.size() + " tasks still running");
+        }
 
-            log(Level.INFO, "Successfully stopped server and disconnected clients");
+        console.log(User.ADMIN, Level.INFO, "Successfully stopped server and disconnected clients");
     }
 
     public Server<InfinityClient, ServiceSubmitter> getServer() {
@@ -101,20 +99,20 @@ public class ServerDisplay {
         return server;
     }
 
-    public void log(Level level, String message) {
+   /* public void log(Level level, String message) {
         console.log(User.ADMIN, level, message);
     }
 
     public void log(Level level, String message, Exception exception){
         console.log(User.ADMIN, level, message, exception);
     }
-
-    public void log(Level level, Exception exception) {
+*/
+ /*   public void log(Level level, Exception exception) {
         StringWriter writer = new StringWriter();
         exception.printStackTrace(new PrintWriter(writer));
         exception.printStackTrace();
-        log(level, writer.toString());
-    }
+        console.log();log(level, writer.toString());
+    }*/
 
     private class InfinityServer extends Server<InfinityClient, ServiceSubmitter> {
         public InfinityServer(ServerSocket serverSocket, ServiceSubmitter function) {
@@ -123,11 +121,11 @@ public class ServerDisplay {
 
         @Override
         public void handleClient(InfinityClient client) {
-            log(Level.INFO, "Located client " + client.socket.getInetAddress());
+            console.log(User.ADMIN, Level.INFO, "Located client " + client.socket.getInetAddress());
             client.handlers.add(new Handler<>() {
                 @Override
                 public void accept(Object o) {
-                    log(Level.INFO, o.toString());
+                    console.log(new User(client.toString()), Level.INFO, o.toString());
                 }
 
                 @Override
@@ -151,9 +149,9 @@ public class ServerDisplay {
         @Override
         public void accept(Optional<Exception> e) {
             if (e.isPresent()) {
-                log(Level.INFO, e.get());
+                console.log(User.ADMIN, Level.INFO, e.get());
             } else {
-                log(Level.INFO, "Server stopped successfully");
+                console.log(User.ADMIN, Level.INFO, "Server stopped successfully");
             }
         }
     }
