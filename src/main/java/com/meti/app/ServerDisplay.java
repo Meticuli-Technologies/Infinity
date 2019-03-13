@@ -48,23 +48,27 @@ public class ServerDisplay {
         if (!text.startsWith("/")) {
             log(text);
         } else {
-            String[] args = text.substring(1).split(" ");
-            switch (args[0]) {
-                case "start":
-                    start(args);
-                    break;
-                case "stop":
-                    stop();
-                    break;
-                case "exit":
-                    stop();
+            handleCommand(text);
+        }
+    }
 
-                    Platform.exit();
-                    break;
-                default:
-                    log("Unknown command: " + text);
-                    break;
-            }
+    public void handleCommand(String text) {
+        String[] args = text.substring(1).split(" ");
+        switch (args[0]) {
+            case "start":
+                start(args);
+                break;
+            case "stop":
+                stop();
+                break;
+            case "exit":
+                stop();
+
+                Platform.exit();
+                break;
+            default:
+                log("Unknown command: " + text);
+                break;
         }
     }
 
