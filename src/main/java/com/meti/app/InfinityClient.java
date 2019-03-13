@@ -6,6 +6,7 @@ import com.meti.lib.HandlerMap;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -14,6 +15,14 @@ import java.util.stream.Stream;
  * @since 3/12/2019
  */
 public class InfinityClient extends Client  {
+    public static Function<Socket, InfinityClient> builder = socket -> {
+        try {
+            return new InfinityClient(socket);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    };
     private final HandlerMap<Object> tokenMap = new HandlerMap<>();
 
     public InfinityClient(Socket socket) throws IOException {
