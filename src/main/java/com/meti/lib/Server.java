@@ -5,22 +5,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
+import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public abstract class Server<C extends Client> implements Callable<Optional<Exception>> {
-    private final Consumer<Callable<Optional<Exception>>> consumer;
+public abstract class Server<C extends Client, F extends Function<Callable<Optional<Exception>>, Future<Optional<Exception>>>> implements Callable<Optional<Exception>> {
+    private final F function;
     private final Function<Socket, C> clientBuilder;
     private final ServerSocket serverSocket;
 
-    public Server(ServerSocket serverSocket, Consumer<Callable<Optional<Exception>>> consumer, Function<Socket, C> clientBuilder) {
-        this.consumer = consumer;
+    public Server(ServerSocket serverSocket, F function, Function<Socket, C> clientBuilder) {
+        this.function = function;
         this.clientBuilder = clientBuilder;
         this.serverSocket = serverSocket;
     }
 
-    public void listen() {
-        consumer.accept(this);
+    public Future<Optional<Exception>> listen() {
+        return function.apply(this);
     }
 
     @Override
