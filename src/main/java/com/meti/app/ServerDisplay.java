@@ -157,11 +157,9 @@ public class ServerDisplay {
     }
 
     private class ServerConsole extends Console {
-
         @Override
-        public void handle(String message) {
+        public void handle(User user, String message) {
             output.appendText(message);
-
         }
     }
 }

@@ -10,7 +10,7 @@ public abstract class Console {
 
     public void log(User user, Level level, String message, Exception exception) {
         StringBuilder builder = new StringBuilder();
-        builder.append("[" + user.name + "," + level.name() + "]: ");
+        builder.append("[" + level.name() + "]: ");
         if (message != null) {
             builder.append(message);
         }
@@ -25,10 +25,10 @@ public abstract class Console {
             builder.append(writer.toString());
         }
 
-        handle(builder.toString());
+        handle(user, builder.toString());
     }
 
-    public abstract void handle(String message);
+    public abstract void handle(User user, String message);
 
     public void log(User user, Level level, String message) {
         log(user, level, message, null);
