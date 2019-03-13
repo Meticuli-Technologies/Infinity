@@ -54,6 +54,8 @@ public class ServerDisplay {
                 case "stop":
                     try {
                         server.close();
+
+                        log("Successfully stopped server and disconnected clients");
                     } catch (Exception e) {
                         log(e);
                     }
