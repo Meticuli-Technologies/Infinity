@@ -3,6 +3,7 @@ package com.meti.lib;
 import java.util.Objects;
 
 public class User {
+    public static final User ADMIN = new User("Admin");
     public final String name;
 
     public User(String name) {
