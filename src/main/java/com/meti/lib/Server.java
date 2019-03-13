@@ -18,6 +18,7 @@ public class Server implements Callable<Optional<Exception>> {
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
+                Client client = new Client(socket);
             }
 
             return Optional.empty();
