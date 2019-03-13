@@ -1,8 +1,12 @@
 package com.meti.app;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * @author SirMathhman
@@ -17,7 +21,43 @@ public class ClientDisplay {
     private TextArea output;
 
     @FXML
-    public void handleInput(){
+    public void handleInput() {
+        String text = input.getText();
+        input.setText(null);
 
+        if (!text.startsWith("/")) {
+            log(text);
+        } else {
+            String[] args = text.substring(1).split(" ");
+            switch (args[0]) {
+                case "connect":
+                    break;
+                case "stop":
+                    stop();
+                    break;
+                case "exit":
+                    stop();
+
+                    Platform.exit();
+                    break;
+                default:
+                    log("Unknown command: " + text);
+                    break;
+            }
+        }
+    }
+
+    public void stop() {
+    }
+
+    public void log(String message) {
+        output.appendText(message + "\n");
+    }
+
+    public void log(Exception exception) {
+        StringWriter writer = new StringWriter();
+        exception.printStackTrace(new PrintWriter(writer));
+        exception.printStackTrace();
+        log(writer.toString());
     }
 }
