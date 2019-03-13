@@ -24,6 +24,8 @@ import java.util.concurrent.Future;
  */
 public class ServerDisplay {
     private final ExecutorService service = Executors.newCachedThreadPool();
+    private final ServerConsole console = new ServerConsole();
+
     private Server<InfinityClient, ServiceSubmitter> server;
 
     @FXML
