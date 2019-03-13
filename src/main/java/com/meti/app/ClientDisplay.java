@@ -11,6 +11,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author SirMathhman
@@ -18,21 +22,12 @@ import java.net.Socket;
  * @since 3/11/2019
  */
 public class ClientDisplay {
+    private final ExecutorService service = Executors.newCachedThreadPool();
     @FXML
     private TextField input;
-
     @FXML
     private TextArea output;
-
     private Client client;
-
-    public Client getClient() {
-        if (client == null) {
-            throw new IllegalStateException("Client has not been set");
-        }
-
-        return client;
-    }
 
     @FXML
     public void handleInput() {
@@ -48,8 +43,9 @@ public class ClientDisplay {
                     try {
                         InetAddress address = InetAddress.getByName(args[1]);
                         int port = Integer.parseInt(args[2]);
-                        client = new InfinityClient(new Socket(address, port));
-                    } catch (IOException e) {
+
+                        client = service.submit(() -> new InfinityClient(new Socket(address, port))).get(1000, TimeUnit.MILLISECONDS);
+                    } catch (Exception e) {
                         log(e);
                     }
                     break;
@@ -71,9 +67,23 @@ public class ClientDisplay {
     public void stop() {
         try {
             getClient().close();
+
+            service.shutdown();
+            if (!service.isTerminated()) {
+                List<Runnable> runnables = service.shutdownNow();
+                log("Stopped server with " + runnables.size() + " tasks still running");
+            }
         } catch (IOException e) {
             log(e);
         }
+    }
+
+    public Client getClient() {
+        if (client == null) {
+            throw new IllegalStateException("Client has not been set");
+        }
+
+        return client;
     }
 
     public void log(String message) {
