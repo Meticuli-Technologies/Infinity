@@ -30,7 +30,7 @@ public class ServerDisplay {
     private ListView<String> clientListView;
 
     @FXML
-    private TextArea chatArea;
+    private TextArea output;
 
     @FXML
     private TextField input;
@@ -76,7 +76,7 @@ public class ServerDisplay {
     }
 
     public void log(String message) {
-        chatArea.appendText(message + "\n");
+        output.appendText(message + "\n");
     }
 
     public void log(Exception exception) {
@@ -160,7 +160,7 @@ public class ServerDisplay {
 
         @Override
         public void handle(String message) {
-            chatArea.appendText(message);
+            output.appendText(message);
 
         }
     }

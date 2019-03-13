@@ -21,7 +21,7 @@
                <center>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="768.0" prefViewportWidth="824.0" BorderPane.alignment="CENTER">
                      <content>
-                        <TextArea fx:id="chatArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                        <TextArea fx:id="output" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                      </content>
                   </ScrollPane>
                </center>
