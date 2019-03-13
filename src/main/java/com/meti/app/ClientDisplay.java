@@ -6,8 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 
 /**
  * @author SirMathhman
@@ -23,8 +26,8 @@ public class ClientDisplay {
 
     private Client client;
 
-    public Client getClient(){
-        if(client == null){
+    public Client getClient() {
+        if (client == null) {
             throw new IllegalStateException("Client has not been set");
         }
 
@@ -42,6 +45,13 @@ public class ClientDisplay {
             String[] args = text.substring(1).split(" ");
             switch (args[0]) {
                 case "connect":
+                    try {
+                        InetAddress address = InetAddress.getByName(args[1]);
+                        int port = Integer.parseInt(args[2]);
+                        client = new InfinityClient(new Socket(address, port));
+                    } catch (IOException e) {
+                        log(e);
+                    }
                     break;
                 case "stop":
                     stop();
