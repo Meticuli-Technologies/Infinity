@@ -37,15 +37,23 @@ public class ServerDisplay {
     @FXML
     private TextField input;
 
-    public Server<InfinityClient, ServiceSubmitter> getServer() {
-        if (server == null) {
-            throw new IllegalStateException("Server has not been set");
-        }
+    @FXML
+    public void handleInput() {
+        String text = input.getText();
+        input.setText(null);
 
-        return server;
+        if (!text.startsWith("/")) {
+            log(Level.INFO, text);
+        } else {
+            try {
+                handleCommand(text);
+            } catch (IOException e) {
+                log(Level.ERROR, "Failed to process command.", e);
+            }
+        }
     }
 
-    public void handleCommand(String text) {
+    public void handleCommand(String text) throws IOException {
         String[] args = text.substring(1).split(" ");
         switch (args[0]) {
             case "start":
@@ -60,60 +68,52 @@ public class ServerDisplay {
                 Platform.exit();
                 break;
             default:
-                log("Unknown command: " + text);
+                log(Level.WARNING, "Unknown command: " + text);
                 break;
         }
     }
 
-    @FXML
-    public void handleInput() {
-        String text = input.getText();
-        input.setText(null);
+    public void start(int port) throws IOException {
+        server = new InfinityServer(new ServerSocket(port), new ServiceSubmitter(service));
+        service.submit(new SimpleFutureConsumer(server.listen()));
 
-        if (!text.startsWith("/")) {
-            log(text);
-        } else {
-            handleCommand(text);
-        }
+        log(Level.INFO, "Successfully started server on " + server.serverSocket.getLocalPort());
+        log(Level.INFO, "Listening for clients at " + server.serverSocket.getInetAddress());
     }
 
-    public void log(String message) {
-        output.appendText(message + "\n");
-    }
-
-    public void log(Exception exception) {
-        StringWriter writer = new StringWriter();
-        exception.printStackTrace(new PrintWriter(writer));
-        exception.printStackTrace();
-        log(writer.toString());
-    }
-
-    public void start(int port) {
-        try {
-            server = new InfinityServer(new ServerSocket(port), new ServiceSubmitter(service));
-            service.submit(new SimpleFutureConsumer(server.listen()));
-
-            log("Successfully started server on " + server.serverSocket.getLocalPort());
-            log("Listening for clients at " + server.serverSocket.getInetAddress());
-        } catch (IOException e) {
-            log(e);
-        }
-    }
-
-    public void stop() {
-        try {
+    public void stop() throws IOException {
             getServer().close();
 
             service.shutdown();
             if (!service.isTerminated()) {
                 List<Runnable> runnables = service.shutdownNow();
-                log("Stopped server with " + runnables.size() + " tasks still running");
+                log(Level.WARNING, "Stopped server with " + runnables.size() + " tasks still running");
             }
 
-            log("Successfully stopped server and disconnected clients");
-        } catch (Exception e) {
-            log(e);
+            log(Level.INFO, "Successfully stopped server and disconnected clients");
+    }
+
+    public Server<InfinityClient, ServiceSubmitter> getServer() {
+        if (server == null) {
+            throw new IllegalStateException("Server has not been set");
         }
+
+        return server;
+    }
+
+    public void log(Level level, String message) {
+        console.log(User.ADMIN, level, message);
+    }
+
+    public void log(Level level, String message, Exception exception){
+        console.log(User.ADMIN, level, message, exception);
+    }
+
+    public void log(Level level, Exception exception) {
+        StringWriter writer = new StringWriter();
+        exception.printStackTrace(new PrintWriter(writer));
+        exception.printStackTrace();
+        log(level, writer.toString());
     }
 
     private class InfinityServer extends Server<InfinityClient, ServiceSubmitter> {
@@ -123,11 +123,11 @@ public class ServerDisplay {
 
         @Override
         public void handleClient(InfinityClient client) {
-            log("Located client " + client.socket.getInetAddress());
+            log(Level.INFO, "Located client " + client.socket.getInetAddress());
             client.handlers.add(new Handler<>() {
                 @Override
                 public void accept(Object o) {
-                    log(o.toString());
+                    log(Level.INFO, o.toString());
                 }
 
                 @Override
@@ -151,9 +151,9 @@ public class ServerDisplay {
         @Override
         public void accept(Optional<Exception> e) {
             if (e.isPresent()) {
-                log(e.get());
+                log(Level.INFO, e.get());
             } else {
-                log("Server stopped successfully");
+                log(Level.INFO, "Server stopped successfully");
             }
         }
     }
