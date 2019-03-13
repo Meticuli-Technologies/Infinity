@@ -89,7 +89,11 @@ public class ClientDisplay {
     }
 
     public void log(String message) {
-
+        try {
+            client.writeObject(message);
+        } catch (IOException e) {
+            log(e);
+        }
     }
 
     public void log(Exception exception) {
