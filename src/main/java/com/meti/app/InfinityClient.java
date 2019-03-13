@@ -22,6 +22,10 @@ public class InfinityClient extends Client  {
 
     @Override
     protected void handleObject(Object token) {
+        if(tokenMap.isEmpty()){
+            throw new IllegalStateException("No handlers were found");
+        }
+
         Stream<Handler<Object>> stream = tokenMap.process(token);
         if (stream.count() == 0) {
             throw new IllegalArgumentException("No handlers for " + token);
