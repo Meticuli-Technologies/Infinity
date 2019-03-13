@@ -5,11 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 
-public class Server implements Callable<Optional<Exception>> {
-    private ServerSocket serverSocket;
+public abstract class Server<C extends Client> implements Callable<Optional<Exception>> {
+    private final Function<Socket, C> clientBuilder;
+    private final ServerSocket serverSocket;
 
-    public Server(ServerSocket serverSocket) {
+    public Server(Function<Socket, C> clientBuilder, ServerSocket serverSocket) {
+        this.clientBuilder = clientBuilder;
         this.serverSocket = serverSocket;
     }
 
@@ -18,7 +21,7 @@ public class Server implements Callable<Optional<Exception>> {
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                Client client = new Client(socket);
+                handleClient(clientBuilder.apply(socket));
             }
 
             return Optional.empty();
@@ -26,4 +29,6 @@ public class Server implements Callable<Optional<Exception>> {
             return Optional.of(e);
         }
     }
+
+    public abstract void handleClient(C client);
 }
