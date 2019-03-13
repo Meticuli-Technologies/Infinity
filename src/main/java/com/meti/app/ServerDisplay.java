@@ -88,6 +88,12 @@ public class ServerDisplay {
         try {
             getServer().close();
 
+            service.shutdown();
+            if (!service.isTerminated()) {
+                List<Runnable> runnables = service.shutdownNow();
+                log("Stopped server with " + runnables.size() + " tasks still running");
+            }
+
             log("Successfully stopped server and disconnected clients");
         } catch (Exception e) {
             log(e);
