@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -19,6 +20,16 @@ public class ClientDisplay {
 
     @FXML
     private TextArea output;
+
+    private Client client;
+
+    public Client getClient(){
+        if(client == null){
+            throw new IllegalStateException("Client has not been set");
+        }
+
+        return client;
+    }
 
     @FXML
     public void handleInput() {
