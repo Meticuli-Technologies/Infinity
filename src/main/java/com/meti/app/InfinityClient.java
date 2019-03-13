@@ -23,7 +23,7 @@ public class InfinityClient extends Client  {
             return null;
         }
     };
-    private final HandlerMap<Object> tokenMap = new HandlerMap<>();
+    public final HandlerMap<Object> handlers = new HandlerMap<>();
 
     public InfinityClient(Socket socket) throws IOException {
         super(socket);
@@ -31,11 +31,11 @@ public class InfinityClient extends Client  {
 
     @Override
     protected void handleObject(Object token) {
-        if(tokenMap.isEmpty()){
+        if(handlers.isEmpty()){
             throw new IllegalStateException("No handlers were found");
         }
 
-        Stream<Handler<Object>> stream = tokenMap.process(token);
+        Stream<Handler<Object>> stream = handlers.process(token);
         if (stream.count() == 0) {
             throw new IllegalArgumentException("No handlers for " + token);
         }
