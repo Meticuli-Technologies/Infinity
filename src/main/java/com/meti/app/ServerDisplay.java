@@ -1,102 +1,67 @@
 package com.meti.app;
 
-import com.meti.lib.State;
-import com.meti.lib.fx.Controller;
-import com.meti.lib.net.Client;
-import com.meti.lib.net.Server;
-import javafx.collections.ListChangeListener;
+import com.meti.lib.Server;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
-import java.io.Closeable;
 import java.io.IOException;
-import java.net.InetAddress;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 3/2/2019
+ * @since 3/11/2019
  */
-public class ServerDisplay extends Controller {
-    private final ExecutorService service = Executors.newCachedThreadPool();
-    @FXML
-    private ListView<String> clientListView;
+public class ServerDisplay {
+    private final List<Socket> sockets = new ArrayList<>();
+
     private Server server;
 
-    public ServerDisplay(State state) {
-        super(state);
-    }
+    @FXML
+    private ListView<String> clientListView;
 
-    public void load(ServerSocket serverSocket) {
-        State subState = state.createSubState();
+    @FXML
+    private TextArea chatArea;
+    
+    @FXML
+    private TextField input;
 
-        this.server = new InfinityServer(serverSocket, subState);
-        this.server.listen(service::submit, Throwable::printStackTrace);
+    @FXML
+    public void handleInput() {
+        String text = input.getText();
+        if (!text.startsWith("/")) {
+            log(text.substring(1));
+        }
 
-        state.add(server);
-        state.add((Closeable) () -> {
-            service.shutdown();
-
-            if (!service.isTerminated()) {
+        String[] args = text.split(" ");
+        switch (args[0]) {
+            case "start":
                 try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])));
+                } catch (IOException e) {
+                    log(e);
                 }
-
-                List<Runnable> runnables = service.shutdownNow();
-                StringBuilder builder = new StringBuilder();
-                builder.append("Shutdown service with ").append(runnables.size()).append(" runnables:\n");
-                builder.append(runnables.stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining("\n")));
-
-                System.err.println(builder);
-            }
-        });
-
-        loadClients();
-    }
-
-    private void loadClients() {
-        Server server = getServer().orElseThrow(() -> new IllegalStateException("Server has not been set"));
-        clientListView.getItems().addAll(mapClients(server.clients));
-        server.clients.addListener(new ClientListListener());
-    }
-
-    private List<String> mapClients(List<? extends Client> clients) {
-        return clients.stream().map(client -> client.socket)
-                .map(Socket::getInetAddress)
-                .map(InetAddress::toString)
-                .collect(Collectors.toList());
-    }
-
-    private Optional<Server> getServer() {
-        return Optional.ofNullable(server);
-    }
-
-    private class ClientListListener implements ListChangeListener<Client> {
-        @Override
-        public void onChanged(Change<? extends Client> c) {
-            if (c.next()) {
-                if (c.wasAdded()) {
-                    clientListView.getItems().addAll(mapClients(c.getAddedSubList()));
-                } else if (c.wasRemoved()) {
-                    clientListView.getItems().removeAll(mapClients(c.getRemoved()));
-                } else {
-                    throw new UnsupportedOperationException("Invalid change " + c + " for listener");
-                }
-            } else {
-                throw new IllegalStateException("Next change could not be found");
-            }
+                break;
+            default:
+                log("Unknown command: " + text);
+                break;
         }
     }
 
+    public void log(String message) {
+        chatArea.appendText(message + "\n");
+    }
+
+    public void log(Exception exception) {
+        StringWriter writer = new StringWriter();
+        exception.printStackTrace(new PrintWriter(writer));
+        log(writer.toString());
+    }
 }
