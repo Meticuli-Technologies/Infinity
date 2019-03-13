@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.Server;
+import com.meti.lib.ServiceSubmitter;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -13,6 +14,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -33,6 +36,8 @@ public class ServerDisplay {
     @FXML
     private TextField input;
 
+    private final ExecutorService service = Executors.newCachedThreadPool();
+
     @FXML
     public void handleInput() {
         String text = input.getText();
@@ -44,7 +49,7 @@ public class ServerDisplay {
         switch (args[0]) {
             case "start":
                 try {
-                    server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])));
+                    server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
 
                     log("Successfully started server on " + server.serverSocket.getLocalPort());
                     log("Listening for clients at " + server.serverSocket.getInetAddress());
@@ -66,5 +71,16 @@ public class ServerDisplay {
         StringWriter writer = new StringWriter();
         exception.printStackTrace(new PrintWriter(writer));
         log(writer.toString());
+    }
+
+    private class InfinityServer extends Server<InfinityClient, ServiceSubmitter> {
+        public InfinityServer(ServerSocket serverSocket, ServiceSubmitter function) {
+            super(serverSocket, function, InfinityClient.builder);
+        }
+
+        @Override
+        public void handleClient(InfinityClient client) {
+            log("Located client " + client.socket.getInetAddress());
+        }
     }
 }

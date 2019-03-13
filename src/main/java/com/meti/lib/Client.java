@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  * @since 3/12/2019
  */
 public abstract class Client implements Closeable, Callable<Optional<Exception>> {
-    private final Socket socket;
+    public final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
