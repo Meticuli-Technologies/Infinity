@@ -9,11 +9,5 @@ public class Server {
         this.serverSocket = serverSocket;
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
 
-    public void setServerSocket(ServerSocket serverSocket) {
-        this.serverSocket = serverSocket;
-    }
 }
