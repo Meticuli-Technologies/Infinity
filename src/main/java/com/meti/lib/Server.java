@@ -2,9 +2,7 @@ package com.meti.lib;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -38,6 +36,10 @@ public abstract class Server<C extends Client, F extends Function<Callable<Optio
 
             return Optional.empty();
         } catch (IOException e) {
+            if(e instanceof SocketException){
+                return Optional.empty();
+            }
+
             return Optional.of(e);
         }
     }
