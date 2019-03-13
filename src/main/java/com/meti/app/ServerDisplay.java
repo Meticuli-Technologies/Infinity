@@ -24,19 +24,14 @@ import java.util.concurrent.Executors;
  */
 public class ServerDisplay {
     private final List<Socket> sockets = new ArrayList<>();
-
+    private final ExecutorService service = Executors.newCachedThreadPool();
     private Server server;
-
     @FXML
     private ListView<String> clientListView;
-
     @FXML
     private TextArea chatArea;
-    
     @FXML
     private TextField input;
-
-    private final ExecutorService service = Executors.newCachedThreadPool();
 
     @FXML
     public void handleInput() {
@@ -81,6 +76,8 @@ public class ServerDisplay {
         @Override
         public void handleClient(InfinityClient client) {
             log("Located client " + client.socket.getInetAddress());
+
+            clientListView.getItems().add(client.socket.getInetAddress().toString());
         }
     }
 }
