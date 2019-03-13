@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.FutureConsumer;
 import com.meti.lib.Server;
 import com.meti.lib.ServiceSubmitter;
 import javafx.application.Platform;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Supplier;
 
 /**
  * @author SirMathhman
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 public class ServerDisplay {
     private final List<Socket> sockets = new ArrayList<>();
     private final ExecutorService service = Executors.newCachedThreadPool();
-    private Server server;
+    private Server<InfinityClient, ServiceSubmitter> server;
 
     @FXML
     private ListView<String> clientListView;
@@ -38,14 +38,6 @@ public class ServerDisplay {
 
     @FXML
     private TextField input;
-
-    public Server getServer(){
-        if(server == null){
-            throw new IllegalStateException("Server has not been set");
-        }
-
-        return server;
-    }
 
     @FXML
     public void handleInput() {
@@ -60,6 +52,16 @@ public class ServerDisplay {
                 case "start":
                     try {
                         server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
+                        service.submit(new FutureConsumer<>(server.listen()) {
+                            @Override
+                            public void accept(Optional<Exception> e) {
+                                if (e.isPresent()) {
+                                    log(e.get());
+                                } else {
+                                    log("Server stopped successfully");
+                                }
+                            }
+                        });
 
                         log("Successfully started server on " + server.serverSocket.getLocalPort());
                         log("Listening for clients at " + server.serverSocket.getInetAddress());
@@ -90,6 +92,14 @@ public class ServerDisplay {
         } catch (Exception e) {
             log(e);
         }
+    }
+
+    public Server<InfinityClient, ServiceSubmitter> getServer() {
+        if (server == null) {
+            throw new IllegalStateException("Server has not been set");
+        }
+
+        return server;
     }
 
     public void log(String message) {
