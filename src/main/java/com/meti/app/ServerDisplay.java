@@ -51,6 +51,13 @@ public class ServerDisplay {
                         log(e);
                     }
                     break;
+                case "stop":
+                    try {
+                        server.close();
+                    } catch (Exception e) {
+                        log(e);
+                    }
+                    break;
                 default:
                     log("Unknown command: " + text);
                     break;
