@@ -15,8 +15,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 /**
  * @author SirMathhman
@@ -27,12 +29,23 @@ public class ServerDisplay {
     private final List<Socket> sockets = new ArrayList<>();
     private final ExecutorService service = Executors.newCachedThreadPool();
     private Server server;
+
     @FXML
     private ListView<String> clientListView;
+
     @FXML
     private TextArea chatArea;
+
     @FXML
     private TextField input;
+
+    public Server getServer(){
+        if(server == null){
+            throw new IllegalStateException("Server has not been set");
+        }
+
+        return server;
+    }
 
     @FXML
     public void handleInput() {
@@ -71,7 +84,7 @@ public class ServerDisplay {
 
     public void stop() {
         try {
-            server.close();
+            getServer().close();
 
             log("Successfully stopped server and disconnected clients");
         } catch (Exception e) {
