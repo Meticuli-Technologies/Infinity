@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -40,23 +38,19 @@ public class ServerDisplay {
     @FXML
     private TextField input;
 
-    @FXML
-    public void handleInput() {
-        String text = input.getText();
-        input.setText(null);
-
-        if (!text.startsWith("/")) {
-            log(text);
-        } else {
-            handleCommand(text);
+    public Server<InfinityClient, ServiceSubmitter> getServer() {
+        if (server == null) {
+            throw new IllegalStateException("Server has not been set");
         }
+
+        return server;
     }
 
     public void handleCommand(String text) {
         String[] args = text.substring(1).split(" ");
         switch (args[0]) {
             case "start":
-                start(args);
+                start(Integer.parseInt(args[1]));
                 break;
             case "stop":
                 stop();
@@ -72,9 +66,32 @@ public class ServerDisplay {
         }
     }
 
-    public void start(String[] args) {
+    @FXML
+    public void handleInput() {
+        String text = input.getText();
+        input.setText(null);
+
+        if (!text.startsWith("/")) {
+            log(text);
+        } else {
+            handleCommand(text);
+        }
+    }
+
+    public void log(String message) {
+        chatArea.appendText(message + "\n");
+    }
+
+    public void log(Exception exception) {
+        StringWriter writer = new StringWriter();
+        exception.printStackTrace(new PrintWriter(writer));
+        exception.printStackTrace();
+        log(writer.toString());
+    }
+
+    public void start(int port) {
         try {
-            server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
+            server = new InfinityServer(new ServerSocket(port), new ServiceSubmitter(service));
             service.submit(new SimpleFutureConsumer(server.listen()));
 
             log("Successfully started server on " + server.serverSocket.getLocalPort());
@@ -98,25 +115,6 @@ public class ServerDisplay {
         } catch (Exception e) {
             log(e);
         }
-    }
-
-    public Server<InfinityClient, ServiceSubmitter> getServer() {
-        if (server == null) {
-            throw new IllegalStateException("Server has not been set");
-        }
-
-        return server;
-    }
-
-    public void log(String message) {
-        chatArea.appendText(message + "\n");
-    }
-
-    public void log(Exception exception) {
-        StringWriter writer = new StringWriter();
-        exception.printStackTrace(new PrintWriter(writer));
-        exception.printStackTrace();
-        log(writer.toString());
     }
 
     private class InfinityServer extends Server<InfinityClient, ServiceSubmitter> {
