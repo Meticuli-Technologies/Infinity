@@ -28,7 +28,6 @@ import java.util.concurrent.Future;
  * @since 3/11/2019
  */
 public class ServerDisplay {
-    private final List<Socket> sockets = new ArrayList<>();
     private final ExecutorService service = Executors.newCachedThreadPool();
     private Server<InfinityClient, ServiceSubmitter> server;
 
