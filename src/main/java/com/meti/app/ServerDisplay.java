@@ -1,9 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.FutureConsumer;
-import com.meti.lib.Handler;
-import com.meti.lib.Server;
-import com.meti.lib.ServiceSubmitter;
+import com.meti.lib.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -156,6 +153,15 @@ public class ServerDisplay {
             } else {
                 log("Server stopped successfully");
             }
+        }
+    }
+
+    private class ServerConsole extends Console {
+
+        @Override
+        public void handle(String message) {
+            chatArea.appendText(message);
+
         }
     }
 }
