@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author SirMathhman
@@ -52,16 +53,7 @@ public class ServerDisplay {
                 case "start":
                     try {
                         server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
-                        service.submit(new FutureConsumer<>(server.listen()) {
-                            @Override
-                            public void accept(Optional<Exception> e) {
-                                if (e.isPresent()) {
-                                    log(e.get());
-                                } else {
-                                    log("Server stopped successfully");
-                                }
-                            }
-                        });
+                        service.submit(new SimpleFutureConsumer(server.listen()));
 
                         log("Successfully started server on " + server.serverSocket.getLocalPort());
                         log("Listening for clients at " + server.serverSocket.getInetAddress());
@@ -129,6 +121,24 @@ public class ServerDisplay {
             log("Located client " + client.socket.getInetAddress());
 
             clientListView.getItems().add(client.socket.getInetAddress().toString());
+
+            Future<Optional<Exception>> submit = service.submit(client);
+            service.submit(new SimpleFutureConsumer(submit));
+        }
+    }
+
+    public class SimpleFutureConsumer extends FutureConsumer<Optional<Exception>> {
+        public SimpleFutureConsumer(Future<Optional<Exception>> future) {
+            super(future);
+        }
+
+        @Override
+        public void accept(Optional<Exception> e) {
+            if (e.isPresent()) {
+                log(e.get());
+            } else {
+                log("Server stopped successfully");
+            }
         }
     }
 }
