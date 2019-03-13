@@ -45,6 +45,8 @@ public class ClientDisplay {
                         int port = Integer.parseInt(args[2]);
 
                         client = service.submit(() -> new InfinityClient(new Socket(address, port))).get(1000, TimeUnit.MILLISECONDS);
+
+                        log("Connected to server successfully");
                     } catch (Exception e) {
                         log(e);
                     }
