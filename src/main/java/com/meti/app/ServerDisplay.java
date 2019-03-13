@@ -37,7 +37,7 @@ public class ServerDisplay {
     public void handleInput() {
         String text = input.getText();
         if (!text.startsWith("/")) {
-            log(text.substring(1));
+            log(text);
         } else {
             String[] args = text.substring(1).split(" ");
             switch (args[0]) {
