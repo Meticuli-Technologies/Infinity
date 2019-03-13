@@ -89,13 +89,13 @@ public class ClientDisplay {
     }
 
     public void log(String message) {
-        output.appendText(message + "\n");
+
     }
 
     public void log(Exception exception) {
         StringWriter writer = new StringWriter();
         exception.printStackTrace(new PrintWriter(writer));
         exception.printStackTrace();
-        log(writer.toString());
+        output.appendText(writer.toString() + "\n");
     }
 }
