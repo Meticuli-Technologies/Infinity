@@ -44,13 +44,7 @@ public class ServerDisplay {
         switch (args[0]) {
             case "start":
                 try {
-                    server = new Server(new ServerSocket(Integer.parseInt(args[1])), consumer, clientBuilder) {
-                        @Override
-                        protected Runnable handle(Socket socket) {
-                            log("Client " + socket.getInetAddress() + " successfully connected");
-                            return null;
-                        }
-                    };
+                    server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])));
                 } catch (IOException e) {
                     log(e);
                 }
