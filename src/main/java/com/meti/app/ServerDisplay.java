@@ -51,15 +51,7 @@ public class ServerDisplay {
             String[] args = text.substring(1).split(" ");
             switch (args[0]) {
                 case "start":
-                    try {
-                        server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
-                        service.submit(new SimpleFutureConsumer(server.listen()));
-
-                        log("Successfully started server on " + server.serverSocket.getLocalPort());
-                        log("Listening for clients at " + server.serverSocket.getInetAddress());
-                    } catch (IOException e) {
-                        log(e);
-                    }
+                    start(args);
                     break;
                 case "stop":
                     stop();
@@ -73,6 +65,18 @@ public class ServerDisplay {
                     log("Unknown command: " + text);
                     break;
             }
+        }
+    }
+
+    public void start(String[] args) {
+        try {
+            server = new InfinityServer(new ServerSocket(Integer.parseInt(args[1])), new ServiceSubmitter(service));
+            service.submit(new SimpleFutureConsumer(server.listen()));
+
+            log("Successfully started server on " + server.serverSocket.getLocalPort());
+            log("Listening for clients at " + server.serverSocket.getInetAddress());
+        } catch (IOException e) {
+            log(e);
         }
     }
 
