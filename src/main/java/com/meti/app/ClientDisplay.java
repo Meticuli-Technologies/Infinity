@@ -71,7 +71,7 @@ public class ClientDisplay {
             service.shutdown();
             if (!service.isTerminated()) {
                 List<Runnable> runnables = service.shutdownNow();
-                log("Stopped server with " + runnables.size() + " tasks still running");
+                log("Stopped client with " + runnables.size() + " tasks still running");
             }
         } catch (IOException e) {
             log(e);
