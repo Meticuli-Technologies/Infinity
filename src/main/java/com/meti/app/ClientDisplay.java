@@ -69,6 +69,11 @@ public class ClientDisplay {
     }
 
     public void stop() {
+        try {
+            getClient().close();
+        } catch (IOException e) {
+            log(e);
+        }
     }
 
     public void log(String message) {
