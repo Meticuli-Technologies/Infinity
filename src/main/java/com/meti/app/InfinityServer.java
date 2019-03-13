@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class InfinityServer extends Server<InfinityClient> {
     public InfinityServer(ServerSocket serverSocket) {
-        super(InfinityClient.builder, serverSocket);
+        super(serverSocket, consumer, InfinityClient.builder);
     }
 
     @Override
