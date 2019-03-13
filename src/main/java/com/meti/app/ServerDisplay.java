@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.FutureConsumer;
+import com.meti.lib.Handler;
 import com.meti.lib.Server;
 import com.meti.lib.ServiceSubmitter;
 import javafx.application.Platform;
@@ -119,6 +120,17 @@ public class ServerDisplay {
         @Override
         public void handleClient(InfinityClient client) {
             log("Located client " + client.socket.getInetAddress());
+            client.handlers.add(new Handler<>() {
+                @Override
+                public void accept(Object o) {
+                    log(o.toString());
+                }
+
+                @Override
+                public boolean test(Object o) {
+                    return o instanceof String;
+                }
+            });
 
             clientListView.getItems().add(client.socket.getInetAddress().toString());
 
