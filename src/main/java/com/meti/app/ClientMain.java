@@ -29,19 +29,16 @@ public class ClientMain {
     }
 
     private Socket getSocket(Scanner scanner) {
-        Socket socket;
         while (true) {
             try {
                 System.out.println("Please enter in the following properties:");
                 InetAddress address = getAddress(scanner);
                 int port = getPort(scanner);
-                socket = new Socket(address, port);
-                break;
+                return new Socket(address, port);
             } catch (IOException e) {
                 System.out.println("Invalid connection: " + e.getMessage() + ", please try again!");
             }
         }
-        return socket;
     }
 
     private InetAddress getAddress(Scanner scanner) {
