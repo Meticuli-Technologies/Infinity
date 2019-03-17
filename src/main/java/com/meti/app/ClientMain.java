@@ -6,4 +6,7 @@ package com.meti.app;
  * @since 3/17/2019
  */
 public class ClientMain {
+    public static void main(String[] args) {
+
+    }
 }
