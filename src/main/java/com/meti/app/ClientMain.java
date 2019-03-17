@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -23,22 +24,34 @@ public class ClientMain {
         System.out.println("Welcome to Infinity");
         System.out.println("Start by connecting to a server.");
 
-        Socket socket = getSocket(scanner);
-
-        System.out.println(socket);
+        Optional<Socket> socket = createConnection(scanner);
+        if (socket.isPresent()) {
+            System.out.println("Connected successfully.");
+        } else {
+            System.out.println("No connection found.");
+        }
     }
 
-    private Socket getSocket(Scanner scanner) {
+    private Optional<Socket> createConnection(Scanner scanner) {
         while (true) {
             try {
-                System.out.println("Please enter in the following properties:");
-                InetAddress address = getAddress(scanner);
-                int port = getPort(scanner);
-                return new Socket(address, port);
+                System.out.println("Press ENTER to continue, or enter any key to exit.");
+                String line = scanner.nextLine();
+                if (line.length() == 0) {
+                    return Optional.of(getSocket(scanner));
+                } else {
+                    return Optional.empty();
+                }
             } catch (IOException e) {
                 System.out.println("Invalid connection: " + e.getMessage() + ", please try again!");
             }
         }
+    }
+
+    private Socket getSocket(Scanner scanner) throws IOException {
+        InetAddress address = getAddress(scanner);
+        int port = getPort(scanner);
+        return new Socket(address, port);
     }
 
     private InetAddress getAddress(Scanner scanner) {
