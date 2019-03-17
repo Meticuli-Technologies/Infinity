@@ -1,5 +1,9 @@
 package com.meti.app;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -13,7 +17,20 @@ public class ClientMain {
     }
 
     private void init() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Connect to a Server");
 
+        InetAddress address;
+        while (true) {
+            System.out.print("Enter in an address");
+            String addressToken = scanner.next();
+            try {
+                address = InetAddress.getByName(addressToken);
+                break;
+            } catch (UnknownHostException e) {
+                System.out.println("Invalid address: " + addressToken);
+            }
+        }
     }
 
     private void start() {
