@@ -20,6 +20,10 @@ public class ClientMain {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Connect to a Server");
 
+        InetAddress address = getAddress(scanner);
+    }
+
+    private InetAddress getAddress(Scanner scanner) {
         InetAddress address;
         while (true) {
             System.out.print("Enter in an address");
@@ -31,6 +35,7 @@ public class ClientMain {
                 System.out.println("Invalid address: " + addressToken);
             }
         }
+        return address;
     }
 
     private void start() {
