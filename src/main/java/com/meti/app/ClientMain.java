@@ -21,16 +21,29 @@ public class ClientMain {
         System.out.println("Connect to a Server");
 
         InetAddress address = getAddress(scanner);
+        int port = getPort(scanner);
     }
 
     private InetAddress getAddress(Scanner scanner) {
         while (true) {
-            System.out.print("Enter in an address");
+            System.out.print("Enter in an address: ");
             String addressToken = scanner.next();
             try {
                 return InetAddress.getByName(addressToken);
             } catch (UnknownHostException e) {
                 System.out.println("Invalid address: " + addressToken);
+            }
+        }
+    }
+
+    private int getPort(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter in the port: ");
+            String portToken = scanner.next();
+            try {
+                return Integer.parseInt(portToken);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid port: " + portToken);
             }
         }
     }
