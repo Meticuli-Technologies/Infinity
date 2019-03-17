@@ -1,6 +1,8 @@
 package com.meti.app;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
@@ -18,15 +20,33 @@ public class ClientMain {
 
     private void init() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Connect to a Server");
+        System.out.println("Welcome to Infinity");
+        System.out.println("Start by connecting to a server.");
 
-        InetAddress address = getAddress(scanner);
-        int port = getPort(scanner);
+        Socket socket = getSocket(scanner);
+
+        System.out.println(socket);
+    }
+
+    private Socket getSocket(Scanner scanner) {
+        Socket socket;
+        while (true) {
+            try {
+                System.out.println("Please enter in the following properties:");
+                InetAddress address = getAddress(scanner);
+                int port = getPort(scanner);
+                socket = new Socket(address, port);
+                break;
+            } catch (IOException e) {
+                System.out.println("Invalid connection: " + e.getMessage() + ", please try again!");
+            }
+        }
+        return socket;
     }
 
     private InetAddress getAddress(Scanner scanner) {
         while (true) {
-            System.out.print("Enter in an address: ");
+            System.out.print("Enter in the address: ");
             String addressToken = scanner.next();
             try {
                 return InetAddress.getByName(addressToken);
