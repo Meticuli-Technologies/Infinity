@@ -7,6 +7,10 @@ package com.meti.app;
  */
 public class ClientMain {
     public static void main(String[] args) {
+new ClientMain().init();
+    }
+
+    public void init(){
 
     }
 }
