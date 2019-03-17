@@ -12,11 +12,11 @@ public class ClientMain {
         main.start();
     }
 
-    private void start() {
+    private void init() {
 
     }
 
-    public void init(){
+    private void start() {
 
     }
 }
