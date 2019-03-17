@@ -24,18 +24,15 @@ public class ClientMain {
     }
 
     private InetAddress getAddress(Scanner scanner) {
-        InetAddress address;
         while (true) {
             System.out.print("Enter in an address");
             String addressToken = scanner.next();
             try {
-                address = InetAddress.getByName(addressToken);
-                break;
+                return InetAddress.getByName(addressToken);
             } catch (UnknownHostException e) {
                 System.out.println("Invalid address: " + addressToken);
             }
         }
-        return address;
     }
 
     private void start() {
