@@ -7,7 +7,13 @@ package com.meti.app;
  */
 public class ClientMain {
     public static void main(String[] args) {
-new ClientMain().init();
+        ClientMain main = new ClientMain();
+        main.init();
+        main.start();
+    }
+
+    private void start() {
+
     }
 
     public void init(){
