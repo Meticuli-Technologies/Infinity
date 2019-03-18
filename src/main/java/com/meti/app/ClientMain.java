@@ -30,16 +30,16 @@ public class ClientMain {
 
         Optional<Socket> socketOptional = createConnection(scanner);
         if (socketOptional.isPresent()) {
-            System.out.println("Connected successfully.");
-
             try {
                 Socket socket = socketOptional.get();
                 ObjectOutputStream outputStream = new ObjectOutputStream(client.getSocket().getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(client.getSocket().getInputStream());
 
                 this.client = new Client(socket, inputStream, outputStream);
+
+                System.out.println("Connected successfully to " + socket.getInetAddress());
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Failed to build streams: " + e.getMessage());
             }
         } else {
             System.out.println("No connection found.");
@@ -90,11 +90,6 @@ public class ClientMain {
                 System.out.println("Invalid port: " + portToken);
             }
         }
-    }
-
-    public Socket getSocket(){
-
-        return client.getSocket();
     }
 
     private void start() {
