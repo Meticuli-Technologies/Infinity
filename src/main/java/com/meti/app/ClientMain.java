@@ -101,10 +101,10 @@ public class ClientMain {
         System.out.println("Enter in a username and password.");
 
         System.out.print("Username -> ");
-        String username = scanner.nextLine();
+        String username = scanner.next();
 
         System.out.print("Password -> ");
-        String password = scanner.nextLine();
+        String password = scanner.next();
 
         try {
             String token = client.query(new Login(username, password))
