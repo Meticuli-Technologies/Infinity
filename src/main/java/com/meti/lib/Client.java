@@ -11,7 +11,7 @@ public class Client implements Closeable {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
-    public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(1);
+    public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
