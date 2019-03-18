@@ -2,22 +2,23 @@ package com.meti.app;
 
 import com.meti.lib.Client;
 import com.meti.lib.Server;
+import com.meti.lib.TypePredicate;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class InfinityServer extends Server {
     private final ExecutorService service = Executors.newCachedThreadPool();
+    private final List<User> users = new ArrayList<>();
 
     public InfinityServer(int port) throws IOException {
         super(new ServerSocket(port));
@@ -30,9 +31,19 @@ class InfinityServer extends Server {
     }
 
     private class ClientHandler implements Callable<Void> {
-        private final Map<Predicate<Object>, Consumer<Object>> map = new HashMap<>();
+        private final Map<Predicate<Object>, Function<Object, ? extends Serializable>> map = new HashMap<>();
         private Client client;
 
+        {
+            map.put(new TypePredicate<>(Login.class), new Function<Object, Login.LoginResponse>() {
+                @Override
+                public Login.LoginResponse apply(Object o) {
+                    Login login = (Login) o;
+                    users.add(new User(login.username, client));
+                    return new Login.LoginResponse("Successfully logged in with username: " + login.username);
+                }
+            });
+        }
 
         public ClientHandler(Client client) {
             this.client = client;
@@ -45,7 +56,7 @@ class InfinityServer extends Server {
             while (!Thread.interrupted() || !client.getSocket().isClosed()) {
                 try {
                     Object token = client.read();
-                    processToken(token);
+                    client.write(processToken(token));
                 } catch (Exception e) {
                     client.write(e);
                 }
@@ -57,16 +68,20 @@ class InfinityServer extends Server {
             return null;
         }
 
-        private void processToken(Object token) {
-            Set<Consumer<Object>> set = map.keySet().stream()
+        private Set<Serializable> processToken(Object token) {
+            Set<Serializable> set = map.keySet().stream()
                     .filter(objectPredicate -> objectPredicate.test(token))
                     .map(map::get)
-                    .peek(objectConsumer -> objectConsumer.accept(token))
+                    .map(objectSerializableFunction -> objectSerializableFunction.apply(token))
                     .collect(Collectors.toSet());
 
             if (set.isEmpty()) {
                 throw new IllegalStateException("Invalid token: " + token);
             }
+
+            return set;
         }
+
     }
+
 }

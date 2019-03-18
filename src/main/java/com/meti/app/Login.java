@@ -4,7 +4,7 @@ import com.meti.lib.CachedResponse;
 import com.meti.lib.Respondable;
 
 public class Login implements Respondable<Login.LoginResponse> {
-    private final String username;
+    public final String username;
     private final String password;
 
     public Login(String username, String password) {
@@ -17,7 +17,7 @@ public class Login implements Respondable<Login.LoginResponse> {
         return LoginResponse.class;
     }
 
-    public class LoginResponse extends CachedResponse<String> {
+    public static class LoginResponse extends CachedResponse<String> {
         public LoginResponse(String cache) {
             super(cache);
         }
