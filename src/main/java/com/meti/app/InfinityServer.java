@@ -39,12 +39,16 @@ class InfinityServer extends Server {
         }
 
         @Override
-        public Void call() throws IOException, ClassNotFoundException {
+        public Void call() throws IOException {
             System.out.println("Handling client at " + client.getSocket().getInetAddress());
 
             while (!Thread.interrupted() || !client.getSocket().isClosed()) {
-                Object token = client.read();
-                processToken(token);
+                try {
+                    Object token = client.read();
+                    processToken(token);
+                } catch (Exception e) {
+                    client.write(e);
+                }
             }
 
             if (!client.getSocket().isClosed()) {

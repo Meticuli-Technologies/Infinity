@@ -30,18 +30,20 @@ public class Client implements Closeable {
         return socket;
     }
 
-    public <R extends Response> R query(Respondable<R> respondable) throws IOException, ClassNotFoundException {
+    public <R extends Response> R query(Respondable<R> respondable) throws Exception {
         write(respondable);
 
         return read(respondable.getResponseClass());
     }
 
-    public <T> T read(Class<T> tClass) throws IOException, ClassNotFoundException {
+    public <T> T read(Class<T> tClass) throws Exception {
         return tClass.cast(read());
     }
 
-    public Object read() throws IOException, ClassNotFoundException {
-        return inputStream.readObject();
+    public Object read() throws Exception {
+        Object o = inputStream.readObject();
+        if(o instanceof Exception) throw (Exception) o;
+        return o;
     }
 
     public void write(Serializable serializable) throws IOException {
