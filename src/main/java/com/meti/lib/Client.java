@@ -2,12 +2,19 @@ package com.meti.lib;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.Duration;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 public class Client implements Closeable {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
+
+    private final Queue<Object> buffer = new LinkedList<>();
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
@@ -37,18 +44,33 @@ public class Client implements Closeable {
     }
 
     public <T> T read(Class<T> tClass) throws Exception {
-        return tClass.cast(read());
+        Object token;
+        if (buffer.stream().anyMatch(new TypePredicate<>(tClass))) {
+            token = buffer.poll();
+        } else {
+            token = read();
+        }
+        return tClass.cast(token);
     }
 
     public Object read() throws Exception {
-        Object o = inputStream.readObject();
+        Duration timeout = Duration.ofSeconds(1);
+        return read(timeout);
+    }
+
+    private Object read(Duration timeout) throws Exception {
+        FutureTask<Object> task = new FutureTask<>(inputStream::readObject);
+        Object o = task.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
         if(o instanceof Exception) throw (Exception) o;
+        buffer.add(o);
         return o;
     }
 
-    public void write(Serializable serializable) throws IOException {
+    public void write(Serializable serializable) throws Exception {
         outputStream.writeObject(serializable);
         outputStream.flush();
+
+        read();
     }
 
     public void write(Collection<? extends Serializable> serializables) throws IOException {
