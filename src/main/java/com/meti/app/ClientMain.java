@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.Client;
+import com.meti.lib.OKResponse;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -39,8 +40,9 @@ public class ClientMain {
             return false;
         } else {
             try {
-                client.write(new Message(token));
-            } catch (IOException e) {
+                OKResponse query = client.query(new Message(token));
+                query.check();
+            } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
             }
             return true;

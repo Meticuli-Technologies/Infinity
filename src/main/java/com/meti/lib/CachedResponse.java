@@ -12,14 +12,17 @@ public class CachedResponse<T> implements Response {
         this.exception = exception;
     }
 
+    public T getCache() throws Exception {
+        check();
+        return cache;
+    }
+
     public <R> R getCache(Class<R> rClass) throws Exception {
         return rClass.cast(getCache());
     }
 
-    public T getCache() throws Exception {
-        if (exception == null) {
-            return cache;
-        } else {
+    public void check() throws Exception {
+        if (exception != null) {
             throw exception;
         }
     }
