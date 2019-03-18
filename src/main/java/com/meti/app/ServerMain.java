@@ -30,7 +30,14 @@ public class ServerMain {
 
     private boolean shouldRun(Scanner scanner) {
         String line = scanner.nextLine();
-        return !line.equals("exit");
+        boolean result = !line.equals("exit");
+        if(!result){
+            System.out.println("Exiting server.");
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     private void loop(Scanner scanner) {
@@ -38,6 +45,8 @@ public class ServerMain {
     }
 
     private void stop() {
+        System.out.println("Stopping server.");
+
         try {
             server.close();
             service.shutdown();
