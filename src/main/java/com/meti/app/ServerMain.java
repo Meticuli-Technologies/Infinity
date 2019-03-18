@@ -19,17 +19,31 @@ public class ServerMain {
         Scanner scanner = new Scanner(System.in);
         main.init(scanner);
         main.start(scanner);
+        main.stop();
+    }
+
+    private void stop() {
+        try {
+            server.close();
+            boolean task = serverTask.cancel(true);
+            if (task) {
+                System.out.println("Stopped server successfully.");
+            } else {
+                System.out.println("Failed to stop server normally.");
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to stop application: " + e.getMessage());
+        }
     }
 
     private void start(Scanner scanner) {
-
+        this.serverTask = new FutureTask<>(server);
     }
 
     private void init(Scanner scanner) {
         try {
             int port = getPort(scanner);
             this.server = new InfinityServer(port);
-            this.serverTask = new FutureTask<>(server);
         } catch (IOException e) {
             System.out.println("Failed to initialize. " + e.getMessage());
         }
