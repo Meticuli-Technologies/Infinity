@@ -19,12 +19,12 @@ public class ClientMain {
 
     public static void main(String[] args) {
         ClientMain main = new ClientMain();
-        main.init();
-        main.start();
+        Scanner scanner = new Scanner(System.in);
+        main.init(scanner);
+        main.start(scanner);
     }
 
-    private void init() {
-        Scanner scanner = new Scanner(System.in);
+    private void init(Scanner scanner) {
         System.out.println("Welcome to Infinity");
         System.out.println("Start by connecting to a server.");
 
@@ -92,7 +92,25 @@ public class ClientMain {
         }
     }
 
-    private void start() {
-        Socket socket = client.getSocket();
+    private void start(Scanner scanner) {
+        System.out.println("Enter in a username and password.");
+
+        System.out.print("Username -> ");
+        String username = scanner.nextLine();
+
+        System.out.print("Password -> ");
+        String password = scanner.nextLine();
+
+        try {
+            client.write(new Login(username, password));
+        } catch (IOException e) {
+            System.out.println("Failed to login: " + e.getMessage());
+        }
+
+        try {
+            client.close();
+        } catch (IOException e) {
+            System.out.println("Failed to close connection: " + e.getMessage());
+        }
     }
 }
