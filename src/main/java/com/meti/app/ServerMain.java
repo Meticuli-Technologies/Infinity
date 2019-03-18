@@ -19,7 +19,21 @@ public class ServerMain {
         Scanner scanner = new Scanner(System.in);
         main.init(scanner);
         main.start(scanner);
+
+        while (main.shouldRun(scanner)) {
+            main.loop(scanner);
+        }
+
         main.stop();
+    }
+
+    private boolean shouldRun(Scanner scanner) {
+        String line = scanner.nextLine();
+        return line.equals("exit");
+    }
+
+    private void loop(Scanner scanner) {
+        //TODO: complete
     }
 
     private void stop() {
@@ -41,9 +55,14 @@ public class ServerMain {
     }
 
     private void init(Scanner scanner) {
+        System.out.println("Welcome to Infinity");
+        System.out.println("Start by hosting server.");
+
         try {
             int port = getPort(scanner);
             this.server = new InfinityServer(port);
+
+            System.out.println("Initialized server on port " + port);
         } catch (IOException e) {
             System.out.println("Failed to initialize. " + e.getMessage());
         }
