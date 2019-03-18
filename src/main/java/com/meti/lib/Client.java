@@ -30,6 +30,12 @@ public class Client implements Closeable {
         return socket;
     }
 
+    public <R extends Response> R query(Respondable<R> respondable) throws IOException, ClassNotFoundException {
+        write(respondable);
+
+        return read(respondable.getResponseClass());
+    }
+
     public <T> T read(Class<T> tClass) throws IOException, ClassNotFoundException {
         return tClass.cast(read());
     }
@@ -38,16 +44,16 @@ public class Client implements Closeable {
         return inputStream.readObject();
     }
 
+    public void write(Serializable serializable) throws IOException {
+        outputStream.writeObject(serializable);
+        outputStream.flush();
+    }
+
     public void write(Collection<? extends Serializable> serializables) throws IOException {
         for (Serializable serializable : serializables) {
             outputStream.writeObject(serializable);
         }
 
-        outputStream.flush();
-    }
-
-    public void write(Serializable serializable) throws IOException {
-        outputStream.writeObject(serializable);
         outputStream.flush();
     }
 }

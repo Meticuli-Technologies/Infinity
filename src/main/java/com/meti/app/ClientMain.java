@@ -104,8 +104,11 @@ public class ClientMain {
         String password = scanner.nextLine();
 
         try {
-            client.write(new Login(username, password));
-        } catch (IOException e) {
+            String token = client.query(new Login(username, password))
+                    .getCache(String.class);
+
+            System.out.println(token);
+        } catch (Exception e) {
             System.out.println("Failed to login: " + e.getMessage());
         }
 
