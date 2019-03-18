@@ -1,6 +1,8 @@
 package com.meti.app;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -13,7 +15,7 @@ import java.util.Scanner;
  * @since 3/17/2019
  */
 public class ClientMain {
-    private Socket socket;
+    private Client client;
 
     public static void main(String[] args) {
         ClientMain main = new ClientMain();
@@ -30,7 +32,15 @@ public class ClientMain {
         if (socketOptional.isPresent()) {
             System.out.println("Connected successfully.");
 
-            this.socket = socketOptional.get();
+            try {
+                Socket socket = socketOptional.get();
+                ObjectOutputStream outputStream = new ObjectOutputStream(client.getSocket().getOutputStream());
+                ObjectInputStream inputStream = new ObjectInputStream(client.getSocket().getInputStream());
+
+                this.client = new Client(socket, inputStream, outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             System.out.println("No connection found.");
         }
@@ -83,15 +93,11 @@ public class ClientMain {
     }
 
     public Socket getSocket(){
-        if(socket == null){
-            throw new IllegalStateException("Socket has not been set!");
-        }
 
-        return socket;
+        return client.getSocket();
     }
 
     private void start() {
-        Socket socket = getSocket();
-
+        Socket socket = client.getSocket();
     }
 }
