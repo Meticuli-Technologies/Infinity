@@ -7,9 +7,14 @@ public class ServerMain {
         ServerMain main = new ServerMain();
         Scanner scanner = new Scanner(System.in);
         main.init(scanner);
+        main.start(scanner);
     }
 
-    public void init(Scanner scanner){
+    private void start(Scanner scanner) {
+
+    }
+
+    private void init(Scanner scanner) {
 
     }
 }
