@@ -58,8 +58,10 @@ public class ServerMain {
 
             if (service.isTerminated()) {
                 System.out.println("Stopped server successfully.");
+                System.exit(0);
             } else {
                 System.out.println("Failed to stop server normally.");
+                System.exit(-1);
             }
         } catch (IOException | InterruptedException e) {
             System.out.println("Failed to stop application: " + e.getMessage());

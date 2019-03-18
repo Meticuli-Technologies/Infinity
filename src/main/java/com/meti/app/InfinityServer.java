@@ -61,10 +61,6 @@ class InfinityServer extends Server {
                     client.write(e);
                 }
             }
-
-            if (!client.getSocket().isClosed()) {
-                client.close();
-            }
             return null;
         }
 
@@ -83,5 +79,4 @@ class InfinityServer extends Server {
         }
 
     }
-
 }

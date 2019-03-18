@@ -24,10 +24,10 @@ public class ClientMain {
 
         if (shouldStart) {
             main.start(scanner);
-        }
 
-        while (true) {
-            if (main.loop(scanner)) break;
+            while (true) {
+                if (!main.loop(scanner)) break;
+            }
         }
 
         main.stop();
