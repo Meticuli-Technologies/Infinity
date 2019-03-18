@@ -45,7 +45,7 @@ public class ServerMain {
     }
 
     private void stop() {
-        System.out.println("Stopping server.");
+        System.out.println("Stopping server...");
 
         try {
             server.close();
