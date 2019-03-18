@@ -9,10 +9,10 @@ public class Client implements Closeable {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public Client(Socket socket, ObjectInputStream inputStream, ObjectOutputStream outputStream) {
+    public Client(Socket socket) throws IOException {
         this.socket = socket;
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+        this.inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
     @Override

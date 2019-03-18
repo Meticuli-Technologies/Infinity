@@ -34,10 +34,8 @@ public class ClientMain {
         if (socketOptional.isPresent()) {
             try {
                 Socket socket = socketOptional.get();
-                ObjectOutputStream outputStream = new ObjectOutputStream(client.getSocket().getOutputStream());
-                ObjectInputStream inputStream = new ObjectInputStream(client.getSocket().getInputStream());
 
-                this.client = new Client(socket, inputStream, outputStream);
+                this.client = new Client(socket);
 
                 System.out.println("Connected successfully to " + socket.getInetAddress());
             } catch (IOException e) {

@@ -3,12 +3,16 @@ package com.meti.app;
 import com.meti.lib.Server;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 public class ServerMain {
     private Server server;
+
+    private Future<Optional<Exception>> serverFuture;
+    private FutureTask<Void> serverTask;
 
     public static void main(String[] args) {
         ServerMain main = new ServerMain();
@@ -24,12 +28,8 @@ public class ServerMain {
     private void init(Scanner scanner) {
         try {
             int port = getPort(scanner);
-            this.server = new Server(new ServerSocket(port)) {
-                @Override
-                public void handleAccept(Socket accept) throws Exception {
-
-                }
-            };
+            this.server = new InfinityServer(port);
+            this.serverTask = new FutureTask<>(server);
         } catch (IOException e) {
             System.out.println("Failed to initialize. " + e.getMessage());
         }
