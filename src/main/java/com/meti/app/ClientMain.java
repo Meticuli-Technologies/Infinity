@@ -3,8 +3,6 @@ package com.meti.app;
 import com.meti.lib.Client;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -22,11 +20,14 @@ public class ClientMain {
     public static void main(String[] args) {
         ClientMain main = new ClientMain();
         Scanner scanner = new Scanner(System.in);
-        main.init(scanner);
-        main.start(scanner);
+        boolean shouldStart = main.init(scanner);
+
+        if (shouldStart) {
+            main.start(scanner);
+        }
     }
 
-    private void init(Scanner scanner) {
+    private boolean init(Scanner scanner) {
         System.out.println("Welcome to Infinity");
         System.out.println("Start by connecting to a server.");
 
@@ -38,12 +39,16 @@ public class ClientMain {
                 this.client = new Client(socket);
 
                 System.out.println("Connected successfully to " + socket.getInetAddress());
+
+                return true;
             } catch (IOException e) {
                 System.out.println("Failed to build streams: " + e.getMessage());
             }
         } else {
             System.out.println("No connection found.");
         }
+
+        return false;
     }
 
     private Optional<Socket> createConnection(Scanner scanner) {

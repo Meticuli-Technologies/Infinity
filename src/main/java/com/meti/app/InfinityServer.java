@@ -19,6 +19,7 @@ class InfinityServer extends Server {
 
     @Override
     public void handleAccept(Socket accept) throws Exception {
+        System.out.println("Located client at " + accept.getInetAddress());
         service.submit(new ClientHandler(new Client(accept)));
     }
 
@@ -31,6 +32,7 @@ class InfinityServer extends Server {
 
         @Override
         public Void call() throws IOException {
+            System.out.println("Handling client at " + client.getSocket().getInetAddress());
             client.close();
             return null;
         }
