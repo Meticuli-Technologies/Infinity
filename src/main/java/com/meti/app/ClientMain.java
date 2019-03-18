@@ -26,18 +26,25 @@ public class ClientMain {
             main.start(scanner);
         }
 
-        while (main.shouldLoop()) {
-            main.loop();
+        while (true) {
+            if (main.loop(scanner)) break;
         }
 
         main.stop();
     }
 
-    private boolean shouldLoop() {
-        return false;
-    }
-
-    private void loop() {
+    private boolean loop(Scanner scanner) {
+        String token = scanner.nextLine();
+        if (token.equals("exit")) {
+            return false;
+        } else {
+            try {
+                client.write(new Message(token));
+            } catch (IOException e) {
+                System.out.println("Failed to write message: " + e.getMessage());
+            }
+            return true;
+        }
     }
 
     private boolean init(Scanner scanner) {
