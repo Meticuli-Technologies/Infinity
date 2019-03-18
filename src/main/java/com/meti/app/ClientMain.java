@@ -13,6 +13,8 @@ import java.util.Scanner;
  * @since 3/17/2019
  */
 public class ClientMain {
+    private Socket socket;
+
     public static void main(String[] args) {
         ClientMain main = new ClientMain();
         main.init();
@@ -24,9 +26,11 @@ public class ClientMain {
         System.out.println("Welcome to Infinity");
         System.out.println("Start by connecting to a server.");
 
-        Optional<Socket> socket = createConnection(scanner);
-        if (socket.isPresent()) {
+        Optional<Socket> socketOptional = createConnection(scanner);
+        if (socketOptional.isPresent()) {
             System.out.println("Connected successfully.");
+
+            this.socket = socketOptional.get();
         } else {
             System.out.println("No connection found.");
         }
