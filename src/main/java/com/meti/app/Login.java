@@ -14,7 +14,7 @@ public class Login implements Respondable<Login.LoginResponse> {
 
     @Override
     public Class<? extends LoginResponse> getResponseClass() {
-        return null;
+        return LoginResponse.class;
     }
 
     public class LoginResponse extends CachedResponse<String> {
