@@ -26,7 +26,18 @@ public class ClientMain {
             main.start(scanner);
         }
 
+        while (main.shouldLoop()) {
+            main.loop();
+        }
+
         main.stop();
+    }
+
+    private boolean shouldLoop() {
+        return false;
+    }
+
+    private void loop() {
     }
 
     private boolean init(Scanner scanner) {
