@@ -29,7 +29,7 @@ public class ServerMain {
 
     private boolean shouldRun(Scanner scanner) {
         String line = scanner.nextLine();
-        return line.equals("exit");
+        return !line.equals("exit");
     }
 
     private void loop(Scanner scanner) {
