@@ -25,6 +25,8 @@ public class ClientMain {
         if (shouldStart) {
             main.start(scanner);
         }
+
+        main.stop();
     }
 
     private boolean init(Scanner scanner) {
@@ -114,7 +116,9 @@ public class ClientMain {
         } catch (Exception e) {
             System.out.println("Failed to login: " + e.getMessage());
         }
+    }
 
+    public void stop(){
         try {
             client.close();
         } catch (IOException e) {
