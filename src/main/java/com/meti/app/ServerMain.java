@@ -5,14 +5,15 @@ import com.meti.lib.Server;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 public class ServerMain {
+    private final ExecutorService service = Executors.newCachedThreadPool();
     private Server server;
 
     private Future<Optional<Exception>> serverFuture;
-    private FutureTask<Void> serverTask;
 
     public static void main(String[] args) {
         ServerMain main = new ServerMain();
@@ -39,19 +40,25 @@ public class ServerMain {
     private void stop() {
         try {
             server.close();
-            boolean task = serverTask.cancel(true);
-            if (task) {
+            service.shutdown();
+
+            if (!service.isTerminated()) {
+                Thread.sleep(5000);
+                service.shutdownNow();
+            }
+
+            if (service.isTerminated()) {
                 System.out.println("Stopped server successfully.");
             } else {
                 System.out.println("Failed to stop server normally.");
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.out.println("Failed to stop application: " + e.getMessage());
         }
     }
 
     private void start(Scanner scanner) {
-        this.serverTask = new FutureTask<>(server);
+        this.service.submit(server);
     }
 
     private void init(Scanner scanner) {
