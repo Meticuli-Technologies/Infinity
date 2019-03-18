@@ -1,5 +1,7 @@
 package com.meti.app;
 
+import com.meti.lib.Client;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

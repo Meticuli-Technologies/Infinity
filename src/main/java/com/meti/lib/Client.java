@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.lib;
 
 import java.io.*;
 import java.net.Socket;
