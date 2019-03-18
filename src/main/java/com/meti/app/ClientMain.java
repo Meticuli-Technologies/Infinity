@@ -82,7 +82,16 @@ public class ClientMain {
         }
     }
 
+    public Socket getSocket(){
+        if(socket == null){
+            throw new IllegalStateException("Socket has not been set!");
+        }
+
+        return socket;
+    }
+
     private void start() {
+        Socket socket = getSocket();
 
     }
 }
