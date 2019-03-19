@@ -32,7 +32,6 @@ public class Client implements Callable<Void>, Closeable {
 
     @Override
     public Void call() throws Exception {
-        running = true;
         while (!Thread.interrupted() && !socket.isClosed()) {
             Object token = inputStream.readObject();
             List<Serializable> toWrite = handlers.stream()
