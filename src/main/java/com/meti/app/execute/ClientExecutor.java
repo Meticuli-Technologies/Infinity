@@ -24,7 +24,6 @@ import java.util.concurrent.Executors;
  */
 public class ClientExecutor {
     private final ExecutorService service = Executors.newCachedThreadPool();
-    private Query query;
     private Client client;
 
     public boolean init(Scanner scanner) {
@@ -64,11 +63,9 @@ public class ClientExecutor {
 
     private void buildClient(Socket socket) throws IOException {
         this.client = new Client(socket);
-        this.query = new Query(client);
+        this.service.submit(client);
 
         System.out.println("Connected successfully to " + socket.getInetAddress());
-
-        service.submit(new Updater());
     }
 
     private Socket getSocket(Scanner scanner) throws IOException {
@@ -107,8 +104,8 @@ public class ClientExecutor {
             return false;
         } else {
             try {
-                OKResponse response = query.query(new Message(token));
-                response.check();
+            /*    OKResponse response = query.query(new Message(token));
+                response.check();*/
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
             }
@@ -121,10 +118,10 @@ public class ClientExecutor {
         String username = scanner.next();
 
         try {
-            String token = query.query(new Login(username))
-                    .getCache(String.class);
+       /*     String token = query.query(new Login(username))
+                    .getCache(String.class);*/
 
-            System.out.println(token);
+ /*           System.out.println(token);*/
         } catch (Exception e) {
             System.out.println("Failed to login: " + e.getMessage());
         }
@@ -138,7 +135,7 @@ public class ClientExecutor {
         }
     }
 
-    private class Updater implements Callable<Object> {
+    /*private class Updater implements Callable<Object> {
         @Override
         public Object call() throws Exception {
             while (true) {
@@ -155,5 +152,5 @@ public class ClientExecutor {
             }
             return null;
         }
-    }
+    }*/
 }

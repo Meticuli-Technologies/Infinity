@@ -1,19 +1,16 @@
 package com.meti.app.net;
 
-import com.meti.app.User;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class InfinityServer extends Server {
     private final ExecutorService service = Executors.newCachedThreadPool();
-    final List<User> users = new ArrayList<>();
 
     public InfinityServer(int port) throws IOException {
         super(new ServerSocket(port));
@@ -21,7 +18,6 @@ public class InfinityServer extends Server {
 
     @Override
     public void handleAccept(Socket accept) throws Exception {
-        service.submit(new InstanceHandler(this, new Client(accept)));
+        service.submit(new Client(accept));
     }
-
 }
