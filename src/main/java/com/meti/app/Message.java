@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.OKResponse;
 import com.meti.lib.Respondable;
+import com.meti.lib.Update;
 
 import java.io.Serializable;
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * @since 3/18/2019
  */
 public class Message implements Serializable, Respondable<OKResponse> {
-    private final String content;
+    public final String content;
 
     public Message(String content) {
         this.content = content;
@@ -20,5 +21,15 @@ public class Message implements Serializable, Respondable<OKResponse> {
     @Override
     public Class<? extends OKResponse> getResponseClass() {
         return OKResponse.class;
+    }
+
+    public static class MessageUpdate implements Update {
+        public final User user;
+        public final Message message;
+
+        public MessageUpdate(User user, Message message) {
+            this.user = user;
+            this.message = message;
+        }
     }
 }

@@ -25,12 +25,14 @@ class InfinityServer extends Server {
     @Override
     public void handleAccept(Socket accept) throws Exception {
         System.out.println("Located client at " + accept.getInetAddress());
-        service.submit(new ClientHandler(new Client(accept)));
+        Client client = new Client(accept);
+        service.submit(new ClientHandler(client));
     }
 
     private class ClientHandler implements Callable<Void> {
         private final Map<Predicate<Object>, Function<Object, ? extends Serializable>> map = new HashMap<>();
         private final List<Message> messages = new ArrayList<>();
+        private User user;
         private Client client;
 
         {
@@ -38,7 +40,7 @@ class InfinityServer extends Server {
                 @Override
                 public Login.LoginResponse apply(Object o) {
                     Login login = (Login) o;
-                    users.add(new User(login.username, client));
+                    users.add(user = new User(login.username, client));
                     return new Login.LoginResponse("Successfully logged in with username: " + login.username);
                 }
             });
@@ -48,6 +50,15 @@ class InfinityServer extends Server {
                 public OKResponse apply(Object o) {
                     Message message = (Message) o;
                     messages.add(message);
+
+                    for (User nextUser : users) {
+                        try {
+                            nextUser.client.write(new Message.MessageUpdate(user, message));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     return new OKResponse();
                 }
             });

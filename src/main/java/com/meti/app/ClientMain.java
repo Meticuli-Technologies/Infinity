@@ -3,6 +3,7 @@ package com.meti.app;
 import com.meti.lib.Client;
 import com.meti.lib.OKResponse;
 import com.meti.lib.Query;
+import com.meti.lib.Update;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,6 +11,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -17,6 +21,7 @@ import java.util.Scanner;
  * @since 3/17/2019
  */
 public class ClientMain {
+    private ExecutorService service = Executors.newCachedThreadPool();
     private Query query;
     private Client client;
 
@@ -65,6 +70,21 @@ public class ClientMain {
 
                 System.out.println("Connected successfully to " + socket.getInetAddress());
 
+                service.submit((Callable<Object>) () -> {
+                    while (true) {
+                        Object token = client.read();
+                        if (token instanceof Update) {
+                            if (token instanceof Message.MessageUpdate) {
+                                Message.MessageUpdate update = (Message.MessageUpdate) token;
+                                System.out.println("[" + update.user.name + "]: " + update.message.content);
+                            }
+                        } else {
+                            System.out.println(token + " not instance of Update");
+                            break;
+                        }
+                    }
+                    return null;
+                });
                 return true;
             } catch (IOException e) {
                 System.out.println("Failed to build streams: " + e.getMessage());
