@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.Client;
 import com.meti.lib.OKResponse;
+import com.meti.lib.Query;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -16,6 +17,7 @@ import java.util.Scanner;
  * @since 3/17/2019
  */
 public class ClientMain {
+    private Query query;
     private Client client;
 
     public static void main(String[] args) {
@@ -40,8 +42,8 @@ public class ClientMain {
             return false;
         } else {
             try {
-                OKResponse query = client.query(new Message(token));
-                query.check();
+                OKResponse response = query.query(new Message(token));
+                response.check();
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
             }
@@ -59,6 +61,7 @@ public class ClientMain {
                 Socket socket = socketOptional.get();
 
                 this.client = new Client(socket);
+                this.query = new Query(client);
 
                 System.out.println("Connected successfully to " + socket.getInetAddress());
 
@@ -129,7 +132,7 @@ public class ClientMain {
         String password = scanner.next();
 
         try {
-            String token = client.query(new Login(username, password))
+            String token = query.query(new Login(username, password))
                     .getCache(String.class);
 
             System.out.println(token);

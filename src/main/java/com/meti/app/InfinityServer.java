@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.CachedResponse;
 import com.meti.lib.Client;
 import com.meti.lib.Server;
 import com.meti.lib.TypePredicate;
@@ -58,7 +59,7 @@ class InfinityServer extends Server {
                     Object token = client.read();
                     client.write(processToken(token));
                 } catch (Exception e) {
-                    client.write(e);
+                    client.write(new CachedResponse<>(e));
                 }
             }
             return null;

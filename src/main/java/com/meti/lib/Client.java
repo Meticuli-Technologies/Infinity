@@ -34,6 +34,19 @@ public class Client implements Closeable {
         return inputStream.readObject();
     }
 
+    public <T> T read(Class<T> tClass) throws Exception {
+        Object token = read();
+        try {
+            return tClass.cast(token);
+        } catch (ClassCastException e){
+            if(token instanceof CachedResponse<?>){
+                ((CachedResponse) token).check();
+            }
+
+            throw e;
+        }
+    }
+
     public void write(Serializable serializable) throws IOException {
         outputStream.writeObject(serializable);
         outputStream.flush();
