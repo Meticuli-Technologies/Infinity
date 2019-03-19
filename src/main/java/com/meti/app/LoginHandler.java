@@ -12,11 +12,11 @@ import java.util.function.Function;
  * @since 3/19/2019
  */
 class LoginHandler extends ClientHandler implements Function<Object, Login.LoginResponse> {
-    private final Consumer<User> userConsumer;
+    private final Consumer<User> consumer;
 
-    public LoginHandler(Client client, Consumer<User> userConsumer) {
+    public LoginHandler(Client client, Consumer<User> consumer) {
         super(client);
-        this.userConsumer = userConsumer;
+        this.consumer = consumer;
     }
 
     @Override
@@ -26,7 +26,7 @@ class LoginHandler extends ClientHandler implements Function<Object, Login.Login
 
     private Login processUser(Login login) {
         User user = new User(login.username, client);
-        userConsumer.accept(user);
+        consumer.accept(user);
         return login;
     }
 }
