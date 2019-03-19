@@ -3,11 +3,16 @@ package com.meti.lib;
 import java.io.*;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 public class Client implements Closeable {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
+
+    private final Queue<Object> tokens = new LinkedList<>();
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
@@ -35,6 +40,12 @@ public class Client implements Closeable {
     }
 
     public <T> T read(Class<T> tClass) throws Exception {
+        for(Object token : tokens){
+            if(tClass.isAssignableFrom(token.getClass())){
+                return tClass.cast(token);
+            }
+        }
+
         Object token = read();
         try {
             return tClass.cast(token);
@@ -42,6 +53,8 @@ public class Client implements Closeable {
             if(token instanceof CachedResponse<?>){
                 ((CachedResponse) token).check();
             }
+
+            tokens.add(token);
 
             throw e;
         }
