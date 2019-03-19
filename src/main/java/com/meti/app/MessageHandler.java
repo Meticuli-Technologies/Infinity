@@ -19,8 +19,7 @@ class MessageHandler implements Function<Object, OKResponse> {
 
     @Override
     public OKResponse apply(Object o) {
-        Message message = (Message) o;
-        messageConsumer.accept(message);
+        messageConsumer.accept((Message) o);
         return new OKResponse();
     }
 }
