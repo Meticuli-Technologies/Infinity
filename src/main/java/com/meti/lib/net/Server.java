@@ -12,7 +12,7 @@ public abstract class Server implements Callable<Void>, Closeable {
     private final List<Socket> socketList = new ArrayList<>();
     private final ServerSocket serverSocket;
 
-    public Server(ServerSocket serverSocket) {
+    protected Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
@@ -26,7 +26,7 @@ public abstract class Server implements Callable<Void>, Closeable {
         return null;
     }
 
-    public abstract void handleAccept(Socket accept) throws Exception;
+    protected abstract void handleAccept(Socket accept) throws Exception;
 
     @Override
     public void close() throws IOException {

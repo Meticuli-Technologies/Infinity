@@ -38,10 +38,6 @@ public class ServerExecutor {
         }
     }
 
-    public void loop() {
-        //TODO: complete
-    }
-
     public boolean shouldRun(Scanner scanner) {
         String line = scanner.nextLine();
         boolean result = !line.equals("exit");

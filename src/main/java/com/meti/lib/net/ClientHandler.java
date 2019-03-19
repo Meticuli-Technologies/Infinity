@@ -8,7 +8,7 @@ package com.meti.lib.net;
 public class ClientHandler {
     protected final Client client;
 
-    public ClientHandler(Client client) {
+    protected ClientHandler(Client client) {
         this.client = client;
     }
 }

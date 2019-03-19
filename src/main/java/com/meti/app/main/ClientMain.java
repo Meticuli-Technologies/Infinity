@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @version 0.0.0
  * @since 3/19/2019
  */
-public class ClientMain {
+class ClientMain {
     public static void main(String[] args) {
         ClientExecutor main = new ClientExecutor();
         Scanner scanner = new Scanner(System.in);

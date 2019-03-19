@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @version 0.0.0
  * @since 3/19/2019
  */
-public class ServerMain {
+class ServerMain {
     public static void main(String[] args) {
         ServerExecutor main = new ServerExecutor();
         Scanner scanner = new Scanner(System.in);

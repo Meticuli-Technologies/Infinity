@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
  * @since 3/17/2019
  */
 public class ClientExecutor {
-    private ExecutorService service = Executors.newCachedThreadPool();
+    private final ExecutorService service = Executors.newCachedThreadPool();
     private Query query;
     private Client client;
 

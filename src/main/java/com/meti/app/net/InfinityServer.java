@@ -49,7 +49,7 @@ public class InfinityServer extends Server {
             map.put(new TypePredicate<>(Message.class), new MessageHandler(new MessageConsumer()));
         }
 
-        public InstanceHandler(Client client) {
+        InstanceHandler(Client client) {
             super(client);
         }
 
