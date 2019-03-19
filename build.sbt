@@ -4,7 +4,7 @@ version := "0.0"
 
 scalaVersion := "2.12.7"
 
-mainClass in(Compile, run) := Some("com.meti.app.ClientMain")
+mainClass in(Compile, run) := Some("com.meti.app.ClientExecutor")
 
 libraryDependencies += "org.openjfx" % "javafx-base" % "11.+"
 libraryDependencies += "org.openjfx" % "javafx-graphics" % "11.+"
