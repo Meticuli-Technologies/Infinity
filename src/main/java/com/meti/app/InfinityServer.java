@@ -1,9 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.CachedResponse;
-import com.meti.lib.Client;
-import com.meti.lib.Server;
-import com.meti.lib.TypePredicate;
+import com.meti.lib.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -33,6 +30,7 @@ class InfinityServer extends Server {
 
     private class ClientHandler implements Callable<Void> {
         private final Map<Predicate<Object>, Function<Object, ? extends Serializable>> map = new HashMap<>();
+        private final List<Message> messages = new ArrayList<>();
         private Client client;
 
         {
@@ -42,6 +40,15 @@ class InfinityServer extends Server {
                     Login login = (Login) o;
                     users.add(new User(login.username, client));
                     return new Login.LoginResponse("Successfully logged in with username: " + login.username);
+                }
+            });
+
+            map.put(new TypePredicate<>(Message.class), new Function<Object, OKResponse>() {
+                @Override
+                public OKResponse apply(Object o) {
+                    Message message = (Message) o;
+                    messages.add(message);
+                    return new OKResponse();
                 }
             });
         }
