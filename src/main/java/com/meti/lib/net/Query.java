@@ -1,7 +1,6 @@
 package com.meti.lib.net;
 
-import com.meti.lib.respond.Respondable;
-import com.meti.lib.respond.Response;
+import java.util.Arrays;
 
 /**
  * @author SirMathhman
@@ -9,15 +8,13 @@ import com.meti.lib.respond.Response;
  * @since 3/19/2019
  */
 public class Query {
-    private final Client client;
+    public final Class<?>[] classes;
 
-    public Query(Client client) {
-        this.client = client;
+    public Query(Class<?>[] classes) {
+        this.classes = classes;
     }
 
-    public <R extends Response> R query(Respondable<R> respondable) throws Exception {
-        client.write(respondable);
-        return client.read(respondable.getResponseClass());
+    public boolean check(Class<?>[] others) {
+        return Arrays.equals(classes, others);
     }
-
 }
