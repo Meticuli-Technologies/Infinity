@@ -5,11 +5,9 @@ import com.meti.lib.Respondable;
 
 public class Login implements Respondable<Login.LoginResponse> {
     public final String username;
-    private final String password;
 
-    public Login(String username, String password) {
+    public Login(String username) {
         this.username = username;
-        this.password = password;
     }
 
     @Override

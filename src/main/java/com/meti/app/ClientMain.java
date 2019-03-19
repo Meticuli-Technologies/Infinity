@@ -152,7 +152,7 @@ public class ClientMain {
         String password = scanner.next();
 
         try {
-            String token = query.query(new Login(username, password))
+            String token = query.query(new Login(username))
                     .getCache(String.class);
 
             System.out.println(token);
