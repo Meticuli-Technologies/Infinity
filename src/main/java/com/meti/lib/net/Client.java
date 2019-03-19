@@ -43,7 +43,7 @@ public class Client implements Callable<Void>, Closeable {
         return null;
     }
 
-    public void write(Collection<? extends Serializable> serializables) throws IOException {
+    private void write(Collection<? extends Serializable> serializables) throws IOException {
         for (Serializable serializable : serializables) {
             outputStream.writeObject(serializable);
         }
