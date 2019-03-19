@@ -1,4 +1,6 @@
-package com.meti.app;
+package com.meti.app.main;
+
+import com.meti.app.execute.ServerExecutor;
 
 import java.util.Scanner;
 

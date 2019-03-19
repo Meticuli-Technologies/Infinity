@@ -1,7 +1,7 @@
-package com.meti.app;
+package com.meti.app.feature;
 
-import com.meti.lib.CachedResponse;
-import com.meti.lib.Respondable;
+import com.meti.lib.respond.CachedResponse;
+import com.meti.lib.respond.Respondable;
 
 public class Login implements Respondable<Login.LoginResponse> {
     public final String username;

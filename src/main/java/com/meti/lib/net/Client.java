@@ -1,11 +1,12 @@
-package com.meti.lib;
+package com.meti.lib.net;
+
+import com.meti.lib.respond.CachedResponse;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
 
 public class Client implements Closeable {
     private final Socket socket;

@@ -1,8 +1,9 @@
-package com.meti.app;
+package com.meti.app.feature;
 
-import com.meti.lib.OKResponse;
-import com.meti.lib.Respondable;
-import com.meti.lib.Update;
+import com.meti.app.User;
+import com.meti.lib.respond.OKResponse;
+import com.meti.lib.respond.Respondable;
+import com.meti.lib.net.Update;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.Client;
+import com.meti.lib.net.Client;
 
 import java.io.Serializable;
 

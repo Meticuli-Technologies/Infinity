@@ -1,6 +1,6 @@
-package com.meti.app;
+package com.meti.app.feature;
 
-import com.meti.lib.OKResponse;
+import com.meti.lib.respond.OKResponse;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -10,10 +10,10 @@ import java.util.function.Function;
  * @version 0.0.0
  * @since 3/19/2019
  */
-class MessageHandler implements Function<Object, OKResponse> {
+public class MessageHandler implements Function<Object, OKResponse> {
     private final Consumer<Message> messageConsumer;
 
-    MessageHandler(Consumer<Message> messageConsumer) {
+    public MessageHandler(Consumer<Message> messageConsumer) {
         this.messageConsumer = messageConsumer;
     }
 

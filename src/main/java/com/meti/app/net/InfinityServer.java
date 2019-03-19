@@ -1,6 +1,15 @@
-package com.meti.app;
+package com.meti.app.net;
 
-import com.meti.lib.*;
+import com.meti.app.User;
+import com.meti.app.feature.Login;
+import com.meti.app.feature.LoginHandler;
+import com.meti.app.feature.Message;
+import com.meti.app.feature.MessageHandler;
+import com.meti.lib.net.Client;
+import com.meti.lib.net.ClientHandler;
+import com.meti.lib.net.Server;
+import com.meti.lib.respond.CachedResponse;
+import com.meti.lib.util.TypePredicate;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,7 +24,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-class InfinityServer extends Server {
+public class InfinityServer extends Server {
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final List<User> users = new ArrayList<>();
 

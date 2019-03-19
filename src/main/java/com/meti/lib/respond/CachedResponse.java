@@ -1,4 +1,4 @@
-package com.meti.lib;
+package com.meti.lib.respond;
 
 public class CachedResponse<T> implements Response {
     private T cache;

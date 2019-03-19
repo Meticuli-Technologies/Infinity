@@ -1,4 +1,7 @@
-package com.meti.lib;
+package com.meti.lib.net;
+
+import com.meti.lib.respond.Respondable;
+import com.meti.lib.respond.Response;
 
 import java.io.IOException;
 import java.time.Duration;

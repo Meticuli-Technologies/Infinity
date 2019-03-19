@@ -1,9 +1,11 @@
-package com.meti.app;
+package com.meti.app.execute;
 
-import com.meti.lib.Client;
-import com.meti.lib.OKResponse;
-import com.meti.lib.Query;
-import com.meti.lib.Update;
+import com.meti.app.feature.Login;
+import com.meti.app.feature.Message;
+import com.meti.lib.net.Client;
+import com.meti.lib.respond.OKResponse;
+import com.meti.lib.net.Query;
+import com.meti.lib.net.Update;
 
 import java.io.IOException;
 import java.net.InetAddress;

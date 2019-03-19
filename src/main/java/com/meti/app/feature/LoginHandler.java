@@ -1,7 +1,8 @@
-package com.meti.app;
+package com.meti.app.feature;
 
-import com.meti.lib.Client;
-import com.meti.lib.ClientHandler;
+import com.meti.app.User;
+import com.meti.lib.net.Client;
+import com.meti.lib.net.ClientHandler;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -11,7 +12,7 @@ import java.util.function.Function;
  * @version 0.0.0
  * @since 3/19/2019
  */
-class LoginHandler extends ClientHandler implements Function<Object, Login.LoginResponse> {
+public class LoginHandler extends ClientHandler implements Function<Object, Login.LoginResponse> {
     private final Consumer<User> consumer;
 
     public LoginHandler(Client client, Consumer<User> consumer) {

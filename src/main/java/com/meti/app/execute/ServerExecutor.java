@@ -1,6 +1,7 @@
-package com.meti.app;
+package com.meti.app.execute;
 
-import com.meti.lib.Server;
+import com.meti.app.net.InfinityServer;
+import com.meti.lib.net.Server;
 
 import java.io.IOException;
 import java.util.Scanner;
