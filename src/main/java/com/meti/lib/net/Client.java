@@ -16,7 +16,6 @@ public class Client implements Callable<Void>, Closeable {
     private final ObjectOutputStream outputStream;
 
     private final Set<TokenHandler<Object, ?>> handlers = new HashSet<>();
-    private boolean running;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
