@@ -16,8 +16,9 @@ class ServerMain {
         main.init(scanner);
         main.start();
 
-        while (main.shouldRun(scanner)) {
-            main.loop();
+        boolean shouldRun = true;
+        while (shouldRun) {
+            shouldRun = main.shouldRun(scanner);
         }
 
         main.stop();
