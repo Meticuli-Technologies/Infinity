@@ -1,19 +1,18 @@
 package com.meti.lib.net;
 
-import com.meti.lib.respond.CachedResponse;
-
 import java.io.*;
 import java.net.Socket;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 
-public class Client implements Closeable {
+public class Client implements Callable<Void>, Closeable {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    private final Queue<Object> tokens = new LinkedList<>();
+    private final Queue<Object> queue = new LinkedList<>();
+    private boolean running;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
@@ -28,45 +27,24 @@ public class Client implements Closeable {
         socket.close();
     }
 
-    public Socket getSocket() {
-        if (socket == null) {
-            throw new IllegalStateException("Socket has not been set!");
+    @Override
+    public Void call() throws Exception {
+        running = true;
+        while (!Thread.interrupted() && !socket.isClosed()) {
+            queue.add(inputStream.readObject());
+        }
+        return null;
+    }
+
+    public Object read() {
+        if (!running) {
+            throw new IllegalStateException("Client is not running");
         }
 
-        return socket;
+        return queue.poll();
     }
 
-    public Object read() throws IOException, ClassNotFoundException {
-        return inputStream.readObject();
-    }
-
-    public <T> T read(Class<T> tClass) throws Exception {
-        for(Object token : tokens){
-            if(tClass.isAssignableFrom(token.getClass())){
-                return tClass.cast(token);
-            }
-        }
-
-        Object token = read();
-        try {
-            return tClass.cast(token);
-        } catch (ClassCastException e){
-            if(token instanceof CachedResponse<?>){
-                ((CachedResponse) token).check();
-            }
-
-            tokens.add(token);
-
-            throw e;
-        }
-    }
-
-    public void write(Serializable serializable) throws IOException {
-        outputStream.writeObject(serializable);
-        outputStream.flush();
-    }
-
-    public void write(Collection<? extends Serializable> serializables) throws IOException {
+    public void write(Serializable... serializables) throws IOException {
         for (Serializable serializable : serializables) {
             outputStream.writeObject(serializable);
         }
