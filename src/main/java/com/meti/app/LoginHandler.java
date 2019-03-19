@@ -21,9 +21,12 @@ class LoginHandler extends ClientHandler implements Function<Object, Login.Login
 
     @Override
     public Login.LoginResponse apply(Object o) {
-        Login login = (Login) o;
+        return new Login.LoginResponse("Successfully logged in with username: " + processUser((Login) o).username);
+    }
+
+    private Login processUser(Login login) {
         User user = new User(login.username, client);
         userConsumer.accept(user);
-        return new Login.LoginResponse("Successfully logged in with username: " + login.username);
+        return login;
     }
 }
