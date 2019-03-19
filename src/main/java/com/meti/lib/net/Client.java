@@ -2,16 +2,20 @@ package com.meti.lib.net;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Client implements Callable<Void>, Closeable {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    private final Queue<Object> queue = new LinkedList<>();
+    private final Set<TokenHandler<Object, ?>> handlers = new HashSet<>();
     private boolean running;
 
     public Client(Socket socket) throws IOException {
@@ -31,20 +35,17 @@ public class Client implements Callable<Void>, Closeable {
     public Void call() throws Exception {
         running = true;
         while (!Thread.interrupted() && !socket.isClosed()) {
-            queue.add(inputStream.readObject());
+            Object token = inputStream.readObject();
+            List<Serializable> toWrite = handlers.stream()
+                    .filter(objectTokenHandler -> objectTokenHandler.test(token))
+                    .map((Function<TokenHandler<Object, ? extends Serializable>, Serializable>) objectTokenHandler -> objectTokenHandler.apply(token))
+                    .collect(Collectors.toList());
+            write(toWrite);
         }
         return null;
     }
 
-    public Object read() {
-        if (!running) {
-            throw new IllegalStateException("Client is not running");
-        }
-
-        return queue.poll();
-    }
-
-    public void write(Serializable... serializables) throws IOException {
+    public void write(Collection<? extends Serializable> serializables) throws IOException {
         for (Serializable serializable : serializables) {
             outputStream.writeObject(serializable);
         }
