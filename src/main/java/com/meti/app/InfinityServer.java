@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -24,54 +25,27 @@ class InfinityServer extends Server {
 
     @Override
     public void handleAccept(Socket accept) throws Exception {
-        System.out.println("Located client at " + accept.getInetAddress());
-        Client client = new Client(accept);
-        service.submit(new ClientHandler(client));
+        service.submit(new InstanceHandler(new Client(accept)));
     }
 
-    private class ClientHandler implements Callable<Void> {
+    private class InstanceHandler extends ClientHandler implements Callable<Void> {
         private final Map<Predicate<Object>, Function<Object, ? extends Serializable>> map = new HashMap<>();
-        private final List<Message> messages = new ArrayList<>();
         private User user;
-        private Client client;
 
         {
-            map.put(new TypePredicate<>(Login.class), new Function<Object, Login.LoginResponse>() {
-                @Override
-                public Login.LoginResponse apply(Object o) {
-                    Login login = (Login) o;
-                    users.add(user = new User(login.username, client));
-                    return new Login.LoginResponse("Successfully logged in with username: " + login.username);
-                }
-            });
-
-            map.put(new TypePredicate<>(Message.class), new Function<Object, OKResponse>() {
-                @Override
-                public OKResponse apply(Object o) {
-                    Message message = (Message) o;
-                    messages.add(message);
-
-                    for (User nextUser : users) {
-                        try {
-                            nextUser.client.write(new Message.MessageUpdate(user, message));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    return new OKResponse();
-                }
-            });
+            map.put(new TypePredicate<>(Login.class), new LoginHandler(client, newUser -> {
+                user = newUser;
+                users.add(newUser);
+            }));
+            map.put(new TypePredicate<>(Message.class), new MessageHandler(new MessageConsumer()));
         }
 
-        public ClientHandler(Client client) {
-            this.client = client;
+        public InstanceHandler(Client client) {
+            super(client);
         }
 
         @Override
         public Void call() throws IOException {
-            System.out.println("Handling client at " + client.getSocket().getInetAddress());
-
             while (!Thread.interrupted() || !client.getSocket().isClosed()) {
                 try {
                     Object token = client.read();
@@ -97,5 +71,17 @@ class InfinityServer extends Server {
             return set;
         }
 
+        private class MessageConsumer implements Consumer<Message> {
+            @Override
+            public void accept(Message message) {
+                for (User nextUser : users) {
+                    try {
+                        nextUser.client.write(new Message.MessageUpdate(user, message));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 }
