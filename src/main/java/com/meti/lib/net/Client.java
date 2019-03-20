@@ -1,5 +1,6 @@
 package com.meti.lib.net;
 
+import com.meti.lib.util.CollectionUtil;
 import com.meti.lib.util.QueuedFunction;
 import com.meti.lib.util.TypePredicate;
 
@@ -8,8 +9,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,36 +31,33 @@ public class Client implements Callable<Void>, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        inputStream.close();
-        outputStream.close();
-        socket.close();
-    }
-
-    @Override
-    public Void call() throws Exception {
-        while (!Thread.interrupted() && !socket.isClosed()) {
-            process(inputStream.readObject());
+    public Void call() {
+        while (true) {
+            try {
+                process(inputStream.readObject());
+            } catch (Exception e) {
+                if (e instanceof SocketException) {
+                    break;
+                } else {
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }
 
-    public <R> R query(Query<R> query) throws IOException {
-        write(Collections.singleton(query));
-        Class<R> returnType = query.returnType;
-
-        if (!queryMap.containsKey(returnType)) {
-            QueuedFunction<Object> function = new QueuedFunction<>();
-            handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(returnType), function));
-            queryMap.put(returnType, function);
+    private void process(Object token) throws IOException {
+        Optional<Object> output = getOutputs(token);
+        if (!output.isPresent()) {
+            throw new IllegalArgumentException("Could not process " + token);
+        } else {
+            check(token, output.get());
+            write(output.get());
         }
+    }
 
-        Queue<Object> queue = queryMap.get(returnType).queue;
-        Object token;
-        do {
-            token = queue.poll();
-        } while (token == null || !returnType.isAssignableFrom(token.getClass()));
-        return returnType.cast(token);
+    private void write(Object objects) throws IOException {
+        write(Collections.singletonList(objects));
     }
 
     private void write(Collection<?> objects) throws IOException {
@@ -68,22 +68,13 @@ public class Client implements Callable<Void>, Closeable {
         outputStream.flush();
     }
 
-    private void process(Object token) throws IOException {
-        List<Object> outputs = getOutputs(token);
-        if (outputs.size() == 0) {
-            throw new IllegalArgumentException("Could not process " + token);
-        }
-
-        check(token, outputs);
-        write(outputs);
-    }
-
-    private List<Object> getOutputs(Object token) {
-        return handlers.stream()
+    private Optional<Object> getOutputs(Object token) {
+        return CollectionUtil.toSingle(handlers.stream()
                 .filter(objectTokenHandler -> objectTokenHandler.test(token))
+                .peek(Object::notify)
                 .map((Function<TokenHandler<Object, ?>, Object>) objectTokenHandler -> objectTokenHandler.apply(token))
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     private void check(Object token, Object output) {
@@ -93,5 +84,37 @@ public class Client implements Callable<Void>, Closeable {
                 throw new IllegalArgumentException("Type " + output.getClass() + " does not match " + query.returnType);
             }
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        inputStream.close();
+        outputStream.close();
+        socket.close();
+    }
+
+    public <R> R query(Query<R> query) throws IOException, InterruptedException {
+        write(Collections.singleton(query));
+        Class<R> returnType = query.returnType;
+
+        if (!queryMap.containsKey(returnType)) {
+            QueuedFunction<Object> function = new QueuedFunction<>();
+            handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(returnType), function));
+            queryMap.put(returnType, function);
+        }
+
+        QueuedFunction<Object> function = queryMap.get(returnType);
+        function.wait();
+
+        Queue<Object> queue = queryMap.get(returnType).queue;
+        if (queue.isEmpty()) {
+            throw new IllegalStateException("Query is empty");
+        }
+
+        Object token;
+        do {
+            token = queue.poll();
+        } while (token == null || !returnType.isAssignableFrom(token.getClass()));
+        return returnType.cast(token);
     }
 }
