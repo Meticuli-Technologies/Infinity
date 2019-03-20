@@ -2,6 +2,7 @@ package com.meti.app.control;
 
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -15,7 +16,7 @@ public class ServerMenu extends Controller {
 
     @FXML
     public void exit(){
-
+        Platform.exit();
     }
 
     @FXML
