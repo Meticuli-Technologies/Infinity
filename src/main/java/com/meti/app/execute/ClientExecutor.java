@@ -1,6 +1,9 @@
 package com.meti.app.execute;
 
+import com.meti.app.feature.Login;
+import com.meti.app.feature.Message;
 import com.meti.lib.net.Client;
+import com.meti.lib.respond.OKResponse;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -97,6 +100,8 @@ public class ClientExecutor {
             return false;
         } else {
             try {
+                OKResponse response = client.queryObject(new Message(token), OKResponse.class);
+                System.out.println(response.getCache());
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
             }
@@ -109,7 +114,8 @@ public class ClientExecutor {
         String username = scanner.next();
 
         try {
-
+            OKResponse response = client.queryObject(new Login(username), OKResponse.class);
+            System.out.println(response.getCache());
         } catch (Exception e) {
             System.out.println("Failed to login: " + e.getMessage());
         }

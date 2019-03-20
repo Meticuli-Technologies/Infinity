@@ -12,7 +12,7 @@ public class CachedResponse<T> implements Response {
         this.exception = exception;
     }
 
-    private T getCache() throws Exception {
+    public T getCache() throws Exception {
         check();
         return cache;
     }
