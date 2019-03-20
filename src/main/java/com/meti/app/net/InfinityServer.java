@@ -5,22 +5,24 @@ import com.meti.app.feature.Login;
 import com.meti.app.feature.Message;
 import com.meti.lib.net.AbstractTokenHandler;
 import com.meti.lib.net.Client;
+import com.meti.lib.net.ClientBuffer;
 import com.meti.lib.net.Server;
 import com.meti.lib.respond.OKResponse;
+import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 public class InfinityServer extends Server {
     private final ExecutorService service = Executors.newCachedThreadPool();
-    private final Set<User> users = new HashSet<>();
+    private final Map<ClientBuffer, User> userMap = new HashMap<>();
     private final Chat chat = new Chat();
 
     public InfinityServer(int port) throws IOException {
@@ -30,21 +32,20 @@ public class InfinityServer extends Server {
     @Override
     public void handleAccept(Socket accept) throws Exception {
         Client client = new Client(accept);
-        client.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), o -> {
-            Login login = (Login) o;
+        ClientBuffer buffer = new ClientBuffer(client);
+
+        buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, OKResponse>) login -> {
             User user = new User(login.username, client);
-            users.add(user);
-            return new Login.LoginResponse("Successfully logged in as " + login.username);
-        }));
+            userMap.put(buffer, user);
+            return new OKResponse("Logged in as " + user.name + " successfully.");
+        }).compose(new TypeFunction<>(Login.class))));
+        buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Message.class), ((Function<Message, OKResponse>) message -> {
+            chat.add(message);
 
-        client.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Message.class), o -> {
-            chat.add((Message) o);
+            return new OKResponse("Message received successfully.");
+        }).compose(new TypeFunction<>(Message.class))));
 
-            //TODO: distribute message to clients
-            return new OKResponse();
-        }));
-
-        System.out.println("Launching " + accept.getInetAddress());
-        service.submit(client);
+        userMap.put(buffer, null);
+        service.submit(buffer);
     }
 }

@@ -1,9 +1,6 @@
 package com.meti.app.execute;
 
-import com.meti.app.feature.Login;
-import com.meti.app.feature.Message;
 import com.meti.lib.net.Client;
-import com.meti.lib.respond.OKResponse;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -58,12 +55,6 @@ public class ClientExecutor {
         }
     }
 
-    private void buildClient(Socket socket) throws IOException {
-        this.client = new Client(socket);
-
-        System.out.println("Connected successfully to " + socket.getInetAddress());
-    }
-
     private Socket getSocket(Scanner scanner) throws IOException {
         InetAddress address = getAddress(scanner);
         int port = getPort(scanner);
@@ -92,6 +83,12 @@ public class ClientExecutor {
                 System.out.println("Invalid port: " + portToken);
             }
         }
+    }
+
+    private void buildClient(Socket socket) throws IOException {
+        this.client = new Client(socket);
+
+        System.out.println("Connected successfully to " + socket.getInetAddress());
     }
 
     public boolean loop(Scanner scanner) {

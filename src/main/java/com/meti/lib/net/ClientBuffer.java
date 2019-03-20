@@ -8,8 +8,8 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-public class ClientBuffer<T> extends LinkedList<T> implements Callable<Optional<Exception>> {
-    private final Set<TokenHandler<Object, ?>> handlers = new HashSet<>();
+public class ClientBuffer implements Callable<Optional<Exception>> {
+    public final Set<TokenHandler<Object, ?>> handlers = new HashSet<>();
     private final Client client;
 
     public ClientBuffer(Client client) {
