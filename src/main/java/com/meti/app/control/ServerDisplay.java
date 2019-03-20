@@ -1,6 +1,7 @@
 package com.meti.app.control;
 
 import com.meti.lib.State;
+import com.meti.lib.net.Server;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -18,6 +19,7 @@ public class ServerDisplay extends InfinityController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Server server = getServer().orElseThrow();
+        server.onConnect = socket -> clientsView.getItems().add(socket.getInetAddress().toString());
     }
 }

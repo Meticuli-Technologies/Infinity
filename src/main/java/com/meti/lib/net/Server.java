@@ -7,10 +7,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 public abstract class Server implements Callable<Void>, Closeable {
     private final List<Socket> socketList = new ArrayList<>();
     private final ServerSocket serverSocket;
+    public Consumer<Socket> onConnect;
 
     protected Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -21,6 +23,7 @@ public abstract class Server implements Callable<Void>, Closeable {
         while (!serverSocket.isClosed()) {
             Socket accept = serverSocket.accept();
             socketList.add(accept);
+            onConnect.accept(accept);
             handleAccept(accept);
         }
         return null;
