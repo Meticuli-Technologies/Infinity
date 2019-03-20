@@ -60,7 +60,6 @@ public class ClientExecutor {
 
     private void buildClient(Socket socket) throws IOException {
         this.client = new Client(socket);
-        this.service.submit(client);
 
         System.out.println("Connected successfully to " + socket.getInetAddress());
     }
@@ -101,8 +100,6 @@ public class ClientExecutor {
             return false;
         } else {
             try {
-                OKResponse response = client.query(new Message(token));
-                response.check();
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
             }
@@ -115,10 +112,7 @@ public class ClientExecutor {
         String username = scanner.next();
 
         try {
-           String token = client.query(new Login(username))
-                    .getCache(String.class);
 
-            System.out.println(token);
         } catch (Exception e) {
             System.out.println("Failed to login: " + e.getMessage());
         }
