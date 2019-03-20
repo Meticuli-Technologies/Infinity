@@ -2,7 +2,6 @@ package com.meti.app.control;
 
 import com.meti.app.net.InfinityServer;
 import com.meti.lib.State;
-import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Server;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,9 +9,8 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.concurrent.ExecutorService;
 
-public class ServerMenu extends Controller {
+public class ServerMenu extends InfinityController {
     @FXML
     private TextField portField;
 
@@ -29,7 +27,7 @@ public class ServerMenu extends Controller {
     public void next() {
         try {
             Server server = new InfinityServer(new ServerSocket(Integer.parseInt(portField.getText())));
-            state.byClassToSingle(ExecutorService.class).orElseThrow().submit(server);
+            getExecutorService().submit(server);
         } catch (IOException e) {
             //TODO: handle exception
             e.printStackTrace();
