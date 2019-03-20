@@ -1,59 +1,37 @@
-package com.meti.lib;
+package com.meti.lib.net;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Optional;
-import java.util.concurrent.Callable;
 
-/**
- * @author SirMathhman
- * @version 0.0.0
- * @since 3/12/2019
- */
-public abstract class Client implements Closeable, Callable<Optional<Exception>> {
-    public final Socket socket;
+public class Client implements Closeable {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
+    private final Socket socket;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
-
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
         this.inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
+    @Override
     public void close() throws IOException {
-        socket.close();
-
         inputStream.close();
         outputStream.close();
+        socket.close();
     }
-
-    @Override
-    public Optional<Exception> call() {
-        try {
-            while (!socket.isClosed()) {
-                handleObject(readObject());
-            }
-
-            return Optional.empty();
-        } catch (IOException | ClassNotFoundException e) {
-            if(e instanceof SocketException){
-                return Optional.empty();
-            }
-
-            return Optional.of(e);
-        }
-    }
-
-    protected abstract void handleObject(Object token);
 
     public void flush() throws IOException {
         outputStream.flush();
+    }
+
+    public <T> T queryObject(Object object, Class<T> returnClass) throws IOException, ClassNotFoundException {
+        writeObject(object);
+
+        return returnClass.cast(readObject());
     }
 
     public Object readObject() throws IOException, ClassNotFoundException {
@@ -62,6 +40,16 @@ public abstract class Client implements Closeable, Callable<Optional<Exception>>
 
     public void writeObject(Object obj) throws IOException {
         outputStream.writeObject(obj);
+    }
+
+    public <T> T queryUnshared(Object object, Class<T> returnClass) throws IOException, ClassNotFoundException {
+        writeUnshared(object);
+
+        return returnClass.cast(readUnshared());
+    }
+
+    public Object readUnshared() throws IOException, ClassNotFoundException {
+        return inputStream.readUnshared();
     }
 
     public void writeUnshared(Object obj) throws IOException {
