@@ -1,7 +1,5 @@
 package com.meti.app;
 
-import com.meti.lib.net.Client;
-
 import java.io.Serializable;
 
 /**
@@ -11,10 +9,8 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     public final String name;
-    public transient final Client client;
 
-    public User(String name, Client client) {
+    public User(String name) {
         this.name = name;
-        this.client = client;
     }
 }

@@ -9,5 +9,5 @@ import java.util.ArrayList;
  * @version 0.0.0
  * @since 3/19/2019
  */
-public class Chat extends ArrayList<Message> {
+class Chat extends ArrayList<Message> {
 }

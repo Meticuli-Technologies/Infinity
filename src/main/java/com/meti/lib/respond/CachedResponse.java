@@ -4,7 +4,7 @@ public class CachedResponse<T> implements Response {
     private T cache;
     private Exception exception;
 
-    protected CachedResponse(T cache) {
+    CachedResponse(T cache) {
         this.cache = cache;
     }
 
@@ -17,11 +17,7 @@ public class CachedResponse<T> implements Response {
         return cache;
     }
 
-    public <R> R getCache(Class<R> rClass) throws Exception {
-        return rClass.cast(getCache());
-    }
-
-    public void check() throws Exception {
+    private void check() throws Exception {
         if (exception != null) {
             throw exception;
         }

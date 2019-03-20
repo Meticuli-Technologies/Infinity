@@ -11,8 +11,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -20,7 +18,6 @@ import java.util.concurrent.Executors;
  * @since 3/17/2019
  */
 public class ClientExecutor {
-    private final ExecutorService service = Executors.newCachedThreadPool();
     private Client client;
 
     public boolean init(Scanner scanner) {
@@ -100,7 +97,7 @@ public class ClientExecutor {
             return false;
         } else {
             try {
-                OKResponse response = client.queryObject(new Message(token), OKResponse.class);
+                OKResponse response = client.queryObject(new Message(), OKResponse.class);
                 System.out.println(response.getCache());
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
@@ -128,23 +125,4 @@ public class ClientExecutor {
             System.out.println("Failed to close connection: " + e.getMessage());
         }
     }
-
-    /*private class Updater implements Callable<Object> {
-        @Override
-        public Object call() throws Exception {
-            while (true) {
-                Object token = client.read();
-                if (token instanceof Update) {
-                    if (token instanceof Message.MessageUpdate) {
-                        Message.MessageUpdate update = (Message.MessageUpdate) token;
-                        System.out.println("[" + update.user.name + "]: " + update.message.content);
-                    }
-                } else {
-                    System.out.println(token + " not instance of Update");
-                    break;
-                }
-            }
-            return null;
-        }
-    }*/
 }
