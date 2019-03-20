@@ -125,23 +125,4 @@ public class ClientExecutor {
             System.out.println("Failed to close connection: " + e.getMessage());
         }
     }
-
-    /*private class Updater implements Callable<Object> {
-        @Override
-        public Object call() throws Exception {
-            while (true) {
-                Object token = client.read();
-                if (token instanceof Update) {
-                    if (token instanceof Message.MessageUpdate) {
-                        Message.MessageUpdate update = (Message.MessageUpdate) token;
-                        System.out.println("[" + update.user.name + "]: " + update.message.content);
-                    }
-                } else {
-                    System.out.println(token + " not instance of Update");
-                    break;
-                }
-            }
-            return null;
-        }
-    }*/
 }
