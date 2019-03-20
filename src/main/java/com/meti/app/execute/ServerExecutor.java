@@ -4,6 +4,7 @@ import com.meti.app.net.InfinityServer;
 import com.meti.lib.net.Server;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,7 +19,7 @@ public class ServerExecutor {
 
         try {
             int port = getPort(scanner);
-            this.server = new InfinityServer(port);
+            this.server = new InfinityServer(new ServerSocket(port));
 
             System.out.println("Initialized server on port " + port);
         } catch (IOException e) {

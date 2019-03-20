@@ -29,8 +29,8 @@ public class InfinityServer extends Server {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Chat chat = new Chat();
 
-    public InfinityServer(int port) throws IOException {
-        super(new ServerSocket(port));
+    public InfinityServer(ServerSocket serverSocket) {
+        super(serverSocket);
     }
 
     @Override
