@@ -110,8 +110,8 @@ public class ClientExecutor {
     }
 
     public void start(Scanner scanner) {
-        System.out.print("Enter in a username -> ");
-        String username = scanner.next();
+        System.out.println("Enter in a username:");
+        String username = scanner.nextLine();
 
         try {
             OKResponse response = client.queryObject(new Login(username), OKResponse.class);
