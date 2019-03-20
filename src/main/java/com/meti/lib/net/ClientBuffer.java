@@ -32,7 +32,7 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
         return Optional.empty();
     }
 
-    public void checkResults(Object token, List<?> results) throws IOException {
+    private void checkResults(Object token, List<?> results) throws IOException {
         if (results.isEmpty()) {
             client.writeUnshared(new CachedResponse<>(new IllegalStateException("No handlers for " + token)));
         }
@@ -45,7 +45,7 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
         }
     }
 
-    public List<?> getResults(Object token) {
+    private List<?> getResults(Object token) {
         return handlers.stream()
                 .filter(handler -> handler.test(token))
                 .map(handler -> handler.apply(token))

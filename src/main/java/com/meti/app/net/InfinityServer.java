@@ -22,7 +22,11 @@ import java.util.function.Function;
 
 public class InfinityServer extends Server {
     private final ExecutorService service = Executors.newCachedThreadPool();
+
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Map<ClientBuffer, User> userMap = new HashMap<>();
+
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Chat chat = new Chat();
 
     public InfinityServer(int port) throws IOException {
@@ -35,7 +39,7 @@ public class InfinityServer extends Server {
         ClientBuffer buffer = new ClientBuffer(client);
 
         buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, OKResponse>) login -> {
-            User user = new User(login.username, client);
+            User user = new User(login.username);
             userMap.put(buffer, user);
             return new OKResponse("Logged in as " + user.name + " successfully.");
         }).compose(new TypeFunction<>(Login.class))));

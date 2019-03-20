@@ -24,28 +24,18 @@ public class Client implements Closeable {
         socket.close();
     }
 
-    public void flush() throws IOException {
-        outputStream.flush();
-    }
-
     public <T> T queryObject(Object object, Class<T> returnClass) throws IOException, ClassNotFoundException {
         writeObject(object);
 
         return returnClass.cast(readObject());
     }
 
-    public Object readObject() throws IOException, ClassNotFoundException {
+    private Object readObject() throws IOException, ClassNotFoundException {
         return inputStream.readObject();
     }
 
     public void writeObject(Object obj) throws IOException {
         outputStream.writeObject(obj);
-    }
-
-    public <T> T queryUnshared(Object object, Class<T> returnClass) throws IOException, ClassNotFoundException {
-        writeUnshared(object);
-
-        return returnClass.cast(readUnshared());
     }
 
     public Object readUnshared() throws IOException, ClassNotFoundException {
