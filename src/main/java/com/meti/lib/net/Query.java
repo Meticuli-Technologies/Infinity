@@ -1,20 +1,18 @@
 package com.meti.lib.net;
 
-import java.util.Arrays;
-
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 3/19/2019
  */
-public class Query {
-    public final Class<?>[] classes;
+public class Query<R> {
+    public final Class<R> returnType;
 
-    public Query(Class<?>[] classes) {
-        this.classes = classes;
+    public Query(Class<R> returnType) {
+        this.returnType = returnType;
     }
 
-    public boolean check(Class<?>[] others) {
-        return Arrays.equals(classes, others);
+    public boolean check(Class<?> other) {
+        return returnType.equals(other);
     }
 }

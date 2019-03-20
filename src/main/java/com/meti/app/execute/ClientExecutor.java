@@ -4,8 +4,6 @@ import com.meti.app.feature.Login;
 import com.meti.app.feature.Message;
 import com.meti.lib.net.Client;
 import com.meti.lib.respond.OKResponse;
-import com.meti.lib.net.Query;
-import com.meti.lib.net.Update;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -13,7 +11,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -104,8 +101,8 @@ public class ClientExecutor {
             return false;
         } else {
             try {
-            /*    OKResponse response = query.query(new Message(token));
-                response.check();*/
+                OKResponse response = client.query(new Message(token));
+                response.check();
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
             }
@@ -114,14 +111,14 @@ public class ClientExecutor {
     }
 
     public void start(Scanner scanner) {
-        System.out.println("Enter in a username -> ");
+        System.out.print("Enter in a username -> ");
         String username = scanner.next();
 
         try {
-       /*     String token = query.query(new Login(username))
-                    .getCache(String.class);*/
+           String token = client.query(new Login(username))
+                    .getCache(String.class);
 
- /*           System.out.println(token);*/
+            System.out.println(token);
         } catch (Exception e) {
             System.out.println("Failed to login: " + e.getMessage());
         }

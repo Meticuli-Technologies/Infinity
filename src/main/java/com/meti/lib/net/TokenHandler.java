@@ -1,6 +1,5 @@
 package com.meti.lib.net;
 
-import java.io.Serializable;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -9,5 +8,5 @@ import java.util.function.Predicate;
  * @version 0.0.0
  * @since 3/19/2019
  */
-public interface TokenHandler<T, R extends Serializable> extends Predicate<T>, Function<T, R> {
+public interface TokenHandler<T, R> extends Predicate<T>, Function<T, R> {
 }

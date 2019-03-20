@@ -14,7 +14,7 @@ public class ServerExecutor {
 
     public void init(Scanner scanner) {
         System.out.println("Welcome to Infinity");
-        System.out.println("Start by hosting server.");
+        System.out.println("Start by hosting a server.");
 
         try {
             int port = getPort(scanner);
