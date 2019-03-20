@@ -12,10 +12,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ServerFXMLMain extends Application {
+    private final ExecutorService service = Executors.newCachedThreadPool();
     private final State state = new State();
 
     public static void main(String[] args) {
@@ -33,6 +36,30 @@ public class ServerFXMLMain extends Application {
 
     @Override
     public void stop() {
+        close();
+
+        try {
+            service.shutdown();
+
+            if (!service.isTerminated()) {
+                Thread.sleep(5000);
+                service.shutdownNow();
+            }
+
+            if (service.isTerminated()) {
+                System.out.println("Stopped server successfully.");
+                System.exit(0);
+            } else {
+                System.out.println("Failed to stop server normally.");
+                System.exit(-1);
+            }
+        } catch (InterruptedException e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+
+    private void close() {
         String exceptionString = state.byClass(Closeable.class)
                 .map((Function<Closeable, Optional<Exception>>) closeable -> {
                     try {

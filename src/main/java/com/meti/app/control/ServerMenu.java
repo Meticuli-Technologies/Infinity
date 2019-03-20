@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.concurrent.ExecutorService;
 
 public class ServerMenu extends Controller {
     @FXML
@@ -20,14 +21,15 @@ public class ServerMenu extends Controller {
     }
 
     @FXML
-    public void exit(){
+    public void exit() {
         Platform.exit();
     }
 
     @FXML
-    public void next(){
+    public void next() {
         try {
             Server server = new InfinityServer(new ServerSocket(Integer.parseInt(portField.getText())));
+            state.byClassToSingle(ExecutorService.class).orElseThrow().submit(server);
         } catch (IOException e) {
             //TODO: handle exception
             e.printStackTrace();
