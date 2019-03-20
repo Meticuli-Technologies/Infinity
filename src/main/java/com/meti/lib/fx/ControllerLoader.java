@@ -3,6 +3,7 @@ package com.meti.lib.fx;
 import com.meti.lib.State;
 import javafx.fxml.FXMLLoader;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class ControllerLoader extends FXMLLoader {
@@ -22,5 +23,9 @@ public class ControllerLoader extends FXMLLoader {
                 return null;
             }
         });
+    }
+
+    public static <T> T load(URL location, State state) throws IOException {
+        return new ControllerLoader(location, state).load();
     }
 }
