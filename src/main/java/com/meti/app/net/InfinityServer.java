@@ -38,6 +38,8 @@ public class InfinityServer extends Server {
         @Override
         public void accept(Client client) {
             ClientBuffer buffer = new ClientBuffer(client);
+            userMap.put(buffer, null);
+            service.submit(buffer);
 
             buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, OKResponse>) login -> {
                 User user = new User(login.username);
@@ -46,13 +48,11 @@ public class InfinityServer extends Server {
             }).compose(new TypeFunction<>(Login.class))));
 
             buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Message.class), ((Function<Message, OKResponse>) message -> {
-                chat.add(message);
+                Chat.ChatUpdate update = chat.add(message);
+                userMap.keySet().forEach(sender -> sender.update("CHAT", update));
 
                 return new OKResponse("Message received successfully.");
             }).compose(new TypeFunction<>(Message.class))));
-
-            userMap.put(buffer, null);
-            service.submit(buffer);
         }
     }
 }

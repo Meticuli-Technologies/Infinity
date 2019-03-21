@@ -2,18 +2,36 @@ package com.meti.lib.net;
 
 import com.meti.lib.respond.CachedResponse;
 import com.meti.lib.util.CollectionUtil;
+import com.meti.lib.util.TypePredicate;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ClientBuffer implements Callable<Optional<Exception>> {
     public final Set<TokenHandler<Object, ?>> handlers = new HashSet<>();
+
+    private final Map<String, ArrayList<Update>> updateMap = new HashMap<>();
     private final Client client;
 
     public ClientBuffer(Client client) {
         this.client = client;
+
+        this.handlers.add(new AbstractTokenHandler<>(
+                new TypePredicate<>(Request.class),
+                ((Function<Request, ArrayList<Update>>) request -> updateMap.get(request.key))
+                        .compose(o -> (Request) o)
+        ));
+    }
+
+    public void update(String key, Update update) {
+        if (!updateMap.containsKey(key)) {
+            updateMap.put(key, new ArrayList<>());
+        }
+
+        updateMap.get(key).add(update);
     }
 
     @Override
