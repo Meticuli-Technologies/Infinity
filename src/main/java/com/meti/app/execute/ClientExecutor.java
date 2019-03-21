@@ -17,6 +17,7 @@ import java.util.Scanner;
  * @version 0.0.0
  * @since 3/17/2019
  */
+@Deprecated
 public class ClientExecutor {
     private Client client;
 
