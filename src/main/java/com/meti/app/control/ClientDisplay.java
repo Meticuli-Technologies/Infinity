@@ -27,7 +27,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     public void handle() {
         try {
-            OKResponse response = getClientOrThrow().queryObject(new Message(), OKResponse.class);
+            OKResponse response = getClientOrThrow().queryObject(new Message(input.getText()), OKResponse.class);
             assert response != null;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
