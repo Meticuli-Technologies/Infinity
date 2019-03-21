@@ -32,7 +32,7 @@ public class InfinityServer extends Server {
     }
 
     @Override
-    public void handleAccept(Client client) throws Exception {
+    public void handleAccept(Client client) {
         ClientBuffer buffer = new ClientBuffer(client);
 
         buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, OKResponse>) login -> {
