@@ -30,9 +30,7 @@ public class Main extends Application {
         state.add(primaryStage);
         state.add(service);
 
-        Parent load = ControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
-        primaryStage.setScene(new Scene(load));
-        primaryStage.show();
+        ControllerLoader.onto(getClass().getResource("/com/meti/app/control/Menu.fxml"), state, primaryStage);
     }
 
     @Override

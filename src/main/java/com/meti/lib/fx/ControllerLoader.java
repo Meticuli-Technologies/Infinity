@@ -33,6 +33,11 @@ public class ControllerLoader extends FXMLLoader {
 
         T controller = loader.getController();
         controller.stage = stage;
+
+        if(!stage.isShowing()){
+            stage.show();
+        }
+
         return controller;
     }
 
