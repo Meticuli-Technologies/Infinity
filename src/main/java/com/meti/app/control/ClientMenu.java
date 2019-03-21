@@ -28,7 +28,6 @@ public class ClientMenu extends InfinityController {
 
     @FXML
     public void next() {
-        //TODO: implement next
         try {
             Socket socket = new Socket(InetAddress.getByName(addressField.getText()), Integer.parseInt(portField.getText()));
             Client client = new Client(socket);
