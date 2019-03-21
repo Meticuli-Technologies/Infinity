@@ -17,6 +17,10 @@ public class InfinityController extends Controller {
         this.service = state.byClassToSingle(ExecutorService.class).orElseThrow();
     }
 
+    public Client getClientOrThrow() {
+        return getClient().orElseThrow();
+    }
+
     public Optional<Client> getClient() {
         return state.byClassToSingle(Client.class);
     }
