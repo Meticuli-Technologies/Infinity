@@ -97,7 +97,7 @@ public class ClientExecutor {
             return false;
         } else {
             try {
-                OKResponse response = client.queryObject(new Message(content), OKResponse.class);
+                OKResponse response = client.queryObject(new Message(""), OKResponse.class);
                 System.out.println(response.getCache());
             } catch (Exception e) {
                 System.out.println("Failed to write message: " + e.getMessage());
