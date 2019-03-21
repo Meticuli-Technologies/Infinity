@@ -12,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -30,16 +29,6 @@ public class ClientDisplay extends InfinityController implements Initializable {
         super(state);
     }
 
-    @FXML
-    public void handle() {
-        try {
-            OKResponse response = getClientOrThrow().queryObject(new Message(input.getText()), OKResponse.class);
-            assert response != null;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Timer timer = new Timer();
@@ -52,11 +41,21 @@ public class ClientDisplay extends InfinityController implements Initializable {
                             .filter(new TypePredicate<>(Chat.ChatUpdate.class))
                             .map(new TypeFunction<>(Chat.ChatUpdate.class))
                             .forEach(ClientDisplay.this::updateChat);
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }, 0, 10000);
+    }
+
+    @FXML
+    public void handle() {
+        try {
+            OKResponse response = getClientOrThrow().queryObject(new Message(input.getText()), OKResponse.class);
+            assert response != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateChat(Chat.ChatUpdate update) {

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.FutureTask;
 
 public class Client implements Closeable {
     private final ObjectInputStream inputStream;
@@ -24,10 +25,16 @@ public class Client implements Closeable {
         socket.close();
     }
 
-    public <T> T queryObject(Object object, Class<T> returnClass) throws IOException, ClassNotFoundException {
+    public <T> T queryObject(Object object, Class<T> returnClass) throws Exception {
         writeObject(object);
 
-        return returnClass.cast(readObject());
+        Object returned = new FutureTask<>(() -> {
+            Object token = readObject();
+            object.notify();
+            return token;
+        }).get();
+
+        return returnClass.cast(returned);
     }
 
     private Object readObject() throws IOException, ClassNotFoundException {
