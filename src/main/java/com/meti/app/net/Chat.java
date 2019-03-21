@@ -20,9 +20,9 @@ public class Chat {
     }
 
     public static class ChatUpdate implements Update {
-        private final Message message;
-        private final boolean wasAdded;
-        private final boolean wasRemoved;
+        public final Message message;
+        public final boolean wasAdded;
+        public final boolean wasRemoved;
 
         public ChatUpdate(Message message, boolean wasAdded, boolean wasRemoved) {
             this.message = message;
