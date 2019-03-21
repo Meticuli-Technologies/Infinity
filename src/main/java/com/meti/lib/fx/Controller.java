@@ -14,7 +14,6 @@ public class Controller {
         this.state = state;
     }
 
-
     public <T extends Controller> T onto(URL url) throws IOException {
         return ControllerLoader.onto(url, state, stage);
     }
