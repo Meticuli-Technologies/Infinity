@@ -27,7 +27,7 @@ public class ServerMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent load = ControllerLoader.load(getClass().getResource("/com/meti/app/control/ServerMenu.fxml"), state);
+        Parent load = ControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
         primaryStage.setScene(new Scene(load));
         primaryStage.show();
 
