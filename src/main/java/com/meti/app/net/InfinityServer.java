@@ -44,6 +44,7 @@ public class InfinityServer extends Server {
                 userMap.put(buffer, user);
                 return new OKResponse("Logged in as " + user.name + " successfully.");
             }).compose(new TypeFunction<>(Login.class))));
+
             buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Message.class), ((Function<Message, OKResponse>) message -> {
                 chat.add(message);
 
