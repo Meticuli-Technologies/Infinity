@@ -27,7 +27,7 @@ public class ServerMenu extends InfinityController {
     public void next() {
         try {
             Server server = new InfinityServer(new ServerSocket(Integer.parseInt(portField.getText())));
-            getExecutorService().submit(server);
+            service.submit(server);
         } catch (IOException e) {
             //TODO: handle exception
             e.printStackTrace();

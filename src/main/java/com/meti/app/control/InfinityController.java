@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 public class InfinityController extends Controller {
-    private final ExecutorService service;
+    protected final ExecutorService service;
 
     public InfinityController(State state) {
         super(state);
