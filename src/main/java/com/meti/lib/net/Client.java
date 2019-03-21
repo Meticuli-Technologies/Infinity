@@ -9,7 +9,7 @@ import java.net.Socket;
 public class Client implements Closeable {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
-    private final Socket socket;
+    public final Socket socket;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;

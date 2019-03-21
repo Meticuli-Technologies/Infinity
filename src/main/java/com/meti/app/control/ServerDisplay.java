@@ -20,6 +20,6 @@ public class ServerDisplay extends InfinityController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Server server = getServer().orElseThrow();
-        server.onConnect = socket -> clientsView.getItems().add(socket.getInetAddress().toString());
+        server.onConnect = server.onConnect.andThen(client -> clientsView.getItems().add(client.socket.getInetAddress().toString()));
     }
 }

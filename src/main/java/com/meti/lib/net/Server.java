@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public abstract class Server implements Callable<Void>, Closeable {
     private final List<Socket> socketList = new ArrayList<>();
     private final ServerSocket serverSocket;
-    public Consumer<Socket> onConnect;
+    public Consumer<Client> onConnect;
 
     protected Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -23,13 +23,10 @@ public abstract class Server implements Callable<Void>, Closeable {
         while (!serverSocket.isClosed()) {
             Socket accept = serverSocket.accept();
             socketList.add(accept);
-            onConnect.accept(accept);
-            handleAccept(new Client(accept));
+            onConnect.accept(new Client(accept));
         }
         return null;
     }
-
-    protected abstract void handleAccept(Client client) throws Exception;
 
     @Override
     public void close() throws IOException {
