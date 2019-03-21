@@ -31,7 +31,6 @@ public class ClientMenu extends InfinityController {
         try {
             Socket socket = new Socket(InetAddress.getByName(addressField.getText()), Integer.parseInt(portField.getText()));
             Client client = new Client(socket);
-
             state.add(client);
 
             onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"));

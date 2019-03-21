@@ -24,7 +24,7 @@
               </rowConstraints>
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" GridPane.halignment="CENTER" />
-                  <TextField onAction="#usernameField" GridPane.columnIndex="1" />
+                  <TextField fx:id="usernameField" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </center>
