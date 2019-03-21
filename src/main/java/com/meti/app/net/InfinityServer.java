@@ -11,9 +11,7 @@ import com.meti.lib.respond.OKResponse;
 import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
 
-import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -34,8 +32,7 @@ public class InfinityServer extends Server {
     }
 
     @Override
-    public void handleAccept(Socket accept) throws Exception {
-        Client client = new Client(accept);
+    public void handleAccept(Client client) throws Exception {
         ClientBuffer buffer = new ClientBuffer(client);
 
         buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, OKResponse>) login -> {

@@ -24,12 +24,12 @@ public abstract class Server implements Callable<Void>, Closeable {
             Socket accept = serverSocket.accept();
             socketList.add(accept);
             onConnect.accept(accept);
-            handleAccept(accept);
+            handleAccept(new Client(accept));
         }
         return null;
     }
 
-    protected abstract void handleAccept(Socket accept) throws Exception;
+    protected abstract void handleAccept(Client client) throws Exception;
 
     @Override
     public void close() throws IOException {
