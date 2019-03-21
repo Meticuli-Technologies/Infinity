@@ -23,7 +23,6 @@ public class ClientDisplay extends InfinityController implements Initializable {
         super(state);
     }
 
-
     @FXML
     public void handle() {
         try {
