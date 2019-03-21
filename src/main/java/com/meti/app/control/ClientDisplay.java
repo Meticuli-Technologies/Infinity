@@ -7,20 +7,17 @@ import com.meti.lib.net.Request;
 import com.meti.lib.respond.OKResponse;
 import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
@@ -45,9 +42,10 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void handle(ActionEvent event) {
+            public void run() {
                 try {
                     ArrayList<?> updates = getClientOrThrow().queryObject(new Request("CHAT"), ArrayList.class);
                     updates.stream()
@@ -58,10 +56,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
                     e.printStackTrace();
                 }
             }
-        }));
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        }, 0, 10000);
     }
 
     public void updateChat(Chat.ChatUpdate update) {
