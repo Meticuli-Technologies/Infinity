@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class ServerFXMLMain extends Application {
+public class Main extends Application {
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final State state = new State();
 
@@ -27,11 +27,10 @@ public class ServerFXMLMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent load = ControllerLoader.load(getClass().getResource("/com/meti/app/control/ServerMenu.fxml"), state);
-        primaryStage.setScene(new Scene(load));
-        primaryStage.show();
-
         state.add(primaryStage);
+        state.add(service);
+
+        ControllerLoader.onto(getClass().getResource("/com/meti/app/control/Menu.fxml"), state, primaryStage);
     }
 
     @Override

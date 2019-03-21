@@ -27,7 +27,10 @@ public class ServerMenu extends InfinityController {
     public void next() {
         try {
             Server server = new InfinityServer(new ServerSocket(Integer.parseInt(portField.getText())));
-            getExecutorService().submit(server);
+            service.submit(server);
+
+            state.add(server);
+            onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"));
         } catch (IOException e) {
             //TODO: handle exception
             e.printStackTrace();
