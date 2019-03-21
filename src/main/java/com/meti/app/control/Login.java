@@ -41,6 +41,8 @@ public class Login extends InfinityController {
             Client client = getClientOrThrow();
             OKResponse response = client.queryObject(new com.meti.app.feature.Login(usernameField.getText()), OKResponse.class);
             assert response != null;
+
+            onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"));
         } catch (Exception e) {
             e.printStackTrace();
         }

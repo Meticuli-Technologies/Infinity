@@ -41,7 +41,7 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
                 Object token = client.readUnshared();
                 List<?> results = getResults(token);
                 checkResults(token, results);
-                client.writeObject(CollectionUtil.toSingle(results)
+                client.writeUnshared(CollectionUtil.toSingle(results)
                         .orElse(null));
             } catch (IOException | ClassNotFoundException e) {
                 return Optional.of(e);

@@ -33,7 +33,7 @@ public class ClientMenu extends InfinityController {
             Client client = new Client(socket);
             state.add(client);
 
-            onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"));
+            onto(getClass().getResource("/com/meti/app/control/Login.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

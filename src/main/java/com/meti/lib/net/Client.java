@@ -26,13 +26,9 @@ public class Client implements Closeable {
     }
 
     public <T> T queryObject(Object object, Class<T> returnClass) throws Exception {
-        writeObject(object);
+        writeUnshared(object);
 
-        Object returned = new FutureTask<>(() -> {
-            Object token = readObject();
-            object.notify();
-            return token;
-        }).get();
+        Object returned = new FutureTask<>(this::readUnshared).get();
 
         return returnClass.cast(returned);
     }
