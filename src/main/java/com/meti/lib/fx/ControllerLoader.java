@@ -2,6 +2,8 @@ package com.meti.lib.fx;
 
 import com.meti.lib.State;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +25,15 @@ public class ControllerLoader extends FXMLLoader {
                 return null;
             }
         });
+    }
+
+    public static <T extends Controller> T onto(URL url, State state, Stage stage) throws IOException {
+        ControllerLoader loader = new ControllerLoader(url, state);
+        stage.setScene(new Scene(loader.load()));
+
+        T controller = loader.getController();
+        controller.stage = stage;
+        return controller;
     }
 
     public static <T> T load(URL location, State state) throws IOException {
