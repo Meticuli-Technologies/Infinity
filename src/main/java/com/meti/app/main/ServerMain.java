@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class ServerFXMLMain extends Application {
+public class ServerMain extends Application {
     private final ExecutorService service = Executors.newCachedThreadPool();
     private final State state = new State();
 
