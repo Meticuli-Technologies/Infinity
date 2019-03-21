@@ -27,11 +27,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        state.add(primaryStage);
+        state.add(service);
+
         Parent load = ControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
         primaryStage.setScene(new Scene(load));
         primaryStage.show();
-
-        state.add(primaryStage);
     }
 
     @Override
