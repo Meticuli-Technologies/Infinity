@@ -2,6 +2,7 @@ package com.meti.lib.net;
 
 import com.meti.lib.respond.CachedResponse;
 import com.meti.lib.util.CollectionUtil;
+import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
 
 import java.io.IOException;
@@ -21,17 +22,18 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
 
         this.handlers.add(new AbstractTokenHandler<>(
                 new TypePredicate<>(Request.class),
-                ((Function<Request, ArrayList<Update>>) request -> updateMap.get(request.key))
-                        .compose(o -> (Request) o)
+                ((Function<Request, List<Update>>) request -> {
+                    System.out.println("Located " + request);
+
+                    if (!updateMap.containsKey(request.key)) {
+                        updateMap.put(request.key, new ArrayList<>());
+                    }
+
+                    List<Update> list = Collections.unmodifiableList(updateMap.get(request.key));
+                    updateMap.get(request.key).clear();
+                    return list;
+                }).compose(new TypeFunction<>(Request.class))
         ));
-    }
-
-    public void update(String key, Update update) {
-        if (!updateMap.containsKey(key)) {
-            updateMap.put(key, new ArrayList<>());
-        }
-
-        updateMap.get(key).add(update);
     }
 
     @Override
@@ -39,6 +41,8 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
         while (!Thread.interrupted()) {
             try {
                 Object token = client.readUnshared();
+                System.out.println(token);
+
                 List<?> results = getResults(token);
                 checkResults(token, results);
                 client.writeUnshared(CollectionUtil.toSingle(results)
@@ -68,5 +72,13 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
                 .filter(handler -> handler.test(token))
                 .map(handler -> handler.apply(token))
                 .collect(Collectors.toList());
+    }
+
+    public void update(String key, Update update) {
+        if (!updateMap.containsKey(key)) {
+            updateMap.put(key, new ArrayList<>());
+        }
+
+        updateMap.get(key).add(update);
     }
 }

@@ -7,6 +7,7 @@ import com.meti.lib.net.Request;
 import com.meti.lib.respond.OKResponse;
 import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -14,9 +15,13 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
@@ -29,25 +34,6 @@ public class ClientDisplay extends InfinityController implements Initializable {
         super(state);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    ArrayList<?> updates = getClientOrThrow().queryObject(new Request("CHAT"), ArrayList.class);
-                    updates.stream()
-                            .filter(new TypePredicate<>(Chat.ChatUpdate.class))
-                            .map(new TypeFunction<>(Chat.ChatUpdate.class))
-                            .forEach(ClientDisplay.this::updateChat);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 10000);
-    }
-
     @FXML
     public void handle() {
         try {
@@ -58,13 +44,35 @@ public class ClientDisplay extends InfinityController implements Initializable {
         }
     }
 
-    public void updateChat(Chat.ChatUpdate update) {
-        if (update.wasAdded) {
-            output.getItems().add(update.message.content);
-        } else if (update.wasRemoved) {
-            output.getItems().remove(update.message.content);
-        } else {
-            throw new IllegalArgumentException("Invalid update: " + update);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            try {
+                List<?> updateTokens = getClientOrThrow().queryObject(new Request("CHAT"), List.class);
+                if (!updateTokens.isEmpty()) {
+                    Set<Chat.ChatUpdate> updates = updateTokens.stream()
+                            .filter(new TypePredicate<>(Chat.ChatUpdate.class))
+                            .map(new TypeFunction<>(Chat.ChatUpdate.class))
+                            .collect(Collectors.toSet());
+
+                    Platform.runLater(() -> updateChat(updates));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 0, 10, TimeUnit.MILLISECONDS);
+    }
+
+    public void updateChat(Set<Chat.ChatUpdate> updates) {
+        for (Chat.ChatUpdate update : updates) {
+            if (update.wasAdded) {
+                output.getItems().add(update.message.content);
+            } else if (update.wasRemoved) {
+                output.getItems().remove(update.message.content);
+            } else {
+                throw new IllegalArgumentException("Invalid update: " + update);
+            }
         }
     }
 }
