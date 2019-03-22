@@ -41,10 +41,10 @@ public class InfinityServer extends Server {
             userMap.put(buffer, null);
             service.submit(buffer);
 
-            buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, OKResponse>) login -> {
+            buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Login.class), ((Function<Login, User>) login -> {
                 User user = new User(login.username);
                 userMap.put(buffer, user);
-                return new OKResponse("Logged in as " + user.name + " successfully.");
+                return user;
             }).compose(new TypeFunction<>(Login.class))));
 
             buffer.handlers.add(new AbstractTokenHandler<>(new TypePredicate<>(Message.class), ((Function<Message, OKResponse>) message -> {

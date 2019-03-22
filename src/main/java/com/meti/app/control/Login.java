@@ -1,8 +1,8 @@
 package com.meti.app.control;
 
+import com.meti.app.User;
 import com.meti.lib.State;
 import com.meti.lib.net.Client;
-import com.meti.lib.respond.OKResponse;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -22,9 +22,9 @@ public class Login extends InfinityController {
     }
 
     @FXML
-    public void back(){
+    public void back() {
         try {
-            Client client = getClientOrThrow();
+            Client client = getClient();
             client.close();
 
             state.remove(client);
@@ -36,11 +36,11 @@ public class Login extends InfinityController {
     }
 
     @FXML
-    public void next(){
+    public void next() {
         try {
-            Client client = getClientOrThrow();
-            OKResponse response = client.queryObject(new com.meti.app.feature.Login(usernameField.getText()), OKResponse.class);
-            assert response != null;
+            Client client = getClient();
+            User user = client.queryObject(new com.meti.app.feature.Login(usernameField.getText()), User.class);
+            state.add(user);
 
             onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"));
         } catch (Exception e) {

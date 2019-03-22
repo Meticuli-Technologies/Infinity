@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 
 import java.net.SocketException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     public void handle() {
         try {
-            OKResponse response = getClientOrThrow().queryObject(new Message(input.getText()), OKResponse.class);
+            OKResponse response = getClient().queryObject(new Message(input.getText(), getUser()), OKResponse.class);
             assert response != null;
 
             input.setText("");
@@ -53,15 +54,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
         try {
             executor.scheduleAtFixedRate(() -> {
                 try {
-                    List<?> updateTokens = getClientOrThrow().queryObject(new Request("CHAT"), List.class);
-                    if (!updateTokens.isEmpty()) {
-                        Set<Chat.ChatUpdate> updates = updateTokens.stream()
-                                .filter(new TypePredicate<>(Chat.ChatUpdate.class))
-                                .map(new TypeFunction<>(Chat.ChatUpdate.class))
-                                .collect(Collectors.toSet());
-
-                        Platform.runLater(() -> updateChat(updates));
-                    }
+                    updateChat();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -75,15 +68,33 @@ public class ClientDisplay extends InfinityController implements Initializable {
         }
     }
 
-    public void updateChat(Set<Chat.ChatUpdate> updates) {
-        for (Chat.ChatUpdate update : updates) {
-            if (update.wasAdded) {
-                output.getItems().add(update.message.content);
-            } else if (update.wasRemoved) {
-                output.getItems().remove(update.message.content);
-            } else {
-                throw new IllegalArgumentException("Invalid update: " + update);
+    public void updateChat() throws Exception {
+        processChatTokens(getChatTokens());
+    }
+
+    public void processChatTokens(Set<Chat.ChatUpdate> updates) {
+        Platform.runLater(() -> {
+            for (Chat.ChatUpdate update : updates) {
+                if (update.wasAdded) {
+                    output.getItems().add(update.message.content);
+                } else if (update.wasRemoved) {
+                    output.getItems().remove(update.message.content);
+                } else {
+                    throw new IllegalArgumentException("Invalid update: " + update);
+                }
             }
+        });
+    }
+
+    public Set<Chat.ChatUpdate> getChatTokens() throws Exception {
+        List<?> updateTokens = getClient().queryObject(new Request("CHAT"), List.class);
+        Set<Chat.ChatUpdate> updates = new HashSet<>();
+        if (!updateTokens.isEmpty()) {
+            updates.addAll(updateTokens.stream()
+                    .filter(new TypePredicate<>(Chat.ChatUpdate.class))
+                    .map(new TypeFunction<>(Chat.ChatUpdate.class))
+                    .collect(Collectors.toSet()));
         }
+        return updates;
     }
 }

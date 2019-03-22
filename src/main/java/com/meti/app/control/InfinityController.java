@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.app.User;
 import com.meti.lib.State;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.net.Client;
@@ -17,15 +18,15 @@ public class InfinityController extends Controller {
         this.service = state.byClassToSingle(ExecutorService.class).orElseThrow();
     }
 
-    public Client getClientOrThrow() {
-        return getClient().orElseThrow();
+    public Client getClient() {
+        return state.byClassToSingle(Client.class).orElseThrow();
     }
 
-    public Optional<Client> getClient() {
-        return state.byClassToSingle(Client.class);
+    public Server getServer(){
+        return state.byClassToSingle(Server.class).orElseThrow();
     }
 
-    public Optional<Server> getServer() {
-        return state.byClassToSingle(Server.class);
+    public User getUser() {
+        return state.byClassToSingle(User.class).orElseThrow();
     }
 }
