@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * @since 3/19/2019
  */
 public class Chat {
+    //TODO: add chat window to Server
     private final ArrayList<Message> content = new ArrayList<>();
 
     public ChatUpdate add(Message message) {

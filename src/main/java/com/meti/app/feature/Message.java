@@ -12,4 +12,9 @@ public class Message implements Serializable {
         this.content = content;
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "[" + user.name + "]: " + content;
+    }
 }

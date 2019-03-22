@@ -76,9 +76,9 @@ public class ClientDisplay extends InfinityController implements Initializable {
         Platform.runLater(() -> {
             for (Chat.ChatUpdate update : updates) {
                 if (update.wasAdded) {
-                    output.getItems().add(update.message.content);
+                    output.getItems().add(update.message.toString());
                 } else if (update.wasRemoved) {
-                    output.getItems().remove(update.message.content);
+                    output.getItems().remove(update.message.toString());
                 } else {
                     throw new IllegalArgumentException("Invalid update: " + update);
                 }
