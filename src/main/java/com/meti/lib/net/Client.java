@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Client implements Closeable {
     public final Socket socket;
+
+    private final ExecutorService service = Executors.newSingleThreadExecutor();
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
@@ -19,22 +23,26 @@ public class Client implements Closeable {
 
     @Override
     public void close() throws IOException {
+        service.shutdownNow();
+
         inputStream.close();
         outputStream.close();
         socket.close();
     }
 
     public <T> T queryObject(Object object, Class<T> returnClass) throws Exception {
-        writeUnshared(object);
-        return returnClass.cast(readUnshared());
-    }
-
-    public Object readUnshared() throws IOException, ClassNotFoundException {
-        return inputStream.readUnshared();
+        return returnClass.cast(service.submit(() -> {
+            writeUnshared(object);
+            return readUnshared();
+        }).get());
     }
 
     public void writeUnshared(Object obj) throws IOException {
         outputStream.writeUnshared(obj);
+    }
+
+    public Object readUnshared() throws IOException, ClassNotFoundException {
+        return inputStream.readUnshared();
     }
 
     private Object readObject() throws IOException, ClassNotFoundException {

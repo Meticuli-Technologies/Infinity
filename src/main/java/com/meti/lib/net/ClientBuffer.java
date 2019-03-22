@@ -23,8 +23,6 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
         this.handlers.add(new AbstractTokenHandler<>(
                 new TypePredicate<>(Request.class),
                 ((Function<Request, List<Update>>) request -> {
-                    System.out.println("Located " + request);
-
                     if (!updateMap.containsKey(request.key)) {
                         updateMap.put(request.key, new ArrayList<>());
                     }
@@ -41,8 +39,6 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
         while (!Thread.interrupted()) {
             try {
                 Object token = client.readUnshared();
-                System.out.println(token);
-
                 List<?> results = getResults(token);
                 checkResults(token, results);
                 client.writeUnshared(CollectionUtil.toSingle(results)
