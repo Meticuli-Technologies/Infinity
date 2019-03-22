@@ -39,6 +39,8 @@ public class ClientDisplay extends InfinityController implements Initializable {
         try {
             OKResponse response = getClientOrThrow().queryObject(new Message(input.getText()), OKResponse.class);
             assert response != null;
+
+            input.setText("");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,7 +63,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, 0, 10, TimeUnit.MILLISECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     public void updateChat(Set<Chat.ChatUpdate> updates) {

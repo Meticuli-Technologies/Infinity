@@ -27,8 +27,9 @@ public class ClientBuffer implements Callable<Optional<Exception>> {
                         updateMap.put(request.key, new ArrayList<>());
                     }
 
-                    List<Update> list = Collections.unmodifiableList(updateMap.get(request.key));
-                    updateMap.get(request.key).clear();
+                    ArrayList<Update> updateList = updateMap.get(request.key);
+                    List<Update> list = new ArrayList<>(updateList);
+                    updateList.clear();
                     return list;
                 }).compose(new TypeFunction<>(Request.class))
         ));
