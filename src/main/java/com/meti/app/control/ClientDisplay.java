@@ -13,11 +13,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.net.SocketException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -49,21 +50,29 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(() -> {
-            try {
-                List<?> updateTokens = getClientOrThrow().queryObject(new Request("CHAT"), List.class);
-                if (!updateTokens.isEmpty()) {
-                    Set<Chat.ChatUpdate> updates = updateTokens.stream()
-                            .filter(new TypePredicate<>(Chat.ChatUpdate.class))
-                            .map(new TypeFunction<>(Chat.ChatUpdate.class))
-                            .collect(Collectors.toSet());
+        try {
+            executor.scheduleAtFixedRate(() -> {
+                try {
+                    List<?> updateTokens = getClientOrThrow().queryObject(new Request("CHAT"), List.class);
+                    if (!updateTokens.isEmpty()) {
+                        Set<Chat.ChatUpdate> updates = updateTokens.stream()
+                                .filter(new TypePredicate<>(Chat.ChatUpdate.class))
+                                .map(new TypeFunction<>(Chat.ChatUpdate.class))
+                                .collect(Collectors.toSet());
 
-                    Platform.runLater(() -> updateChat(updates));
+                        Platform.runLater(() -> updateChat(updates));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
+            }, 0, 1, TimeUnit.SECONDS).get();
+        } catch (InterruptedException | ExecutionException e) {
+            if (e.getCause() instanceof SocketException) {
+                executor.shutdownNow();
+            } else {
                 e.printStackTrace();
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }
     }
 
     public void updateChat(Set<Chat.ChatUpdate> updates) {
