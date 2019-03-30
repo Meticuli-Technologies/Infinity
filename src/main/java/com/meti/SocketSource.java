@@ -12,23 +12,30 @@ import java.net.Socket;
  */
 public class SocketSource implements Source<InputStream, OutputStream> {
     private final Socket socket;
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
 
-    public SocketSource(Socket socket) {
+    public SocketSource(Socket socket) throws IOException {
         this.socket = socket;
+        this.inputStream = socket.getInputStream();
+        this.outputStream = socket.getOutputStream();
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
-        return socket.getInputStream();
+    public InputStream getInputStream() {
+        return inputStream;
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException {
-        return socket.getOutputStream();
+    public OutputStream getOutputStream() {
+        return outputStream;
     }
 
     @Override
     public void close() throws IOException {
+        inputStream.close();
+        outputStream.close();
+
         socket.close();
     }
 }
