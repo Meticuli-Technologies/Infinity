@@ -21,6 +21,7 @@ public class ServerMain {
 
             ExecutorService service = Executors.newCachedThreadPool();
             Server server = new Server(new ServerSocket(port), service);
+            server.listen();
         } catch (IOException e) {
             e.printStackTrace();
         }
