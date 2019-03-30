@@ -15,7 +15,7 @@ public class Client<I extends InputStream, O extends OutputStream> implements Cl
     private final I inputStream;
     private final O outputStream;
 
-    public Client(Source<I, O> source) {
+    public Client(Source<I, O> source) throws IOException {
         this.source = source;
         this.inputStream = source.getInputStream();
         this.outputStream = source.getOutputStream();
