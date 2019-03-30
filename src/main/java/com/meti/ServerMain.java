@@ -3,6 +3,8 @@ package com.meti;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -14,7 +16,9 @@ public class ServerMain {
         try {
             Scanner scanner = new Scanner(System.in);
             int port = Integer.parseInt(scanner.nextLine());
-            Server server = new Server(new ServerSocket(port));
+
+            ExecutorService service = Executors.newCachedThreadPool();
+            Server server = new Server(new ServerSocket(port), service);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -22,9 +26,15 @@ public class ServerMain {
 
     private static class Server {
         private final ServerSocket serverSocket;
+        private final ExecutorService service;
 
-        private Server(ServerSocket serverSocket) {
+        private Server(ServerSocket serverSocket, ExecutorService service) {
             this.serverSocket = serverSocket;
+            this.service = service;
+        }
+
+        public void listen(){
+
         }
     }
 }
