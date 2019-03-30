@@ -1,7 +1,10 @@
 package com.meti;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -46,6 +49,18 @@ public class ServerMain {
                     return null;
                 }
             });
+        }
+    }
+
+    private static class Client {
+        private final Socket socket;
+        private final ObjectInputStream inputStream;
+        private final ObjectOutputStream outputStream;
+
+        private Client(Socket socket) throws IOException {
+            this.socket = socket;
+            this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+            this.inputStream = new ObjectInputStream(socket.getInputStream());
         }
     }
 }
