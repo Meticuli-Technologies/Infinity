@@ -14,4 +14,6 @@ public interface Source<I extends InputStream, O extends OutputStream> extends C
     I getInputStream() throws IOException;
 
     O getOutputStream() throws IOException;
+
+    boolean isClosed();
 }

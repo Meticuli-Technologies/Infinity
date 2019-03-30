@@ -15,6 +15,10 @@ public class Client<S extends Source<?, ?>> implements Closeable {
         this.source = source;
     }
 
+    public boolean isClosed() {
+        return source.isClosed();
+    }
+
     public void flush() throws IOException {
         source.getOutputStream().flush();
     }
