@@ -6,4 +6,7 @@ package com.meti;
  * @since 3/30/2019
  */
 public class ServerMain {
+    public static void main(String[] args) {
+
+    }
 }
