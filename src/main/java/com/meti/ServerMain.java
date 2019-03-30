@@ -3,8 +3,10 @@ package com.meti;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author SirMathhman
@@ -33,8 +35,16 @@ public class ServerMain {
             this.service = service;
         }
 
-        public void listen(){
-
+        public Future<Void> listen() {
+            return service.submit(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    while(!serverSocket.isClosed()){
+                        serverSocket.accept();
+                    }
+                    return null;
+                }
+            });
         }
     }
 }
