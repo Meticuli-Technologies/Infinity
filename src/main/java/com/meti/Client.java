@@ -23,9 +23,6 @@ public class Client<I extends InputStream, O extends OutputStream> implements Cl
 
     @Override
     public void close() throws IOException {
-        inputStream.close();
-        outputStream.close();
-
         source.close();
     }
 }
