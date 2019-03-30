@@ -11,17 +11,21 @@ import java.io.OutputStream;
  * @since 3/30/2019
  */
 public class Client<I extends InputStream, O extends OutputStream> implements Closeable {
+    private final Source<I, O> source;
     private final I inputStream;
     private final O outputStream;
 
-    public Client(I inputStream, O outputStream) {
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+    public Client(Source<I, O> source) {
+        this.source = source;
+        this.inputStream = source.getInputStream();
+        this.outputStream = source.getOutputStream();
     }
 
     @Override
     public void close() throws IOException {
         inputStream.close();
         outputStream.close();
+
+        source.close();
     }
 }
