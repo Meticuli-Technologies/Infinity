@@ -14,15 +14,16 @@ public abstract class DelegateSource<I extends InputStream, O extends OutputStre
     private final I inputStream;
     private final O outputStream;
 
-    protected DelegateSource(Source<?, ?> parent) {
+    protected DelegateSource(Source<?, ?> parent) throws IOException {
         this.parent = parent;
-        this.inputStream = constructInputStream(parent.getInputStream());
-        this.outputStream = constructOutputStream(parent.getOutputStream());
+
+        this.inputStream = constructInputStream(parent);
+        this.outputStream = constructOutputStream(parent);
     }
 
-    public abstract I constructInputStream(InputStream parent);
+    public abstract I constructInputStream(Source<?, ?> source) throws IOException;
 
-    public abstract O constructOutputStream(OutputStream parent);
+    public abstract O constructOutputStream(Source<?, ?> source) throws IOException;
 
     @Override
     public I getInputStream() {
