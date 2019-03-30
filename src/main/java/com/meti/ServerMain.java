@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +34,7 @@ public class ServerMain {
     }
 
     private static class Server {
+        private final List<Client> clientList = new ArrayList<>();
         private final ServerSocket serverSocket;
         private final ExecutorService service;
 
@@ -45,11 +48,16 @@ public class ServerMain {
                 @Override
                 public Void call() throws Exception {
                     while(!serverSocket.isClosed()){
-                        serverSocket.accept();
+                        process(new Client(serverSocket.accept()));
                     }
                     return null;
                 }
             });
+        }
+
+        private Client process(Client client){
+            clientList.add(client);
+            return client;
         }
     }
 
