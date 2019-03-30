@@ -14,9 +14,17 @@ public class ServerMain {
         try {
             Scanner scanner = new Scanner(System.in);
             int port = Integer.parseInt(scanner.nextLine());
-            ServerSocket serverSocket = new ServerSocket(port);
+            Server server = new Server(new ServerSocket(port));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class Server {
+        private final ServerSocket serverSocket;
+
+        private Server(ServerSocket serverSocket) {
+            this.serverSocket = serverSocket;
         }
     }
 }
