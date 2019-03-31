@@ -15,7 +15,7 @@ import java.util.Optional;
  * @since 3/31/2019
  */
 public class Controller {
-    private final State state;
+    protected final State state;
 
     public Controller(State state) {
         this.state = state;

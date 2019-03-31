@@ -1,5 +1,6 @@
 package com.meti.app.core;
 
+import com.meti.lib.collection.State;
 import com.meti.lib.log.Console;
 import javafx.stage.Stage;
 
@@ -16,8 +17,8 @@ import static com.meti.lib.trys.TryableFactory.DEFAULT_FACTORY;
  * @since 3/31/2019
  */
 public class Infinity {
-    private final InfinityState state = new InfinityState();
     private final Console console = new Console();
+    private final State state = new State();
 
     public void start(Stage primaryStage){
         console.log(Level.INFO, "Setting up state.");
