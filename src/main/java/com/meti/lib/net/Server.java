@@ -1,7 +1,7 @@
-package com.meti.net;
+package com.meti.lib.net;
 
-import com.meti.net.source.Source;
-import com.meti.net.source.SourceSupplier;
+import com.meti.lib.net.source.Source;
+import com.meti.lib.net.source.SourceSupplier;
 
 import java.util.concurrent.Callable;
 import java.util.function.Function;

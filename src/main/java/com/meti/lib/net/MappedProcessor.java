@@ -1,7 +1,7 @@
-package com.meti.net;
+package com.meti.lib.net;
 
-import com.meti.net.object.ObjectClient;
-import com.meti.util.CollectionUtil;
+import com.meti.lib.net.object.ObjectClient;
+import com.meti.lib.util.CollectionUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;

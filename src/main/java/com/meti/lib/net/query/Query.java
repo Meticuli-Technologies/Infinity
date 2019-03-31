@@ -1,4 +1,4 @@
-package com.meti.net.query;
+package com.meti.lib.net.query;
 
 /**
  * @author SirMathhman

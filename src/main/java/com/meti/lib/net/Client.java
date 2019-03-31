@@ -1,6 +1,6 @@
-package com.meti.net;
+package com.meti.lib.net;
 
-import com.meti.net.source.Source;
+import com.meti.lib.net.source.Source;
 
 import java.io.Closeable;
 import java.io.IOException;

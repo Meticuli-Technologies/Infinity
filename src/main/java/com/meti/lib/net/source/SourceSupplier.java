@@ -1,4 +1,4 @@
-package com.meti.net.source;
+package com.meti.lib.net.source;
 
 import java.io.Closeable;
 import java.util.function.Supplier;

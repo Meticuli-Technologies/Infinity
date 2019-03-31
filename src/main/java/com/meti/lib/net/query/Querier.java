@@ -1,6 +1,6 @@
-package com.meti.net.query;
+package com.meti.lib.net.query;
 
-import com.meti.net.object.ObjectClient;
+import com.meti.lib.net.object.ObjectClient;
 
 import java.io.IOException;
 import java.util.concurrent.*;
