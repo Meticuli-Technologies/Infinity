@@ -20,7 +20,8 @@ public class Infinity {
 
     public void stop(){
         try {
-            state.search(Closeable.class).forEach(DEFAULT_FACTORY.newConsumer(Closeable::close));
+            state.search(Closeable.class)
+                    .forEach(DEFAULT_FACTORY.newConsumer(Closeable::close));
             DEFAULT_FACTORY.catcher.throwAll();
         } catch (Exception e) {
             e.printStackTrace();
