@@ -15,12 +15,12 @@ public class State extends HashSet<Object> {
         addAll(Arrays.asList(initials));
     }
 
-    public <T> Stream<T> search(Class<T> tClass) {
-        return search(new TypePredicate<>(tClass))
+    public <T> Stream<T> byClass(Class<T> tClass) {
+        return byPredicate(new TypePredicate<>(tClass))
                 .map(new TypeFunction<>(tClass));
     }
 
-    public Stream<Object> search(Predicate<Object> predicate) {
+    public Stream<Object> byPredicate(Predicate<Object> predicate) {
         return stream().filter(predicate);
     }
 }
