@@ -3,7 +3,9 @@ package com.meti.app.core;
 import javafx.stage.Stage;
 
 import java.io.Closeable;
+import java.io.IOException;
 
+import static com.meti.lib.fx.ControllerLoader.load;
 import static com.meti.lib.trys.TryableFactory.DEFAULT_FACTORY;
 
 /**
@@ -16,6 +18,12 @@ public class Infinity {
 
     public void start(Stage primaryStage){
         state.add(primaryStage);
+
+        try {
+            load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stop(){
