@@ -12,9 +12,9 @@ public abstract class Server<S extends Source<?, ?>, C extends Client<S>> implem
     private final SourceSupplier<S> sourceSupplier;
     private final Function<S, C> clientConverter;
 
-    public Server(Function<S, C> clientConverter, SourceSupplier<S> sourceSupplier) {
-        this.clientConverter = clientConverter;
+    public Server(SourceSupplier<S> sourceSupplier, Function<S, C> clientConverter) {
         this.sourceSupplier = sourceSupplier;
+        this.clientConverter = clientConverter;
     }
 
     @Override
