@@ -28,7 +28,7 @@ public class Infinity {
 
         try {
             console.log(Level.INFO, "Loading Menu.");
-            Scene scene = new Scene(load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
+            Scene scene = new Scene(load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state));
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
