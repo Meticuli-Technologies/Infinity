@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.net.source;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import java.io.OutputStream;
  * @since 3/30/2019
  */
 public interface Source<I extends InputStream, O extends OutputStream> extends Closeable {
-    I getInputStream() throws IOException;
+    I getInputStream();
 
-    O getOutputStream() throws IOException;
+    O getOutputStream();
 
     boolean isClosed();
 }

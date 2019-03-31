@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.net.source;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +29,11 @@ public class SocketSource implements Source<InputStream, OutputStream> {
     @Override
     public OutputStream getOutputStream() {
         return outputStream;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return socket.isClosed();
     }
 
     @Override

@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.net.query;
+
+import com.meti.net.object.ObjectClient;
 
 import java.io.IOException;
 import java.util.concurrent.*;
@@ -19,7 +21,7 @@ public class Querier implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
-        while (!client.isClosed()) {
+        while (client.isOpen()) {
             futures.take().complete(client.readObject());
         }
         return null;

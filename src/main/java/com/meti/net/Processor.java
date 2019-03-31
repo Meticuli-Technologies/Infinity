@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.net;
+
+import com.meti.net.object.ObjectClient;
 
 import java.util.concurrent.Callable;
 
@@ -16,7 +18,7 @@ public abstract class Processor implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
-        while (!client.isClosed()) {
+        while (client.isOpen()) {
             Object result;
             try {
                 result = processToken(client.readObject());
@@ -34,5 +36,5 @@ public abstract class Processor implements Callable<Void> {
         return null;
     }
 
-    public abstract Object processToken(Object token) throws Exception;
+    public abstract Object processToken(Object token);
 }

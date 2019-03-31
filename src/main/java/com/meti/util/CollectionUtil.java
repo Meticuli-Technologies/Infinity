@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

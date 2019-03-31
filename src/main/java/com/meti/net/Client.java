@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.net;
+
+import com.meti.net.source.Source;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -15,15 +17,15 @@ public class Client<S extends Source<?, ?>> implements Closeable {
         this.source = source;
     }
 
-    public boolean isClosed() {
-        return source.isClosed();
+    public boolean isOpen() {
+        return !source.isClosed();
     }
 
     public void flush() throws IOException {
         source.getOutputStream().flush();
     }
 
-    public int read() throws IOException, ClassNotFoundException {
+    public int read() throws IOException {
         return source.getInputStream().read();
     }
 

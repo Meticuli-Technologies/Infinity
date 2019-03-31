@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.net.object;
+
+import com.meti.net.Client;
 
 import java.io.IOException;
 

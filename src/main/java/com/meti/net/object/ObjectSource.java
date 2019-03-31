@@ -1,4 +1,7 @@
-package com.meti;
+package com.meti.net.object;
+
+import com.meti.net.source.DelegateSource;
+import com.meti.net.source.Source;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
