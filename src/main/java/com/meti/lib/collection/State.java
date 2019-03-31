@@ -1,5 +1,6 @@
 package com.meti.lib.collection;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -10,6 +11,10 @@ import java.util.stream.Stream;
  * @since 3/31/2019
  */
 public class State extends HashSet<Object> {
+    public State(Object... initials) {
+        addAll(Arrays.asList(initials));
+    }
+
     public <T> Stream<T> search(Class<T> tClass) {
         return search(new TypePredicate<>(tClass))
                 .map(new TypeFunction<>(tClass));
