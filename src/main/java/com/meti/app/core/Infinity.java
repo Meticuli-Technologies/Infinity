@@ -4,6 +4,8 @@ import javafx.stage.Stage;
 
 import java.io.Closeable;
 
+import static com.meti.lib.trys.TryableFactory.DEFAULT_FACTORY;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -17,6 +19,11 @@ public class Infinity {
     }
 
     public void stop(){
-        state.search(Closeable.class);
+        try {
+            state.search(Closeable.class).forEach(DEFAULT_FACTORY.newConsumer(Closeable::close));
+            DEFAULT_FACTORY.catcher.throwAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
