@@ -36,6 +36,11 @@ public abstract class DelegateSource<I extends InputStream, O extends OutputStre
     }
 
     @Override
+    public boolean isClosed() {
+        return parent.isClosed();
+    }
+
+    @Override
     public void close() throws IOException {
         inputStream.close();
         outputStream.close();
