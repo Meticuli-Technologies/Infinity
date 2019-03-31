@@ -4,6 +4,7 @@ import com.meti.app.core.InfinityController;
 import com.meti.lib.collection.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ import java.util.logging.Level;
  */
 public class Menu extends InfinityController {
     @FXML
-    private TextField versionText;
+    private Text versionText;
 
     public Menu(State state) {
         super(state);

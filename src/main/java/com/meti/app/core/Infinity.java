@@ -2,6 +2,7 @@ package com.meti.app.core;
 
 import com.meti.lib.collection.State;
 import com.meti.lib.log.Console;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.Closeable;
@@ -27,7 +28,9 @@ public class Infinity {
 
         try {
             console.log(Level.INFO, "Loading Menu.");
-            load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
+            Scene scene = new Scene(load(getClass().getResource("/com/meti/app/control/Menu.fxml"), state);
+            primaryStage.setScene(scene);
+            primaryStage.show();
         } catch (IOException e) {
             console.log(Level.SEVERE, "Failed to start Infinity.", e);
         }
