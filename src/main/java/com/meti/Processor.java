@@ -7,10 +7,10 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 3/30/2019
  */
-public abstract class Handler implements Callable<Void> {
+public abstract class Processor implements Callable<Void> {
     private final ObjectClient client;
 
-    public Handler(ObjectClient client) {
+    public Processor(ObjectClient client) {
         this.client = client;
     }
 
