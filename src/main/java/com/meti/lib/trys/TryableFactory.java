@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 3/31/2019
  */
-public class TryableFactory<C extends Consumer<Exception>> {
+public class TryableFactory<C extends Catcher> {
     public static final TryableFactory<CollectionCatcher<Set<Exception>>> DEFAULT_FACTORY = new TryableFactory<>(CollectionCatcher.set());
     public final C catcher;
 

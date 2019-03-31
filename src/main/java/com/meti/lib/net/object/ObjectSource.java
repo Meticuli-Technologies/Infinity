@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 public class ObjectSource extends DelegateSource<ObjectInputStream, ObjectOutputStream> {
     private ObjectOutputStream tempOutputStream;
 
-    protected ObjectSource(Source<?, ?> parent) throws IOException {
+    public ObjectSource(Source<?, ?> parent) throws IOException {
         super(parent);
     }
 
