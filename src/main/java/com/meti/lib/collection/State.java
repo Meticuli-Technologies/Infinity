@@ -1,7 +1,7 @@
 package com.meti.lib.collection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * @version 0.0.0
  * @since 3/31/2019
  */
-public class State extends HashSet<Object> {
+public class State extends ArrayList<Object> {
     public State(Object... initials) {
         addAll(Arrays.asList(initials));
     }

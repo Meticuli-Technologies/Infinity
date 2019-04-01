@@ -7,7 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -22,10 +24,6 @@ public class Controller {
     }
 
     public void onto(URL url) throws IOException {
-        onto((Parent) ControllerLoader.load(url, state));
-    }
-
-    public void onto(Parent parent) {
         Optional<Stage> any = state.byClass(Stage.class).findAny();
         Stage toSet;
         if (any.isPresent()) {
@@ -35,9 +33,26 @@ public class Controller {
             state.add(toSet);
         }
 
+        onto(url, toSet);
+    }
+
+    public void onto(URL url, Stage toSet) throws IOException {
+        Parent parent = ControllerLoader.load(url, state);
         toSet.setScene(new Scene(parent));
         if (!toSet.isShowing()) {
             toSet.show();
         }
+    }
+
+    public void onto(URL url, int index) throws IOException {
+        List<Stage> stageList = state.byClass(Stage.class).collect(Collectors.toList());
+        Stage toSet;
+        if (stageList.size() > index) {
+            toSet = stageList.get(index);
+        } else {
+            toSet = new Stage();
+        }
+
+        onto(url, toSet);
     }
 }
