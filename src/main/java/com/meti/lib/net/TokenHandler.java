@@ -8,5 +8,5 @@ import java.util.function.Predicate;
  * @version 0.0.0
  * @since 3/30/2019
  */
-public interface Handler<T> extends Predicate<T>, Function<T, Object> {
+public interface TokenHandler<T> extends Predicate<T>, Function<T, Object> {
 }

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @since 3/30/2019
  */
 public class MappedProcessor extends Processor {
-    protected final Set<Handler<Object>> handlers = new HashSet<>();
+    protected final Set<TokenHandler<Object>> tokenHandlers = new HashSet<>();
 
     public MappedProcessor(ObjectClient client) {
         super(client);
@@ -20,9 +20,9 @@ public class MappedProcessor extends Processor {
 
     @Override
     public Object processToken(Object token) {
-        Set<Object> collect = handlers.stream()
-                .filter(objectHandler -> objectHandler.test(token))
-                .map(objectHandler -> objectHandler.apply(token))
+        Set<Object> collect = tokenHandlers.stream()
+                .filter(objectTokenHandler -> objectTokenHandler.test(token))
+                .map(objectTokenHandler -> objectTokenHandler.apply(token))
                 .collect(Collectors.toSet());
         return CollectionUtil.toSingle(collect);
     }
