@@ -2,6 +2,7 @@ package com.meti.app.core;
 
 import com.meti.lib.collection.State;
 import com.meti.lib.log.Console;
+import com.meti.lib.log.ConsoleEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -26,8 +28,16 @@ public class Infinity {
     private final Console console = new Console();
     private final State state = new State();
 
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
         console.log(Level.INFO, "Setting up state.");
+        console.eventManager.put(ConsoleEvent.ON_LOG, consoleEvent -> {
+            if (consoleEvent.getLevel().equals(Level.SEVERE)) {
+                System.err.println("Infinity crashed with message:");
+                System.err.println(consoleEvent.getMessage());
+                System.exit(-1);
+            }
+        });
+
         state.add(primaryStage);
         state.add(service);
         state.add(console);
@@ -42,7 +52,7 @@ public class Infinity {
         }
     }
 
-    public void stop(){
+    public void stop() {
         try {
             state.byClass(Closeable.class)
                     .forEach(DEFAULT_FACTORY.newConsumer(Closeable::close));
@@ -56,17 +66,16 @@ public class Infinity {
 
     public void stopService() {
         service.shutdown();
-        if(!service.isTerminated()){
+        if (!service.isTerminated()) {
             List<Runnable> runnables = service.shutdownNow();
             String runnableList = runnables
                     .stream()
                     .map(Object::toString)
                     .collect(Collectors.joining("\n\t"));
 
-            if(runnables.isEmpty()){
+            if (runnables.isEmpty()) {
                 console.log(Level.INFO, "Shutdown server successfully.");
-            }
-            else{
+            } else {
                 console.log(Level.SEVERE, runnables.size() + " runnables were still running:\n\t" + runnableList);
             }
         }

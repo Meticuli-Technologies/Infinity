@@ -1,5 +1,7 @@
 package com.meti.lib.log;
 
+import com.meti.lib.event.Component;
+import com.meti.lib.event.Event;
 import com.meti.lib.trys.Catcher;
 
 import java.io.PrintWriter;
@@ -7,12 +9,14 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.meti.lib.log.ConsoleEvent.ON_LOG;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 3/31/2019
  */
-public class Console {
+public class Console extends Component<ConsoleEvent> {
     private final Logger logger;
 
     public Console() {
@@ -47,15 +51,12 @@ public class Console {
             builder.append(writer.toString());
         }
 
+        eventManager.fireEvent(ON_LOG, new ConsoleEvent(level, message));
         logger.log(level, builder.toString());
     }
 
     public Catcher ofSevere() {
         return ofLevel(Level.SEVERE);
-    }
-
-    public Catcher ofWarning() {
-        return ofLevel(Level.WARNING);
     }
 
     public Catcher ofLevel(Level level) {
@@ -65,4 +66,9 @@ public class Console {
     public void log(Level level, Exception exception) {
         log(level, null, exception);
     }
+
+    public Catcher ofWarning() {
+        return ofLevel(Level.WARNING);
+    }
+
 }
