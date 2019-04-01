@@ -48,23 +48,27 @@ public class Infinity {
                     .forEach(DEFAULT_FACTORY.newConsumer(Closeable::close));
             DEFAULT_FACTORY.catcher.throwAll();
 
-            service.shutdown();
-            if(!service.isTerminated()){
-                List<Runnable> runnables = service.shutdownNow();
-                String runnableList = runnables
-                        .stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining("\n\t"));
-
-                if(runnables.isEmpty()){
-                    console.log(Level.INFO, "Shutdown server successfully.");
-                }
-                else{
-                    console.log(Level.SEVERE, runnables.size() + " runnables were still running:\n\t" + runnableList);
-                }
-            }
+            stopService();
         } catch (Exception e) {
             console.log(Level.SEVERE, "Failed to stop Infinity.", e);
+        }
+    }
+
+    public void stopService() {
+        service.shutdown();
+        if(!service.isTerminated()){
+            List<Runnable> runnables = service.shutdownNow();
+            String runnableList = runnables
+                    .stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining("\n\t"));
+
+            if(runnables.isEmpty()){
+                console.log(Level.INFO, "Shutdown server successfully.");
+            }
+            else{
+                console.log(Level.SEVERE, runnables.size() + " runnables were still running:\n\t" + runnableList);
+            }
         }
     }
 }
