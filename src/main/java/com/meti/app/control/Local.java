@@ -51,12 +51,16 @@ public class Local extends InfinityController {
             state.add(server);
             state.add(serverFuture);
 
+            onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
+
             InfinityClient client = new InfinityClient(InetAddress.getByName("localhost"), port);
             Querier querier = new Querier(client);
             Future<Void> querierFuture = service.submit(querier);
             state.add(client);
             state.add(querier);
             state.add(querierFuture);
+
+            onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
         } catch (IOException e) {
             console.log(Level.SEVERE, e);
         }
