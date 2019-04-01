@@ -4,12 +4,20 @@ import com.meti.lib.net.MappedProcessor;
 import com.meti.lib.net.Server;
 import com.meti.lib.net.object.ObjectClient;
 import com.meti.lib.net.object.ObjectSource;
+import com.meti.lib.net.source.SocketSource;
 import com.meti.lib.net.source.SocketSourceSupplier;
+import com.meti.lib.net.source.Source;
 import com.meti.lib.trys.Catcher;
+import com.meti.lib.trys.TryableFactory;
+import com.meti.lib.trys.TryableFunction;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
+
+import static com.meti.lib.trys.TryableFactory.DEFAULT_FACTORY;
 
 /**
  * @author SirMathhman
@@ -17,26 +25,21 @@ import java.util.function.Function;
  * @since 3/31/2019
  */
 public class InfinityServer extends Server<ObjectSource, ObjectClient> {
+    private final Consumer<Future<?>> futureConsumer;
     private final ExecutorService service;
 
-    public InfinityServer(int port, Catcher catcher, ExecutorService service) throws IOException {
+    public InfinityServer(int port, Catcher catcher, Consumer<Future<?>> futureConsumer, ExecutorService service) throws IOException {
         super(new SocketSourceSupplier(port, catcher),
-                source -> {
-                    try {
-                        return new ObjectSource(source);
-                    } catch (IOException e) {
-                        return null;
-                    }
-                },
+                DEFAULT_FACTORY.newFunction(ObjectSource::new),
                 ObjectClient::new
         );
+        this.futureConsumer = futureConsumer;
         this.service = service;
     }
 
     @Override
-    public void accept(ObjectClient client) {
+    protected void accept(ObjectClient client) {
         MappedProcessor processor = new MappedProcessor(client);
-        service.submit(processor);
-        //TODO: do something with the future
+        futureConsumer.accept(service.submit(processor));
     }
 }

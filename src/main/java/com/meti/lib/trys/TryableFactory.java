@@ -2,6 +2,7 @@ package com.meti.lib.trys;
 
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author SirMathhman
@@ -22,6 +23,17 @@ public class TryableFactory<C extends Catcher> {
                 tryableConsumer.accept(t);
             } catch (Exception e) {
                 catcher.accept(e);
+            }
+        };
+    }
+
+    public <T, R> Function<T, R> newFunction(TryableFunction<T, R> function) {
+        return t -> {
+            try {
+                return function.apply(t);
+            } catch (Exception e) {
+                catcher.accept(e);
+                return null;
             }
         };
     }

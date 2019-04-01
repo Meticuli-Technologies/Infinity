@@ -1,5 +1,7 @@
 package com.meti.lib.log;
 
+import com.meti.lib.trys.Catcher;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Level;
@@ -25,8 +27,8 @@ public class Console {
         this.logger = logger;
     }
 
-    public void log(Level level, Exception exception) {
-        log(level, null, exception);
+    public void log(Level level, String message) {
+        log(level, message, null);
     }
 
     public void log(Level level, String message, Exception exception) {
@@ -48,7 +50,19 @@ public class Console {
         logger.log(level, builder.toString());
     }
 
-    public void log(Level level, String message) {
-        log(level, message, null);
+    public Catcher ofSevere() {
+        return ofLevel(Level.SEVERE);
+    }
+
+    public Catcher ofWarning() {
+        return ofLevel(Level.WARNING);
+    }
+
+    public Catcher ofLevel(Level level) {
+        return e -> log(level, e);
+    }
+
+    public void log(Level level, Exception exception) {
+        log(level, null, exception);
     }
 }

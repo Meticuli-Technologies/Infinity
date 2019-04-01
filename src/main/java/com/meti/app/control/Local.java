@@ -1,11 +1,13 @@
 package com.meti.app.control;
 
 import com.meti.app.core.InfinityController;
+import com.meti.app.core.InfinityServer;
 import com.meti.lib.collection.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 /**
@@ -33,6 +35,17 @@ public class Local extends InfinityController {
 
     @FXML
     public void next() {
+        try {
+            int port = Integer.parseInt(portField.getText());
+            InfinityServer server = new InfinityServer(port, console.ofWarning(), state::add, service);
+            Future<Void> serverFuture = service.submit(server);
 
+            state.add(server);
+            state.add(serverFuture);
+
+
+        } catch (IOException e) {
+            console.log(Level.SEVERE, e);
+        }
     }
 }

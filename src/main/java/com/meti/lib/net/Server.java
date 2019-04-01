@@ -34,6 +34,6 @@ public abstract class Server<S extends Source<?, ?>, C extends Client<S>> implem
         return null;
     }
 
-    public abstract void accept(C client);
+    protected abstract void accept(C client);
 
 }
