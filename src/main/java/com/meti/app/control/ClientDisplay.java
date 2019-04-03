@@ -17,4 +17,9 @@ public class ClientDisplay extends ClientInfinityController {
     public ClientDisplay(State state) {
         super(state);
     }
+
+    @FXML
+    public void handle(){
+
+    }
 }
