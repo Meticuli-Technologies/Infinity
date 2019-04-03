@@ -59,15 +59,8 @@ public class ClientDisplay extends ClientInfinityController implements Initializ
                         if (!content.isEmpty()) {
                             content.parallelStream()
                                     .map(new TypeFunction<>(ChatEvent.class))
-                                    .map((Function<ChatEvent, Runnable>) chatEvent -> () -> {
-                                        if (chatEvent.wasAdded()) {
-                                            output.getItems().add(chatEvent.getMessage().toString());
-                                        } else if (chatEvent.wasRemoved()) {
-                                            output.getItems().remove(chatEvent.getMessage().toString());
-                                        } else {
-                                            console.log(Level.WARNING, "Invalid chat event: " + chatEvent.toString());
-                                        }
-                                    }).forEach(Platform::runLater);
+                                    .map((Function<ChatEvent, Runnable>) chatEvent -> () -> output.getItems().add(chatEvent.getMessage().toString()))
+                                    .forEach(Platform::runLater);
                         }
                     } else {
                         throw new IllegalStateException("Token is not instance of Update");

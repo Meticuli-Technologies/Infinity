@@ -23,7 +23,7 @@ public class Chat extends Component<ChatEvent> {
     }
 
     public void add(Message message) {
-        eventManager.fireEvent(ADDED, new ChatEvent(message, true, false));
+        eventManager.fireEvent(ADDED, new ChatEvent(message));
         messages.add(message);
     }
 
