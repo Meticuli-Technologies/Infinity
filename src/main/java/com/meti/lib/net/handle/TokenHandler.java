@@ -1,4 +1,4 @@
-package com.meti.lib.net;
+package com.meti.lib.net.handle;
 
 import java.util.function.Function;
 import java.util.function.Predicate;

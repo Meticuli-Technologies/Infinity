@@ -5,7 +5,7 @@ import com.meti.lib.net.query.Query;
 
 public class Message implements Query<OKResponse> {
     private final String user;
-    private final String value;
+    public final String value;
 
     public Message(String user, String value) {
         this.user = user;
