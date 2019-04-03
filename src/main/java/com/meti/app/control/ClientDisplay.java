@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class ClientDisplay extends ClientInfinityController {
 
     @FXML
@@ -19,7 +22,12 @@ public class ClientDisplay extends ClientInfinityController {
     }
 
     @FXML
-    public void handle(){
-
+    public void handle() {
+        try {
+            querier.query(new Message(client.getName(), input.getText()));
+            input.clear();
+        } catch (IOException e) {
+            console.log(Level.WARNING, e);
+        }
     }
 }
