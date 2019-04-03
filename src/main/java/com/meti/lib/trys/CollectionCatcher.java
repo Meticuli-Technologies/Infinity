@@ -3,6 +3,7 @@ package com.meti.lib.trys;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -10,24 +11,10 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 3/31/2019
  */
-public class CollectionCatcher<C extends Collection<Exception>> implements Catcher {
-    private final C collection;
+public class CollectionCatcher<C extends Collection<Exception>> extends CollectionConsumer<C> implements Catcher {
 
     public CollectionCatcher(C collection) {
-        this.collection = collection;
-    }
-
-    @Override
-    public void accept(Exception e) {
-        collection.add(e);
-    }
-
-    public static CollectionCatcher<List<Exception>> list() {
-        return new CollectionCatcher<>(new ArrayList<>());
-    }
-
-    public static CollectionCatcher<Set<Exception>> set() {
-        return new CollectionCatcher<>(new HashSet<>());
+        super(collection);
     }
 
     public void throwAll() throws Exception {

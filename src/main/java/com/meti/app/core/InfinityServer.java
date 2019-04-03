@@ -47,10 +47,18 @@ public class InfinityServer extends Server<ObjectSource, ObjectClient> {
     }
 
     private class InfinityProcessor extends MappedProcessor {
-        public InfinityProcessor(ObjectClient client) {
+        InfinityProcessor(ObjectClient client) {
             super(client);
 
- /*           tokenHandlers.add(new AbstractTokenHandler<Object>(new TypePredicate<>(Message.class), ));*/
+            tokenHandlers.add(new AbstractTokenHandler<>(
+                    new TypePredicate<>(Message.class),
+                    ((Function<Message, Object>) message -> {
+                        chat.add(message);
+                        return new OKResponse("Received message \"" + message.value + "\" successfully.");
+                    }).compose(new TypeFunction<>(Message.class))
+            ));
+
+     /*       tokenHandlers.add(new AbstractTokenHandler<>());*/
         }
     }
 }
