@@ -24,23 +24,25 @@ public class SocketSourceSupplier implements SourceSupplier<SocketSource> {
     }
 
     @Override
-    public boolean isClosed() {
-        return serverSocket.isClosed();
-    }
-
-    @Override
     public void close() throws IOException {
         serverSocket.close();
     }
 
     @Override
     public SocketSource get() {
-        while (true) {
+        while (!isClosed()) {
             try {
                 return new SocketSource(serverSocket.accept());
             } catch (IOException e) {
                 catcher.accept(e);
             }
         }
+
+        throw new IllegalStateException("Server socket is closed.");
+    }
+
+    @Override
+    public boolean isClosed() {
+        return serverSocket.isClosed();
     }
 }

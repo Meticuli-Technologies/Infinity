@@ -70,5 +70,4 @@ public class Console extends Component<ConsoleEvent> {
     public Catcher ofWarning() {
         return ofLevel(Level.WARNING);
     }
-
 }

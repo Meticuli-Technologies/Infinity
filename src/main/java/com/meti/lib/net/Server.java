@@ -1,18 +1,26 @@
 package com.meti.lib.net;
 
+import com.meti.lib.event.Component;
 import com.meti.lib.net.source.DelegateSourceSupplier;
 import com.meti.lib.net.source.Source;
 import com.meti.lib.net.source.SourceSupplier;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+
+import static com.meti.lib.trys.TryableFactory.DEFAULT_FACTORY;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 3/30/2019
  */
-public abstract class Server<S extends Source<?, ?>, C extends Client<S>> implements Callable<Void> {
+public abstract class Server<S extends Source<?, ?>, C extends Client<S>> extends Component<ServerEvent> implements Callable<Void>, Closeable {
+    public final List<C> clients = new ArrayList<>();
     private final SourceSupplier<S> sourceSupplier;
     private final Function<S, C> clientConverter;
 
@@ -28,12 +36,22 @@ public abstract class Server<S extends Source<?, ?>, C extends Client<S>> implem
     @Override
     public Void call() {
         while (!sourceSupplier.isClosed()) {
-            accept(clientConverter.apply(sourceSupplier.get()));
+            C client = clientConverter.apply(sourceSupplier.get());
+            clients.add(client);
+
+            eventManager.fireEvent(ServerEvent.ON_REGISTERED, new ServerEvent(new Object[]{this, client}));
+            accept(client);
         }
 
         return null;
     }
 
     protected abstract void accept(C client);
+
+    @Override
+    public void close() throws IOException {
+        clients.stream().forEach(DEFAULT_FACTORY.newConsumer(Client::close));
+        sourceSupplier.close();
+    }
 
 }

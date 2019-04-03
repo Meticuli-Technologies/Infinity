@@ -17,12 +17,21 @@ public class Client<S extends Source<?, ?>> implements Closeable {
         this.source = source;
     }
 
-    public boolean isOpen() {
-        return !source.isClosed();
+    @Override
+    public void close() throws IOException {
+        source.close();
     }
 
     public void flush() throws IOException {
         source.getOutputStream().flush();
+    }
+
+    public String getName() {
+        return source.getName();
+    }
+
+    public boolean isOpen() {
+        return !source.isClosed();
     }
 
     public int read() throws IOException {
@@ -31,10 +40,5 @@ public class Client<S extends Source<?, ?>> implements Closeable {
 
     public void write(int b) throws IOException {
         source.getOutputStream().write(b);
-    }
-
-    @Override
-    public void close() throws IOException {
-        source.close();
     }
 }

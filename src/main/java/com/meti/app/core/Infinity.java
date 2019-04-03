@@ -30,7 +30,7 @@ public class Infinity {
 
     public void start(Stage primaryStage) {
         console.log(Level.INFO, "Setting up state.");
-        console.eventManager.put(ConsoleEvent.ON_LOG, consoleEvent -> {
+        console.eventManager.compound(ConsoleEvent.ON_LOG, consoleEvent -> {
             if (consoleEvent.getLevel().equals(Level.SEVERE)) {
                 System.err.println("Infinity crashed with message:");
                 System.err.println(consoleEvent.getMessage());

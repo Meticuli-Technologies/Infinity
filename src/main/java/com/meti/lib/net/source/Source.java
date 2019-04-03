@@ -10,6 +10,8 @@ import java.io.OutputStream;
  * @since 3/30/2019
  */
 public interface Source<I extends InputStream, O extends OutputStream> extends Closeable {
+    String getName();
+
     I getInputStream();
 
     O getOutputStream();

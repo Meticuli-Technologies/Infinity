@@ -22,6 +22,19 @@ public class SocketSource implements Source<InputStream, OutputStream> {
     }
 
     @Override
+    public void close() throws IOException {
+        inputStream.close();
+        outputStream.close();
+
+        socket.close();
+    }
+
+    @Override
+    public String getName() {
+        return socket.getInetAddress().toString();
+    }
+
+    @Override
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -34,13 +47,5 @@ public class SocketSource implements Source<InputStream, OutputStream> {
     @Override
     public boolean isClosed() {
         return socket.isClosed();
-    }
-
-    @Override
-    public void close() throws IOException {
-        inputStream.close();
-        outputStream.close();
-
-        socket.close();
     }
 }
