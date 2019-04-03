@@ -3,19 +3,20 @@ package com.meti.app.server;
 import com.meti.app.control.Message;
 import com.meti.lib.collection.TypeFunction;
 import com.meti.lib.collection.TypePredicate;
-import com.meti.lib.event.Component;
+import com.meti.lib.event.NetworkedComponent;
+import com.meti.lib.net.Client;
 import com.meti.lib.net.handle.AbstractTokenHandler;
 import com.meti.lib.net.handle.TokenHandler;
 import com.meti.lib.net.query.OKResponse;
-import com.meti.lib.net.query.Update;
 import com.meti.lib.trys.CollectionConsumer;
 
 import java.util.ArrayList;
 import java.util.function.Function;
 
 import static com.meti.app.server.ChatEvent.ADDED;
+import static com.meti.app.server.ChatEvent.ALL;
 
-public class Chat extends Component<ChatEvent> {
+public class Chat extends NetworkedComponent<ChatEvent> {
     private final ArrayList<Message> messages = new ArrayList<>();
 
     {
@@ -36,15 +37,12 @@ public class Chat extends Component<ChatEvent> {
                 }).compose(new TypeFunction<>(Message.class)));
     }
 
-    public TokenHandler<Object> requestHandler() {
-        return new AbstractTokenHandler<>(new TypePredicate<>(ChatRequest.class), ((Function<ChatRequest, Object>) o -> {
-            if (o.key == ChatEvent.ADDED) {
-                return Update.of(eventManager.getUpdates(ChatEvent.ADDED));
-            } else if (o.key == ChatEvent.REMOVED) {
-                return Update.of(eventManager.getUpdates(ChatEvent.REMOVED));
-            } else {
-                return new IllegalArgumentException("Cannot process ChatRequest " + o.toString() + ".");
-            }
-        }).compose(new TypeFunction<>(ChatRequest.class)));
+    public TokenHandler<Object> requestHandler(Client<?> client) {
+        confirm(client).register(ALL);
+        return new AbstractTokenHandler<>(
+                new TypePredicate<>(ChatRequest.class),
+                ((Function<ChatRequest, Object>) request ->
+                        confirm(client).getUpdate(ALL))
+                        .compose(new TypeFunction<>(ChatRequest.class)));
     }
 }
