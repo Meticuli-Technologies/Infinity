@@ -4,18 +4,12 @@ import com.meti.app.core.InfinityClient;
 import com.meti.app.core.InfinityController;
 import com.meti.app.core.InfinityServer;
 import com.meti.lib.collection.State;
-import com.meti.lib.net.Client;
-import com.meti.lib.net.object.ObjectClient;
-import com.meti.lib.net.object.ObjectSource;
 import com.meti.lib.net.query.Querier;
-import com.meti.lib.net.query.Query;
-import com.meti.lib.net.source.SocketSource;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -45,24 +39,39 @@ public class Local extends InfinityController {
     @FXML
     public void next() {
         try {
-            int port = Integer.parseInt(portField.getText());
-            InfinityServer server = new InfinityServer(port, console.ofWarning(), state::add, service);
-            Future<Void> serverFuture = service.submit(server);
-            state.add(server);
-            state.add(serverFuture);
-
-            onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
-
-            InfinityClient client = new InfinityClient(InetAddress.getByName("localhost"), port);
-            Querier querier = new Querier(client);
-            Future<Void> querierFuture = service.submit(querier);
-            state.add(client);
-            state.add(querier);
-            state.add(querierFuture);
-
-            onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
+            int port = loadServerDisplay();
+            loadClientDisplay(port);
         } catch (IOException e) {
             console.log(Level.SEVERE, e);
         }
+    }
+
+    public void loadClientDisplay(int port) throws IOException {
+        console.log(Level.INFO, "Connecting to server on port " + port + ".");
+        InfinityClient client = new InfinityClient(InetAddress.getByName("localhost"), port);
+
+        Querier querier = new Querier(client);
+        console.log(Level.INFO, "Starting querier.");
+        Future<Void> querierFuture = service.submit(querier);
+        state.add(client);
+        state.add(querier);
+        state.add(querierFuture);
+
+        console.log(Level.INFO, "Loading ClientDisplay.");
+        onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
+    }
+
+    public int loadServerDisplay() throws IOException {
+        int port = Integer.parseInt(portField.getText());
+        InfinityServer server = new InfinityServer(port, console.ofWarning(), state::add, service);
+
+        console.log(Level.INFO, "Launching server on port " + port + ".");
+        Future<Void> serverFuture = service.submit(server);
+        state.add(server);
+        state.add(serverFuture);
+
+        console.log(Level.INFO, "Loading ServerDisplay.");
+        onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
+        return port;
     }
 }
