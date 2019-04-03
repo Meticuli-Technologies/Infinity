@@ -21,12 +21,14 @@ public abstract class Processor implements Callable<Void> {
         while (client.isOpen()) {
             Object result;
             try {
-                result = processToken(client.readObject());
+                Object token = client.readObject();
+                result = processToken(token);
 
                 if (result == null) {
                     result = new NullPointerException("No result found.");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 result = e;
             }
 

@@ -24,6 +24,6 @@ public class MappedProcessor extends Processor {
                 .filter(objectTokenHandler -> objectTokenHandler.test(token))
                 .map(objectTokenHandler -> objectTokenHandler.apply(token))
                 .collect(Collectors.toSet());
-        return CollectionUtil.toSingle(collect);
+        return CollectionUtil.toSingle(collect).orElse(null);
     }
 }

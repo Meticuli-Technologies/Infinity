@@ -22,13 +22,15 @@ public class Querier implements Callable<Void> {
     @Override
     public Void call() throws Exception {
         while (client.isOpen()) {
-            futures.take().complete(client.readObject());
+            Object token = client.readObject();
+            futures.take().complete(token);
         }
         return null;
     }
 
-    public Future<Object> query(Query<?> query) throws IOException {
+    public CompletableFuture<Object> query(Query<?> query) throws IOException {
         client.writeObject(query);
+        client.flush();
 
         CompletableFuture<Object> future = new CompletableFuture<>();
         futures.add(future);

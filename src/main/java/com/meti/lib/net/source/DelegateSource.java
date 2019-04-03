@@ -17,8 +17,8 @@ public abstract class DelegateSource<I extends InputStream, O extends OutputStre
     protected DelegateSource(Source<?, ?> parent) throws IOException {
         this.parent = parent;
 
-        this.inputStream = constructInputStream(parent);
         this.outputStream = constructOutputStream(parent);
+        this.inputStream = constructInputStream(parent);
     }
 
     public abstract I constructInputStream(Source<?, ?> source) throws IOException;
