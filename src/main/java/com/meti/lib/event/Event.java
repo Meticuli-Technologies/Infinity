@@ -1,6 +1,8 @@
 package com.meti.lib.event;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
     protected final Object[] args;
 
     public Event(Object[] args) {

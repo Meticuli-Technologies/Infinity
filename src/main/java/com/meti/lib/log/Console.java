@@ -1,11 +1,11 @@
 package com.meti.lib.log;
 
 import com.meti.lib.event.Component;
-import com.meti.lib.event.Event;
 import com.meti.lib.trys.Catcher;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,19 +35,19 @@ public class Console extends Component<ConsoleEvent> {
         log(level, message, null);
     }
 
-    public void log(Level level, String message, Exception exception) {
+    public void log(Level level, String message, Throwable throwable) {
         StringBuilder builder = new StringBuilder();
         if (message != null) {
             builder.append(message);
         }
 
-        if (message != null && exception != null) {
+        if (message != null && throwable != null) {
             builder.append("\n");
         }
 
-        if (exception != null) {
+        if (throwable != null) {
             StringWriter writer = new StringWriter();
-            exception.printStackTrace(new PrintWriter(writer));
+            throwable.printStackTrace(new PrintWriter(writer));
             builder.append(writer.toString());
         }
 
@@ -63,11 +63,26 @@ public class Console extends Component<ConsoleEvent> {
         return e -> log(level, e);
     }
 
-    public void log(Level level, Exception exception) {
-        log(level, null, exception);
+    public void log(Level level, Throwable throwable) {
+        log(level, null, throwable);
     }
 
     public Catcher ofWarning() {
         return ofLevel(Level.WARNING);
+    }
+
+    public <T> BiFunction<T, Throwable, T> biFunction() {
+        return biFunction(Level.WARNING);
+    }
+
+    public <T> BiFunction<T, Throwable, T> biFunction(Level level) {
+        return (t, throwable) -> {
+            if (throwable != null) {
+                log(Level.WARNING, throwable);
+                return null;
+            } else {
+                return t;
+            }
+        };
     }
 }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 3/31/2019
  */
-public class CollectionCatcher<C extends Collection<Exception>> extends CollectionConsumer<C> implements Catcher {
+public class CollectionCatcher<C extends Collection<Exception>> extends CollectionConsumer<Exception, C> implements Catcher {
 
     public CollectionCatcher(C collection) {
         super(collection);
