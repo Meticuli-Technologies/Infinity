@@ -45,7 +45,7 @@ public class InfinityServer extends Server<ObjectSource, ObjectClient> {
             super(client);
 
             tokenHandlers.add(chat.messageHandler());
-            tokenHandlers.add(chat.requestHandler());
+            tokenHandlers.add(chat.requestHandler(client));
         }
     }
 }
