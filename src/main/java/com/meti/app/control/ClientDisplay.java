@@ -1,23 +1,31 @@
 package com.meti.app.control;
 
-import com.meti.app.feature.Message;
-import com.meti.lib.State;
-import com.meti.lib.respond.OKResponse;
+import com.meti.app.core.ClientInfinityController;
+import com.meti.app.server.ChatEvent;
+import com.meti.app.server.ChatRequest;
+import com.meti.lib.collection.State;
+import com.meti.lib.collection.TypeFunction;
+import com.meti.lib.net.query.Update;
+import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.logging.Level;
 
-public class ClientDisplay extends InfinityController implements Initializable {
-    @FXML
-    private TextArea output;
+public class ClientDisplay extends ClientInfinityController implements Initializable {
 
     @FXML
     private TextField input;
+
+    @FXML
+    private ListView<String> output;
 
     public ClientDisplay(State state) {
         super(state);
@@ -26,15 +34,44 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     public void handle() {
         try {
-            OKResponse response = getClientOrThrow().queryObject(new Message(input.getText()), OKResponse.class);
-            assert response != null;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            Object o = querier.query(new Message(client.getName(), input.getText())).get();
+            if (o instanceof Exception) {
+                throw (Exception) o;
+            }
+            input.clear();
+        } catch (Exception e) {
+            console.log(Level.WARNING, e);
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        output.appendText("Successfully logged on.");
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    Object token = querier.query(new ChatRequest(ChatEvent.ADDED))
+                            .handle(console.biFunction())
+                            .get();
+
+                    if (token instanceof Update) {
+                        Collection<?> content = ((Update) token).content;
+                        if (!content.isEmpty()) {
+                            content.parallelStream()
+                                    .map(new TypeFunction<>(ChatEvent.class))
+                                    .map((Function<ChatEvent, Runnable>) chatEvent -> () -> output.getItems().add(chatEvent.getMessage().toString()))
+                                    .forEach(Platform::runLater);
+                        }
+                    } else {
+                        throw new IllegalStateException("Token is not instance of Update");
+                    }
+                } catch (Exception e) {
+                    console.log(Level.WARNING, e);
+                    stop();
+                }
+            }
+        };
+
+        timer.start();
     }
 }

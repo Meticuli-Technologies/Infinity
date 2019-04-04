@@ -1,47 +1,37 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.State;
+import com.meti.lib.collection.State;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * @author SirMathhman
+ * @version 0.0.0
+ * @since 3/31/2019
+ */
 public class ControllerLoader extends FXMLLoader {
-    public ControllerLoader(URL location, State state) {
-        super(location);
+    private final State state;
+
+    public ControllerLoader(State state) {
+        this.state = state;
 
         setControllerFactory(param -> {
-            if (!Controller.class.isAssignableFrom(param)) {
-                throw new IllegalArgumentException(param + " must be a subclass of " + Controller.class);
-            }
-
-            try {
-                return param.getDeclaredConstructor(State.class).newInstance(state);
-            } catch (Exception e) {
-                //TODO: handle exception
-                e.printStackTrace();
-                return null;
+            if (Controller.class.isAssignableFrom(param)) {
+                try {
+                    return param.getConstructor(State.class).newInstance(state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            } else {
+                throw new IllegalArgumentException(param + " is not assignable to " + Controller.class);
             }
         });
     }
 
-    public static <T extends Controller> T onto(URL url, State state, Stage stage) throws IOException {
-        ControllerLoader loader = new ControllerLoader(url, state);
-        stage.setScene(new Scene(loader.load()));
-
-        T controller = loader.getController();
-        controller.stage = stage;
-
-        if(!stage.isShowing()){
-            stage.show();
-        }
-
-        return controller;
-    }
-
-    public static <T> T load(URL location, State state) throws IOException {
-        return new ControllerLoader(location, state).load();
+    public static <T> T load(URL url, State state) throws IOException {
+        return new ControllerLoader(state).load(url.openStream());
     }
 }
