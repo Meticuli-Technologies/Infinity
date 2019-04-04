@@ -14,19 +14,19 @@ public class ExceptionUtil {
     private ExceptionUtil() {
     }
 
-    public static Exception compound(Collection<Exception> exceptions) throws Exception {
+    public static Exception compound(Collection<Exception> exceptions) {
         return compound(exceptions, "\n\t");
     }
 
-    public static Exception compound(Collection<Exception> exceptions, String delimiter) throws Exception {
+    public static Exception compound(Collection<Exception> exceptions, String delimiter) {
         return new Exception(exceptions
                 .stream()
-                .map(ExceptionUtil::writeException)
+                .map(ExceptionUtil::write)
                 .collect(Collectors.joining(delimiter))
         );
     }
 
-    public static String writeException(Exception e) {
+    public static String write(Exception e) {
         StringWriter writer = new StringWriter();
         e.printStackTrace(new PrintWriter(writer));
         return writer.toString();
