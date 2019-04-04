@@ -2,6 +2,8 @@ package com.meti.lib.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -10,6 +12,18 @@ import java.io.StringWriter;
  */
 public class ExceptionUtil {
     private ExceptionUtil() {
+    }
+
+    public static Exception compound(Collection<Exception> exceptions) throws Exception {
+        return compound(exceptions, "\n\t");
+    }
+
+    public static Exception compound(Collection<Exception> exceptions, String delimiter) throws Exception {
+        return new Exception(exceptions
+                .stream()
+                .map(ExceptionUtil::writeException)
+                .collect(Collectors.joining(delimiter))
+        );
     }
 
     public static String writeException(Exception e) {
