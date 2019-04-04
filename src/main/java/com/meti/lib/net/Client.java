@@ -1,55 +1,44 @@
 package com.meti.lib.net;
 
+import com.meti.lib.net.source.Source;
+
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class Client implements Closeable {
-    public final Socket socket;
+/**
+ * @author SirMathhman
+ * @version 0.0.0
+ * @since 3/30/2019
+ */
+public class Client<S extends Source<?, ?>> implements Closeable {
+    protected final S source;
 
-    private final ExecutorService service = Executors.newSingleThreadExecutor();
-    private final ObjectInputStream inputStream;
-    private final ObjectOutputStream outputStream;
-
-    public Client(Socket socket) throws IOException {
-        this.socket = socket;
-        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.inputStream = new ObjectInputStream(socket.getInputStream());
+    public Client(S source) {
+        this.source = source;
     }
 
     @Override
     public void close() throws IOException {
-        service.shutdownNow();
-
-        inputStream.close();
-        outputStream.close();
-        socket.close();
+        source.close();
     }
 
-    public <T> T queryObject(Object object, Class<T> returnClass) throws Exception {
-        return returnClass.cast(service.submit(() -> {
-            writeUnshared(object);
-            return readUnshared();
-        }).get());
+    public void flush() throws IOException {
+        source.getOutputStream().flush();
     }
 
-    public void writeUnshared(Object obj) throws IOException {
-        outputStream.writeUnshared(obj);
+    public String getName() {
+        return source.getName();
     }
 
-    public Object readUnshared() throws IOException, ClassNotFoundException {
-        return inputStream.readUnshared();
+    public boolean isOpen() {
+        return !source.isClosed();
     }
 
-    private Object readObject() throws IOException, ClassNotFoundException {
-        return inputStream.readObject();
+    public int read() throws IOException {
+        return source.getInputStream().read();
     }
 
-    public void writeObject(Object obj) throws IOException {
-        outputStream.writeObject(obj);
+    public void write(int b) throws IOException {
+        source.getOutputStream().write(b);
     }
 }

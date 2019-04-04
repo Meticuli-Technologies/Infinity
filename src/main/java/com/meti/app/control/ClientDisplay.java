@@ -1,36 +1,31 @@
 package com.meti.app.control;
 
-import com.meti.app.feature.Message;
-import com.meti.app.net.Chat;
-import com.meti.lib.State;
-import com.meti.lib.net.Request;
-import com.meti.lib.respond.OKResponse;
-import com.meti.lib.util.TypeFunction;
-import com.meti.lib.util.TypePredicate;
+import com.meti.app.core.ClientInfinityController;
+import com.meti.app.server.ChatEvent;
+import com.meti.app.server.ChatRequest;
+import com.meti.lib.collection.State;
+import com.meti.lib.collection.TypeFunction;
+import com.meti.lib.net.query.Update;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-import java.net.SocketException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Collection;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.logging.Level;
 
-public class ClientDisplay extends InfinityController implements Initializable {
-    @FXML
-    private ListView<String> output;
+public class ClientDisplay extends ClientInfinityController implements Initializable {
 
     @FXML
     private TextField input;
+
+    @FXML
+    private ListView<String> output;
 
     public ClientDisplay(State state) {
         super(state);
@@ -39,62 +34,44 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     public void handle() {
         try {
-            OKResponse response = getClient().queryObject(new Message(input.getText(), getUser()), OKResponse.class);
-            assert response != null;
-
-            input.setText("");
+            Object o = querier.query(new Message(client.getName(), input.getText())).get();
+            if (o instanceof Exception) {
+                throw (Exception) o;
+            }
+            input.clear();
         } catch (Exception e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        try {
-            executor.scheduleAtFixedRate(() -> {
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
                 try {
-                    updateChat();
+                    Object token = querier.query(new ChatRequest(ChatEvent.ADDED))
+                            .handle(console.biFunction())
+                            .get();
+
+                    if (token instanceof Update) {
+                        Collection<?> content = ((Update) token).content;
+                        if (!content.isEmpty()) {
+                            content.parallelStream()
+                                    .map(new TypeFunction<>(ChatEvent.class))
+                                    .map((Function<ChatEvent, Runnable>) chatEvent -> () -> output.getItems().add(chatEvent.getMessage().toString()))
+                                    .forEach(Platform::runLater);
+                        }
+                    } else {
+                        throw new IllegalStateException("Token is not instance of Update");
+                    }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }, 0, 1, TimeUnit.SECONDS).get();
-        } catch (InterruptedException | ExecutionException e) {
-            if (e.getCause() instanceof SocketException) {
-                executor.shutdownNow();
-            } else {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void updateChat() throws Exception {
-        processChatTokens(getChatTokens());
-    }
-
-    public void processChatTokens(Set<Chat.ChatUpdate> updates) {
-        Platform.runLater(() -> {
-            for (Chat.ChatUpdate update : updates) {
-                if (update.wasAdded) {
-                    output.getItems().add(update.message.toString());
-                } else if (update.wasRemoved) {
-                    output.getItems().remove(update.message.toString());
-                } else {
-                    throw new IllegalArgumentException("Invalid update: " + update);
+                    console.log(Level.WARNING, e);
+                    stop();
                 }
             }
-        });
-    }
+        };
 
-    public Set<Chat.ChatUpdate> getChatTokens() throws Exception {
-        List<?> updateTokens = getClient().queryObject(new Request("CHAT"), List.class);
-        Set<Chat.ChatUpdate> updates = new HashSet<>();
-        if (!updateTokens.isEmpty()) {
-            updates.addAll(updateTokens.stream()
-                    .filter(new TypePredicate<>(Chat.ChatUpdate.class))
-                    .map(new TypeFunction<>(Chat.ChatUpdate.class))
-                    .collect(Collectors.toSet()));
-        }
-        return updates;
+        timer.start();
     }
 }
