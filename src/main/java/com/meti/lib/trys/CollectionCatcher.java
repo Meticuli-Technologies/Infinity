@@ -1,9 +1,8 @@
 package com.meti.lib.trys;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.meti.lib.util.ExceptionUtil;
+
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -19,15 +18,13 @@ public class CollectionCatcher<C extends Collection<Exception>> extends Collecti
 
     public void throwAll() throws Exception {
         if (!collection.isEmpty()) {
+            String delimiter = "\n\t";
             throw new Exception(collection
                     .stream()
-                    .map(e -> {
-                        StringWriter writer = new StringWriter();
-                        e.printStackTrace(new PrintWriter(writer));
-                        return writer.toString();
-                    })
-                    .collect(Collectors.joining("\n\t"))
+                    .map(ExceptionUtil::writeException)
+                    .collect(Collectors.joining(delimiter))
             );
         }
     }
+
 }
