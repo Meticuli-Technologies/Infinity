@@ -3,8 +3,6 @@ package com.meti.lib;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,16 +21,4 @@ class CollectionConsumerTest {
         assertEquals("test", list.get(0));
     }
 
-    private class CollectionConsumer<T> implements Consumer<T> {
-        private final Collection<T> collection;
-
-        public CollectionConsumer(Collection<T> collection) {
-            this.collection = collection;
-        }
-
-        @Override
-        public void accept(T t) {
-            collection.add(t);
-        }
-    }
 }
