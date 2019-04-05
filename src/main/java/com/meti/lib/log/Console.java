@@ -1,5 +1,7 @@
 package com.meti.lib.log;
 
+import com.meti.lib.Component;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.function.BiConsumer;
@@ -10,13 +12,13 @@ import java.util.logging.Level;
  * @version 0.0.0
  * @since 4/5/2019
  */
-public class Console {
+public class Console extends Component<ConsoleKey, ConsoleEvent> {
     private final BiConsumer<Level, String> recordConsumer;
 
     Console(BiConsumer<Level, String> recordConsumer) {
         this.recordConsumer = recordConsumer;
+        this.recordConsumer.andThen((level, s) -> eventManager.fire(ConsoleKey.ON_LOG, new ConsoleEvent(level, s)));
     }
-
 
     public void log(Level level, Exception exception) {
         log(level, null, exception);
@@ -44,5 +46,4 @@ public class Console {
 
         recordConsumer.accept(level, builder.toString());
     }
-
 }
