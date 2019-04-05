@@ -69,6 +69,10 @@ class EventManagerTest {
         }
 
         public boolean fire(K test0, E event) {
+            if (containsKey(test0)) {
+                get(test0).accept(event);
+                return true;
+            }
             return false;
         }
 
