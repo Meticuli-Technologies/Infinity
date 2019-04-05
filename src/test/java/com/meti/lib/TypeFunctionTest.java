@@ -31,7 +31,7 @@ class TypeFunctionTest {
 
         @Override
         public T apply(Object o) {
-            return null;
+            return tClass.cast(o);
         }
     }
 }
