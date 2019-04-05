@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.0
  * @since 4/5/2019
  */
-public class ComponentTest {
+class ComponentTest {
     @Test
     void construct(){
         Component<Enum<?>, Event> component = new Component<>();

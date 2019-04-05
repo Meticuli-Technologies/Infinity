@@ -11,7 +11,7 @@ import java.util.logging.Level;
  * @since 4/5/2019
  */
 class ExitConsumer implements Consumer<ConsoleEvent> {
-    private Runnable runnable;
+    private final Runnable runnable;
 
     ExitConsumer(Runnable runnable) {
         this.runnable = runnable;
