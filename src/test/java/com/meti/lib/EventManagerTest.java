@@ -3,7 +3,6 @@ package com.meti.lib;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -52,34 +51,6 @@ class EventManagerTest {
         TEST_KEY
     }
 
-    private static class EventManager<K extends Enum<?>, E extends EventManager.Event> extends HashMap<K, Consumer<E>> {
-        public Optional<Consumer<E>> compound(K key, Consumer<E> consumer) {
-            Consumer<E> previous = null;
-            Consumer<E> present;
-
-            if (containsKey(key)) {
-                previous = get(key);
-                present = previous.andThen(consumer);
-            } else {
-                present = consumer;
-            }
-            put(key, present);
-
-            return Optional.ofNullable(previous);
-        }
-
-        public boolean fire(K test0, E event) {
-            if (containsKey(test0)) {
-                get(test0).accept(event);
-                return true;
-            }
-            return false;
-        }
-
-        private interface Event {
-        }
-    }
-
-    private class TestEvent implements EventManager.Event {
+    private class TestEvent implements Event {
     }
 }
