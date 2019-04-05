@@ -32,7 +32,7 @@ class EventManagerTest {
     }
 
     @Test
-    void fire(){
+    void firePresent(){
         EventManager<TestKey, TestEvent> eventManager = new EventManager<>();
 
         ArrayList<TestEvent> list = new ArrayList<>();
@@ -45,6 +45,16 @@ class EventManagerTest {
         assertTrue(wasConsumer);
         assertEquals(1, list.size());
         assertTrue(list.contains(event));
+    }
+
+    @Test
+    void fireAbsent(){
+        EventManager<TestKey, TestEvent> eventManager = new EventManager<>();
+
+        TestEvent event = new TestEvent();
+        boolean wasConsumer = eventManager.fire(TEST_KEY, event);
+
+        assertFalse(wasConsumer);
     }
 
     enum TestKey {
