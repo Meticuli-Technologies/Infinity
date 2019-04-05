@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author SirMathhman
@@ -15,6 +14,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 4/5/2019
  */
 class BiCollectionConsumerTest {
+    @Test
+    void getCollection() {
+        ArrayList<String> list = new ArrayList<>();
+        BiCollectionConsumer<Integer, String, ArrayList<String>, HashMap<Integer, ArrayList<String>>> consumer = new BiCollectionConsumer<>(() -> list, new HashMap<>());
+        Optional<ArrayList<String>> optional0 = consumer.getCollection(0);
+        assertFalse(optional0.isPresent());
+
+        consumer.accept(0, "test");
+        Optional<ArrayList<String>> optional1 = consumer.getCollection(0);
+        assertTrue(optional1.isPresent());
+        assertEquals(list, optional1.get());
+
+        assertEquals(1, list.size());
+        assertTrue(list.contains("test"));
+    }
+
     @Test
     void accept(){
         BiCollectionConsumer<Integer, String, ArrayList<String>, HashMap<Integer, ArrayList<String>>> consumer = new BiCollectionConsumer<>(ArrayList::new, new HashMap<>());
