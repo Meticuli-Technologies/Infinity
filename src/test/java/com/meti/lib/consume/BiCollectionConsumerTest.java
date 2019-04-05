@@ -31,7 +31,7 @@ class BiCollectionConsumerTest {
     }
 
     @Test
-    void accept(){
+    void acceptNotPresent(){
         BiCollectionConsumer<Integer, String, ArrayList<String>, HashMap<Integer, ArrayList<String>>> consumer = new BiCollectionConsumer<>(ArrayList::new, new HashMap<>());
         consumer.accept(0, "test");
 
@@ -44,5 +44,23 @@ class BiCollectionConsumerTest {
         ArrayList<String> list = optional.get();
         assertEquals(1, list.size());
         assertTrue(list.contains("test"));
+    }
+
+    @Test
+    void acceptPresent(){
+        BiCollectionConsumer<Integer, String, ArrayList<String>, HashMap<Integer, ArrayList<String>>> consumer = new BiCollectionConsumer<>(ArrayList::new, new HashMap<>());
+        consumer.accept(0, "test0");
+        consumer.accept(0, "test1");
+
+        assertEquals(1, consumer.map.size());
+        assertTrue(consumer.map.containsKey(0));
+
+        Optional<ArrayList<String>> optional = consumer.getCollection(0);
+        assertTrue(optional.isPresent());
+
+        ArrayList<String> list = optional.get();
+        assertEquals(2, list.size());
+        assertTrue(list.contains("test0"));
+        assertTrue(list.contains("test1"));
     }
 }
