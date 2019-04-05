@@ -1,10 +1,10 @@
 package com.meti.lib.consume;
 
-import com.meti.lib.consume.BiCollectionConsumer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,15 +17,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BiCollectionConsumerTest {
     @Test
     void accept(){
-        ArrayList<String> list = new ArrayList<>();
-        BiCollectionConsumer<Integer, String, ArrayList<String>, HashMap<Integer, ArrayList<String>>> consumer = new BiCollectionConsumer<>(() -> list, new HashMap<>());
+        BiCollectionConsumer<Integer, String, ArrayList<String>, HashMap<Integer, ArrayList<String>>> consumer = new BiCollectionConsumer<>(ArrayList::new, new HashMap<>());
         consumer.accept(0, "test");
 
         assertEquals(1, consumer.map.size());
         assertTrue(consumer.map.containsKey(0));
 
+        Optional<ArrayList<String>> optional = consumer.getCollection(0);
+        assertTrue(optional.isPresent());
+
+        ArrayList<String> list = optional.get();
         assertEquals(1, list.size());
         assertTrue(list.contains("test"));
     }
-
 }

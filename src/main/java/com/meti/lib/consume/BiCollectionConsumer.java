@@ -2,6 +2,7 @@ package com.meti.lib.consume;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -19,8 +20,8 @@ public class BiCollectionConsumer<K, V, C extends Collection<V>, M extends Map<K
         this.map = map;
     }
 
-    public C getCollection(K k){
-        return null;
+    public Optional<C> getCollection(K k){
+        return Optional.ofNullable(map.get(k));
     }
 
     @Override
