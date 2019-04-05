@@ -1,7 +1,11 @@
 package com.meti.lib.log;
 
+import com.meti.lib.consume.BiCollectionConsumer;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +18,7 @@ import java.util.logging.Logger;
 public class ConsoleTest {
     @Test
     void log() {
-      /* Console.LoggerConsole console = new Console.LoggerConsole();*/
+    /*    new BiCollectionConsumer<Level, String, ArrayList<String>, HashMap<Level, ArrayList<String>>>();*/
     }
 
     private static class Console {

@@ -10,11 +10,11 @@ import java.util.function.Supplier;
  * @version 0.0.0
  * @since 4/5/2019
  */
-class BiCollectionConsumer<K, V, C extends Collection<V>, M extends Map<K, C>> implements BiConsumer<K, V> {
+public class BiCollectionConsumer<K, V, C extends Collection<V>, M extends Map<K, C>> implements BiConsumer<K, V> {
     private final Supplier<C> emptyCollectionSupplier;
     final M map;
 
-    BiCollectionConsumer(Supplier<C> emptyCollectionSupplier, M map) {
+    public BiCollectionConsumer(Supplier<C> emptyCollectionSupplier, M map) {
         this.emptyCollectionSupplier = emptyCollectionSupplier;
         this.map = map;
     }
