@@ -1,5 +1,6 @@
-package com.meti.lib;
+package com.meti.lib.type;
 
+import com.meti.lib.type.TypeFunction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

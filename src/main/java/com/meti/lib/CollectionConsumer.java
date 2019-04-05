@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 4/5/2019
  */
-class CollectionConsumer<T> implements Consumer<T> {
+public class CollectionConsumer<T> implements Consumer<T> {
     private final Collection<T> collection;
 
     public CollectionConsumer(Collection<T> collection) {

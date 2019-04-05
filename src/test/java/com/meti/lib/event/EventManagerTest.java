@@ -1,12 +1,13 @@
-package com.meti.lib;
+package com.meti.lib.event;
 
+import com.meti.lib.CollectionConsumer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static com.meti.lib.EventManagerTest.TestKey.TEST_KEY;
+import static com.meti.lib.event.EventManagerTest.TestKey.TEST_KEY;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

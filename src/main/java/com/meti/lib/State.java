@@ -1,5 +1,8 @@
 package com.meti.lib;
 
+import com.meti.lib.type.TypeFunction;
+import com.meti.lib.type.TypePredicate;
+
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.stream.Stream;

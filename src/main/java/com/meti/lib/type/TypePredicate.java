@@ -1,4 +1,4 @@
-package com.meti.lib;
+package com.meti.lib.type;
 
 import java.util.function.Predicate;
 
@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public class TypePredicate<T> implements Predicate<Object> {
     private final Class<T> tClass;
 
-    TypePredicate(Class<T> tClass) {
+    public TypePredicate(Class<T> tClass) {
         this.tClass = tClass;
     }
 
