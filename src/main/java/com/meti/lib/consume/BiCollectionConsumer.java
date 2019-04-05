@@ -19,6 +19,10 @@ public class BiCollectionConsumer<K, V, C extends Collection<V>, M extends Map<K
         this.map = map;
     }
 
+    public C getCollection(K k){
+        return null;
+    }
+
     @Override
     public void accept(K k, V v) {
         if (map.containsKey(k)) {
