@@ -1,12 +1,10 @@
 package com.meti.lib;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,16 +29,4 @@ class TypePredicateTest {
         assertFalse(predicate.test(0));
     }
 
-    private class TypePredicate<T>  implements Predicate<Object> {
-        private final Class<T> tClass;
-
-        private TypePredicate(Class<T> tClass) {
-            this.tClass = tClass;
-        }
-
-        @Override
-        public boolean test(Object o) {
-            return tClass.isAssignableFrom(o.getClass());
-        }
-    }
 }
