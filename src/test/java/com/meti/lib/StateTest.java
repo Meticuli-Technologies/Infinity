@@ -34,15 +34,24 @@ class StateTest {
         assertEquals(5, objects.get(1));
     }
 
-    /*@Test
+    @Test
     void byClass(){
         State state = new State();
         state.addAll(Arrays.asList("test", '0', 0));
 
+        List<String> strings = state
+                .byClass(String.class)
+                .collect(Collectors.toList());
 
-    }*/
+        assertEquals(1, strings.size());
+        assertEquals("test", strings.get(0));
+    }
 
     public class State extends ArrayList<Object> {
+        public <T> Stream<T> byClass(Class<T> tClass) {
+            return Stream.empty();
+        }
+
         public Stream<Object> byPredicate(Predicate<Object> predicate) {
             return stream().filter(predicate);
         }
