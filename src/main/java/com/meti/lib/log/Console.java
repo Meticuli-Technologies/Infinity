@@ -16,8 +16,21 @@ public class Console extends Component<ConsoleKey, ConsoleEvent> {
     private final BiConsumer<Level, String> recordConsumer;
 
     Console(BiConsumer<Level, String> recordConsumer) {
-        this.recordConsumer = recordConsumer;
-        this.recordConsumer.andThen((level, s) -> eventManager.fire(ConsoleKey.ON_LOG, new ConsoleEvent(level, s)));
+
+        BiConsumer<Level, String> eventConsumer = new BiConsumer<>() {
+            @Override
+            public void accept(Level level, String s) {
+                //TODO: test this block of code
+                eventManager.fire(ConsoleKey.ON_LOG, new ConsoleEvent(level, s));
+            }
+        };
+        if (recordConsumer != null) {
+            this.recordConsumer = recordConsumer;
+            this.recordConsumer.andThen(eventConsumer);
+        }
+        else{
+            this.recordConsumer = eventConsumer;
+        }
     }
 
     public void log(Level level, Exception exception) {

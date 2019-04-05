@@ -9,5 +9,5 @@ import com.meti.lib.event.EventManager;
  * @since 4/5/2019
  */
 public class Component<K extends Enum<?>, E extends Event> {
-    protected final EventManager<K, E> eventManager = new EventManager<>();
+    public final EventManager<K, E> eventManager = new EventManager<>();
 }

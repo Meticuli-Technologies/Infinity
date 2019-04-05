@@ -10,7 +10,7 @@ import java.util.logging.Level;
  * @since 4/5/2019
  */
 public class ConsoleEvent implements Event {
-    final Level level;
+    public final Level level;
     final String message;
 
     public ConsoleEvent(Level level, String message) {

@@ -1,6 +1,8 @@
 package com.meti.app;
 
+import com.meti.lib.log.ConsoleKey;
 import com.meti.lib.log.LoggerConsole;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -11,6 +13,10 @@ import javafx.stage.Stage;
 class Infinity implements InfinityImpl {
     public final LoggerConsole console = new LoggerConsole();
     private boolean running;
+
+    {
+        console.eventManager.compound(ConsoleKey.ON_LOG, new ExitConsumer(Platform::exit));
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -29,4 +35,5 @@ class Infinity implements InfinityImpl {
 
         this.running = false;
     }
+
 }
