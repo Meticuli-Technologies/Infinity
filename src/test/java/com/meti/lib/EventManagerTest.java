@@ -21,6 +21,19 @@ class EventManagerTest {
 
     }
 
+    private enum TestKey {
+        TEST_0,
+        TEST_1
+    }
+
+    private class TestEvent {
+        private final String value;
+
+        private TestEvent(String value) {
+            this.value = value;
+        }
+    }
+
     private static class EventManager<K extends Enum<?>, E extends EventManager.Event, C extends Consumer<E>> extends HashMap<K, C> {
         private interface Event {
         }
