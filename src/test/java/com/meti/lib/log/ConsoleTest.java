@@ -66,15 +66,10 @@ class ConsoleTest {
         }
 
         @Override
-        public void log(Level level, Exception exception) {
-            this.level = level;
-            this.exception = exception;
-        }
-
-        @Override
-        public void log(Level level, String message) {
+        public void log(Level level, String message, Exception exception) {
             this.level = level;
             this.message = message;
+            this.exception = exception;
         }
     }
 }
