@@ -1,6 +1,6 @@
 package com.meti.lib.event;
 
-import com.meti.lib.CollectionConsumer;
+import com.meti.lib.consume.CollectionConsumer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
