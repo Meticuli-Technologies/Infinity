@@ -2,12 +2,9 @@ package com.meti.lib;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -47,15 +44,4 @@ class StateTest {
         assertEquals("test", strings.get(0));
     }
 
-    public class State extends ArrayList<Object> {
-        public <T> Stream<T> byClass(Class<T> tClass) {
-            return stream()
-                    .filter(new TypePredicate<>(tClass))
-                    .map(new TypeFunction<>(tClass));
-        }
-
-        public Stream<Object> byPredicate(Predicate<Object> predicate) {
-            return stream().filter(predicate);
-        }
-    }
 }
