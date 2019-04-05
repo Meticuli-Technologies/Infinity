@@ -45,20 +45,4 @@ class Console {
         recordConsumer.accept(level, builder.toString());
     }
 
-    /*private static class LoggerConsole extends Console {
-        public final Logger logger;
-
-        private LoggerConsole() {
-            this(LoggerConsole.class.getSimpleName());
-        }
-
-        private LoggerConsole(String name) {
-            this(Logger.getLogger(name));
-        }
-
-        private LoggerConsole(Logger logger) {
-            super(logger::log);
-            this.logger = logger;
-        }
-    }*/
 }
