@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static com.meti.lib.EventManagerTest.TestKey.TEST_KEY;
@@ -16,21 +17,24 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class EventManagerTest {
     @Test
-    void compoundNoPrevious() {
-        EventManager<TestKey, TestEvent, CollectionConsumer<TestEvent>> eventManager = new EventManager<>();
+    void compound() {
+        EventManager<TestKey, TestEvent> eventManager = new EventManager<>();
 
         ArrayList<TestEvent> list0 = new ArrayList<>();
         CollectionConsumer<TestEvent> consumer0 = new CollectionConsumer<>(list0);
-        assertNull(eventManager.compound(TEST_KEY, consumer0));
+        assertFalse(eventManager.compound(TEST_KEY, consumer0).isPresent());
 
         ArrayList<TestEvent> list1 = new ArrayList<>();
         CollectionConsumer<TestEvent> consumer1 = new CollectionConsumer<>(list1);
-        assertEquals(consumer0, eventManager.compound(TEST_KEY, consumer1));
+
+        Optional<Consumer<TestEvent>> optional = eventManager.compound(TEST_KEY, consumer1);
+        assertTrue(optional.isPresent());
+        assertEquals(consumer0, optional.get());
     }
 
     @Test
     void fire(){
-        EventManager<TestKey, TestEvent, CollectionConsumer<TestEvent>> eventManager = new EventManager<>();
+        EventManager<TestKey, TestEvent> eventManager = new EventManager<>();
 
         ArrayList<TestEvent> list = new ArrayList<>();
         CollectionConsumer<TestEvent> consumer = new CollectionConsumer<>(list);
@@ -48,9 +52,20 @@ class EventManagerTest {
         TEST_KEY
     }
 
-    private static class EventManager<K extends Enum<?>, E extends EventManager.Event, C extends Consumer<E>> extends HashMap<K, C> {
-        public C compound(K key, C consumer) {
-            return null;
+    private static class EventManager<K extends Enum<?>, E extends EventManager.Event> extends HashMap<K, Consumer<E>> {
+        public Optional<Consumer<E>> compound(K key, Consumer<E> consumer) {
+            Consumer<E> previous = null;
+            Consumer<E> present;
+
+            if (containsKey(key)) {
+                previous = get(key);
+                present = previous.andThen(consumer);
+            } else {
+                present = consumer;
+            }
+            put(key, present);
+
+            return Optional.ofNullable(previous);
         }
 
         public boolean fire(K test0, E event) {
