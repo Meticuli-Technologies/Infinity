@@ -1,13 +1,12 @@
 package com.meti.lib;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author SirMathhman
@@ -33,6 +32,7 @@ class CollectionConsumerTest {
 
         @Override
         public void accept(T t) {
+            collection.add(t);
         }
     }
 }
