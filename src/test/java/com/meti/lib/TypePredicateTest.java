@@ -40,7 +40,7 @@ class TypePredicateTest {
 
         @Override
         public boolean test(Object o) {
-            return false;
+            return tClass.isAssignableFrom(o.getClass());
         }
     }
 }
