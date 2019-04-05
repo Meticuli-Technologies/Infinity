@@ -43,8 +43,8 @@ class StateTest {
     }*/
 
     public class State extends ArrayList<Object> {
-        public Stream<Object> byPredicate(Predicate<Object> integerPredicate) {
-            return Stream.empty();
+        public Stream<Object> byPredicate(Predicate<Object> predicate) {
+            return stream().filter(predicate);
         }
     }
 }
