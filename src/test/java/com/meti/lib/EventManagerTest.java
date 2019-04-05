@@ -36,7 +36,7 @@ class EventManagerTest {
         CollectionConsumer<TestEvent> consumer = new CollectionConsumer<>(list);
         eventManager.compound(TEST_KEY, consumer);
 
-        TestEvent event = new TestEvent("test");
+        TestEvent event = new TestEvent();
         boolean wasConsumer = eventManager.fire(TEST_KEY, event);
 
         assertTrue(wasConsumer);
@@ -62,10 +62,5 @@ class EventManagerTest {
     }
 
     private class TestEvent implements EventManager.Event {
-        private final String value;
-
-        private TestEvent(String value) {
-            this.value = value;
-        }
     }
 }
