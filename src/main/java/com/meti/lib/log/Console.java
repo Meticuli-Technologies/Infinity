@@ -17,6 +17,15 @@ class Console {
         this.recordConsumer = recordConsumer;
     }
 
+
+    public void log(Level level, Exception exception) {
+        log(level, null, exception);
+    }
+
+    public void log(Level level, String message) {
+        log(level, message, null);
+    }
+
     public void log(Level level, String message, Exception exception) {
         StringBuilder builder = new StringBuilder();
         if (message != null) {

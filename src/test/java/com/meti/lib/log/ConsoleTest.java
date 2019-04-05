@@ -8,10 +8,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author SirMathhman
@@ -20,13 +20,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ConsoleTest {
     @Test
-    void logWithoutMessage(){
-
+    void logWithoutException() {
+        TestConsole testConsole = new TestConsole();
+        testConsole.log(Level.INFO, "test");
+        assertEquals(Level.INFO, testConsole.level);
+        assertEquals("test", testConsole.message);
     }
 
     @Test
-    void logWithoutException(){
-
+    void logWithoutMessage(){
+        TestConsole testConsole = new TestConsole();
+        Exception exception = new Exception();
+        testConsole.log(Level.INFO, exception);
+        assertEquals(testConsole.level, Level.INFO);
+        assertEquals(testConsole.exception, exception);
     }
 
     @Test
@@ -50,8 +57,24 @@ class ConsoleTest {
     }
 
     private class TestConsole extends Console {
-        TestConsole(BiConsumer<Level, String> recordConsumer) {
-            super(recordConsumer);
+        private Level level;
+        private String message;
+        private Exception exception;
+
+        TestConsole() {
+            super(null);
+        }
+
+        @Override
+        public void log(Level level, Exception exception) {
+            this.level = level;
+            this.exception = exception;
+        }
+
+        @Override
+        public void log(Level level, String message) {
+            this.level = level;
+            this.message = message;
         }
     }
 }
