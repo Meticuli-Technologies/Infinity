@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.0
  * @since 4/5/2019
  */
-public class ConsoleTest {
+class ConsoleTest {
+    @Test
+    void logWithoutMessage(){
+
+    }
+
+    @Test
+    void logWithoutException(){
+
+    }
+
     @Test
     void log() {
         BiCollectionConsumer<Level, String, ArrayList<String>, HashMap<Level, ArrayList<String>>> consumer = new BiCollectionConsumer<>(ArrayList::new, new HashMap<>());
@@ -38,4 +49,9 @@ public class ConsoleTest {
         assertTrue(list.contains("test\n" + writer.toString()));
     }
 
+    private class TestConsole extends Console {
+        TestConsole(BiConsumer<Level, String> recordConsumer) {
+            super(recordConsumer);
+        }
+    }
 }
