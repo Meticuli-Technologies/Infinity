@@ -49,7 +49,9 @@ class StateTest {
 
     public class State extends ArrayList<Object> {
         public <T> Stream<T> byClass(Class<T> tClass) {
-            return Stream.empty();
+            return stream()
+                    .filter(new TypePredicate<>(tClass))
+                    .map(new TypeFunction<>(tClass));
         }
 
         public Stream<Object> byPredicate(Predicate<Object> predicate) {
