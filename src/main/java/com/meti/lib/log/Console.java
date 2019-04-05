@@ -10,7 +10,7 @@ import java.util.logging.Level;
  * @version 0.0.0
  * @since 4/5/2019
  */
-class Console {
+public class Console {
     private final BiConsumer<Level, String> recordConsumer;
 
     Console(BiConsumer<Level, String> recordConsumer) {

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -25,6 +26,7 @@ class InfinityTest {
     void start() {
         //Check start.
         assertDoesNotThrow(() -> infinity.start(Mockito.mock(Stage.class)));
+        assertNotNull(infinity.console);
 
         //If Infinity was already started, it shouldn't be able to be started again unless it has been stopped.
         assertThrows(IllegalStateException.class, () -> infinity.start(Mockito.mock(Stage.class)));
