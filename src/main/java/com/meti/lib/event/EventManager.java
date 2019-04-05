@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 4/5/2019
  */
-class EventManager<K extends Enum<?>, E extends Event> extends HashMap<K, Consumer<E>> {
+public class EventManager<K extends Enum<?>, E extends Event> extends HashMap<K, Consumer<E>> {
     public Optional<Consumer<E>> compound(K key, Consumer<E> consumer) {
         Consumer<E> previous = null;
         Consumer<E> present;
