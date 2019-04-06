@@ -1,5 +1,6 @@
 package com.meti.lib.manage;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class StageManagerTest {
     private class StageManager extends Manager<Stage> {
         @Override
         public Stage allocate() {
-            return null;
+            return new Stage();
         }
     }
 }
