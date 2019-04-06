@@ -1,4 +1,4 @@
-package com.meti.lib.consume;
+package com.meti.lib.collect.consume;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;

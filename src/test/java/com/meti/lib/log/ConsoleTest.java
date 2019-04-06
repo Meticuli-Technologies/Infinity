@@ -1,9 +1,8 @@
 package com.meti.lib.log;
 
-import com.meti.lib.consume.BiCollectionConsumer;
-import com.meti.lib.consume.CompletableConsumer;
+import com.meti.lib.collect.consume.BiCollectionConsumer;
+import com.meti.lib.collect.consume.CompletableConsumer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -11,7 +10,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

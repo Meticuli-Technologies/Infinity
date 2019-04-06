@@ -1,6 +1,6 @@
 package com.meti.lib.log;
 
-import com.meti.lib.Component;
+import com.meti.lib.collect.Component;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

@@ -1,5 +1,6 @@
-package com.meti.lib;
+package com.meti.lib.collect;
 
+import com.meti.lib.collect.State;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

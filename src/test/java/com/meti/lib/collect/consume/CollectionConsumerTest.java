@@ -1,6 +1,5 @@
-package com.meti.lib.consume;
+package com.meti.lib.collect.consume;
 
-import com.meti.lib.consume.CollectionConsumer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

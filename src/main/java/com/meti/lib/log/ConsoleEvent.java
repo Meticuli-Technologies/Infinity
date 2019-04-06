@@ -1,6 +1,6 @@
 package com.meti.lib.log;
 
-import com.meti.lib.event.Event;
+import com.meti.lib.collect.event.Event;
 
 import java.util.logging.Level;
 

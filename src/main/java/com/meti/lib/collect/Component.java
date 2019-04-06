@@ -1,7 +1,7 @@
-package com.meti.lib;
+package com.meti.lib.collect;
 
-import com.meti.lib.event.Event;
-import com.meti.lib.event.EventManager;
+import com.meti.lib.collect.event.Event;
+import com.meti.lib.collect.event.EventManager;
 
 /**
  * @author SirMathhman

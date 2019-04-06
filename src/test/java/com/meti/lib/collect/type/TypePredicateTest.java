@@ -1,6 +1,5 @@
-package com.meti.lib.type;
+package com.meti.lib.collect.type;
 
-import com.meti.lib.type.TypePredicate;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

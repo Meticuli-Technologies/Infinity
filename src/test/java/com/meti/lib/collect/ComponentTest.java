@@ -1,6 +1,7 @@
-package com.meti.lib;
+package com.meti.lib.collect;
 
-import com.meti.lib.event.Event;
+import com.meti.lib.collect.Component;
+import com.meti.lib.collect.event.Event;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

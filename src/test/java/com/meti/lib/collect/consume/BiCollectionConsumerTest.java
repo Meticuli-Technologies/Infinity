@@ -1,4 +1,4 @@
-package com.meti.lib.consume;
+package com.meti.lib.collect.consume;
 
 import org.junit.jupiter.api.Test;
 

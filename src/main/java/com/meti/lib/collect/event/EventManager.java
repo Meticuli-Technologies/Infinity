@@ -1,4 +1,4 @@
-package com.meti.lib.event;
+package com.meti.lib.collect.event;
 
 import java.util.HashMap;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.meti.lib.type;
+package com.meti.lib.collect.type;
 
 import java.util.function.Function;
 
