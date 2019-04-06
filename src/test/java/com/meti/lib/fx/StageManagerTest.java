@@ -1,4 +1,4 @@
-package com.meti.lib.manage;
+package com.meti.lib.fx;
 
 import javafx.application.Platform;
 import org.junit.jupiter.api.Test;

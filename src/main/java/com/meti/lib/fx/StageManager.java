@@ -1,6 +1,7 @@
-package com.meti.lib.manage;
+package com.meti.lib.fx;
 
 import com.meti.lib.fx.FXUtil;
+import com.meti.lib.manage.Manager;
 import javafx.stage.Stage;
 
 /**
