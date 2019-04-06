@@ -1,8 +1,6 @@
 package com.meti.lib.manage;
 
-import com.meti.lib.fx.FXUtil;
 import javafx.application.Platform;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -23,11 +21,4 @@ class StageManagerTest {
                 assertNotNull(new StageManager().allocate())));
     }
 
-    private class StageManager extends Manager<Stage> {
-        @Override
-        public Stage allocate() {
-            FXUtil.throwIfNotFX();
-            return new Stage();
-        }
-    }
 }
