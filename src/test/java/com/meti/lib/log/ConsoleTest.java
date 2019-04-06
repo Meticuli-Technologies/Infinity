@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,6 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 4/5/2019
  */
 class ConsoleTest {
+    @Test
+    void ON_LOG_event(){
+    /*    Console console = new Console(null);
+        console.eventManager.compound(ConsoleKey.ON_LOG, new Consumer<ConsoleEvent>() {
+            @Override
+            public void accept(ConsoleEvent consoleEvent) {
+
+            }
+        });*/
+    }
+
     @Test
     void logWithoutException() {
         TestConsole testConsole = new TestConsole();
