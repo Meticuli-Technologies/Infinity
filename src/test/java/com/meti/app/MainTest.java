@@ -17,8 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
     @Test
     void main() {
+        /*
+        TODO: Figure out a way to test Main.main cleanly.
+        Because we're launching the application here,
+        all other FX-based testing classes fail.
+        The FX thread must be stopped entirely.
+         */
         Main.implementation = new ExitImpl();
-        assertTimeout(Duration.ofSeconds(1), () -> Main.main(new String[0]));
+        assertTimeoutPreemptively(Duration.ofSeconds(1), () -> Main.main(new String[0]));
+        Main.instance.stop();
     }
 
     @Test
