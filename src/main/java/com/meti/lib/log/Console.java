@@ -18,7 +18,6 @@ class Console extends Component<ConsoleKey, ConsoleEvent> {
     Console(BiConsumer<Level, String> recordConsumer) {
 
         BiConsumer<Level, String> eventConsumer = (level, s) -> {
-            //TODO: test this block of code
             eventManager.fire(ConsoleKey.ON_LOG, new ConsoleEvent(level, s));
         };
         if (recordConsumer != null) {
