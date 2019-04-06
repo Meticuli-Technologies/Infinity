@@ -1,10 +1,13 @@
 package com.meti.lib.log;
 
 import com.meti.lib.consume.BiCollectionConsumer;
+import com.meti.lib.consume.CompletableConsumer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
@@ -12,6 +15,7 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -22,13 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ConsoleTest {
     @Test
     void ON_LOG_event(){
-    /*    Console console = new Console(null);
-        console.eventManager.compound(ConsoleKey.ON_LOG, new Consumer<ConsoleEvent>() {
-            @Override
-            public void accept(ConsoleEvent consoleEvent) {
+        CompletableConsumer<ConsoleEvent> completable = new CompletableConsumer<>();
 
-            }
-        });*/
+        Console console = new Console(null);
+        console.eventManager.compound(ConsoleKey.ON_LOG, completable);
+        console.log(Level.INFO, "test");
+
+        assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
+            ConsoleEvent event = completable.get();
+            assertEquals(Level.INFO, event.level);
+            assertEquals("test", event.message);
+        });
     }
 
     @Test
