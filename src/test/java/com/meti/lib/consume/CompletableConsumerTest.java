@@ -1,13 +1,10 @@
 package com.meti.lib.consume;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import java.time.Duration;
 import java.util.concurrent.*;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,10 +28,4 @@ class CompletableConsumerTest {
         assertTrue(executor.shutdownNow().isEmpty());
     }
 
-    private class CompletableConsumer<T> extends CompletableFuture<T> implements Consumer<T> {
-        @Override
-        public void accept(T t) {
-            complete(t);
-        }
-    }
 }
