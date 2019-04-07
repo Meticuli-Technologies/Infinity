@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @version 0.0.0
  * @since 4/5/2019
  */
-class InfinityTest {
+class InfinityNoFXTest {
     private Infinity infinity;
 
     @BeforeEach

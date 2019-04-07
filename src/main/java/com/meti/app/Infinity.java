@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * @since 4/5/2019
  */
 class Infinity implements InfinityImpl {
-    public final LoggerConsole console = new LoggerConsole();
+    final LoggerConsole console = new LoggerConsole();
     private boolean running;
 
     {
