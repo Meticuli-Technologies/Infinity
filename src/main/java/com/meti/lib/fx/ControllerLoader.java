@@ -22,4 +22,8 @@ class ControllerLoader extends FXMLLoader {
     public static <T> T load(State state, InputStream inputStream) throws IOException {
         return new ControllerLoader(state).load(inputStream);
 }
+
+    public FXMLBundle<?> getBundle(InputStream inputStream) throws IOException {
+        return new FXMLBundle<>(load(inputStream), getController());
+    }
 }

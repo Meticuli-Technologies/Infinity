@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author SirMathhman
@@ -44,10 +45,19 @@ class ControllerLoaderTest {
     }
 
     @Test
-    void getBundle(){
+    void getBundle() throws IOException {
         State state = new State();
+        String sampleFXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<?import javafx.scene.layout.AnchorPane?>\n" +
+                "<AnchorPane xmlns=\"http://javafx.com/javafx\"\n" +
+                "            xmlns:fx=\"http://javafx.com/fxml\"\n" +
+                "            prefHeight=\"400.0\" prefWidth=\"600.0\">\n" +
+                "</AnchorPane>\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(sampleFXML.getBytes());
         ControllerLoader loader = new ControllerLoader(state);
 
-    /*    loader.getBundle();*/
+        FXMLBundle<?> bundle = loader.getBundle(inputStream);
+        assertEquals(AnchorPane.class, bundle.parent.getClass());
+        assertNull(bundle.controller);
     }
 }
