@@ -1,11 +1,12 @@
 package com.meti.app;
 
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.testfx.api.FxToolkit;
 
 import java.time.Duration;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,18 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 4/5/2019
  */
 class MainTest {
-    @Test
-    void main() {
-        /*
-        TODO: Figure out a way to test Main.main cleanly.
-        Because we're launching the application here,
-        all other FX-based testing classes fail.
-        The FX thread must be stopped entirely.
-         */
-        Main.implementation = new ExitImpl();
-        assertTimeoutPreemptively(Duration.ofSeconds(1), () -> Main.main(new String[0]));
-        Main.instance.stop();
-    }
 
     @Test
     void start(){
@@ -57,7 +46,7 @@ class MainTest {
     private class ExitImpl implements InfinityImpl {
         @Override
         public void start(Stage primaryStage) {
-            Platform.exit();
+            throw new IllegalStateException();
         }
 
         @Override
