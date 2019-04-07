@@ -3,10 +3,9 @@ package com.meti.app;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.testfx.api.FxToolkit;
 
-import java.time.Duration;
-import java.util.concurrent.TimeoutException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +15,56 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 4/5/2019
  */
 class MainTest {
+    @Test
+    void mainNoException() throws Exception {
+        Launcher launcher = Main.launcher;
+        assertNotNull(launcher);
+        assertEquals(InfinityLauncher.class, launcher.getClass());
+
+        Main.launcher = new NoExceptionLauncher(NoExceptionLauncher.class.getMethod("test", Class.class, String[].class));
+        Main.main(new String[]{"args"});
+        assertEquals(Main.class, NoExceptionLauncher.clazz);
+        assertArrayEquals(new String[]{"args"}, NoExceptionLauncher.args);
+
+        Main.launcher = new InfinityLauncher();
+    }
+
+    @Test
+    void mainWithException() throws Exception {
+        Launcher launcher = Main.launcher;
+        assertNotNull(launcher);
+        assertEquals(InfinityLauncher.class, launcher.getClass());
+
+        Main.launcher = new WithExceptionLauncher(WithExceptionLauncher.class.getMethod("test", Class.class, String[].class));
+        assertThrows(InvocationTargetException.class, () -> Main.main(new String[0]));
+
+        Main.launcher = new InfinityLauncher();
+    }
+
+    private static class NoExceptionLauncher extends Launcher {
+        private static Class<?> clazz;
+        private static String[] args;
+
+        public NoExceptionLauncher(Method method) {
+            super(method);
+        }
+
+        public static void test(Class<?> clazz, String[] args) {
+            NoExceptionLauncher.clazz = clazz;
+            NoExceptionLauncher.args = args;
+        }
+    }
+
+    private static class WithExceptionLauncher extends Launcher {
+        public WithExceptionLauncher(Method method) {
+            super(method);
+        }
+
+        @SuppressWarnings("unused")
+        public static void test(Class<?> clazz, String[] args) {
+            throw new IllegalStateException();
+        }
+    }
 
     @Test
     void start(){

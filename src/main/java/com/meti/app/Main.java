@@ -3,6 +3,8 @@ package com.meti.app;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -11,6 +13,15 @@ import javafx.stage.Stage;
 public class Main extends Application {
     static InfinityImpl implementation = new Infinity();
     static Main instance;
+    static Launcher launcher;
+
+    static {
+        try {
+            launcher = new InfinityLauncher();
+        } catch (NoSuchMethodException e) {
+            launcher = null;
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -24,7 +35,7 @@ public class Main extends Application {
         instance = null;
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args) throws Exception {
+        launcher.invoke(Main.class, args);
     }
 }
