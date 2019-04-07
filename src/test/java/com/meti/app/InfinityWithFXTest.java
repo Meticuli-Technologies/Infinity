@@ -7,6 +7,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -26,7 +27,9 @@ class InfinityWithFXTest {
     }
 
     @Test
-    void confirmStart(){
+    void confirmStart() {
+        assertNotNull(infinity.console);
+        assertNotNull(infinity.state);
         assertTrue(primaryStage.isShowing());
     }
 

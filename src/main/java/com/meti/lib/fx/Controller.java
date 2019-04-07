@@ -7,10 +7,10 @@ import com.meti.lib.collect.State;
  * @version 0.0.0
  * @since 4/7/2019
  */
-class Controller {
+public class Controller {
     final State state;
 
-    Controller(State state) {
+    public Controller(State state) {
         this.state = state;
     }
 }

@@ -26,21 +26,6 @@ class InfinityNoFXTest {
     }
 
     @Test
-    void start() {
-        //Check start.
-        assertDoesNotThrow(() -> infinity.start(Mockito.mock(Stage.class)));
-        assertNotNull(infinity.console);
-        assertNotNull(infinity.state);
-
-        //If Infinity was already started, it shouldn't be able to be started again unless it has been stopped.
-        assertThrows(IllegalStateException.class, () -> infinity.start(Mockito.mock(Stage.class)));
-
-        //Cleanly stop Infinity.
-        assertDoesNotThrow(() -> infinity.stop());
-    }
-
-
-    @Test
     void getMenuURL(){
         URL url = infinity.getMenuURL();
         assertNotNull(url);
@@ -52,15 +37,5 @@ class InfinityNoFXTest {
         FXMLBundle<?> bundle = infinity.getMenuBundle();
         assertEquals(AnchorPane.class, bundle.parent.getClass());
         assertEquals(Menu.class, bundle.controller.getClass());
-    }
-
-    @Test
-    void stop() {
-        //Infinity hasn't been running, so it doesn't make sense to call stop when it's not running in the first place.
-        assertThrows(IllegalStateException.class, () -> infinity.stop());
-
-        //Check stop cleanly.
-        assertDoesNotThrow(() -> infinity.start(Mockito.mock(Stage.class)));
-        assertDoesNotThrow(() -> infinity.stop());
     }
 }
