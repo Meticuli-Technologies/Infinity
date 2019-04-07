@@ -30,6 +30,7 @@ class InfinityNoFXTest {
         //Check start.
         assertDoesNotThrow(() -> infinity.start(Mockito.mock(Stage.class)));
         assertNotNull(infinity.console);
+        assertNotNull(infinity.state);
 
         //If Infinity was already started, it shouldn't be able to be started again unless it has been stopped.
         assertThrows(IllegalStateException.class, () -> infinity.start(Mockito.mock(Stage.class)));

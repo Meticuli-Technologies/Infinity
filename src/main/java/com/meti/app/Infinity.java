@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.collect.State;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.FXMLBundle;
 import com.meti.lib.log.ConsoleKey;
@@ -17,6 +18,7 @@ import java.net.URL;
  */
 class Infinity implements InfinityImpl {
     final LoggerConsole console = new LoggerConsole();
+    final State state = new State();
     private boolean running;
 
     {
@@ -43,8 +45,8 @@ class Infinity implements InfinityImpl {
         this.running = false;
     }
 
-    public FXMLBundle<?> getMenuBundle() throws IOException {
-        return new ControllerLoader(null).getBundle(getMenuURL().openStream());
+    FXMLBundle<?> getMenuBundle() throws IOException {
+        return new ControllerLoader(state).getBundle(getMenuURL().openStream());
     }
 
     URL getMenuURL() {
