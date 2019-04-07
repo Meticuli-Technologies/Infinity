@@ -25,6 +25,8 @@ class Infinity implements InfinityImpl {
         }
 
         this.running = true;
+
+        primaryStage.show();
     }
 
     @Override
