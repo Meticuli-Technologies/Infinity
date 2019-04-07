@@ -6,10 +6,12 @@ import com.meti.lib.fx.FXMLBundle;
 import com.meti.lib.log.ConsoleKey;
 import com.meti.lib.log.LoggerConsole;
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -30,10 +32,14 @@ class Infinity implements InfinityImpl {
         if(running){
             throw new IllegalStateException("Infinity is already running!");
         }
-
         this.running = true;
 
-        primaryStage.show();
+        try {
+            primaryStage.setScene(new Scene(getMenuBundle().parent));
+            primaryStage.show();
+        } catch (IOException e) {
+            console.log(Level.SEVERE, e);
+        }
     }
 
     @Override
