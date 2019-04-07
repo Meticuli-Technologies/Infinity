@@ -3,8 +3,6 @@ package com.meti.app;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -12,8 +10,8 @@ import java.lang.reflect.InvocationTargetException;
  */ //Main MUST remain public in order for JavaFX Application to start.
 public class Main extends Application {
     static InfinityImpl implementation = new Infinity();
-    static Main instance;
     static Launcher launcher;
+    static Main instance;
 
     static {
         try {
