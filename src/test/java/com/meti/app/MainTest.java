@@ -17,28 +17,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
     @Test
     void mainNoException() throws Exception {
-        Launcher launcher = Main.launcher;
-        assertNotNull(launcher);
-        assertEquals(InfinityLauncher.class, launcher.getClass());
-
         Main.launcher = new NoExceptionLauncher(NoExceptionLauncher.class.getDeclaredMethod("test", Class.class, String[].class));
         Main.main(new String[]{"args"});
         assertEquals(Main.class, NoExceptionLauncher.clazz);
         assertArrayEquals(new String[]{"args"}, NoExceptionLauncher.args);
 
-        Main.launcher = new InfinityLauncher();
+        Main.launcher = null;
+
     }
 
     @Test
     void mainWithException() throws Exception {
-        Launcher launcher = Main.launcher;
-        assertNotNull(launcher);
-        assertEquals(InfinityLauncher.class, launcher.getClass());
-
         Main.launcher = new WithExceptionLauncher(WithExceptionLauncher.class.getMethod("test", Class.class, String[].class));
         assertThrows(InvocationTargetException.class, () -> Main.main(new String[0]));
 
-        Main.launcher = new InfinityLauncher();
+        Main.launcher = null;
     }
 
     private static class NoExceptionLauncher extends Launcher {

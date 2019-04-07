@@ -13,15 +13,6 @@ public class Main extends Application {
     static Launcher launcher;
     static Main instance;
 
-    static {
-        try {
-            launcher = new InfinityLauncher();
-        } catch (NoSuchMethodException e) {
-            launcher = null;
-        }
-    }
-
-    @Override
     public void start(Stage primaryStage) {
         instance = this;
         implementation.start(primaryStage);
@@ -34,6 +25,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws Exception {
+        if(launcher == null){
+            launcher = new InfinityLauncher();
+        }
         launcher.invoke(Main.class, args);
     }
 }
