@@ -21,7 +21,6 @@ import java.util.logging.Level;
 class Infinity implements InfinityImpl {
     final LoggerConsole console = new LoggerConsole();
     final State state = new State();
-    private boolean running;
 
     {
         console.eventManager.compound(ConsoleKey.ON_LOG, new ExitConsumer(Platform::exit));
@@ -29,11 +28,6 @@ class Infinity implements InfinityImpl {
 
     @Override
     public void start(Stage primaryStage) {
-        if(running){
-            throw new IllegalStateException("Infinity is already running!");
-        }
-        this.running = true;
-
         try {
             primaryStage.setScene(new Scene(getMenuBundle().parent));
             primaryStage.show();
@@ -44,11 +38,6 @@ class Infinity implements InfinityImpl {
 
     @Override
     public void stop() {
-        if(!running){
-            throw new IllegalStateException("Infinity is not running yet!");
-        }
-
-        this.running = false;
     }
 
     FXMLBundle<?> getMenuBundle() throws IOException {
