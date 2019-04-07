@@ -1,16 +1,13 @@
 package com.meti.app;
 
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
-import java.net.URL;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author SirMathhman
@@ -29,16 +26,8 @@ class InfinityWithFXTest {
     }
 
     @Test
-    void getMenuURL(){
-        URL url = infinity.getMenuURL();
-        assertNotNull(url);
-        assertTrue(url.getPath().endsWith("/com/meti/app/Menu.fxml"));
-    }
-
-    @Test
     void confirmStart(){
         assertTrue(primaryStage.isShowing());
-
     }
 
     @Stop

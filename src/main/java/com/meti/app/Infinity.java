@@ -1,10 +1,13 @@
 package com.meti.app;
 
+import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.fx.FXMLBundle;
 import com.meti.lib.log.ConsoleKey;
 import com.meti.lib.log.LoggerConsole;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -38,6 +41,10 @@ class Infinity implements InfinityImpl {
         }
 
         this.running = false;
+    }
+
+    public FXMLBundle<?> getMenuBundle() throws IOException {
+        return new ControllerLoader(null).getBundle(getMenuURL().openStream());
     }
 
     URL getMenuURL() {

@@ -11,7 +11,7 @@ import java.io.InputStream;
  * @version 0.0.0
  * @since 4/7/2019
  */
-class ControllerLoader extends FXMLLoader {
+public class ControllerLoader extends FXMLLoader {
     final State state;
 
     public ControllerLoader(State state) {

@@ -1,13 +1,16 @@
 package com.meti.app;
 
+import com.meti.lib.fx.FXMLBundle;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.io.IOException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author SirMathhman
@@ -33,6 +36,21 @@ class InfinityNoFXTest {
 
         //Cleanly stop Infinity.
         assertDoesNotThrow(() -> infinity.stop());
+    }
+
+
+    @Test
+    void getMenuURL(){
+        URL url = infinity.getMenuURL();
+        assertNotNull(url);
+        assertTrue(url.getPath().endsWith("/com/meti/app/Menu.fxml"));
+    }
+
+    @Test
+    void getMenuBundle() throws IOException {
+        FXMLBundle<?> bundle = infinity.getMenuBundle();
+        assertEquals(AnchorPane.class, bundle.parent.getClass());
+        assertEquals(Menu.class, bundle.controller.getClass());
     }
 
     @Test
