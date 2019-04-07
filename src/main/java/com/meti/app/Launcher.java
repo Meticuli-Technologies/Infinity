@@ -9,13 +9,13 @@ import java.lang.reflect.Method;
  * @since 4/7/2019
  */
 class Launcher {
-    private Method method;
+    private final Method method;
 
     public Launcher(Method method) {
         this.method = method;
     }
 
-    public Object invoke(Class<?> mainClass, String[] args) throws IllegalAccessException, InvocationTargetException {
-        return method.invoke(null, mainClass, args);
+    public void invoke(Class<?> mainClass, String[] args) throws IllegalAccessException, InvocationTargetException {
+        method.invoke(null, mainClass, args);
     }
 }

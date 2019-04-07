@@ -21,7 +21,7 @@ class MainTest {
         assertNotNull(launcher);
         assertEquals(InfinityLauncher.class, launcher.getClass());
 
-        Main.launcher = new NoExceptionLauncher(NoExceptionLauncher.class.getMethod("test", Class.class, String[].class));
+        Main.launcher = new NoExceptionLauncher(NoExceptionLauncher.class.getDeclaredMethod("test", Class.class, String[].class));
         Main.main(new String[]{"args"});
         assertEquals(Main.class, NoExceptionLauncher.clazz);
         assertArrayEquals(new String[]{"args"}, NoExceptionLauncher.args);
@@ -45,18 +45,18 @@ class MainTest {
         private static Class<?> clazz;
         private static String[] args;
 
-        public NoExceptionLauncher(Method method) {
+        NoExceptionLauncher(Method method) {
             super(method);
         }
 
-        public static void test(Class<?> clazz, String[] args) {
+        static void test(Class<?> clazz, String[] args) {
             NoExceptionLauncher.clazz = clazz;
             NoExceptionLauncher.args = args;
         }
     }
 
     private static class WithExceptionLauncher extends Launcher {
-        public WithExceptionLauncher(Method method) {
+        WithExceptionLauncher(Method method) {
             super(method);
         }
 
@@ -90,17 +90,6 @@ class MainTest {
         assertNull(implementation.primaryStage);
         assertFalse(implementation.wasStarted);
         assertTrue(implementation.wasStopped);
-    }
-
-    private class ExitImpl implements InfinityImpl {
-        @Override
-        public void start(Stage primaryStage) {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public void stop() {
-        }
     }
 
     private class TestImpl implements InfinityImpl {

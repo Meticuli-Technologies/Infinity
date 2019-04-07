@@ -17,9 +17,7 @@ class Console extends Component<ConsoleKey, ConsoleEvent> {
 
     Console(BiConsumer<Level, String> recordConsumer) {
 
-        BiConsumer<Level, String> eventConsumer = (level, s) -> {
-            eventManager.fire(ConsoleKey.ON_LOG, new ConsoleEvent(level, s));
-        };
+        BiConsumer<Level, String> eventConsumer = (level, s) -> eventManager.fire(ConsoleKey.ON_LOG, new ConsoleEvent(level, s));
         if (recordConsumer != null) {
             this.recordConsumer = recordConsumer;
             this.recordConsumer.andThen(eventConsumer);
