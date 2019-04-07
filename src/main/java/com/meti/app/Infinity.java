@@ -5,6 +5,8 @@ import com.meti.lib.log.LoggerConsole;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -38,4 +40,7 @@ class Infinity implements InfinityImpl {
         this.running = false;
     }
 
+    URL getMenuURL() {
+        return getClass().getResource("/com/meti/app/Menu.fxml");
+    }
 }

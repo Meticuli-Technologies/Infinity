@@ -8,6 +8,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
+import java.net.URL;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,8 +29,16 @@ class InfinityWithFXTest {
     }
 
     @Test
+    void getMenuURL(){
+        URL url = infinity.getMenuURL();
+        assertNotNull(url);
+        assertTrue(url.getPath().endsWith("/com/meti/app/Menu.fxml"));
+    }
+
+    @Test
     void confirmStart(){
         assertTrue(primaryStage.isShowing());
+
     }
 
     @Stop
