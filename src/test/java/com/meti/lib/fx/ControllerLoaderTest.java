@@ -43,4 +43,11 @@ class ControllerLoaderTest {
         assertEquals(400, pane.getPrefHeight());
     }
 
+    @Test
+    void getBundle(){
+        State state = new State();
+        ControllerLoader loader = new ControllerLoader(state);
+
+    /*    loader.getBundle();*/
+    }
 }
