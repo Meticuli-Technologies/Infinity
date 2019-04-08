@@ -31,6 +31,8 @@ class Infinity implements InfinityImpl {
         try {
             primaryStage.setScene(new Scene(getMenuBundle().parent));
             primaryStage.show();
+
+            //TODO: test catch block
         } catch (IOException e) {
             console.log(Level.SEVERE, e);
         }

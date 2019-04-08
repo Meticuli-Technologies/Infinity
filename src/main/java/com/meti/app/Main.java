@@ -15,6 +15,8 @@ public class Main extends Application {
     static {
         try {
             launcher = new InfinityLauncher();
+
+            //TODO: test catch block
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
