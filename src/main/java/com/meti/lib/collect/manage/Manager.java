@@ -8,5 +8,4 @@ import java.util.ArrayList;
  * @since 4/6/2019
  */
 public abstract class Manager<T> extends ArrayList<T> {
-    public abstract T allocate();
 }

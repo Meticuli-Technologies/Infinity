@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(ApplicationExtension.class)
 class InfinityTest {
-    private Infinity infinity = new Infinity();
+    private final Infinity infinity = new Infinity();
     private Stage primaryStage;
 
     @Test

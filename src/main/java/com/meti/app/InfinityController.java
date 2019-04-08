@@ -5,7 +5,7 @@ import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.log.LoggerConsole;
 
-public class InfinityController extends Controller {
+class InfinityController extends Controller {
     final LoggerConsole console;
     final TryableFactory factory;
 

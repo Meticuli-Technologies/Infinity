@@ -1,7 +1,6 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
-import com.meti.lib.fx.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
@@ -10,7 +9,7 @@ import javafx.scene.text.Text;
  * @version 0.0.0
  * @since 4/7/2019
  */
-public class Menu extends InfinityController {
+class Menu extends InfinityController {
     public Menu(State state) {
         super(state);
     }

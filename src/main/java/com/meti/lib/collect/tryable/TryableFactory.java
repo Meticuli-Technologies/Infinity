@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public class TryableFactory {
     public static final TryableFactory DEFAULT = new TryableFactory(new CollectionCatcher<>(new ArrayList<>()));
-    Catcher catcher;
+    final Catcher catcher;
 
     public TryableFactory(Catcher catcher) {
         this.catcher = catcher;

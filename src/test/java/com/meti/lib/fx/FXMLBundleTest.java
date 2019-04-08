@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @version 0.0.0
  * @since 4/7/2019
  */
-public class FXMLBundleTest {
+class FXMLBundleTest {
     @Test
     void construct() {
         AnchorPane parent = new AnchorPane();
