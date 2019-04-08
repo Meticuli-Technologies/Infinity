@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @since 4/7/2019
  */
 class Launcher {
-    private final Method method;
+    final Method method;
 
     public Launcher(Method method) {
         this.method = method;

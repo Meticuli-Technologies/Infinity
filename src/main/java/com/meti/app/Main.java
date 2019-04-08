@@ -11,6 +11,15 @@ import javafx.stage.Stage;
 public class Main extends Application {
     static InfinityImpl implementation = new Infinity();
     static Launcher launcher;
+
+    static {
+        try {
+            launcher = new InfinityLauncher();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
     static Main instance;
 
     public void start(Stage primaryStage) {
@@ -25,9 +34,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws Exception {
-        if(launcher == null){
-            launcher = new InfinityLauncher();
-        }
         launcher.invoke(Main.class, args);
     }
 }

@@ -13,6 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 4/7/2019
  */
 class InfinityLauncherTest {
+    @Test
+    void construct() throws NoSuchMethodException {
+        InfinityLauncher launcher = new InfinityLauncher();
+        assertEquals(InfinityLauncher.getLaunchMethod(), launcher.method);
+    }
 
     @Test
     void getLaunchMethod() throws NoSuchMethodException {
