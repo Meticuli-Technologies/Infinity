@@ -29,6 +29,7 @@ class InfinityWithFXTest {
     @Test
     void confirmStart() {
         assertNotNull(infinity.console);
+        assertNotNull(infinity.factory);
         assertNotNull(infinity.state);
         assertTrue(primaryStage.isShowing());
     }

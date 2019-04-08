@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
+import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.FXMLBundle;
 import com.meti.lib.log.ConsoleKey;
@@ -20,9 +21,11 @@ import java.util.logging.Level;
  */
 class Infinity implements InfinityImpl {
     final LoggerConsole console = new LoggerConsole();
+    final TryableFactory factory;
     final State state = new State();
 
     {
+        factory = new TryableFactory(console.asCatcher(Level.SEVERE));
         console.eventManager.compound(ConsoleKey.ON_LOG, new ExitConsumer(Platform::exit));
     }
 
