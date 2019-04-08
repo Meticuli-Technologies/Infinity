@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
+import com.meti.lib.collect.tryable.Tryable;
 import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.FXMLBundle;
@@ -31,6 +32,12 @@ class Infinity implements InfinityImpl {
 
     @Override
     public void start(Stage primaryStage) {
+        factory.perform(new Tryable() {
+            @Override
+            public void perform() throws Exception {
+
+            }
+        }).get();
         try {
             primaryStage.setScene(new Scene(getMenuBundle().parent));
             primaryStage.show();
