@@ -13,9 +13,10 @@ class TryableFactory {
     }
 
     public <T> Supplier<Optional<T>> supplier(TryableSupplier<T> supplier){
-        return new Supplier<Optional<T>>() {
-            @Override
-            public Optional<T> get() {
+        return () -> {
+            try {
+                return Optional.ofNullable(supplier.get());
+            } catch (Exception e) {
                 return Optional.empty();
             }
         };

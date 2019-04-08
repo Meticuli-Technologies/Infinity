@@ -1,10 +1,15 @@
 package com.meti.lib.collect.tryable;
 
 import com.meti.lib.collect.catches.Catcher;
+import com.meti.lib.collect.catches.CollectionCatcher;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TryableFactoryTest {
     @Test
@@ -15,7 +20,38 @@ class TryableFactoryTest {
     }
 
     @Test
-    void supplier(){
+    void supplierNoException() {
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory factory = new TryableFactory(catcher);
 
+        Object o = new Object();
+        Supplier<Optional<Object>> supplier = factory.supplier(() -> o);
+
+        Optional<Object> optional = supplier.get();
+        assertTrue(optional.isPresent());
+        assertEquals(o, optional.get());
+    }
+
+    @Test
+    void supplierNull() {
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory factory = new TryableFactory(catcher);
+
+        Supplier<Optional<Object>> supplier = factory.supplier(() -> null);
+        Optional<Object> optional = supplier.get();
+        assertFalse(optional.isPresent());
+    }
+
+    @Test
+    void supplierWithException() {
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory factory = new TryableFactory(catcher);
+
+        Supplier<Optional<Object>> supplier = factory.supplier(() -> {
+            throw new IllegalStateException();
+        });
+
+        Optional<Object> optional = supplier.get();
+        assertFalse(optional.isPresent());
     }
 }
