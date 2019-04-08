@@ -4,6 +4,7 @@ import com.meti.lib.collect.type.TypeFunction;
 import com.meti.lib.collect.type.TypePredicate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -13,6 +14,10 @@ import java.util.stream.Stream;
  * @since 4/5/2019
  */
 public class State extends ArrayList<Object> {
+    public State(Object... initial) {
+        addAll(Arrays.asList(initial));
+    }
+
     public <T> Stream<T> byClass(Class<T> tClass) {
         return stream()
                 .filter(new TypePredicate<>(tClass))
