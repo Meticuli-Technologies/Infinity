@@ -1,11 +1,15 @@
 package com.meti.lib.fx;
 
 import javafx.application.Platform;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author SirMathhman
@@ -16,7 +20,28 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 class FXUtilTestWithFX {
 
     @Test
-    void call() {
+    void callNoThrows() {
+        Future<Stage> future = FXUtil.call(Stage::new);
+        assertDoesNotThrow(() -> {
+            Stage stage = future.get();
+            assertNotNull(stage);
+        });
+    }
+
+    @Test
+    void callThrows() {
+        IllegalStateException exception = new IllegalStateException();
+        Future<Stage> future = FXUtil.call(() -> {
+            throw exception;
+        });
+
+        try {
+            future.get();
+        } catch (InterruptedException e) {
+            fail("Future was not supposed to be interrupted.");
+        } catch (ExecutionException e) {
+            assertEquals(exception, e.getCause());
+        }
     }
 
     @Test
