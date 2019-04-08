@@ -1,4 +1,6 @@
 package com.meti.lib.collect.catches;
 
-public class Catcher {
+import java.util.function.Consumer;
+
+public interface Catcher extends Consumer<Exception> {
 }
