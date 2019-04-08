@@ -6,8 +6,8 @@ import com.meti.lib.fx.Controller;
 import com.meti.lib.log.LoggerConsole;
 
 public class InfinityController extends Controller {
-    private final LoggerConsole console;
-    private final TryableFactory factory;
+    final LoggerConsole console;
+    final TryableFactory factory;
 
     public InfinityController(State state) {
         super(state);
