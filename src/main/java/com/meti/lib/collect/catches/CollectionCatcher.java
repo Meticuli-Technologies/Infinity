@@ -3,7 +3,7 @@ package com.meti.lib.collect.catches;
 import java.util.Collection;
 
 public class CollectionCatcher<C extends Collection<Exception>> implements Catcher {
-    final C collection;
+    public final C collection;
 
     public CollectionCatcher(C collection) {
         this.collection = collection;

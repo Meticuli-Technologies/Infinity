@@ -20,6 +20,31 @@ class TryableFactoryTest {
     }
 
     @Test
+    void performNotThrows() {
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory factory = new TryableFactory(catcher);
+        Optional<Exception> optional = factory.perform(() -> {
+        }).get();
+
+        assertFalse(optional.isPresent());
+    }
+
+    @Test
+    void performThrows() {
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory factory = new TryableFactory(catcher);
+
+        Exception exception = new Exception();
+        Optional<Exception> optional = factory.perform(() -> {
+            throw exception;
+        }).get();
+
+        assertTrue(catcher.collection.contains(exception));
+        assertTrue(optional.isPresent());
+        assertEquals(exception, optional.get());
+    }
+
+    @Test
     void supplierNoException() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
         TryableFactory factory = new TryableFactory(catcher);
