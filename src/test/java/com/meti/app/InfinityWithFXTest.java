@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.util.FXUtil;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,8 +9,12 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author SirMathhman
@@ -30,12 +35,11 @@ class InfinityWithFXTest {
     }
 
     @Test
-    void loadMenu() throws IOException {
-        Stage stage = new Stage();
-        Menu menu = infinity.loadMenu(stage);
+    void loadMenu() throws IOException, ExecutionException, InterruptedException {
+        Stage stage = FXUtil.call(Stage::new).get();
+        Menu menu = FXUtil.call(() -> infinity.loadMenu(stage)).get();
 
         assertNotNull(menu);
-
         assertEquals(infinity.getMenuBundle().parent, stage.getScene().getRoot());
         assertTrue(stage.isShowing());
     }

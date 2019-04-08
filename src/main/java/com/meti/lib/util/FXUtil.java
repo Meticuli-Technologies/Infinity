@@ -10,7 +10,7 @@ public class FXUtil {
     private FXUtil() {
     }
 
-    public <T> Future<T> call(Callable<T> callable) {
+    public static <T> Future<T> call(Callable<T> callable) {
         CompletableFuture<T> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
