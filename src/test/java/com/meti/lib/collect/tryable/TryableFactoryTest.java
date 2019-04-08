@@ -13,4 +13,9 @@ class TryableFactoryTest {
         TryableFactory factory = new TryableFactory(catcher);
         assertEquals(catcher, factory.catcher);
     }
+
+    @Test
+    void supplier(){
+
+    }
 }
