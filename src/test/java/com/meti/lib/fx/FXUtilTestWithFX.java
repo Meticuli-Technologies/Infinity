@@ -16,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 class FXUtilTestWithFX {
 
     @Test
+    void call() {
+    }
+
+    @Test
     void throwIfNotFX() {
         Platform.runLater(() -> assertDoesNotThrow(FXUtil::throwIfNotFX));
     }

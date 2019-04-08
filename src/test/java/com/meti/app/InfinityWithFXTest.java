@@ -1,7 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.fx.FXMLBundle;
-import com.meti.lib.util.FXUtil;
+import com.meti.lib.fx.FXUtil;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class InfinityWithFXTest {
 
     @Test
     void loadMenu() throws ExecutionException, InterruptedException {
-        Stage stage = FXUtil.call(Stage::new).get();
+        Stage stage = com.meti.lib.fx.FXUtil.call(Stage::new).get();
         Menu menu = FXUtil.call(() -> infinity.loadMenu(stage)).get();
 
         assertNotNull(menu);
