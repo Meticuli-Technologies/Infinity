@@ -23,11 +23,13 @@ import java.util.logging.Level;
 class Infinity implements InfinityImpl {
     final LoggerConsole console = new LoggerConsole();
     final TryableFactory factory;
-    final State state = new State();
+    final State state;
 
     {
         factory = new TryableFactory(console.asCatcher(Level.SEVERE));
         console.eventManager.compound(ConsoleKey.ON_LOG, new ExitConsumer(Platform::exit));
+
+        state = new State(console, factory);
     }
 
     @Override
