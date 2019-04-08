@@ -15,7 +15,19 @@ public class TryableFactory {
         this.catcher = catcher;
     }
 
-    public <T> Supplier<Optional<T>> supplier(TryableSupplier<T> supplier){
+    public Supplier<Optional<Exception>> perform(Tryable tryable) {
+        return () -> {
+            try {
+                tryable.perform();
+                return Optional.empty();
+            } catch (Exception e) {
+                catcher.accept(e);
+                return Optional.of(e);
+            }
+        };
+    }
+
+    public <T> Supplier<Optional<T>> supplier(TryableSupplier<T> supplier) {
         return () -> {
             try {
                 return Optional.ofNullable(supplier.get());
