@@ -1,6 +1,17 @@
 package com.meti.lib.collect.tryable;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public abstract class TryableSupplier<T> implements Supplier<T> {
+public interface TryableSupplier<T> {
+    Optional<T> get();
+
+    default T next(){
+        Optional<T> optional;
+        do {
+            optional = get();
+        }
+        while(!optional.isPresent());
+
+        return optional.get();
+    }
 }
