@@ -48,7 +48,7 @@ class Infinity implements InfinityImpl {
         return new ControllerLoader(state).getBundle(getMenuURL().openStream());
     }
 
-    URL getMenuURL() {
-        return getClass().getResource("/com/meti/app/Menu.fxml");
+    static URL getMenuURL() {
+        return Infinity.class.getResource("/com/meti/app/Menu.fxml");
     }
 }
