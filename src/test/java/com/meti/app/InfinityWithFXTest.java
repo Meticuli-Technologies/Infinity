@@ -1,6 +1,8 @@
 package com.meti.app;
 
+import com.meti.lib.fx.FXMLBundle;
 import com.meti.lib.util.FXUtil;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,12 +11,9 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author SirMathhman
@@ -32,6 +31,13 @@ class InfinityWithFXTest {
         assertNotNull(infinity.factory);
         assertNotNull(infinity.state);
         assertTrue(primaryStage.isShowing());
+    }
+
+    @Test
+    void getMenuBundle() throws IOException {
+        FXMLBundle<?> bundle = infinity.getMenuBundle();
+        assertEquals(AnchorPane.class, bundle.parent.getClass());
+        assertEquals(Menu.class, bundle.controller.getClass());
     }
 
     @Test
