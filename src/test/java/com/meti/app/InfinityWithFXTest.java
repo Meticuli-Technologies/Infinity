@@ -35,12 +35,11 @@ class InfinityWithFXTest {
     }
 
     @Test
-    void loadMenu() throws IOException, ExecutionException, InterruptedException {
+    void loadMenu() throws ExecutionException, InterruptedException {
         Stage stage = FXUtil.call(Stage::new).get();
         Menu menu = FXUtil.call(() -> infinity.loadMenu(stage)).get();
 
         assertNotNull(menu);
-        assertEquals(infinity.getMenuBundle().parent, stage.getScene().getRoot());
         assertTrue(stage.isShowing());
     }
 
