@@ -1,5 +1,7 @@
 package com.meti.app;
 
+import com.meti.lib.collect.tryable.TryableFactory;
+import com.meti.lib.collect.tryable.TryableSupplier;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,18 +13,19 @@ import javafx.stage.Stage;
 public class Main extends Application {
     static InfinityImpl implementation = new Infinity();
     static Launcher launcher;
+    static Main instance;
 
     static {
-        try {
-            launcher = new InfinityLauncher();
-
-            //TODO: test catch block
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        launcher = TryableFactory
+                .DEFAULT
+                .supplier((TryableSupplier<Launcher>) InfinityLauncher::new)
+                .get()
+                .orElseThrow();
     }
 
-    static Main instance;
+    public static void main(String[] args) throws Exception {
+        launcher.invoke(Main.class, args);
+    }
 
     public void start(Stage primaryStage) {
         instance = this;
@@ -33,9 +36,5 @@ public class Main extends Application {
     public void stop() {
         implementation.stop();
         instance = null;
-    }
-
-    public static void main(String[] args) throws Exception {
-        launcher.invoke(Main.class, args);
     }
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-class TryableFactory {
+public class TryableFactory {
     public static final TryableFactory DEFAULT = new TryableFactory(new CollectionCatcher<>(new ArrayList<>()));
     Catcher catcher;
 
