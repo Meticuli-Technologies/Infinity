@@ -1,8 +1,16 @@
 package com.meti.lib.collect.catches;
 
-public class CollectionCatcher implements Catcher{
+import java.util.Collection;
+
+public class CollectionCatcher<C extends Collection<Exception>> implements Catcher {
+    final C collection;
+
+    public CollectionCatcher(C collection) {
+        this.collection = collection;
+    }
+
     @Override
     public void accept(Exception e) {
-
+        collection.add(e);
     }
 }
