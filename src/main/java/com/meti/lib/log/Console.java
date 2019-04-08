@@ -1,6 +1,7 @@
 package com.meti.lib.log;
 
 import com.meti.lib.collect.Component;
+import com.meti.lib.collect.catches.Catcher;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,18 +22,17 @@ class Console extends Component<ConsoleKey, ConsoleEvent> {
         if (recordConsumer != null) {
             this.recordConsumer = recordConsumer;
             this.recordConsumer.andThen(eventConsumer);
-        }
-        else{
+        } else {
             this.recordConsumer = eventConsumer;
         }
     }
 
-    public void log(Level level, Exception exception) {
-        log(level, null, exception);
+    public Catcher asCatcher(Level level) {
+        return e -> log(level, e);
     }
 
-    public void log(Level level, String message) {
-        log(level, message, null);
+    public void log(Level level, Exception exception) {
+        log(level, null, exception);
     }
 
     public void log(Level level, String message, Exception exception) {
@@ -52,5 +52,9 @@ class Console extends Component<ConsoleKey, ConsoleEvent> {
         }
 
         recordConsumer.accept(level, builder.toString());
+    }
+
+    public void log(Level level, String message) {
+        log(level, message, null);
     }
 }

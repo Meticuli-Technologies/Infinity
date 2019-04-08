@@ -1,5 +1,6 @@
 package com.meti.lib.log;
 
+import com.meti.lib.collect.catches.Catcher;
 import com.meti.lib.collect.consume.BiCollectionConsumer;
 import com.meti.lib.collect.consume.CompletableConsumer;
 import org.junit.jupiter.api.Test;
@@ -12,9 +13,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author SirMathhman
@@ -23,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ConsoleTest {
     @Test
-    void ON_LOG_event(){
+    void ON_LOG_event() {
         CompletableConsumer<ConsoleEvent> completable = new CompletableConsumer<>();
 
         Console console = new Console(null);
@@ -38,20 +37,15 @@ class ConsoleTest {
     }
 
     @Test
-    void logWithoutException() {
-        TestConsole testConsole = new TestConsole();
-        testConsole.log(Level.INFO, "test");
-        assertEquals(Level.INFO, testConsole.level);
-        assertEquals("test", testConsole.message);
-    }
-
-    @Test
-    void logWithoutMessage(){
-        TestConsole testConsole = new TestConsole();
+    void asCatcher() {
+        TestConsole console = new TestConsole();
         Exception exception = new Exception();
-        testConsole.log(Level.INFO, exception);
-        assertEquals(testConsole.level, Level.INFO);
-        assertEquals(testConsole.exception, exception);
+        Catcher catcher = console.asCatcher(Level.WARNING);
+        catcher.accept(exception);
+
+        assertEquals(Level.WARNING, console.level);
+        assertEquals(exception, console.exception);
+        assertNull(console.message);
     }
 
     @Test
@@ -72,6 +66,23 @@ class ConsoleTest {
         StringWriter writer = new StringWriter();
         exception.printStackTrace(new PrintWriter(writer));
         assertTrue(list.contains("test\n" + writer.toString()));
+    }
+
+    @Test
+    void logWithoutException() {
+        TestConsole testConsole = new TestConsole();
+        testConsole.log(Level.INFO, "test");
+        assertEquals(Level.INFO, testConsole.level);
+        assertEquals("test", testConsole.message);
+    }
+
+    @Test
+    void logWithoutMessage() {
+        TestConsole testConsole = new TestConsole();
+        Exception exception = new Exception();
+        testConsole.log(Level.INFO, exception);
+        assertEquals(testConsole.level, Level.INFO);
+        assertEquals(testConsole.exception, exception);
     }
 
     private class TestConsole extends Console {
