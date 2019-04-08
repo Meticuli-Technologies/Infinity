@@ -9,6 +9,8 @@ import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @ExtendWith(ApplicationExtension.class)
 class MenuTest {
     private Menu menu;
@@ -20,11 +22,12 @@ class MenuTest {
 
     @Test
     void local() {
-
+        assertDoesNotThrow(() -> menu.local());
     }
 
     @Test
     void openSettings() {
+        assertDoesNotThrow(() -> menu.openSettings());
     }
 
     @Start
