@@ -35,13 +35,15 @@ class Infinity implements InfinityImpl {
     @Override
     public void start(Stage primaryStage) {
         OptionalUtil.throwIfPresent(factory.perform(() -> {
-            primaryStage.setScene(new Scene(getMenuBundle().parent));
-            primaryStage.show();
+            loadMenu(primaryStage);
         }).get());
     }
 
-    @Override
-    public void stop() {
+    public Menu loadMenu(Stage primaryStage) throws IOException {
+        FXMLBundle<?> bundle = getMenuBundle();
+        primaryStage.setScene(new Scene(bundle.parent));
+        primaryStage.show();
+        return (Menu) bundle.controller;
     }
 
     FXMLBundle<?> getMenuBundle() throws IOException {
@@ -50,5 +52,9 @@ class Infinity implements InfinityImpl {
 
     static URL getMenuURL() {
         return Infinity.class.getResource("/com/meti/app/Menu.fxml");
+    }
+
+    @Override
+    public void stop() {
     }
 }

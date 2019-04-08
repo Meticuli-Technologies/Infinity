@@ -1,9 +1,5 @@
 package com.meti.app;
 
-import com.meti.lib.collect.State;
-import com.meti.lib.fx.ControllerLoader;
-import com.meti.lib.fx.FXMLBundle;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,11 +29,8 @@ class MenuTest {
 
     @Start
     void primaryStage(Stage stage) throws IOException {
-        State state = new State();
-        ControllerLoader loader = new ControllerLoader(state);
-        FXMLBundle<?> bundle = loader.getBundle(Infinity.getMenuURL().openStream());
-        menu = (Menu) bundle.controller;
-        stage.setScene(new Scene(bundle.parent));
-        stage.show();
+        Infinity infinity = new Infinity();
+        infinity.start(stage);
+        menu = infinity.loadMenu(stage);
     }
 }
