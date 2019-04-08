@@ -39,7 +39,7 @@ class Infinity implements InfinityImpl {
         }).get());
     }
 
-    public Menu loadMenu(Stage primaryStage) throws IOException {
+    Menu loadMenu(Stage primaryStage) throws IOException {
         FXMLBundle<?> bundle = getMenuBundle();
         primaryStage.setScene(new Scene(bundle.parent));
         primaryStage.show();
