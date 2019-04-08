@@ -11,6 +11,7 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 4/7/2019
  */
 @ExtendWith(ApplicationExtension.class)
-class InfinityWithFXTest {
+class InfinityTest {
     private Infinity infinity = new Infinity();
     private Stage primaryStage;
 
@@ -38,6 +39,13 @@ class InfinityWithFXTest {
         FXMLBundle<?> bundle = infinity.getMenuBundle();
         assertEquals(AnchorPane.class, bundle.parent.getClass());
         assertEquals(Menu.class, bundle.controller.getClass());
+    }
+
+    @Test
+    void getMenuURL() {
+        URL url = Infinity.getMenuURL();
+        assertNotNull(url);
+        assertTrue(url.getPath().endsWith("/com/meti/app/Menu.fxml"));
     }
 
     @Test
