@@ -4,6 +4,7 @@ import com.meti.lib.collect.State;
 import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.Controller;
 import com.meti.lib.fx.ControllerLoaderFunction;
+import com.meti.lib.fx.FXMLBundle;
 import com.meti.lib.log.LoggerConsole;
 import javafx.stage.Stage;
 
@@ -21,7 +22,9 @@ class InfinityController extends Controller {
         this.factory = state.byClass(TryableFactory.class).findAny().orElseThrow();
     }
 
-    public <T> T onto(InputStream inputStream) {
-        return onto(inputStream, factory.apply(new ControllerLoaderFunction<T>(state, stage)).andThen(Optional::orElseThrow));
+    public <T> FXMLBundle<T> onto(InputStream inputStream) {
+        return onto(inputStream,
+                factory.apply(new ControllerLoaderFunction<T>(state, stage))
+                        .andThen(Optional::orElseThrow));
     }
 }

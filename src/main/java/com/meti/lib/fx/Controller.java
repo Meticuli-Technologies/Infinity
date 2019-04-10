@@ -1,11 +1,9 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
-import com.meti.lib.collect.tryable.TryableFunction;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Function;
 
@@ -16,14 +14,14 @@ import java.util.function.Function;
  */
 public class Controller {
     protected final State state;
-    protected final Stage stage;
+    public final Stage stage;
 
     public Controller(State state, Stage stage) {
         this.stage = stage;
         this.state = state;
     }
 
-    public <T> T onto(InputStream inputStream, Function<InputStream, FXMLBundle<T>> bundleFunction) {
+    public <T> FXMLBundle<T> onto(InputStream inputStream, Function<InputStream, FXMLBundle<T>> bundleFunction) {
         FXMLBundle<T> bundle = bundleFunction.apply(inputStream);
 
         stage.setScene(new Scene(bundle.parent));
@@ -31,6 +29,6 @@ public class Controller {
             stage.show();
         }
 
-        return bundle.controller;
+        return bundle;
     }
 }

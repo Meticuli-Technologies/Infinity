@@ -45,7 +45,8 @@ class ControllerTest {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(sampleFXML.getBytes());
             Controller previous = new Controller(state, stage);
 
-            TestController result = previous.onto(inputStream, inputStream1 -> new FXMLBundle<>(anchorPane, new TestController(state, stage)));
+            TestController result = previous.onto(inputStream, inputStream1 -> new FXMLBundle<>(anchorPane, new TestController(state, stage)))
+                    .controller;
 
             assertTrue(stage.isShowing());
             assertEquals(anchorPane, stage.getScene().getRoot());
