@@ -1,6 +1,7 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
+import com.meti.lib.collect.tryable.TryableFunction;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -33,16 +34,10 @@ public class Controller {
         return bundle.controller;
     }
 
-    public class ControllerLoaderFunction<T> implements Function<InputStream, FXMLBundle<T>> {
+    public class ControllerLoaderFunction<T> implements TryableFunction<InputStream, FXMLBundle<T>> {
         @Override
-        public FXMLBundle<T> apply(InputStream inputStream) {
-            try {
-                return new ControllerLoader(state, stage)
-                        .getBundle(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+        public FXMLBundle<T> apply(InputStream inputStream) throws IOException {
+            return new ControllerLoader(state, stage).getBundle(inputStream);
         }
     }
 }

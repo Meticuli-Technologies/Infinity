@@ -5,6 +5,7 @@ import com.meti.lib.collect.catches.CollectionCatcher;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class TryableFactory<C extends Catcher> {
@@ -26,6 +27,19 @@ public class TryableFactory<C extends Catcher> {
             }
         };
     }
+
+
+    public <T, R> Function<T, Optional<R>> apply(TryableFunction<T, R> function) {
+        return t -> {
+            try {
+                return Optional.ofNullable(function.apply(t));
+            } catch (Exception e) {
+                catcher.accept(e);
+                return Optional.empty();
+            }
+        };
+    }
+
 
     public <T> Supplier<Optional<T>> supplier(TryableSupplier<T> supplier) {
         return () -> {

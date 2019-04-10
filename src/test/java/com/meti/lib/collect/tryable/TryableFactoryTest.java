@@ -20,7 +20,33 @@ class TryableFactoryTest {
     }
 
     @Test
-    void performNotThrows() {
+    void applyThrows() {
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
+
+        IllegalStateException exception = new IllegalStateException();
+        Optional<Object> optional = factory.apply(o -> {
+            throw exception;
+        }).apply(null);
+
+        assertFalse(optional.isPresent());
+        assertEquals(1, catcher.collection.size());
+        assertTrue(catcher.collection.contains(exception));
+    }
+
+    @Test
+    void applyNotThrows(){
+        CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
+        Optional<String> optional = factory.apply((TryableFunction<String, String>) s -> s)
+                .apply("test");
+
+        assertTrue(optional.isPresent());
+        assertEquals("test", optional.get());
+    }
+
+    @Test
+    void acceptNotThrows() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
         TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
 
@@ -31,7 +57,7 @@ class TryableFactoryTest {
     }
 
     @Test
-    void performThrows() {
+    void acceptThrows() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
         TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
         Exception exception = new Exception();

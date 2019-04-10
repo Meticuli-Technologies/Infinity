@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 class InfinityController extends Controller {
     final LoggerConsole console;
-    final TryableFactory factory;
+    final TryableFactory<?> factory;
 
     public InfinityController(State state, Stage stage) {
         super(state, stage);

@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
-import static com.meti.lib.util.ExceptionUtil.*;
+import static com.meti.lib.util.ExceptionUtil.joinStackTrace;
 
 /**
  * @author SirMathhman
@@ -43,9 +43,13 @@ class Infinity implements InfinityImpl {
     }
 
     Menu loadMenu(Stage primaryStage) throws IOException {
-        InputStream inputStream = getMenuURL()
+        return loadInitial(primaryStage, getMenuURL());
+    }
+
+    <T> T loadInitial(Stage primaryStage, URL initialURL) throws IOException {
+        InputStream inputStream = initialURL
                 .openStream();
-        FXMLBundle<Menu> bundle = new ControllerLoader(state, primaryStage)
+        FXMLBundle<T> bundle = new ControllerLoader(state, primaryStage)
                 .getBundle(inputStream);
 
         primaryStage.setScene(new Scene(bundle.parent));
