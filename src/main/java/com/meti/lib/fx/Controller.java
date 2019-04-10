@@ -34,10 +34,4 @@ public class Controller {
         return bundle.controller;
     }
 
-    public class ControllerLoaderFunction<T> implements TryableFunction<InputStream, FXMLBundle<T>> {
-        @Override
-        public FXMLBundle<T> apply(InputStream inputStream) throws IOException {
-            return new ControllerLoader(state, stage).getBundle(inputStream);
-        }
-    }
 }

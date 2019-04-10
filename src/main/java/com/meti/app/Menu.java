@@ -1,6 +1,8 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
+import com.meti.lib.fx.Controller;
+import com.meti.lib.fx.ControllerLoaderFunction;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -25,7 +27,7 @@ public class Menu extends InfinityController {
     Local loadLocal() throws IOException {
         return onto(
                 getLocalURL().openStream(),
-                factory.apply(new ControllerLoaderFunction<Local>())
+                factory.apply(new ControllerLoaderFunction<Local>(Controller.this))
                         .andThen(Optional::orElseThrow)
         );
     }
