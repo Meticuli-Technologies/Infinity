@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
  * @version 0.0.0
  * @since 4/7/2019
  */
-class Menu extends InfinityController {
+public class Menu extends InfinityController {
     public Menu(State state) {
         super(state);
     }
