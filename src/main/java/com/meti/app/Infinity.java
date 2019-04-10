@@ -45,12 +45,12 @@ class Infinity implements InfinityImpl {
     Menu loadMenu(Stage primaryStage) throws IOException {
         InputStream inputStream = getMenuURL()
                 .openStream();
-        FXMLBundle<?> bundle = new ControllerLoader(state, primaryStage)
+        FXMLBundle<Menu> bundle = new ControllerLoader(state, primaryStage)
                 .getBundle(inputStream);
 
         primaryStage.setScene(new Scene(bundle.parent));
         primaryStage.show();
-        return (Menu) bundle.controller;
+        return bundle.controller;
     }
 
     URL getMenuURL() {

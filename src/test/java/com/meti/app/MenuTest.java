@@ -3,12 +3,14 @@ package com.meti.app;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(ApplicationExtension.class)
 class MenuTest {
@@ -22,6 +24,19 @@ class MenuTest {
     @Test
     void openSettings() {
         assertDoesNotThrow(() -> menu.openSettings());
+    }
+
+    @Test
+    void getLocalURL(){
+        assertNotNull(menu.getLocalURL());
+    }
+
+    @Test
+    void loadLocal(){
+        assertDoesNotThrow(() -> {
+            Local local = menu.loadLocal();
+            assertNotNull(local);
+        });
     }
 
     @Start

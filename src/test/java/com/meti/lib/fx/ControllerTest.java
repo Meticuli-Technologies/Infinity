@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(ApplicationExtension.class)
 class ControllerTest {
     @Test
-    void construct() {
+    void construct() throws ExecutionException, InterruptedException {
         State state = new State();
-        Stage stage = new Stage();
+        Stage stage = FXUtil.call(Stage::new).get();
         Controller controller = new Controller(state, stage);
         assertEquals(stage, controller.stage);
         assertEquals(controller.state, state);

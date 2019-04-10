@@ -1,20 +1,25 @@
 package com.meti.app;
 
+import com.meti.lib.collect.State;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-import java.awt.*;
-
-public class Local {
+public class Local extends InfinityController {
     @FXML
     private TextField portField;
 
+    public Local(State state, Stage stage) {
+        super(state, stage);
+    }
+
     @FXML
-    public void back(){
+    public void back() {
 
     }
 
     @FXML
-    public void next(){
+    public void next() {
 
     }
 }
