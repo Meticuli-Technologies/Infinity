@@ -21,17 +21,17 @@ public class Menu extends InfinityController {
         super(state, stage);
     }
 
-    @FXML
-    public void local() {
-        factory.accept(this::loadLocal);
-    }
-
     Local loadLocal() throws IOException {
-        return onto(getLocalURL().openStream());
+        return onto(getLocalURL().openStream(), new ControllerLoaderFunction<>());
     }
 
     URL getLocalURL() {
         return Infinity.class.getResource("/com/meti/app/Local.fxml");
+    }
+
+    @FXML
+    public void local() {
+        factory.accept(this::loadLocal);
     }
 
     @FXML

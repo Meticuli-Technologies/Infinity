@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Function;
 
 /**
  * @author SirMathhman
@@ -21,15 +22,27 @@ public class Controller {
         this.state = state;
     }
 
-    public <T> T onto(InputStream inputStream) throws IOException {
-        FXMLBundle<T> bundle = new ControllerLoader(state, stage)
-                .getBundle(inputStream);
+    public <T> T onto(InputStream inputStream, Function<InputStream, FXMLBundle<T>> bundleFunction) {
+        FXMLBundle<T> bundle = bundleFunction.apply(inputStream);
 
         stage.setScene(new Scene(bundle.parent));
-        if (stage.isShowing()) {
+        if (!stage.isShowing()) {
             stage.show();
         }
 
         return bundle.controller;
+    }
+
+    public class ControllerLoaderFunction<T> implements Function<InputStream, FXMLBundle<T>> {
+        @Override
+        public FXMLBundle<T> apply(InputStream inputStream) {
+            try {
+                return new ControllerLoader(state, stage)
+                        .getBundle(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
     }
 }
