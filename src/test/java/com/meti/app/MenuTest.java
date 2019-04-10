@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.fx.FXUtil;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,7 @@ class MenuTest {
     @Test
     void loadLocal(){
         assertDoesNotThrow(() -> {
-            Local local = menu.loadLocal();
+            Local local = FXUtil.call(menu::loadLocal).get();
             assertNotNull(local);
         });
     }
