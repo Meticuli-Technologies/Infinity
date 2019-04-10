@@ -9,6 +9,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,8 +18,8 @@ class LocalTest {
     private Local local;
 
     @Test
-    void back() {
-        assertFalse(local.back().isPresent());
+    void back() throws ExecutionException, InterruptedException {
+        assertFalse(FXUtil.call(local::back).get().isPresent());
     }
 
     @Test

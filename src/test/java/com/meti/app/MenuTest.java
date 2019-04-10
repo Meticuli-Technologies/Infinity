@@ -9,6 +9,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,8 +32,8 @@ class MenuTest {
     }
 
     @Test
-    void local() {
-        assertFalse(menu.local().isPresent());
+    void local() throws ExecutionException, InterruptedException {
+        assertFalse(FXUtil.call(menu::local).get().isPresent());
     }
 
     @Test
