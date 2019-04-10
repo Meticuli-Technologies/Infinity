@@ -8,6 +8,7 @@ import javafx.stage.Stage;
  * @version 0.0.0
  * @since 4/6/2019
  */
+@Deprecated
 class StageManager extends Manager<Stage> {
     public Stage allocate() {
         FXUtil.throwIfNotFX();
