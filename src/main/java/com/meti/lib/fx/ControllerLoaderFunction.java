@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ControllerLoaderFunction<T> implements TryableFunction<InputStream, FXMLBundle<T>> {
-    private ControllerLoader loader;
+    private final ControllerLoader loader;
 
     public ControllerLoaderFunction(State state, Stage stage) {
         this.loader = new ControllerLoader(state, stage);

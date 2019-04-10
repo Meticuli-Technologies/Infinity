@@ -11,7 +11,7 @@ import javafx.util.Callback;
  */
 class ControllerCallback implements Callback<Class<?>, Object> {
     private final State state;
-    private Stage stage;
+    private final Stage stage;
 
     ControllerCallback(State state, Stage stage) {
         this.state = state;

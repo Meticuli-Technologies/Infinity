@@ -10,7 +10,7 @@ public class URLS {
         return getResource("/com/meti/app/Local.fxml");
     }
 
-    static URL getResource(String value) {
+    private static URL getResource(String value) {
         return URLS.class.getResource(value);
     }
 

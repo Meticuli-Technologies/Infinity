@@ -14,7 +14,7 @@ public class ExceptionUtil {
                 .collect(Collectors.joining("\n"));
     }
 
-    public static String toStackTrace(Throwable throwable) {
+    private static String toStackTrace(Throwable throwable) {
         StringWriter writer = new StringWriter();
         throwable.printStackTrace(new PrintWriter(writer));
         return writer.toString();

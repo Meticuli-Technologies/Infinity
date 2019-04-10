@@ -22,7 +22,7 @@ class InfinityController extends Controller {
         this.factory = state.byClass(TryableFactory.class).findAny().orElseThrow();
     }
 
-    public <T> FXMLBundle<T> onto(InputStream inputStream) {
+    <T> FXMLBundle<T> onto(InputStream inputStream) {
         return onto(inputStream,
                 factory.apply(new ControllerLoaderFunction<T>(state, stage))
                         .andThen(Optional::orElseThrow));
