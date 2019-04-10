@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
+import com.meti.lib.collect.catches.Catcher;
 import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.FXMLBundle;
@@ -12,8 +13,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.function.Consumer;
 import java.util.logging.Level;
+
+import static com.meti.lib.util.ExceptionUtil.joinStackTrace;
 
 /**
  * @author SirMathhman
@@ -22,11 +27,11 @@ import java.util.logging.Level;
  */
 class Infinity implements InfinityImpl {
     final LoggerConsole console = new LoggerConsole();
-    final TryableFactory factory;
+    final TryableFactory<Catcher> factory;
     final State state;
 
     {
-        factory = new TryableFactory(console.asCatcher(Level.SEVERE));
+        factory = new TryableFactory<>(console.asCatcher(Level.SEVERE));
         console.eventManager.compound(ConsoleKey.ON_LOG, new ExitConsumer(Platform::exit));
 
         state = new State(console, factory);
@@ -34,25 +39,33 @@ class Infinity implements InfinityImpl {
 
     @Override
     public void start(Stage primaryStage) {
-        OptionalUtil.throwIfPresent(factory.perform(() -> loadMenu(primaryStage)).get());
+        OptionalUtil.throwIfPresent(factory.accept(() -> loadMenu(primaryStage)).get());
     }
 
     Menu loadMenu(Stage primaryStage) throws IOException {
-        FXMLBundle<?> bundle = getMenuBundle();
+        return loadInitial(primaryStage, URLS.getMenuURL());
+    }
+
+    <T> T loadInitial(Stage primaryStage, URL initialURL) throws IOException {
+        InputStream inputStream = initialURL
+                .openStream();
+        FXMLBundle<T> bundle = new ControllerLoader(state, primaryStage)
+                .getBundle(inputStream);
+
         primaryStage.setScene(new Scene(bundle.parent));
         primaryStage.show();
-        return (Menu) bundle.controller;
-    }
-
-    FXMLBundle<?> getMenuBundle() throws IOException {
-        return new ControllerLoader(state).getBundle(getMenuURL().openStream());
-    }
-
-    static URL getMenuURL() {
-        return Infinity.class.getResource("/com/meti/app/Menu.fxml");
+        return bundle.controller;
     }
 
     @Override
     public void stop() {
+        printStackTrace(exceptionString -> console.log(Level.SEVERE, exceptionString));
+    }
+
+    public void printStackTrace(Consumer<String> consumer) {
+        String exceptionString = joinStackTrace(TryableFactory.DEFAULT.catcher.collection.stream());
+        if (exceptionString.length() != 0) {
+            consumer.accept(exceptionString);
+        }
     }
 }

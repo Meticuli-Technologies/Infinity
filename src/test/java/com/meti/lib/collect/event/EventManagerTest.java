@@ -21,11 +21,11 @@ class EventManagerTest {
         EventManager<TestKey, TestEvent> eventManager = new EventManager<>();
 
         ArrayList<TestEvent> list0 = new ArrayList<>();
-        CollectionConsumer<TestEvent> consumer0 = new CollectionConsumer<>(list0);
+        CollectionConsumer<TestEvent, ArrayList<TestEvent>> consumer0 = new CollectionConsumer<>(list0);
         assertFalse(eventManager.compound(TEST_KEY, consumer0).isPresent());
 
         ArrayList<TestEvent> list1 = new ArrayList<>();
-        CollectionConsumer<TestEvent> consumer1 = new CollectionConsumer<>(list1);
+        CollectionConsumer<TestEvent, ArrayList<TestEvent>> consumer1 = new CollectionConsumer<>(list1);
 
         Optional<Consumer<TestEvent>> optional = eventManager.compound(TEST_KEY, consumer1);
         assertTrue(optional.isPresent());
@@ -37,7 +37,7 @@ class EventManagerTest {
         EventManager<TestKey, TestEvent> eventManager = new EventManager<>();
 
         ArrayList<TestEvent> list = new ArrayList<>();
-        CollectionConsumer<TestEvent> consumer = new CollectionConsumer<>(list);
+        CollectionConsumer<TestEvent, ArrayList<TestEvent>> consumer = new CollectionConsumer<>(list);
         eventManager.compound(TEST_KEY, consumer);
 
         TestEvent event = new TestEvent();

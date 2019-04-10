@@ -8,10 +8,10 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 4/5/2019
  */
-public class CollectionConsumer<T> implements Consumer<T> {
-    private final Collection<T> collection;
+public class CollectionConsumer<T, C extends Collection<T>> implements Consumer<T> {
+    public final C collection;
 
-    public CollectionConsumer(Collection<T> collection) {
+    public CollectionConsumer(C collection) {
         this.collection = collection;
     }
 

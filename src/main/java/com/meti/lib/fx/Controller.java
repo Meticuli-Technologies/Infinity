@@ -1,6 +1,11 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.InputStream;
+import java.util.function.Function;
 
 /**
  * @author SirMathhman
@@ -8,9 +13,22 @@ import com.meti.lib.collect.State;
  * @since 4/7/2019
  */
 public class Controller {
-    final State state;
+    protected final State state;
+    public final Stage stage;
 
-    public Controller(State state) {
+    public Controller(State state, Stage stage) {
+        this.stage = stage;
         this.state = state;
+    }
+
+    public <T> FXMLBundle<T> onto(InputStream inputStream, Function<InputStream, FXMLBundle<T>> bundleFunction) {
+        FXMLBundle<T> bundle = bundleFunction.apply(inputStream);
+
+        stage.setScene(new Scene(bundle.parent));
+        if (!stage.isShowing()) {
+            stage.show();
+        }
+
+        return bundle;
     }
 }
