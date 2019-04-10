@@ -16,7 +16,7 @@ import java.util.function.Function;
  */
 public class Controller {
     protected final State state;
-    final Stage stage;
+    protected final Stage stage;
 
     public Controller(State state, Stage stage) {
         this.stage = stage;
@@ -33,5 +33,4 @@ public class Controller {
 
         return bundle.controller;
     }
-
 }

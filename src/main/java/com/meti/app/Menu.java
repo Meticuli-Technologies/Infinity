@@ -1,15 +1,12 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
-import com.meti.lib.fx.Controller;
-import com.meti.lib.fx.ControllerLoaderFunction;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -25,11 +22,7 @@ public class Menu extends InfinityController {
     }
 
     Local loadLocal() throws IOException {
-        return onto(
-                getLocalURL().openStream(),
-                factory.apply(new ControllerLoaderFunction<Local>(Controller.this))
-                        .andThen(Optional::orElseThrow)
-        );
+        return onto(getLocalURL().openStream());
     }
 
     static URL getLocalURL() {
@@ -45,5 +38,4 @@ public class Menu extends InfinityController {
     public void openSettings() {
 
     }
-
 }
