@@ -1,7 +1,6 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -18,7 +17,7 @@ public class Controller {
     protected final State state;
     final Stage stage;
 
-    public Controller(Stage stage, State state) {
+    public Controller(State state, Stage stage) {
         this.stage = stage;
         this.state = state;
     }
@@ -28,7 +27,7 @@ public class Controller {
     }
 
     public <T> T onto(InputStream inputStream) throws IOException {
-        FXMLBundle<T> bundle = new ControllerLoader(state)
+        FXMLBundle<T> bundle = new ControllerLoader(state, stage)
                 .getBundle(inputStream);
 
         stage.setScene(new Scene(bundle.parent));

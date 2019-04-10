@@ -20,7 +20,7 @@ class ControllerLoaderTest {
     @Test
     void construct() {
         State state = new State();
-        ControllerLoader loader = new ControllerLoader(state);
+        ControllerLoader loader = new ControllerLoader(state, null);
 
         assertEquals(state, loader.state);
         assertEquals(ControllerCallback.class, loader.getControllerFactory().getClass());
@@ -36,7 +36,7 @@ class ControllerLoaderTest {
                 "            prefHeight=\"400.0\" prefWidth=\"600.0\">\n" +
                 "</AnchorPane>\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(sampleFXML.getBytes());
-        Object token = ControllerLoader.load(inputStream, state);
+        Object token = ControllerLoader.load(inputStream, state, null);
         assertEquals(AnchorPane.class, token.getClass());
 
         AnchorPane pane = (AnchorPane) token;
@@ -54,7 +54,7 @@ class ControllerLoaderTest {
                 "            prefHeight=\"400.0\" prefWidth=\"600.0\">\n" +
                 "</AnchorPane>\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(sampleFXML.getBytes());
-        ControllerLoader loader = new ControllerLoader(state);
+        ControllerLoader loader = new ControllerLoader(state, null);
 
         FXMLBundle<?> bundle = loader.getBundle(inputStream);
         assertEquals(AnchorPane.class, bundle.parent.getClass());

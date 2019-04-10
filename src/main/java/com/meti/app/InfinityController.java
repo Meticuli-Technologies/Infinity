@@ -11,7 +11,7 @@ class InfinityController extends Controller {
     final TryableFactory factory;
 
     public InfinityController(State state, Stage stage) {
-        super(stage, state);
+        super(state, stage);
 
         this.console = state.byClass(LoggerConsole.class).findAny().orElseThrow();
         this.factory = state.byClass(TryableFactory.class).findAny().orElseThrow();

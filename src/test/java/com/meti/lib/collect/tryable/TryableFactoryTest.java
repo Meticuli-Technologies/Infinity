@@ -15,14 +15,15 @@ class TryableFactoryTest {
     @Test
     void construct() {
         Catcher catcher = Mockito.mock(Catcher.class);
-        TryableFactory factory = new TryableFactory(catcher);
+        TryableFactory factory = new TryableFactory<>(catcher);
         assertEquals(catcher, factory.catcher);
     }
 
     @Test
     void performNotThrows() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
-        TryableFactory factory = new TryableFactory(catcher);
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
+
         Optional<Exception> optional = factory.accept(() -> {
         }).get();
 
@@ -32,8 +33,7 @@ class TryableFactoryTest {
     @Test
     void performThrows() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
-        TryableFactory factory = new TryableFactory(catcher);
-
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
         Exception exception = new Exception();
         Optional<Exception> optional = factory.accept(() -> {
             throw exception;
@@ -47,7 +47,7 @@ class TryableFactoryTest {
     @Test
     void supplierNoException() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
-        TryableFactory factory = new TryableFactory(catcher);
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
 
         Object o = new Object();
         Supplier<Optional<Object>> supplier = factory.supplier(() -> o);
@@ -60,7 +60,7 @@ class TryableFactoryTest {
     @Test
     void supplierNull() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
-        TryableFactory factory = new TryableFactory(catcher);
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
 
         Supplier<Optional<Object>> supplier = factory.supplier(() -> null);
         Optional<Object> optional = supplier.get();
@@ -70,7 +70,7 @@ class TryableFactoryTest {
     @Test
     void supplierWithException() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
-        TryableFactory factory = new TryableFactory(catcher);
+        TryableFactory<CollectionCatcher<ArrayList<Exception>>> factory = new TryableFactory<>(catcher);
 
         Supplier<Optional<Object>> supplier = factory.supplier(() -> {
             throw new IllegalStateException();

@@ -48,7 +48,7 @@ class StateTest {
     @Test
     void construct() {
         /*
-        This compiler detects State as a collection, and therefore gets confused.
+        This compiler detects State as a catcher, and therefore gets confused.
          */
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         State state = new State("test0", "test1", "test2");

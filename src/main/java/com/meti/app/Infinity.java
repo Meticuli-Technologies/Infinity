@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
+import com.meti.lib.collect.catches.Catcher;
 import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.FXMLBundle;
@@ -16,6 +17,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Level;
 
+import static com.meti.lib.util.ExceptionUtil.*;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -23,11 +26,11 @@ import java.util.logging.Level;
  */
 class Infinity implements InfinityImpl {
     final LoggerConsole console = new LoggerConsole();
-    final TryableFactory factory;
+    final TryableFactory<Catcher> factory;
     final State state;
 
     {
-        factory = new TryableFactory(console.asCatcher(Level.SEVERE));
+        factory = new TryableFactory<>(console.asCatcher(Level.SEVERE));
         console.eventManager.compound(ConsoleKey.ON_LOG, new ExitConsumer(Platform::exit));
 
         state = new State(console, factory);
@@ -41,7 +44,7 @@ class Infinity implements InfinityImpl {
     Menu loadMenu(Stage primaryStage) throws IOException {
         InputStream inputStream = getMenuURL()
                 .openStream();
-        FXMLBundle<?> bundle = new ControllerLoader(state)
+        FXMLBundle<?> bundle = new ControllerLoader(state, primaryStage)
                 .getBundle(inputStream);
 
         primaryStage.setScene(new Scene(bundle.parent));
@@ -50,10 +53,14 @@ class Infinity implements InfinityImpl {
     }
 
     URL getMenuURL() {
-        return Infinity.class.getResource("/com/meti/app/Menu.fxml");
+        return getClass().getResource("/com/meti/app/Menu.fxml");
     }
 
     @Override
     public void stop() {
+        String exceptionString = joinStackTrace(TryableFactory.DEFAULT.catcher.collection.stream());
+        if (exceptionString.length() != 0) {
+            console.log(Level.SEVERE, exceptionString);
+        }
     }
 }

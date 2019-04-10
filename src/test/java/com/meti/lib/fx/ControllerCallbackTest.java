@@ -4,7 +4,6 @@ import com.meti.lib.collect.State;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,12 +19,12 @@ class ControllerCallbackTest {
     @BeforeEach
     void beforeEach() {
         state = new State();
-        callback = new ControllerCallback(state);
+        callback = new ControllerCallback(state, null);
     }
 
     @Test
     void callInvalidConstruct() {
-        assertNull(callback.call(InvalidConstructor.class));
+        assertThrows(RuntimeException.class, ()-> callback.call(InvalidConstructor.class));
     }
 
     @Test
@@ -46,15 +45,15 @@ class ControllerCallbackTest {
     }
 
     private static class InvalidConstructor extends Controller {
-        InvalidConstructor(State state) {
-            super(null, state);
+        InvalidConstructor(State state, Stage stage) {
+            super(state, stage);
             throw new IllegalStateException();
         }
     }
 
     private static class ValidConstructor extends Controller {
-        ValidConstructor(State state) {
-            super(Mockito.mock(Stage.class), state);
+        ValidConstructor(State state, Stage stage) {
+            super(state, stage);
         }
     }
 }

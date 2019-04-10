@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class TryableFactory {
-    public static final TryableFactory DEFAULT = new TryableFactory(new CollectionCatcher<>(new ArrayList<>()));
-    final Catcher catcher;
+public class TryableFactory<C extends Catcher> {
+    public static final TryableFactory<CollectionCatcher<ArrayList<Exception>>> DEFAULT = new TryableFactory<>(new CollectionCatcher<>(new ArrayList<>()));
+    public final C catcher;
 
-    public TryableFactory(Catcher catcher) {
+    public TryableFactory(C catcher) {
         this.catcher = catcher;
     }
 

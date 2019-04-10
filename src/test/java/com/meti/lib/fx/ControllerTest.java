@@ -17,7 +17,7 @@ class ControllerTest {
     void construct(){
         State state = new State();
         Stage stage = Mockito.mock(Stage.class);
-        Controller controller = new Controller(stage, state);
+        Controller controller = new Controller(state, stage);
         assertEquals(stage, controller.stage);
         assertEquals(controller.state, state);
     }
