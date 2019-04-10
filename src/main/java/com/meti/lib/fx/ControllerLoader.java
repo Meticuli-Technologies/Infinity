@@ -1,37 +1,29 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.collection.State;
+import com.meti.lib.collect.State;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 3/31/2019
+ * @since 4/7/2019
  */
 public class ControllerLoader extends FXMLLoader {
-    private final State state;
+    final State state;
 
     public ControllerLoader(State state) {
         this.state = state;
-
-        setControllerFactory(param -> {
-            if (Controller.class.isAssignableFrom(param)) {
-                try {
-                    return param.getConstructor(State.class).newInstance(state);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            } else {
-                throw new IllegalArgumentException(param + " is not assignable to " + Controller.class);
-            }
-        });
+        setControllerFactory(new ControllerCallback(state));
     }
 
-    public static <T> T load(URL url, State state) throws IOException {
-        return new ControllerLoader(state).load(url.openStream());
+    public static <T> T load(State state, InputStream inputStream) throws IOException {
+        return new ControllerLoader(state).load(inputStream);
+    }
+
+    public FXMLBundle<?> getBundle(InputStream inputStream) throws IOException {
+        return new FXMLBundle<>(load(inputStream), getController());
     }
 }
