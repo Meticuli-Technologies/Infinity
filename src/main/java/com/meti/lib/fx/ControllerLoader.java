@@ -19,11 +19,11 @@ public class ControllerLoader extends FXMLLoader {
         setControllerFactory(new ControllerCallback(state));
     }
 
-    public static <T> T load(State state, InputStream inputStream) throws IOException {
+    public static <T> T load(InputStream inputStream, State state) throws IOException {
         return new ControllerLoader(state).load(inputStream);
     }
 
-    public FXMLBundle<?> getBundle(InputStream inputStream) throws IOException {
+    public <T> FXMLBundle<T> getBundle(InputStream inputStream) throws IOException {
         return new FXMLBundle<>(load(inputStream), getController());
     }
 }

@@ -15,7 +15,7 @@ public class TryableFactory {
         this.catcher = catcher;
     }
 
-    public Supplier<Optional<Exception>> perform(Tryable tryable) {
+    public Supplier<Optional<Exception>> accept(Tryable tryable) {
         return () -> {
             try {
                 tryable.perform();

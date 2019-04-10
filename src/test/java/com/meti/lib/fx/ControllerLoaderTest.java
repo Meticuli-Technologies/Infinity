@@ -36,7 +36,7 @@ class ControllerLoaderTest {
                 "            prefHeight=\"400.0\" prefWidth=\"600.0\">\n" +
                 "</AnchorPane>\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(sampleFXML.getBytes());
-        Object token = ControllerLoader.load(state, inputStream);
+        Object token = ControllerLoader.load(inputStream, state);
         assertEquals(AnchorPane.class, token.getClass());
 
         AnchorPane pane = (AnchorPane) token;

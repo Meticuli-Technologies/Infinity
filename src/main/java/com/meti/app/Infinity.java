@@ -35,7 +35,7 @@ class Infinity implements InfinityImpl {
 
     @Override
     public void start(Stage primaryStage) {
-        OptionalUtil.throwIfPresent(factory.perform(() -> loadMenu(primaryStage)).get());
+        OptionalUtil.throwIfPresent(factory.accept(() -> loadMenu(primaryStage)).get());
     }
 
     Menu loadMenu(Stage primaryStage) throws IOException {

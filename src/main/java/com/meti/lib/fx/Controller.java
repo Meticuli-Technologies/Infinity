@@ -1,6 +1,13 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * @author SirMathhman
@@ -8,9 +15,27 @@ import com.meti.lib.collect.State;
  * @since 4/7/2019
  */
 public class Controller {
-    final State state;
+    protected final State state;
+    final Stage stage;
 
-    public Controller(State state) {
+    public Controller(Stage stage, State state) {
+        this.stage = stage;
         this.state = state;
+    }
+
+    public <T> T onto(URL url) throws IOException {
+        return onto(url.openStream());
+    }
+
+    public <T> T onto(InputStream inputStream) throws IOException {
+        FXMLBundle<T> bundle = new ControllerLoader(state)
+                .getBundle(inputStream);
+
+        stage.setScene(new Scene(bundle.parent));
+        if (stage.isShowing()) {
+            stage.show();
+        }
+
+        return bundle.controller;
     }
 }

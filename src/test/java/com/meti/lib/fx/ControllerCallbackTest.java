@@ -1,8 +1,10 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,14 +47,14 @@ class ControllerCallbackTest {
 
     private static class InvalidConstructor extends Controller {
         InvalidConstructor(State state) {
-            super(state);
+            super(null, state);
             throw new IllegalStateException();
         }
     }
 
     private static class ValidConstructor extends Controller {
         ValidConstructor(State state) {
-            super(state);
+            super(Mockito.mock(Stage.class), state);
         }
     }
 }

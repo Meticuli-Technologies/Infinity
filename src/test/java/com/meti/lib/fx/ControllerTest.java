@@ -1,7 +1,9 @@
 package com.meti.lib.fx;
 
 import com.meti.lib.collect.State;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +16,9 @@ class ControllerTest {
     @Test
     void construct(){
         State state = new State();
-        Controller controller = new Controller(state);
+        Stage stage = Mockito.mock(Stage.class);
+        Controller controller = new Controller(stage, state);
+        assertEquals(stage, controller.stage);
         assertEquals(controller.state, state);
     }
 }

@@ -23,7 +23,7 @@ class TryableFactoryTest {
     void performNotThrows() {
         CollectionCatcher<ArrayList<Exception>> catcher = new CollectionCatcher<>(new ArrayList<>());
         TryableFactory factory = new TryableFactory(catcher);
-        Optional<Exception> optional = factory.perform(() -> {
+        Optional<Exception> optional = factory.accept(() -> {
         }).get();
 
         assertFalse(optional.isPresent());
@@ -35,7 +35,7 @@ class TryableFactoryTest {
         TryableFactory factory = new TryableFactory(catcher);
 
         Exception exception = new Exception();
-        Optional<Exception> optional = factory.perform(() -> {
+        Optional<Exception> optional = factory.accept(() -> {
             throw exception;
         }).get();
 
