@@ -22,10 +22,6 @@ public class Controller {
         this.state = state;
     }
 
-    public <T> T onto(URL url) throws IOException {
-        return onto(url.openStream());
-    }
-
     public <T> T onto(InputStream inputStream) throws IOException {
         FXMLBundle<T> bundle = new ControllerLoader(state, stage)
                 .getBundle(inputStream);

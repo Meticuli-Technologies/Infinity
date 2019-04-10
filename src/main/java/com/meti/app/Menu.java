@@ -27,7 +27,7 @@ public class Menu extends InfinityController {
     }
 
     Local loadLocal() throws IOException {
-        return onto(getLocalURL());
+        return onto(getLocalURL().openStream());
     }
 
     URL getLocalURL() {
