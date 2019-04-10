@@ -35,15 +35,8 @@ class InfinityTest {
     }
 
     @Test
-    void getMenuBundle() throws IOException {
-        FXMLBundle<?> bundle = infinity.getMenuBundle();
-        assertEquals(AnchorPane.class, bundle.parent.getClass());
-        assertEquals(Menu.class, bundle.controller.getClass());
-    }
-
-    @Test
     void getMenuURL() {
-        URL url = Infinity.getMenuURL();
+        URL url = infinity.getMenuURL();
         assertNotNull(url);
         assertTrue(url.getPath().endsWith("/com/meti/app/Menu.fxml"));
     }

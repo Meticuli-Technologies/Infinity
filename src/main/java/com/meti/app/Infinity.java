@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Level;
 
@@ -38,17 +39,17 @@ class Infinity implements InfinityImpl {
     }
 
     Menu loadMenu(Stage primaryStage) throws IOException {
-        FXMLBundle<?> bundle = getMenuBundle();
+        InputStream inputStream = getMenuURL()
+                .openStream();
+        FXMLBundle<?> bundle = new ControllerLoader(state)
+                .getBundle(inputStream);
+
         primaryStage.setScene(new Scene(bundle.parent));
         primaryStage.show();
         return (Menu) bundle.controller;
     }
 
-    FXMLBundle<?> getMenuBundle() throws IOException {
-        return new ControllerLoader(state).getBundle(getMenuURL().openStream());
-    }
-
-    static URL getMenuURL() {
+    URL getMenuURL() {
         return Infinity.class.getResource("/com/meti/app/Menu.fxml");
     }
 
