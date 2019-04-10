@@ -27,6 +27,6 @@ class LocalTest {
     @Start
     void start(Stage primaryStage) throws IOException {
         Infinity infinity = new Infinity();
-        local = infinity.loadInitial(primaryStage, Menu.getLocalURL());
+        local = infinity.loadInitial(primaryStage, URLS.getLocalURL());
     }
 }

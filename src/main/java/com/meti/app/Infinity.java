@@ -43,7 +43,7 @@ class Infinity implements InfinityImpl {
     }
 
     Menu loadMenu(Stage primaryStage) throws IOException {
-        return loadInitial(primaryStage, getMenuURL());
+        return loadInitial(primaryStage, URLS.getMenuURL());
     }
 
     <T> T loadInitial(Stage primaryStage, URL initialURL) throws IOException {
@@ -55,10 +55,6 @@ class Infinity implements InfinityImpl {
         primaryStage.setScene(new Scene(bundle.parent));
         primaryStage.show();
         return bundle.controller;
-    }
-
-    URL getMenuURL() {
-        return getClass().getResource("/com/meti/app/Menu.fxml");
     }
 
     @Override

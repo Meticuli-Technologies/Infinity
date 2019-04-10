@@ -6,7 +6,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * @author SirMathhman
@@ -22,11 +21,7 @@ public class Menu extends InfinityController {
     }
 
     Local loadLocal() throws IOException {
-        return onto(getLocalURL().openStream());
-    }
-
-    static URL getLocalURL() {
-        return Infinity.class.getResource("/com/meti/app/Local.fxml");
+        return onto(URLS.getLocalURL().openStream());
     }
 
     @FXML

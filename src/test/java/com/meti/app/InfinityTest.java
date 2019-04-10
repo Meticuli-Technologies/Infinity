@@ -39,7 +39,7 @@ class InfinityTest {
 
     @Test
     void getMenuURL() {
-        URL url = infinity.getMenuURL();
+        URL url = URLS.getMenuURL();
         assertNotNull(url);
         assertTrue(url.getPath().endsWith("/com/meti/app/Menu.fxml"));
     }

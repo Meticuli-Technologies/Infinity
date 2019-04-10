@@ -4,7 +4,6 @@ import com.meti.lib.fx.FXUtil;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
@@ -29,7 +28,7 @@ class MenuTest {
 
     @Test
     void getLocalURL(){
-        assertNotNull(menu.getLocalURL());
+        assertNotNull(URLS.getLocalURL());
     }
 
     @Test
