@@ -15,7 +15,7 @@ public class Local extends InfinityController {
 
     @FXML
     public void back() {
- /*       onto()*/
+        factory.accept(() -> onto(URLS.getMenuURL().openStream()));
     }
 
     @FXML
