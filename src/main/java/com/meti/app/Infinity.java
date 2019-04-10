@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import static com.meti.lib.util.ExceptionUtil.*;
@@ -58,9 +59,13 @@ class Infinity implements InfinityImpl {
 
     @Override
     public void stop() {
+        printStackTrace(exceptionString -> console.log(Level.SEVERE, exceptionString));
+    }
+
+    public void printStackTrace(Consumer<String> consumer) {
         String exceptionString = joinStackTrace(TryableFactory.DEFAULT.catcher.collection.stream());
         if (exceptionString.length() != 0) {
-            console.log(Level.SEVERE, exceptionString);
+            consumer.accept(exceptionString);
         }
     }
 }

@@ -1,8 +1,9 @@
 package com.meti.app;
 
-import com.meti.lib.fx.FXMLBundle;
+import com.meti.lib.collect.consume.CollectionConsumer;
+import com.meti.lib.collect.tryable.TryableFactory;
 import com.meti.lib.fx.FXUtil;
-import javafx.scene.layout.AnchorPane;
+import com.meti.lib.util.ExceptionUtil;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,9 +11,11 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,5 +62,24 @@ class InfinityTest {
     @Stop
     void onStop() {
         infinity.stop();
+    }
+
+    @Test
+    void printStackTrace() {
+        IllegalArgumentException e0 = new IllegalArgumentException();
+        TryableFactory.DEFAULT.accept(() -> {
+            throw e0;
+        }).get();
+        IllegalStateException e1 = new IllegalStateException();
+        TryableFactory.DEFAULT.accept(() -> {
+            throw e1;
+        }).get();
+
+        CollectionConsumer<String, ArrayList<String>> consumer = new CollectionConsumer<>(new ArrayList<>());
+        infinity.printStackTrace(consumer);
+
+        Collection<String> collection = consumer.collection;
+        assertEquals(1, collection.size());
+        assertEquals(ExceptionUtil.joinStackTrace(Stream.of(e0, e1)), consumer.collection.get(0));
     }
 }
