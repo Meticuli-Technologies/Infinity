@@ -6,7 +6,7 @@ package com.meti;
  * @since 4/11/2019
  */
 public class InfinityClientController extends InfinityController{
-    private final Querier querier;
+    protected final Querier querier;
 
     public InfinityClientController(State state) {
         super(state);
