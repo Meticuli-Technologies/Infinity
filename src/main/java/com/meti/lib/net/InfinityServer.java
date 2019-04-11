@@ -24,10 +24,10 @@ public class InfinityServer extends Server {
         this.handlerFactory = new InfinityHandlerFactory();
     }
 
-    private class InfinityHandlerFactory implements Function<Client, TokenHandler> {
+    private class InfinityHandlerFactory implements Function<Client, MappedHandler> {
         @Override
-        public TokenHandler apply(Client client) {
-            TokenHandler handler = new TokenHandler(client);
+        public MappedHandler apply(Client client) {
+            MappedHandler handler = new MappedHandler();
             handler.put(new TypePredicate<>(Message.class),
                     ((Function<Message, OKResponse>) message -> {
                         chat.add(message);

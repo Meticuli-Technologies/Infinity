@@ -20,7 +20,7 @@ public class Server implements Callable<Void>, Closeable {
     protected final ServerSocket serverSocket;
     protected final ExecutorService service;
     public Consumer<Client> onAccept;
-    public Function<Client, TokenHandler> handlerFactory;
+    public Function<Client, MappedHandler> handlerFactory;
 
     public Server(ServerSocket serverSocket, ExecutorService service) {
         this.serverSocket = serverSocket;
@@ -38,8 +38,8 @@ public class Server implements Callable<Void>, Closeable {
             }
 
             if (handlerFactory != null) {
-                TokenHandler handler = handlerFactory.apply(client);
-                service.submit(handler);
+                MappedHandler handler = handlerFactory.apply(client);
+                service.submit(new TokenHandler(client, handler));
             } else {
                 throw new IllegalStateException("Handler factory has not been set!");
             }
@@ -50,5 +50,25 @@ public class Server implements Callable<Void>, Closeable {
     @Override
     public void close() throws IOException {
         serverSocket.close();
+    }
+
+    private static class TokenHandler implements Callable<Void> {
+        private final Client client;
+        private final MappedHandler handler;
+
+        public TokenHandler(Client client, MappedHandler handler) {
+            this.client = client;
+            this.handler = handler;
+        }
+
+        @Override
+        public Void call() throws Exception {
+            while (!client.isClosed()) {
+                Object token = client.readObject();
+                client.writeObject(handler.apply(token));
+                client.flush();
+            }
+            return null;
+        }
     }
 }
