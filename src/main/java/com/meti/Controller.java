@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @since 4/11/2019
  */
 public class Controller {
-    private final State state;
+    final State state;
 
     public Controller(State state) {
         this.state = state;
