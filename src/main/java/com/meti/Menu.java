@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -41,10 +42,14 @@ public class Menu extends Controller {
             state.add(server);
             service.submit(server);
 
+            onto(getClass().getResource("/com/meti/ServerDisplay.fxml"));
+
             Socket socket = new Socket(InetAddress.getByName("localhost"), port);
             Querier querier = new Querier(socket);
             state.add(querier);
             service.submit(querier);
+
+            onto(getClass().getResource("/com/meti/ClientDisplay.fxml"), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
