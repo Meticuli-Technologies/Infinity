@@ -1,7 +1,7 @@
 package com.meti;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -10,9 +10,14 @@ import java.util.stream.Collectors;
  */
 public class State extends ArrayList<Object> {
     public <T> T byClassToSingle(Class<T> tClass){
-        return CollectionUtil.toSingle(stream()
+        return byClass(tClass)
+                .findAny()
+                .orElseThrow();
+    }
+
+    public <T> Stream<T> byClass(Class<T> tClass) {
+        return stream()
                 .filter(o -> tClass.isAssignableFrom(o.getClass()))
-                .map(tClass::cast)
-                .collect(Collectors.toList()));
+                .map(tClass::cast);
     }
 }
