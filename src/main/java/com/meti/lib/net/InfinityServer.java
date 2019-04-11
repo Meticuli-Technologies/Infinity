@@ -28,17 +28,8 @@ public class InfinityServer extends Server {
         @Override
         public MappedHandler apply(Client client) {
             MappedHandler handler = new MappedHandler();
-            handler.put(new TypePredicate<>(Message.class),
-                    ((Function<Message, OKResponse>) message -> {
-                        chat.add(message);
-                        return new OKResponse("Message received successfully.");
-                    }).compose(new TypeFunction<>(Message.class))
-            );
-
-            handler.put(new TypePredicate<>(ChatRequest.class),
-                    ((Function<ChatRequest, ChatUpdate>) chatRequest -> new ChatUpdate(chat.poll()))
-                            .compose(new TypeFunction<>(ChatRequest.class))
-            );
+            handler.add(chat.getRegisteredMessageHandler());
+            handler.add(chat.getRequestHandler());
             return handler;
         }
     }
