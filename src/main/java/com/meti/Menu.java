@@ -47,11 +47,10 @@ public class Menu {
                     //TODO: add handlers
 
                     service.submit((Callable<Void>) () -> {
-                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                        Querier.Client client = new Querier.Client(socket);
 
                         while (!socket.isClosed()) {
-                            Object token = objectInputStream.readObject();
+                            Object token = client.readObject();
                             Object toWrite;
 
                             Set<Object> results = handlers.keySet()
@@ -67,8 +66,8 @@ public class Menu {
                                 toWrite = e;
                             }
 
-                            objectOutputStream.writeObject(toWrite);
-                            objectOutputStream.flush();
+                            client.writeObject(toWrite);
+                            client.flush();
                         }
                         return null;
                     });
@@ -77,29 +76,24 @@ public class Menu {
             });
 
             Socket socket = new Socket(InetAddress.getByName("localhost"), port);
-            service.submit(new VoidCallable(socket));
+            service.submit(new Querier(socket));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static class VoidCallable implements Callable<Void> {
+    private static class Querier implements Callable<Void> {
         private final BlockingQueue<CompletableFuture<Object>> futures = new ArrayBlockingQueue<>(16);
-        private final Socket socket;
-        private final ObjectOutputStream objectOutputStream;
-        private final ObjectInputStream objectInputStream;
+        private final Client client;
 
-        public VoidCallable(Socket socket) throws IOException {
-            this.socket = socket;
-
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
+        public Querier(Socket socket) throws IOException {
+            this.client = new Client(socket);
         }
 
         @Override
         public Void call() throws Exception {
-            while (!socket.isClosed()) {
-                Object token = objectInputStream.readObject();
+            while (!client.getSocket().isClosed()) {
+                Object token = client.readObject();
                 if (token instanceof Throwable) {
                     futures.take().completeExceptionally((Throwable) token);
                 } else {
@@ -110,12 +104,48 @@ public class Menu {
         }
 
         public CompletableFuture<Object> query(Object input) throws IOException {
-            objectOutputStream.writeObject(input);
-            objectOutputStream.flush();
+            client.writeObject(input);
+            client.flush();
 
             CompletableFuture<Object> future = new CompletableFuture<>();
             futures.offer(future);
             return future;
+        }
+
+        public static class Client {
+            final ObjectOutputStream objectOutputStream;
+            final ObjectInputStream objectInputStream;
+            private final Socket socket;
+
+            public Client(Socket socket) throws IOException {
+                this.socket = socket;
+                this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                this.objectInputStream = new ObjectInputStream(socket.getInputStream());
+            }
+
+            public void flush() throws IOException {
+                objectOutputStream.flush();
+            }
+
+            public Socket getSocket() {
+                return socket;
+            }
+
+            public Object readObject() throws IOException, ClassNotFoundException {
+                return objectInputStream.readObject();
+            }
+
+            public Object readUnshared() throws IOException, ClassNotFoundException {
+                return objectInputStream.readUnshared();
+            }
+
+            public void writeObject(Object obj) throws IOException {
+                objectOutputStream.writeObject(obj);
+            }
+
+            public void writeUnshared(Object obj) throws IOException {
+                objectOutputStream.writeUnshared(obj);
+            }
         }
     }
 }
