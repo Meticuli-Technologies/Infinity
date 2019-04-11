@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @since 4/11/2019
  */
 public class InfinityServer extends Server {
-    private final Chat chat = new Chat();
+    public final Chat chat = new Chat();
 
     public InfinityServer(ServerSocket serverSocket, ExecutorService service) {
         super(serverSocket, service);

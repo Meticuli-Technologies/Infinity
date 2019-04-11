@@ -1,7 +1,9 @@
 package com.meti.app;
 
-import com.meti.lib.util.State;
 import com.meti.app.control.InfinityServerController;
+import com.meti.chat.Message;
+import com.meti.lib.util.State;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -20,7 +22,7 @@ public class ServerDisplay extends InfinityServerController implements Initializ
     private ListView<InetAddress> clientListView;
 
     @FXML
-    private ListView<String> chatListView;
+    private ListView<Message> chatListView;
 
     public ServerDisplay(State state) {
         super(state);
@@ -29,7 +31,6 @@ public class ServerDisplay extends InfinityServerController implements Initializ
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         server.onAccept = client -> clientListView.getItems().add(client.socket.getInetAddress());
-
-
+        server.chat.onMessageAdded = message -> Platform.runLater(() -> chatListView.getItems().add(message));
     }
 }
