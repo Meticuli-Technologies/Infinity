@@ -44,6 +44,12 @@ class Server implements Callable<Void> {
                 chat.add(message);
                 return new OKResponse("Message received successfully.");
             }).compose(new TypeFunction<>(Message.class)));
+
+            handler.put(
+                    new TypePredicate<>(ChatRequest.class),
+                    ((Function<ChatRequest, ChatUpdate>) chatRequest -> new ChatUpdate(chat.poll()))
+                            .compose(new TypeFunction<>(ChatRequest.class))
+            );
             service.submit(handler);
         }
         return null;

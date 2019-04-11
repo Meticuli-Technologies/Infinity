@@ -1,17 +1,22 @@
 package com.meti;
 
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class ClientDisplay extends InfinityClientController {
+public class ClientDisplay extends InfinityClientController implements Initializable {
     @FXML
-    private ListView<String> chatListView;
+    private ListView<Message> chatListView;
 
     @FXML
     private TextField input;
@@ -28,5 +33,24 @@ public class ClientDisplay extends InfinityClientController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    ChatUpdate update = (ChatUpdate) querier.query(new ChatRequest()).get();
+                    if (update.latest != null) {
+                        chatListView.getItems().add(update.latest);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stop();
+                }
+            }
+        };
+        timer.start();
     }
 }
