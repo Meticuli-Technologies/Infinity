@@ -7,15 +7,14 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -79,8 +78,48 @@ public class Menu {
                 }
                 return null;
             });
+
+            Socket socket = new Socket(InetAddress.getByName("localhost"), port);
+
+            service.submit(new VoidCallable(socket));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class VoidCallable implements Callable<Void> {
+        private final BlockingQueue<CompletableFuture<Object>> futures = new ArrayBlockingQueue<>(16);
+        private final Socket socket;
+        private final ObjectOutputStream objectOutputStream;
+        private final ObjectInputStream objectInputStream;
+
+        public VoidCallable(Socket socket) throws IOException {
+            this.socket = socket;
+
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
+        }
+
+        @Override
+        public Void call() throws Exception {
+            while (!socket.isClosed()) {
+                Object token = objectInputStream.readObject();
+                if (token instanceof Throwable) {
+                    futures.take().completeExceptionally((Throwable) token);
+                } else {
+                    futures.take().complete(token);
+                }
+            }
+            return null;
+        }
+
+        public CompletableFuture<Object> query(Object input) throws IOException {
+            objectOutputStream.writeObject(input);
+            objectOutputStream.flush();
+
+            CompletableFuture<Object> future = new CompletableFuture<>();
+            futures.offer(future);
+            return future;
         }
     }
 }
