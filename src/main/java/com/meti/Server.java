@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author SirMathhman
@@ -17,6 +18,7 @@ class Server implements Callable<Void> {
     private final ExecutorService service;
 
     public final List<Client> clients = new ArrayList<>();
+    private final Chat chat = new Chat();
     public Consumer<Client> onAccept;
 
     public Server(ServerSocket serverSocket, ExecutorService service) {
@@ -36,7 +38,13 @@ class Server implements Callable<Void> {
             if (onAccept != null) {
                 onAccept.accept(client);
             }
-            service.submit(new TokenHandler(client));
+            TokenHandler handler = new TokenHandler(client);
+
+            handler.put(new TypePredicate<>(Message.class), ((Function<Message, OKResponse>) message -> {
+                chat.add(message);
+                return new OKResponse("Message received successfully.");
+            }).compose(new TypeFunction<>(Message.class)));
+            service.submit(handler);
         }
         return null;
     }

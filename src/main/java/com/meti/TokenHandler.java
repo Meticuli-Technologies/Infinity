@@ -1,7 +1,6 @@
 package com.meti;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -13,9 +12,8 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 4/11/2019
  */
-class TokenHandler implements Callable<Void> {
+class TokenHandler extends HashMap<Predicate<Object>, Function<Object, ?>> implements Callable<Void> {
     private final Client client;
-    private Map<Predicate<Object>, Function<Object, Object>> handlers = new HashMap<>();
 
     public TokenHandler(Client client) {
         this.client = client;
@@ -27,10 +25,10 @@ class TokenHandler implements Callable<Void> {
             Object token = client.readObject();
             Object toWrite;
 
-            Set<Object> results = handlers.keySet()
+            Set<Object> results = keySet()
                     .stream()
                     .filter(predicate -> predicate.test(token))
-                    .map(handlers::get)
+                    .map(this::get)
                     .map(objectObjectFunction -> objectObjectFunction.apply(token))
                     .collect(Collectors.toSet());
 
