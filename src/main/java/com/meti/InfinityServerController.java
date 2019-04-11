@@ -6,7 +6,7 @@ package com.meti;
  * @since 4/11/2019
  */
 public class InfinityServerController extends InfinityController{
-    private final Server server;
+    protected final Server server;
 
     public InfinityServerController(State state) {
         super(state);

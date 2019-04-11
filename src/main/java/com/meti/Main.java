@@ -13,6 +13,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         State state = new State();
+        state.add(primaryStage);
+
         primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml"), state)));
         primaryStage.show();
     }

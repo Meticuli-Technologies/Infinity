@@ -13,7 +13,7 @@ import java.net.Socket;
 public class Client {
     final ObjectOutputStream objectOutputStream;
     final ObjectInputStream objectInputStream;
-    private final Socket socket;
+    public final Socket socket;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
@@ -23,10 +23,6 @@ public class Client {
 
     public void flush() throws IOException {
         objectOutputStream.flush();
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public Object readObject() throws IOException, ClassNotFoundException {

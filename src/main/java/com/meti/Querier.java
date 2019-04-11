@@ -22,7 +22,7 @@ class Querier implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
-        while (!client.getSocket().isClosed()) {
+        while (!client.socket.isClosed()) {
             Object token = client.readObject();
             if (token instanceof Throwable) {
                 futures.take().completeExceptionally((Throwable) token);
