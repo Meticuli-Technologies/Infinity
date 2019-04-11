@@ -8,10 +8,15 @@ import javafx.scene.control.ListView;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class ServerDisplay {
+public class ServerDisplay extends Controller {
+
     @FXML
     private ListView<String> clientListView;
 
     @FXML
     private ListView<String> chatListView;
+
+    public ServerDisplay(State state) {
+        super(state);
+    }
 }

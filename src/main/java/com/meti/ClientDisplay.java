@@ -9,12 +9,16 @@ import javafx.scene.control.TextField;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class ClientDisplay {
+public class ClientDisplay extends Controller {
     @FXML
     private ListView<String> chatListView;
 
     @FXML
     private TextField input;
+
+    public ClientDisplay(State state) {
+        super(state);
+    }
 
     @FXML
     public void handle(){
