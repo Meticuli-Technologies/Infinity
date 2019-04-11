@@ -1,5 +1,6 @@
-package com.meti;
+package com.meti.lib.control;
 
+import com.meti.lib.util.State;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.net.URL;
  * @version 0.0.0
  * @since 4/11/2019
  */
-class ControllerLoader extends FXMLLoader {
+public class ControllerLoader extends FXMLLoader {
     private final State state;
 
     private ControllerLoader(URL url, State state) {

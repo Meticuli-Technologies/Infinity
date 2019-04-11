@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.chat;
+
+import com.meti.lib.net.Request;
 
 /**
  * @author SirMathhman

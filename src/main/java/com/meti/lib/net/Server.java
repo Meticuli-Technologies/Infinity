@@ -1,4 +1,11 @@
-package com.meti;
+package com.meti.lib.net;
+
+import com.meti.chat.Chat;
+import com.meti.chat.ChatRequest;
+import com.meti.chat.ChatUpdate;
+import com.meti.chat.Message;
+import com.meti.lib.util.TypeFunction;
+import com.meti.lib.util.TypePredicate;
 
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -13,7 +20,7 @@ import java.util.function.Function;
  * @version 0.0.0
  * @since 4/11/2019
  */
-class Server implements Callable<Void> {
+public class Server implements Callable<Void> {
     private final ServerSocket serverSocket;
     private final ExecutorService service;
 

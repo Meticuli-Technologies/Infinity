@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.lib.net;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.lib.net;
+
+import com.meti.lib.util.CollectionUtil;
 
 import java.util.HashMap;
 import java.util.Set;

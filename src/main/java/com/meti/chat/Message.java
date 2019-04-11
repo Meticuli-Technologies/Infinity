@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.chat;
 
 import java.io.Serializable;
 

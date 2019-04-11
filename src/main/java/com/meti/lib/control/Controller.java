@@ -1,5 +1,6 @@
-package com.meti;
+package com.meti.lib.control;
 
+import com.meti.lib.util.State;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
  * @since 4/11/2019
  */
 public class Controller {
-    final State state;
+    protected final State state;
 
     public Controller(State state) {
         this.state = state;

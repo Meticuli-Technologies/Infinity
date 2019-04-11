@@ -1,4 +1,7 @@
-package com.meti;
+package com.meti.app.control;
+
+import com.meti.lib.control.Controller;
+import com.meti.lib.util.State;
 
 /**
  * @author SirMathhman

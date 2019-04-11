@@ -1,5 +1,7 @@
-package com.meti;
+package com.meti.app;
 
+import com.meti.lib.util.State;
+import com.meti.app.control.InfinityServerController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;

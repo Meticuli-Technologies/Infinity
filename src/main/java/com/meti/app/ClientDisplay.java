@@ -1,5 +1,10 @@
-package com.meti;
+package com.meti.app;
 
+import com.meti.lib.util.State;
+import com.meti.chat.ChatRequest;
+import com.meti.chat.ChatUpdate;
+import com.meti.chat.Message;
+import com.meti.app.control.InfinityClientController;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

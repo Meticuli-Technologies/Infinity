@@ -1,5 +1,9 @@
-package com.meti;
+package com.meti.app;
 
+import com.meti.lib.util.State;
+import com.meti.lib.control.Controller;
+import com.meti.lib.net.Querier;
+import com.meti.lib.net.Server;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

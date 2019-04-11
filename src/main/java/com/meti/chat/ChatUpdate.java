@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.chat;
+
+import com.meti.lib.net.Update;
 
 /**
  * @author SirMathhman
@@ -6,7 +8,7 @@ package com.meti;
  * @since 4/11/2019
  */
 public class ChatUpdate implements Update {
-    final Message latest;
+    public final Message latest;
 
     public ChatUpdate(Message latest) {
         this.latest = latest;

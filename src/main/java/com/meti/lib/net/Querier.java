@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.lib.net;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
  * @version 0.0.0
  * @since 4/11/2019
  */
-class Querier implements Callable<Void> {
+public class Querier implements Callable<Void> {
     private final BlockingQueue<CompletableFuture<Object>> futures = new ArrayBlockingQueue<>(16);
     private final Client client;
 
