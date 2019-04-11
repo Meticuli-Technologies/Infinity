@@ -35,6 +35,8 @@ public class ClientDisplay extends InfinityClientController implements Initializ
         try {
             Message message = new Message("unknown", input.getText());
             querier.query(message).get();
+
+            input.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
