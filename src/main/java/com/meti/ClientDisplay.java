@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class ClientDisplay extends Controller {
+public class ClientDisplay extends InfinityClientController {
     @FXML
     private ListView<String> chatListView;
 

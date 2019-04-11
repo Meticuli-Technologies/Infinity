@@ -8,7 +8,7 @@ import javafx.scene.control.ListView;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class ServerDisplay extends Controller {
+public class ServerDisplay extends InfinityServerController {
 
     @FXML
     private ListView<String> clientListView;
