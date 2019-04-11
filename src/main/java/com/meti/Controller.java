@@ -21,8 +21,7 @@ public class Controller {
     }
 
     public void onto(URL url) throws IOException {
-        Stage stage = state.byClassToSingle(Stage.class);
-        onto(url, stage);
+        onto(url, 0);
     }
 
     private void onto(URL url, Stage stage) throws IOException {
