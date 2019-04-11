@@ -1,7 +1,6 @@
 package com.meti.lib.net;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -16,8 +15,8 @@ public class Querier implements Callable<Void> {
     private final BlockingQueue<CompletableFuture<Object>> futures = new ArrayBlockingQueue<>(16);
     private final Client client;
 
-    public Querier(Socket socket) throws IOException {
-        this.client = new Client(socket);
+    public Querier(Client client) {
+        this.client = client;
     }
 
     @Override

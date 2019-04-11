@@ -1,5 +1,6 @@
 package com.meti.lib.net;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,15 +11,23 @@ import java.net.Socket;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Client {
-    final ObjectOutputStream objectOutputStream;
-    final ObjectInputStream objectInputStream;
+public class Client implements Closeable {
+    private final ObjectOutputStream objectOutputStream;
+    private final ObjectInputStream objectInputStream;
     public final Socket socket;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
+    }
+
+    @Override
+    public void close() throws IOException {
+        objectInputStream.close();
+        objectOutputStream.close();
+
+        socket.close();
     }
 
     public void flush() throws IOException {

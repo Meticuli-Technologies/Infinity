@@ -1,9 +1,10 @@
 package com.meti.app;
 
-import com.meti.lib.util.State;
-import com.meti.lib.control.Controller;
+import com.meti.app.control.InfinityController;
+import com.meti.lib.net.Client;
 import com.meti.lib.net.Querier;
 import com.meti.lib.net.Server;
+import com.meti.lib.util.State;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,15 +13,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Menu extends Controller {
+public class Menu extends InfinityController {
     @FXML
     private TextField portField;
 
@@ -39,9 +38,6 @@ public class Menu extends Controller {
             int port = Integer.parseInt(portField.getText());
             ServerSocket serverSocket = new ServerSocket(port);
 
-            ExecutorService service = Executors.newCachedThreadPool();
-            state.add(service);
-
             Server server = new Server(serverSocket, service);
             state.add(server);
             service.submit(server);
@@ -49,7 +45,10 @@ public class Menu extends Controller {
             onto(getClass().getResource("/com/meti/ServerDisplay.fxml"));
 
             Socket socket = new Socket(InetAddress.getByName("localhost"), port);
-            Querier querier = new Querier(socket);
+            Client client = new Client(socket);
+            state.add(client);
+
+            Querier querier = new Querier(client);
             state.add(querier);
             service.submit(querier);
 

@@ -7,6 +7,8 @@ import com.meti.chat.Message;
 import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.function.Function;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Server implements Callable<Void> {
+public class Server implements Callable<Void>, Closeable {
     private final ServerSocket serverSocket;
     private final ExecutorService service;
 
@@ -31,7 +33,6 @@ public class Server implements Callable<Void> {
     public Server(ServerSocket serverSocket, ExecutorService service) {
         this.serverSocket = serverSocket;
         this.service = service;
-
 
         //TODO: add handlers
     }
@@ -47,18 +48,24 @@ public class Server implements Callable<Void> {
             }
             TokenHandler handler = new TokenHandler(client);
 
-            handler.put(new TypePredicate<>(Message.class), ((Function<Message, OKResponse>) message -> {
-                chat.add(message);
+            handler.put(new TypePredicate<>(Message.class),
+                    ((Function<Message, OKResponse>) message -> {
+                        chat.add(message);
                 return new OKResponse("Message received successfully.");
-            }).compose(new TypeFunction<>(Message.class)));
+                    }).compose(new TypeFunction<>(Message.class))
+            );
 
-            handler.put(
-                    new TypePredicate<>(ChatRequest.class),
+            handler.put(new TypePredicate<>(ChatRequest.class),
                     ((Function<ChatRequest, ChatUpdate>) chatRequest -> new ChatUpdate(chat.poll()))
                             .compose(new TypeFunction<>(ChatRequest.class))
             );
             service.submit(handler);
         }
         return null;
+    }
+
+    @Override
+    public void close() throws IOException {
+        serverSocket.close();
     }
 }
