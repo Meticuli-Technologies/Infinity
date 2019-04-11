@@ -7,6 +7,7 @@ import com.meti.lib.util.TypeFunction;
 import com.meti.lib.util.TypePredicate;
 
 import java.util.LinkedList;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -14,7 +15,21 @@ import java.util.function.Function;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Chat extends LinkedList<Message> {
+public class Chat {
+    private final LinkedList<Message> messages = new LinkedList<>();
+    public Consumer<Message> onMessageAdded;
+
+    public boolean add(Message message) {
+        if (onMessageAdded != null) {
+            onMessageAdded.accept(message);
+        }
+        return messages.add(message);
+    }
+
+    public Message poll() {
+        return messages.poll();
+    }
+
     public Handler<Object> getRegisteredMessageHandler() {
         return new AbstractHandler<>(
                 new TypePredicate<>(Message.class),
