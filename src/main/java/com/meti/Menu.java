@@ -80,7 +80,6 @@ public class Menu {
             });
 
             Socket socket = new Socket(InetAddress.getByName("localhost"), port);
-
             service.submit(new VoidCallable(socket));
         } catch (IOException e) {
             e.printStackTrace();
