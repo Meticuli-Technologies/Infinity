@@ -3,7 +3,7 @@ package com.meti.app;
 import com.meti.app.control.InfinityController;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Querier;
-import com.meti.lib.net.Server;
+import com.meti.lib.net.InfinityServer;
 import com.meti.lib.util.State;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -38,7 +38,7 @@ public class Menu extends InfinityController {
             int port = Integer.parseInt(portField.getText());
             ServerSocket serverSocket = new ServerSocket(port);
 
-            Server server = new Server(serverSocket, service);
+            InfinityServer server = new InfinityServer(serverSocket, service);
             state.add(server);
             service.submit(server);
 

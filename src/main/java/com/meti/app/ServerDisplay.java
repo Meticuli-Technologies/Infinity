@@ -29,5 +29,7 @@ public class ServerDisplay extends InfinityServerController implements Initializ
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         server.onAccept = client -> clientListView.getItems().add(client.socket.getInetAddress());
+
+
     }
 }

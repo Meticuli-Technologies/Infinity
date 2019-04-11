@@ -1,12 +1,5 @@
 package com.meti.lib.net;
 
-import com.meti.chat.Chat;
-import com.meti.chat.ChatRequest;
-import com.meti.chat.ChatUpdate;
-import com.meti.chat.Message;
-import com.meti.lib.util.TypeFunction;
-import com.meti.lib.util.TypePredicate;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -23,18 +16,15 @@ import java.util.function.Function;
  * @since 4/11/2019
  */
 public class Server implements Callable<Void>, Closeable {
-    private final ServerSocket serverSocket;
-    private final ExecutorService service;
-
     public final List<Client> clients = new ArrayList<>();
-    private final Chat chat = new Chat();
+    protected final ServerSocket serverSocket;
+    protected final ExecutorService service;
     public Consumer<Client> onAccept;
+    public Function<Client, TokenHandler> handlerFactory;
 
     public Server(ServerSocket serverSocket, ExecutorService service) {
         this.serverSocket = serverSocket;
         this.service = service;
-
-        //TODO: add handlers
     }
 
     @Override
@@ -46,20 +36,13 @@ public class Server implements Callable<Void>, Closeable {
             if (onAccept != null) {
                 onAccept.accept(client);
             }
-            TokenHandler handler = new TokenHandler(client);
 
-            handler.put(new TypePredicate<>(Message.class),
-                    ((Function<Message, OKResponse>) message -> {
-                        chat.add(message);
-                return new OKResponse("Message received successfully.");
-                    }).compose(new TypeFunction<>(Message.class))
-            );
-
-            handler.put(new TypePredicate<>(ChatRequest.class),
-                    ((Function<ChatRequest, ChatUpdate>) chatRequest -> new ChatUpdate(chat.poll()))
-                            .compose(new TypeFunction<>(ChatRequest.class))
-            );
-            service.submit(handler);
+            if (handlerFactory != null) {
+                TokenHandler handler = handlerFactory.apply(client);
+                service.submit(handler);
+            } else {
+                throw new IllegalStateException("Handler factory has not been set!");
+            }
         }
         return null;
     }
