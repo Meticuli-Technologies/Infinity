@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -62,12 +61,10 @@ public class Menu {
                                     .map(objectObjectFunction -> objectObjectFunction.apply(token))
                                     .collect(Collectors.toSet());
 
-                            if (results.size() > 1) {
-                                toWrite = new IllegalArgumentException("Has " + results.size() + " results, must return 1!");
-                            } else if (results.isEmpty()) {
-                                toWrite = new IllegalArgumentException("No handlers found.");
-                            } else {
-                                toWrite = new ArrayList<>(results).get(0);
+                            try {
+                                toWrite = CollectionUtil.toSingle(results);
+                            } catch (Exception e) {
+                                toWrite = e;
                             }
 
                             objectOutputStream.writeObject(toWrite);

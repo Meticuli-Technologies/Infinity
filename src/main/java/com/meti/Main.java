@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -13,11 +16,37 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/com/meti/Menu.fxml"))));
+        State state = new State();
+        primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml"), state)));
         primaryStage.show();
     }
 
     public static void main(String[] args) {
      launch(args);
+    }
+
+    private static class ControllerLoader extends FXMLLoader {
+        private final State state;
+
+        private ControllerLoader(URL url, State state) {
+            super(url);
+            this.state = state;
+
+            setControllerFactory(param -> {
+                if (Controller.class.isAssignableFrom(param)) {
+                    try {
+                        return param.getDeclaredConstructor(State.class).newInstance(state);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    throw new IllegalArgumentException(param + " is not assignable to " + Controller.class);
+                }
+            });
+        }
+
+        public static <T> T load(URL url, State state) throws IOException {
+            return new ControllerLoader(url, state).load();
+        }
     }
 }
