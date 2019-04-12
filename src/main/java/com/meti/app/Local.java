@@ -42,7 +42,7 @@ public class Local extends InfinityController {
             state.add(server);
             service.submit(server);
 
-            onto(getClass().getResource("/com/meti/ServerDisplay.fxml"));
+            onto(getClass().getResource("/com/meti/ServerDisplay.fxml"), 1);
 
             Socket socket = new Socket(InetAddress.getByName("localhost"), port);
             Client client = new Client(socket);
@@ -52,7 +52,7 @@ public class Local extends InfinityController {
             state.add(querier);
             service.submit(querier);
 
-            onto(getClass().getResource("/com/meti/Login.fxml"), 1);
+            onto(getClass().getResource("/com/meti/Login.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
