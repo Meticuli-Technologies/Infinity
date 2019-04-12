@@ -1,9 +1,9 @@
 package com.meti.app;
 
-import com.meti.app.control.InfinityClientController;
 import com.meti.app.chat.ChatRequest;
 import com.meti.app.chat.ChatUpdate;
 import com.meti.app.chat.Message;
+import com.meti.app.control.InfinityClientController;
 import com.meti.lib.util.State;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -31,7 +32,7 @@ public class ClientDisplay extends InfinityClientController implements Initializ
     }
 
     @FXML
-    public void handle(){
+    public void handle() {
         try {
             Message message = new Message(user, input.getText());
             querier.query(message).get();
@@ -53,7 +54,7 @@ public class ClientDisplay extends InfinityClientController implements Initializ
                         chatListView.getItems().add(update.latest);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    console.log(Level.WARNING, e);
                     stop();
                 }
             }
