@@ -17,12 +17,20 @@ public class Menu extends InfinityController{
 
     @FXML
     public void connect(){
-
+        try {
+            onto(getClass().getResource("/com/meti/Connect.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     public void host(){
-
+        try {
+            onto(getClass().getResource("/com/meti/Host.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
