@@ -31,7 +31,7 @@ public class Main extends Application {
         state.add(service);
         state.add(primaryStage);
 
-        primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/Local.fxml"), state)));
+        primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml"), state)));
         primaryStage.show();
     }
 

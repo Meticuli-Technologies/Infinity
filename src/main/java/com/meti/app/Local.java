@@ -2,10 +2,9 @@ package com.meti.app;
 
 import com.meti.app.control.InfinityController;
 import com.meti.lib.net.Client;
-import com.meti.lib.net.Querier;
 import com.meti.lib.net.InfinityServer;
+import com.meti.lib.net.Querier;
 import com.meti.lib.util.State;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -28,33 +27,44 @@ public class Local extends InfinityController {
     }
 
     @FXML
-    public void exit(){
-        Platform.exit();
+    public void back() {
+        try {
+            onto(getClass().getResource("/com/meti/Menu.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     public void next(){
         try {
             int port = Integer.parseInt(portField.getText());
-            ServerSocket serverSocket = new ServerSocket(port);
-
-            InfinityServer server = new InfinityServer(serverSocket, service);
-            state.add(server);
-            service.submit(server);
-
-            onto(getClass().getResource("/com/meti/ServerDisplay.fxml"), 1);
-
-            Socket socket = new Socket(InetAddress.getByName("localhost"), port);
-            Client client = new Client(socket);
-            state.add(client);
-
-            Querier querier = new Querier(client);
-            state.add(querier);
-            service.submit(querier);
-
-            onto(getClass().getResource("/com/meti/Login.fxml"));
+            createServer(port);
+            createClient(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int createServer(int port) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(port);
+        InfinityServer server = new InfinityServer(serverSocket, service);
+        state.add(server);
+        service.submit(server);
+
+        onto(getClass().getResource("/com/meti/ServerDisplay.fxml"), 1);
+        return port;
+    }
+
+    public void createClient(int port) throws IOException {
+        Socket socket = new Socket(InetAddress.getByName("localhost"), port);
+        Client client = new Client(socket);
+        state.add(client);
+
+        Querier querier = new Querier(client);
+        state.add(querier);
+        service.submit(querier);
+
+        onto(getClass().getResource("/com/meti/Login.fxml"));
     }
 }

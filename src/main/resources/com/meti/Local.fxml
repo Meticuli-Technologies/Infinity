@@ -7,7 +7,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.app.Local">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
@@ -24,7 +23,7 @@
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Infinity!" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
                   <TextField fx:id="portField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.rowIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </center>
@@ -38,7 +37,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#exit" text="Exit" GridPane.halignment="LEFT" />
+                  <Button mnemonicParsing="false" onAction="#back" text="Back" GridPane.halignment="LEFT" />
                   <Button mnemonicParsing="false" onAction="#next" text="Next" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                </children>
             </GridPane>
