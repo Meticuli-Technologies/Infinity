@@ -46,14 +46,13 @@ public class Local extends InfinityController {
         }
     }
 
-    public int createServer(int port) throws IOException {
+    public void createServer(int port) throws IOException {
         ServerSocket serverSocket = new ServerSocket(port);
         InfinityServer server = new InfinityServer(serverSocket, service);
         state.add(server);
         service.submit(server);
 
         onto(getClass().getResource("/com/meti/ServerDisplay.fxml"), 1);
-        return port;
     }
 
     public void createClient(int port) throws IOException {
