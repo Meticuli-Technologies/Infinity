@@ -2,6 +2,7 @@ package com.meti.lib.net;
 
 import com.meti.app.UserManager;
 import com.meti.app.chat.Chat;
+import com.meti.lib.asset.AssetManager;
 import com.meti.lib.event.Event;
 import com.meti.lib.event.ServerComponent;
 
@@ -22,10 +23,11 @@ import java.util.stream.Stream;
 public class InfinityServer extends Server {
     public final Chat chat = new Chat();
     private final UserManager userManager = new UserManager();
+    private final AssetManager assetManager = new AssetManager();
     private final Set<ServerComponent<? extends Event, ?>> components = new HashSet<>();
 
     {
-        components.addAll(Arrays.asList(userManager, chat));
+        components.addAll(Arrays.asList(userManager, assetManager, chat));
     }
 
     public InfinityServer(ServerSocket serverSocket, ExecutorService service) {
