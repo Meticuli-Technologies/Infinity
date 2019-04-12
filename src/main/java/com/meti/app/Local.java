@@ -19,11 +19,11 @@ import java.net.Socket;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Menu extends InfinityController {
+public class Local extends InfinityController {
     @FXML
     private TextField portField;
 
-    public Menu(State state) {
+    public Local(State state) {
         super(state);
     }
 
@@ -52,10 +52,9 @@ public class Menu extends InfinityController {
             state.add(querier);
             service.submit(querier);
 
-            onto(getClass().getResource("/com/meti/ClientDisplay.fxml"), 1);
+            onto(getClass().getResource("/com/meti/Login.fxml"), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package com.meti.lib.util;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -9,10 +10,9 @@ import java.util.stream.Stream;
  * @since 4/11/2019
  */
 public class State extends ArrayList<Object> {
-    public <T> T byClassToSingle(Class<T> tClass){
+    public <T> Optional<T> byClassToSingle(Class<T> tClass){
         return byClass(tClass)
-                .findAny()
-                .orElseThrow();
+                .findAny();
     }
 
     public <T> Stream<T> byClass(Class<T> tClass) {

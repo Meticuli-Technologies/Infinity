@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -33,7 +34,7 @@ public class ClientDisplay extends InfinityClientController implements Initializ
     @FXML
     public void handle(){
         try {
-            Message message = new Message("unknown", input.getText());
+            Message message = new Message(user, input.getText());
             querier.query(message).get();
 
             input.clear();

@@ -16,6 +16,6 @@ public class InfinityController extends Controller {
     public InfinityController(State state) {
         super(state);
 
-        this.service = state.byClassToSingle(ExecutorService.class);
+        this.service = state.byClassToSingle(ExecutorService.class).orElseThrow();
     }
 }

@@ -1,5 +1,7 @@
 package com.meti.chat;
 
+import com.meti.app.User;
+
 import java.io.Serializable;
 
 /**
@@ -8,10 +10,10 @@ import java.io.Serializable;
  * @since 4/11/2019
  */
 public class Message implements Serializable {
-    private final String user;
+    private final User user;
     private final String value;
 
-    public Message(String user, String value) {
+    public Message(User user, String value) {
         this.user = user;
         this.value = value;
     }
