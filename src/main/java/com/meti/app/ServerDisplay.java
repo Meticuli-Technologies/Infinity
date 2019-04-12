@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 
 import java.net.InetAddress;
 import java.net.URL;
@@ -24,6 +25,9 @@ public class ServerDisplay extends InfinityServerController implements Initializ
 
     @FXML
     private ListView<Message> chatListView;
+
+    @FXML
+    private TabPane tabs;
 
     public ServerDisplay(State state) {
         super(state);
