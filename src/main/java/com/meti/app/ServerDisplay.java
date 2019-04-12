@@ -1,7 +1,8 @@
 package com.meti.app;
 
-import com.meti.app.control.InfinityServerController;
+import com.meti.app.chat.ChatEvent;
 import com.meti.app.chat.Message;
+import com.meti.app.control.InfinityServerController;
 import com.meti.lib.util.State;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -31,6 +32,8 @@ public class ServerDisplay extends InfinityServerController implements Initializ
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         server.onAccept = client -> clientListView.getItems().add(client.socket.getInetAddress());
-        server.chat.onMessageAdded = message -> Platform.runLater(() -> chatListView.getItems().add(message));
+        server.chat.eventManager.put(ChatEvent.ON_ADDED, message ->
+                Platform.runLater(() -> chatListView.getItems().add(message))
+        );
     }
 }
