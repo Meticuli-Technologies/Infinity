@@ -4,41 +4,42 @@ import com.meti.lib.util.State;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Menu extends InfinityController{
+public class Menu extends InfinityController {
     public Menu(State state) {
         super(state);
     }
 
     @FXML
-    public void connect(){
+    public void connect() {
         try {
             onto(getClass().getResource("/com/meti/Connect.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 
     @FXML
-    public void host(){
+    public void host() {
         try {
             onto(getClass().getResource("/com/meti/Host.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 
     @FXML
-    public void local(){
+    public void local() {
         try {
             onto(getClass().getResource("/com/meti/Local.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 }

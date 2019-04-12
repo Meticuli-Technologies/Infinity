@@ -25,13 +25,6 @@ public class Controller {
         onto(url, 0);
     }
 
-    private void onto(URL url, Stage stage) throws IOException {
-        stage.setScene(new Scene(ControllerLoader.load(url, state)));
-        if (!stage.isShowing()) {
-            stage.show();
-        }
-    }
-
     public void onto(URL url, int index) throws IOException {
         List<Stage> stages = state.byClass(Stage.class)
                 .collect(Collectors.toList());
@@ -44,5 +37,12 @@ public class Controller {
         }
 
         onto(url, toSet);
+    }
+
+    private void onto(URL url, Stage stage) throws IOException {
+        stage.setScene(new Scene(ControllerLoader.load(url, state)));
+        if (!stage.isShowing()) {
+            stage.show();
+        }
     }
 }

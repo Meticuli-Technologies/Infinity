@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -23,10 +24,9 @@ public class Login extends InfinityClientController {
     public void cancel() {
         try {
             client.close();
-
             onto(getClass().getResource("/com/meti/Menu.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 
@@ -36,7 +36,7 @@ public class Login extends InfinityClientController {
             state.add(querier.query(new LoginRequest(usernameField.getText())).get());
             onto(getClass().getResource("/com/meti/ClientDisplay.fxml"));
         } catch (Exception e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.meti.app.chat;
 
-import com.meti.lib.event.Component;
+import com.meti.lib.event.ServerComponent;
 import com.meti.lib.net.AbstractHandler;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Handler;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * @version 0.0.0
  * @since 4/11/2019
  */
-public class Chat extends Component<ChatEvent, Message> {
+public class Chat extends ServerComponent<ChatEvent, Message> {
     private final LinkedList<Message> messages = new LinkedList<>();
 
     @Override

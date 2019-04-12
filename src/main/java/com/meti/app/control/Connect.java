@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -48,7 +49,7 @@ public class Connect extends InfinityController {
 
             onto(getClass().getResource("/com/meti/Login.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 }

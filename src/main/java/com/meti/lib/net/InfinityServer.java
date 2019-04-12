@@ -2,7 +2,8 @@ package com.meti.lib.net;
 
 import com.meti.app.UserManager;
 import com.meti.app.chat.Chat;
-import com.meti.lib.event.Component;
+import com.meti.lib.event.Event;
+import com.meti.lib.event.ServerComponent;
 
 import java.net.ServerSocket;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 public class InfinityServer extends Server {
     public final Chat chat = new Chat();
     private final UserManager userManager = new UserManager();
-    private final Set<Component<?, ?>> components = new HashSet<>();
+    private final Set<ServerComponent<? extends Event, ?>> components = new HashSet<>();
 
     {
         components.addAll(Arrays.asList(userManager, chat));
@@ -42,7 +43,7 @@ public class InfinityServer extends Server {
 
         private Set<? extends Handler<Object>> getHandlers(Client client) {
             return components.stream()
-                    .flatMap((Function<Component<?, ?>, Stream<? extends Handler<Object>>>) component -> component.getHandlers(client))
+                    .flatMap((Function<ServerComponent<? extends Event, ?>, Stream<? extends Handler<Object>>>) component -> component.getHandlers(client))
                     .collect(Collectors.toSet());
         }
     }

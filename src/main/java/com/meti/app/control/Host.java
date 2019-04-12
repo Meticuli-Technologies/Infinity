@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.logging.Level;
 
 /**
  * @author SirMathhman
@@ -26,7 +27,7 @@ public class Host extends InfinityController {
         try {
             onto(getClass().getResource("/com/meti/Menu.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 
@@ -40,7 +41,7 @@ public class Host extends InfinityController {
 
             onto(getClass().getResource("/com/meti/ServerDisplay.fxml"), 1);
         } catch (IOException e) {
-            e.printStackTrace();
+            console.log(Level.WARNING, e);
         }
     }
 }
