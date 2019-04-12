@@ -1,11 +1,11 @@
 package com.meti.lib.asset;
 
-import com.meti.app.User;
+import java.io.IOException;
 
 public interface Asset {
     String getName();
 
-    User lastModified();
+    Asset getParent();
 
-    int size();
+    long size() throws IOException;
 }

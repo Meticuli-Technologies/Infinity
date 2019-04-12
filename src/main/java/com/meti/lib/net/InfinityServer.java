@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 public class InfinityServer extends Server {
     public final Chat chat = new Chat();
     private final UserManager userManager = new UserManager();
-    private final AssetManager assetManager = new AssetManager();
+    public final AssetManager assetManager = new AssetManager();
     private final Set<ServerComponent<? extends Event, ?>> components = new HashSet<>();
 
     {
