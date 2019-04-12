@@ -1,7 +1,7 @@
 package com.meti.app;
 
 import com.meti.app.control.InfinityServerController;
-import com.meti.chat.Message;
+import com.meti.app.chat.Message;
 import com.meti.lib.util.State;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

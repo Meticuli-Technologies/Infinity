@@ -1,4 +1,4 @@
-package com.meti.chat;
+package com.meti.app.chat;
 
 import com.meti.app.User;
 

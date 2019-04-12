@@ -1,7 +1,7 @@
 package com.meti.lib.net;
 
 import com.meti.app.UserManager;
-import com.meti.chat.Chat;
+import com.meti.app.chat.Chat;
 
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
