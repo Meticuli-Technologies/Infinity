@@ -2,11 +2,15 @@ package com.meti.lib.net;
 
 import com.meti.app.UserManager;
 import com.meti.app.chat.Chat;
+import com.meti.lib.asset.Asset;
+import com.meti.lib.asset.AssetBuilder;
 import com.meti.lib.asset.AssetManager;
+import com.meti.lib.asset.text.TextAssetBuilder;
 import com.meti.lib.event.Event;
 import com.meti.lib.event.ServerComponent;
 
 import java.net.ServerSocket;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +31,7 @@ public class InfinityServer extends Server {
     private final Set<ServerComponent<? extends Event, ?>> components = new HashSet<>();
 
     {
+        assetManager.builders.add(new TextAssetBuilder());
         components.addAll(Arrays.asList(userManager, assetManager, chat));
     }
 
