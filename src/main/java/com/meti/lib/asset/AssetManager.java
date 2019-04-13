@@ -28,17 +28,17 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
     }
 
     public void load(Path path) throws IOException {
-        assets.addAll(loadAsStream(null, path).collect(Collectors.toSet()));
+        assets.addAll(loadAsStream(path).collect(Collectors.toSet()));
     }
 
-    public Stream<Asset> loadAsStream(Asset parent, Path path) throws IOException {
+    public Stream<Asset> loadAsStream(Path path) throws IOException {
         Stream<Asset> toReturn;
         if (Files.isDirectory(path)) {
             DirectoryAsset directoryAsset = new DirectoryAsset(path);
             Files.list(path)
                     .flatMap((Function<Path, Stream<Asset>>) child -> {
                         try {
-                            return loadAsStream(directoryAsset, child);
+                            return loadAsStream(child);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
