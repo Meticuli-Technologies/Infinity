@@ -2,7 +2,6 @@ package com.meti.app.control;
 
 import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.AssetEvent;
-import com.meti.lib.asset.AssetUpdate;
 import com.meti.lib.util.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,7 +18,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 public class Files extends InfinityServerController implements Initializable {
@@ -33,10 +31,10 @@ public class Files extends InfinityServerController implements Initializable {
     private Text lastAccessedText;
 
     @FXML
-    private TreeView<Asset> fileView;
+    private TreeView<String> fileView;
 
-    private final TreeItem<Asset> root = new TreeItem<>();
-    private final Map<Asset, TreeItem<Asset>> assetTreeItemMap = new HashMap<>();
+    private final TreeItem<String> root = new TreeItem<>();
+    private final Map<Asset, TreeItem<String>> assetTreeItemMap = new HashMap<>();
 
     public Files(State state) {
         super(state);
@@ -46,6 +44,7 @@ public class Files extends InfinityServerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         server.assetManager.eventManager.put(AssetEvent.ON_INDEX, assetUpdate -> indexAsset(assetUpdate.asset));
         server.assetManager.assets.forEach(this::indexAsset);
+        fileView.setShowRoot(false);
         fileView.setRoot(root);
     }
 
@@ -65,7 +64,7 @@ public class Files extends InfinityServerController implements Initializable {
     }
 
     public void indexAsset(Asset asset) {
-        TreeItem<Asset> treeItem = new TreeItem<>(asset);
+        TreeItem<String> treeItem = new TreeItem<>(asset.getName());
         Asset parent = asset.getParent();
         if (parent == null) {
             root.getChildren().add(treeItem);
