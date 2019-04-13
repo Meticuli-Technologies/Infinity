@@ -1,7 +1,5 @@
 package com.meti.lib.asset;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
@@ -20,10 +18,5 @@ public class DirectoryAsset extends Asset {
     @Override
     public String getName() {
         return path.getFileName().toString();
-    }
-
-    @Override
-    public long size() throws IOException {
-        return Files.size(path);
     }
 }

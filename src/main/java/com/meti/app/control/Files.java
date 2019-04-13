@@ -27,9 +27,6 @@ public class Files extends InfinityServerController implements Initializable {
     @FXML
     private Text nameText;
 
-    @FXML
-    private Text sizeText;
-
     private final Map<DirectoryAsset, TreeItem<Asset>> parentMap = new HashMap<>();
     @FXML
     private TreeView<Asset> fileView;
@@ -71,13 +68,6 @@ public class Files extends InfinityServerController implements Initializable {
     private void changeTo(TreeItem<Asset> toSingle) {
         Asset asset = toSingle.getValue();
         nameText.setText(asset.getName());
-        long size;
-        try {
-            size = asset.size();
-        } catch (IOException e) {
-            size = -1;
-        }
-        sizeText.setText(String.valueOf(size));
     }
 
     private void indexAsset(Asset asset) {

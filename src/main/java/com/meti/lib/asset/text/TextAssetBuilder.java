@@ -24,17 +24,14 @@ public class TextAssetBuilder implements AssetBuilder<TextAsset> {
         try {
             reader.close();
         } catch (IOException e) {
+            //TODO: do something here
             e.printStackTrace();
         }
+
         return new TextAsset(lines) {
             @Override
             public String getName() {
                 return s;
-            }
-
-            @Override
-            public long size() throws IOException {
-                return inputStream.available();
             }
         };
     }

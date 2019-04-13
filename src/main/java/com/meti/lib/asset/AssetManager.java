@@ -61,7 +61,12 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
     private static class DefaultAssetBuilder implements AssetBuilder<Asset> {
         @Override
         public Asset apply(InputStream inputStream, String s) {
-            return new InputStreamAsset(inputStream, s);
+            return new Asset() {
+                @Override
+                public String getName() {
+                    return s;
+                }
+            };
         }
 
         @Override
