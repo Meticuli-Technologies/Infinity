@@ -18,6 +18,10 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
     private final Set<AssetBuilder<?>> builders = new HashSet<>();
     public final Set<Asset> assets = new HashSet<>();
 
+    {
+        builders.add(new DefaultAssetBuilder());
+    }
+
     @Override
     public Stream<? extends Handler<Object>> getHandlers(Client client) {
         return null;
@@ -30,7 +34,7 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
     public Stream<Asset> loadAsStream(Asset parent, Path path) throws IOException {
         Stream<Asset> toReturn;
         if (Files.isDirectory(path)) {
-            DirectoryAsset directoryAsset = new DirectoryAsset(parent, path);
+            DirectoryAsset directoryAsset = new DirectoryAsset(path);
             Files.list(path)
                     .flatMap((Function<Path, Stream<Asset>>) child -> {
                         try {
@@ -48,5 +52,27 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
         }
 
         return toReturn.peek(asset -> eventManager.fire(AssetEvent.ON_INDEX, new AssetUpdate(asset)));
+    }
+
+    private static class DefaultAssetBuilder implements AssetBuilder<Asset> {
+        @Override
+        public Asset apply(Path path) {
+            return new Asset() {
+                @Override
+                public String getName() {
+                    return path.getFileName().toString();
+                }
+
+                @Override
+                public long size() throws IOException {
+                    return Files.size(path);
+                }
+            };
+        }
+
+        @Override
+        public boolean test(Path path) {
+            return false;
+        }
     }
 }

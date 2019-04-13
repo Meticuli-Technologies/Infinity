@@ -6,12 +6,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class DirectoryAsset implements Asset {
-    private final ArrayList<Asset> assets = new ArrayList<>();
-    private final Asset parent;
+    public final ArrayList<Asset> assets = new ArrayList<>();
     private final Path path;
 
-    public DirectoryAsset(Asset parent, Path path) {
-        this.parent = parent;
+    public DirectoryAsset(Path path) {
         this.path = path;
     }
 
@@ -22,11 +20,6 @@ public class DirectoryAsset implements Asset {
     @Override
     public String getName() {
         return path.getFileName().toString();
-    }
-
-    @Override
-    public Asset getParent() {
-        return parent;
     }
 
     @Override

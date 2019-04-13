@@ -2,6 +2,7 @@ package com.meti.app.control;
 
 import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.AssetEvent;
+import com.meti.lib.asset.DirectoryAsset;
 import com.meti.lib.util.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 public class Files extends InfinityServerController implements Initializable {
     @FXML
@@ -34,7 +36,7 @@ public class Files extends InfinityServerController implements Initializable {
     private TreeView<String> fileView;
 
     private final TreeItem<String> root = new TreeItem<>();
-    private final Map<Asset, TreeItem<String>> assetTreeItemMap = new HashMap<>();
+    private final Map<DirectoryAsset, TreeItem<String>> parentMap = new HashMap<>();
 
     public Files(State state) {
         super(state);
@@ -65,18 +67,34 @@ public class Files extends InfinityServerController implements Initializable {
 
     public void indexAsset(Asset asset) {
         TreeItem<String> treeItem = new TreeItem<>(asset.getName());
-        Asset parent = asset.getParent();
+        if (asset instanceof DirectoryAsset) {
+            DirectoryAsset directoryAsset = (DirectoryAsset) asset;
+            directoryAsset.assets.forEach(this::indexAsset);
+            parentMap.put(directoryAsset, treeItem);
+        }
+
+        Stream<TreeItem<String>> stream = parentMap.keySet()
+                .stream()
+                .filter(directoryAsset -> directoryAsset.assets.contains(asset))
+                .map(parentMap::get)
+                .peek(stringTreeItem -> stringTreeItem.getChildren().add(treeItem));
+
+        if (stream.count() == 0) {
+            root.getChildren().add(treeItem);
+        }
+
+ /*       Asset parent = asset.getParent();
         if (parent == null) {
             root.getChildren().add(treeItem);
         } else {
-            if (!assetTreeItemMap.containsKey(parent)) {
+            if (!parentMap.containsKey(parent)) {
                 indexAsset(parent);
             }
 
-            assetTreeItemMap.get(parent).getChildren().add(treeItem);
+            parentMap.get(parent).getChildren().add(treeItem);
         }
 
-        assetTreeItemMap.put(asset, treeItem);
+        parentMap.put(asset, treeItem);*/
     }
 }
 
