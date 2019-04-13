@@ -10,14 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
     private final Set<AssetBuilder<?>> builders = new HashSet<>();
-    private final Set<Asset> assets = new HashSet<>();
+    public final Set<Asset> assets = new HashSet<>();
 
     @Override
     public Stream<? extends Handler<Object>> getHandlers(Client client) {
@@ -29,6 +28,7 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
     }
 
     public Stream<Asset> loadAsStream(Asset parent, Path path) throws IOException {
+        Stream<Asset> toReturn;
         if (Files.isDirectory(path)) {
             DirectoryAsset directoryAsset = new DirectoryAsset(parent, path);
             Files.list(path)
@@ -39,13 +39,14 @@ public class AssetManager extends ServerComponent<AssetEvent, AssetUpdate> {
                             throw new RuntimeException(e);
                         }
                     }).forEach(directoryAsset::add);
-            return Stream.of(directoryAsset);
+            toReturn = Stream.of(directoryAsset);
+        } else {
+            toReturn = builders.stream()
+                    .filter(assetBuilder -> assetBuilder.test(path))
+                    .map(assetBuilder -> assetBuilder.apply(path))
+                    .map(new TypeFunction<>(Asset.class));
         }
 
-        return builders.stream()
-                .filter(assetBuilder -> assetBuilder.test(path))
-                .map(assetBuilder -> assetBuilder.apply(path))
-                .map(new TypeFunction<>(Asset.class))
-                .peek(asset -> eventManager.fire(AssetEvent.ON_INDEX, new AssetUpdate(asset)));
+        return toReturn.peek(asset -> eventManager.fire(AssetEvent.ON_INDEX, new AssetUpdate(asset)));
     }
 }

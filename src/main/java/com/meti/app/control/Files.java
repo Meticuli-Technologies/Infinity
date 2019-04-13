@@ -6,7 +6,7 @@ import com.meti.lib.asset.AssetUpdate;
 import com.meti.lib.util.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -32,14 +35,25 @@ public class Files extends InfinityServerController implements Initializable {
     @FXML
     private TreeView<Asset> fileView;
 
+    private final TreeItem<Asset> root = new TreeItem<>();
+    private final Map<Asset, TreeItem<Asset>> assetTreeItemMap = new HashMap<>();
+
     public Files(State state) {
         super(state);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.assetManager.eventManager.put(AssetEvent.ON_INDEX, assetUpdate -> indexAsset(assetUpdate.asset));
+        server.assetManager.assets.forEach(this::indexAsset);
+        fileView.setRoot(root);
     }
 
     @FXML
     public void index() {
         try {
             DirectoryChooser chooser = new DirectoryChooser();
+            chooser.setInitialDirectory(Paths.get(".\\").toFile());
             Stage stage = state.byClass(Stage.class)
                     .findAny()
                     .orElse(new Stage());
@@ -50,23 +64,20 @@ public class Files extends InfinityServerController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        server.assetManager.eventManager.put(AssetEvent.ON_INDEX, new Consumer<AssetUpdate>() {
-            @Override
-            public void accept(AssetUpdate assetUpdate) {
-                Asset asset = assetUpdate.asset;
-                indexAsset(asset);
+    public void indexAsset(Asset asset) {
+        TreeItem<Asset> treeItem = new TreeItem<>(asset);
+        Asset parent = asset.getParent();
+        if (parent == null) {
+            root.getChildren().add(treeItem);
+        } else {
+            if (!assetTreeItemMap.containsKey(parent)) {
+                indexAsset(parent);
             }
 
-            private void indexAsset(Asset asset) {
-                if(fileView.getRoot()
-            }
+            assetTreeItemMap.get(parent).getChildren().add(treeItem);
+        }
 
-            private Asset findParent(Asset asset){
-                fileView.getRoot().getChildren().contains(asset.getParent());
-            }
-        });
+        assetTreeItemMap.put(asset, treeItem);
     }
 }
 
