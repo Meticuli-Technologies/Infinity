@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class DirectoryAsset implements Asset {
+public class DirectoryAsset extends Asset {
     public final ArrayList<Asset> assets = new ArrayList<>();
     private final Path path;
 

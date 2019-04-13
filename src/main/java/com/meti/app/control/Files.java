@@ -3,6 +3,7 @@ package com.meti.app.control;
 import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.AssetEvent;
 import com.meti.lib.asset.DirectoryAsset;
+import com.meti.lib.util.CollectionUtil;
 import com.meti.lib.util.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,11 +33,10 @@ public class Files extends InfinityServerController implements Initializable {
     @FXML
     private Text lastAccessedText;
 
+    private final TreeItem<Asset> root = new TreeItem<>();
+    private final Map<DirectoryAsset, TreeItem<Asset>> parentMap = new HashMap<>();
     @FXML
-    private TreeView<String> fileView;
-
-    private final TreeItem<String> root = new TreeItem<>();
-    private final Map<DirectoryAsset, TreeItem<String>> parentMap = new HashMap<>();
+    private TreeView<Asset> fileView;
 
     public Files(State state) {
         super(state);
@@ -48,6 +48,12 @@ public class Files extends InfinityServerController implements Initializable {
         server.assetManager.assets.forEach(this::indexAsset);
         fileView.setShowRoot(false);
         fileView.setRoot(root);
+    }
+
+    @FXML
+    public void changeTo() {
+        CollectionUtil.toSingle(fileView.getSelectionModel().getSelectedItems())
+                .ifPresent(this::changeTo);
     }
 
     @FXML
@@ -65,15 +71,27 @@ public class Files extends InfinityServerController implements Initializable {
         }
     }
 
-    public void indexAsset(Asset asset) {
-        TreeItem<String> treeItem = new TreeItem<>(asset.getName());
+    private void changeTo(TreeItem<Asset> toSingle) {
+        Asset asset = toSingle.getValue();
+        nameText.setText(asset.getName());
+        long size;
+        try {
+            size = asset.size();
+        } catch (IOException e) {
+            size = -1;
+        }
+        sizeText.setText(String.valueOf(size));
+    }
+
+    private void indexAsset(Asset asset) {
+        TreeItem<Asset> treeItem = new TreeItem<>(asset);
         if (asset instanceof DirectoryAsset) {
             DirectoryAsset directoryAsset = (DirectoryAsset) asset;
             directoryAsset.assets.forEach(this::indexAsset);
             parentMap.put(directoryAsset, treeItem);
         }
 
-        Stream<TreeItem<String>> stream = parentMap.keySet()
+        Stream<TreeItem<Asset>> stream = parentMap.keySet()
                 .stream()
                 .filter(directoryAsset -> directoryAsset.assets.contains(asset))
                 .map(parentMap::get)
@@ -82,19 +100,6 @@ public class Files extends InfinityServerController implements Initializable {
         if (stream.count() == 0) {
             root.getChildren().add(treeItem);
         }
-
- /*       Asset parent = asset.getParent();
-        if (parent == null) {
-            root.getChildren().add(treeItem);
-        } else {
-            if (!parentMap.containsKey(parent)) {
-                indexAsset(parent);
-            }
-
-            parentMap.get(parent).getChildren().add(treeItem);
-        }
-
-        parentMap.put(asset, treeItem);*/
     }
 }
 

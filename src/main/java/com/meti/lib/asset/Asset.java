@@ -2,8 +2,13 @@ package com.meti.lib.asset;
 
 import java.io.IOException;
 
-public interface Asset {
-    String getName();
+public abstract class Asset {
+    @Override
+    public String toString() {
+        return getName();
+    }
 
-    long size() throws IOException;
+    public abstract String getName();
+
+    public abstract long size() throws IOException;
 }

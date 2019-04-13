@@ -2,6 +2,7 @@ package com.meti.lib.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -12,13 +13,13 @@ public class CollectionUtil {
     private CollectionUtil() {
     }
 
-    public static <T> T toSingle(Collection<? extends T> ts) {
+    public static <T> Optional<T> toSingle(Collection<? extends T> ts) {
         if (ts.size() > 1) {
             throw new IllegalArgumentException("Has " + ts.size() + " results, must return 1!");
         } else if (ts.isEmpty()) {
-            throw new IllegalArgumentException("No handlers found.");
+            return Optional.empty();
         } else {
-            return new ArrayList<>(ts).get(0);
+            return Optional.ofNullable(new ArrayList<>(ts).get(0));
         }
     }
 }
