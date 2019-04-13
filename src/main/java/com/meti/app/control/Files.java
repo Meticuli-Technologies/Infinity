@@ -30,13 +30,10 @@ public class Files extends InfinityServerController implements Initializable {
     @FXML
     private Text sizeText;
 
-    @FXML
-    private Text lastAccessedText;
-
-    private final TreeItem<Asset> root = new TreeItem<>();
     private final Map<DirectoryAsset, TreeItem<Asset>> parentMap = new HashMap<>();
     @FXML
     private TreeView<Asset> fileView;
+    private final TreeItem<Asset> root = new TreeItem<>();
 
     public Files(State state) {
         super(state);
