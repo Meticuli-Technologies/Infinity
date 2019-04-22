@@ -3,7 +3,7 @@ package com.meti;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Method;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author SirMathhman
@@ -11,14 +11,27 @@ import java.lang.reflect.Method;
  * @since 4/22/2019
  */
 public class Main extends Application  {
+    static ApplicationLauncher launcher;
+
+    static {
+        try {
+            launcher = new InfinityLauncher();
+        } catch (NoSuchMethodException e) {
+            emergencyExit(e);
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            Method launchMethod = Application.class.getMethod("launch", String[].class);
-            launchMethod.invoke(null, (Object) args);
+            requireNonNull(launcher).launch(args);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
+            emergencyExit(e);
         }
+    }
+
+    private static void emergencyExit(Exception e) {
+        e.printStackTrace();
+        System.exit(-1);
     }
 
     @Override
