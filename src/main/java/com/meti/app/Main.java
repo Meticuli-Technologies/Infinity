@@ -11,7 +11,8 @@ import static java.util.Objects.requireNonNull;
  * @since 4/22/2019
  */
 public class Main extends Application  {
-    static ApplicationLauncher launcher;
+    private static Infinity infinity = new Infinity();
+    private static ApplicationLauncher launcher;
 
     static {
         try {
@@ -35,7 +36,12 @@ public class Main extends Application  {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        requireNonNull(infinity).start(primaryStage);
+    }
 
+    @Override
+    public void stop() {
+        requireNonNull(infinity).stop();
     }
 }
