@@ -11,7 +11,7 @@ import static java.util.Objects.requireNonNull;
  * @since 4/22/2019
  */
 public class Main extends Application  {
-    private static Infinity infinity = new Infinity(mainState);
+    private static Infinity infinity = new Infinity();
     private static ApplicationLauncher launcher;
 
     static {
