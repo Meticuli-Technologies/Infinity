@@ -9,12 +9,12 @@ import java.lang.reflect.Method;
  * @version 0.0.0
  * @since 4/22/2019
  */
-public class InfinityLauncher extends ApplicationLauncher {
-    public InfinityLauncher() throws NoSuchMethodException {
+class InfinityLauncher extends ApplicationLauncher {
+    InfinityLauncher() throws NoSuchMethodException {
         super(getApplicationLaunchMethod());
     }
 
-    public static Method getApplicationLaunchMethod() throws NoSuchMethodException {
+    private static Method getApplicationLaunchMethod() throws NoSuchMethodException {
         return Application.class.getMethod("launch", String[].class);
     }
 }

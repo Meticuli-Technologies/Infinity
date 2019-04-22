@@ -8,18 +8,18 @@ import java.lang.reflect.Modifier;
  * @version 0.0.0
  * @since 4/22/2019
  */
-public class ApplicationLauncher {
+class ApplicationLauncher {
     private final Method launchMethod;
 
-    public ApplicationLauncher(Method launchMethod) {
+    ApplicationLauncher(Method launchMethod) {
         this.launchMethod = launchMethod;
     }
 
-    public void launch(String[] args) throws Exception {
+    void launch(String[] args) throws Exception {
         checkLaunchMethod().invoke(null, (Object) args);
     }
 
-    public Method checkLaunchMethod() {
+    private Method checkLaunchMethod() {
         if (!Modifier.isStatic(launchMethod.getModifiers())) {
             throw new IllegalStateException(launchMethod + " is not static!");
         }
