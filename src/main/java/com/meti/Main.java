@@ -3,6 +3,8 @@ package com.meti;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Method;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -10,7 +12,13 @@ import javafx.stage.Stage;
  */
 public class Main extends Application  {
     public static void main(String[] args) {
-        launch(args);
+        try {
+            Method launchMethod = Application.class.getMethod("launch", String[].class);
+            launchMethod.invoke(null, (Object) args);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     @Override
