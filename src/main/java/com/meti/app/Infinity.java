@@ -12,11 +12,12 @@ import java.util.concurrent.Executors;
  * @since 4/22/2019
  */
 public class Infinity implements InfinityImpl {
+    public static final Duration AWAIT_TERMINATION = Duration.ofSeconds(1);
     private final ExecutorServiceManager executorServiceManager;
     private final State mainState;
 
     Infinity() {
-        this.executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool(), Duration.ofSeconds(1));
+        this.executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool(), AWAIT_TERMINATION);
         this.mainState = new State();
     }
 
