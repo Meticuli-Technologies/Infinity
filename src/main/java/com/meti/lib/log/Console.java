@@ -1,4 +1,4 @@
-package com.meti.lib;
+package com.meti.lib.log;
 
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
@@ -10,13 +10,7 @@ import static com.meti.lib.util.ExceptionUtil.stackTraceString;
  * @version 0.0.0
  * @since 4/22/2019
  */
-public class Console {
-    private final BiConsumer<Level, String> handler;
-
-    public Console(BiConsumer<Level, String> handler) {
-        this.handler = handler;
-    }
-
+public abstract class Console implements BiConsumer<Level, String> {
     public String log(Level level, Exception exception) {
         return log(level, null, exception);
     }
@@ -31,7 +25,7 @@ public class Console {
 
     private String logBuilder(Level level, StringBuilder builder) {
         String result = builder.toString();
-        handler.accept(level, result);
+        accept(level, result);
         return result;
     }
 

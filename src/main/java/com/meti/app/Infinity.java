@@ -1,6 +1,8 @@
 package com.meti.app;
 
 import com.meti.lib.State;
+import com.meti.lib.log.Console;
+import com.meti.lib.log.LoggerConsole;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,10 +19,12 @@ import java.util.concurrent.Executors;
 public class Infinity implements InfinityImpl {
     private static final Duration AWAIT_TERMINATION = Duration.ofSeconds(1);
     private final ExecutorServiceManager executorServiceManager;
+    private final Console console;
     private final State mainState;
 
     Infinity() {
         this.executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool(), AWAIT_TERMINATION);
+        this.console = new LoggerConsole();
         this.mainState = new State();
     }
 
