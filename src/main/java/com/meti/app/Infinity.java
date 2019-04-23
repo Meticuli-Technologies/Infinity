@@ -14,17 +14,17 @@ import java.util.logging.Level;
  */
 public class Infinity implements InfinityImpl {
     private final InfinityInitializer infinityInitializer = new InfinityInitializer();
-    private final InfinityState infinityState = new InfinityState();
+    private final InfinityState mainState = new InfinityState();
 
     @Override
     public void start(Stage primaryStage) {
-        infinityInitializer.init(infinityState, primaryStage);
-/*        startImpl(primaryStage);*/
+        infinityInitializer.init(mainState, primaryStage);
+        startImpl(primaryStage);
     }
 
-/*    private void logTaskString() {
-        executorServiceManager.getTaskString().ifPresentOrElse(s -> console.log(Level.SEVERE, s),
-                () -> console.log(Level.INFO, "The ExecutorService has been shutdown with no tasks awaiting execution.")
+    private void logTaskString() {
+        mainState.getExecutorServiceManager().getTaskString().ifPresentOrElse(s -> mainState.getConsole().log(Level.SEVERE, s),
+                () -> mainState.getConsole().log(Level.INFO, "The ExecutorService has been shutdown with no tasks awaiting execution.")
         );
     }
 
@@ -32,9 +32,9 @@ public class Infinity implements InfinityImpl {
         try {
             setAndShowScene(primaryStage, new Scene(Menu.loadMenuParent(mainState)));
         } catch (IOException e) {
-            console.log(Level.SEVERE, e);
+            mainState.getConsole().log(Level.SEVERE, e);
         }
-    }*/
+    }
 
     @Override
     public void stop() {
