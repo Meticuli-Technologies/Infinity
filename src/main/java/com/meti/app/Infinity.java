@@ -1,8 +1,8 @@
 package com.meti.app;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
 /**
@@ -13,39 +13,25 @@ import java.util.logging.Level;
 public class Infinity implements InfinityImpl {
     private final InfinityInitializer infinityInitializer = new InfinityInitializer();
     private final InfinityStarter infinityStarter = new InfinityStarter();
+    private final InfinityStopper infinityStopper = new InfinityStopper();
     private final InfinityState mainState = new InfinityState();
 
     @Override
     public void start(Stage primaryStage) {
-        infinityInitializer.init(mainState, primaryStage);
-        infinityStarter.startImpl(primaryStage, mainState);
-    }
-
-    private void logTaskString() {
-        mainState.getExecutorServiceManager().getTaskString().ifPresentOrElse(s -> mainState.getConsole().log(Level.SEVERE, s),
-                () -> mainState.getConsole().log(Level.INFO, "The ExecutorService has been shutdown with no tasks awaiting execution.")
-        );
+        try {
+            infinityInitializer.init(mainState, primaryStage);
+            infinityStarter.startImpl(primaryStage, mainState);
+        } catch (IOException e) {
+            mainState.getConsole().log(Level.SEVERE, e);
+        }
     }
 
     @Override
     public void stop() {
         try {
-            stopImpl();
+            infinityStopper.stopImpl(mainState);
         } catch (Exception e) {
             mainState.getConsole().log(Level.SEVERE, e);
         }
-    }
-
-    private void stopImpl() throws Exception {
-        terminateExecutor();
-    }
-
-    private void terminateExecutor() throws Exception {
-        logTaskString();
-        mainState.getExecutorServiceManager().checkTerminated();
-    }
-
-    private void setAndShowScene(Stage primaryStage, Scene scene) {
-        infinityStarter.setAndShowScene(primaryStage, scene);
     }
 }
