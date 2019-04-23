@@ -1,8 +1,11 @@
 package com.meti.app;
 
 import com.meti.lib.State;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 
@@ -24,6 +27,14 @@ public class Infinity implements InfinityImpl {
     @Override
     public void start(Stage primaryStage) {
         mainState.add(primaryStage);
+
+        try {
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml")));
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
