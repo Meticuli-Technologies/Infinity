@@ -1,6 +1,7 @@
-package com.meti.app.core;
+package com.meti.app.core.launch;
 
 import com.meti.app.ApplicationLauncher;
+import com.meti.app.core.runtime.Infinity;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -1,4 +1,4 @@
-package com.meti.app.core;
+package com.meti.app.core.launch;
 
 import com.meti.app.ApplicationLauncher;
 import javafx.application.Application;

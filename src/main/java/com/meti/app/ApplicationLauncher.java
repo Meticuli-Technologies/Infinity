@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.app.core.Main;
+import com.meti.app.core.launch.Main;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
