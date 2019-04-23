@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class RunnableLister {
-    Optional<String> createTaskString(List<Runnable> tasks) {
-        if (tasks.isEmpty()) {
+class Lister {
+    Optional<String> createTaskString(List<?> collection) {
+        if (collection.isEmpty()) {
             return Optional.empty();
         } else {
-            return Optional.of(createTaskListString(tasks));
+            return Optional.of(createTaskListString(collection));
         }
     }
 
-    private String createTaskListString(List<Runnable> tasks) {
-        return tasks.stream()
+    private String createTaskListString(List<?> collection) {
+        return collection.stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\n\t"));
     }

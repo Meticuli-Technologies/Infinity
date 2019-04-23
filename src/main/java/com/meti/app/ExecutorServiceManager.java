@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class ExecutorServiceManager {
-    private final RunnableLister runnableLister = new RunnableLister();
+    private final Lister lister = new Lister();
     private final Duration terminationDuration;
     private final ExecutorService service;
 
@@ -37,6 +37,6 @@ public class ExecutorServiceManager {
             throw new IllegalStateException("Service should still be running!");
         }
 
-        return runnableLister.createTaskString(service.shutdownNow());
+        return lister.createTaskString(service.shutdownNow());
     }
 }
