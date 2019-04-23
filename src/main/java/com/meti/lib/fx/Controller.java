@@ -1,4 +1,6 @@
-package com.meti.lib;
+package com.meti.lib.fx;
+
+import com.meti.lib.State;
 
 public class Controller {
     private final State state;
