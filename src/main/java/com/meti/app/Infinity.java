@@ -4,6 +4,7 @@ import com.meti.lib.State;
 import com.meti.lib.fx.StateControllerLoader;
 import com.meti.lib.log.Console;
 import com.meti.lib.log.LoggerConsole;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -31,15 +32,33 @@ public class Infinity implements InfinityImpl {
 
     @Override
     public void start(Stage primaryStage) {
-        mainState.add(primaryStage);
+        init(primaryStage);
+        startImpl(primaryStage);
+    }
 
+    private void init(Stage primaryStage) {
+        mainState.add(primaryStage);
+    }
+
+    private void startImpl(Stage primaryStage) {
         try {
-            Scene scene = new Scene(StateControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml")));
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            showMenu(primaryStage);
         } catch (IOException e) {
             console.log(Level.SEVERE, e);
         }
+    }
+
+    private void showMenu(Stage primaryStage) throws IOException {
+        primaryStage.setScene(createMenuScene());
+        primaryStage.show();
+    }
+
+    private Scene createMenuScene() throws IOException {
+        return new Scene(loadMenuParent());
+    }
+
+    private Parent loadMenuParent() throws IOException {
+        return StateControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml"), mainState);
     }
 
     @Override
