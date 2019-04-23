@@ -1,5 +1,6 @@
-package com.meti.app;
+package com.meti.app.core;
 
+import com.meti.app.ExecutorServiceManager;
 import com.meti.lib.State;
 import com.meti.lib.log.LoggerConsole;
 import javafx.stage.Stage;

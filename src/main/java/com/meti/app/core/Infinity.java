@@ -1,5 +1,6 @@
-package com.meti.app;
+package com.meti.app.core;
 
+import com.meti.app.InfinityImpl;
 import javafx.stage.Stage;
 
 import java.io.IOException;

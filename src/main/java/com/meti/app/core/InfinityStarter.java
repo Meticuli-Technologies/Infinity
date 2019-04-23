@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.app.core;
 
 import com.meti.app.control.Menu;
 import javafx.scene.Scene;

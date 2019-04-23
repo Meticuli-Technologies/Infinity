@@ -1,5 +1,6 @@
-package com.meti.app;
+package com.meti.app.core;
 
+import com.meti.app.ApplicationLauncher;
 import javafx.application.Application;
 
 import java.lang.reflect.Method;

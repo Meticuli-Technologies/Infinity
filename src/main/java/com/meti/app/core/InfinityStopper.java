@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.app.core;
 
 import java.util.logging.Level;
 

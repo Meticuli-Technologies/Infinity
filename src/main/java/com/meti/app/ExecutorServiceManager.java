@@ -6,17 +6,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-class ExecutorServiceManager {
+public class ExecutorServiceManager {
     private final RunnableLister runnableLister = new RunnableLister();
     private final Duration terminationDuration;
     private final ExecutorService service;
 
-    ExecutorServiceManager(ExecutorService service, Duration terminationDuration) {
+    public ExecutorServiceManager(ExecutorService service, Duration terminationDuration) {
         this.service = service;
         this.terminationDuration = terminationDuration;
     }
 
-    void checkTerminated() throws Exception {
+    public void checkTerminated() throws Exception {
         if (!service.isTerminated()) {
             terminate();
         }
@@ -32,7 +32,7 @@ class ExecutorServiceManager {
         return !service.awaitTermination(terminationDuration.toMillis(), TimeUnit.MILLISECONDS);
     }
 
-    Optional<String> getTaskString() {
+    public Optional<String> getTaskString() {
         if (service.isShutdown()) {
             throw new IllegalStateException("Service should still be running!");
         }

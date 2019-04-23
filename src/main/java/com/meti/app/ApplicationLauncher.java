@@ -1,5 +1,7 @@
 package com.meti.app;
 
+import com.meti.app.core.Main;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -8,14 +10,14 @@ import java.lang.reflect.Modifier;
  * @version 0.0.0
  * @since 4/22/2019
  */
-class ApplicationLauncher {
+public class ApplicationLauncher {
     private final Method launchMethod;
 
-    ApplicationLauncher(Method launchMethod) {
+    protected ApplicationLauncher(Method launchMethod) {
         this.launchMethod = launchMethod;
     }
 
-    void launch(String[] args) throws Exception {
+    public void launch(String[] args) throws Exception {
         checkLaunchMethod().invoke(null, Main.class, args);
     }
 
