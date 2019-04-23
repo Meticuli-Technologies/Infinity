@@ -6,14 +6,10 @@ import java.util.stream.Collectors;
 class RunnableLister {
     String createTaskString(List<Runnable> tasks) {
         if (tasks.isEmpty()) {
-            return createEmptyTaskString();
+            return "The ExecutorService has been shutdown with no tasks awaiting execution.";
         } else {
             return createTaskListString(tasks);
         }
-    }
-
-    private String createEmptyTaskString() {
-        return "The ExecutorService has been shutdown with no tasks awaiting execution.";
     }
 
     private String createTaskListString(List<Runnable> tasks) {

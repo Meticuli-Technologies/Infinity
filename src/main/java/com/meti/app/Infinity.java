@@ -15,7 +15,7 @@ public class Infinity implements InfinityImpl {
     private final ExecutorServiceManager executorServiceManager;
     private final State mainState;
 
-    public Infinity() {
+    Infinity() {
         this.executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool(), Duration.ofSeconds(1));
         this.mainState = new State();
     }
@@ -28,9 +28,19 @@ public class Infinity implements InfinityImpl {
     @Override
     public void stop() {
         try {
-            executorServiceManager.terminateExecutor();
+            stopImpl();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void stopImpl() throws Exception {
+        terminateExecutor();
+    }
+
+    private void terminateExecutor() throws Exception {
+        String taskString = executorServiceManager.getTaskString();
+        System.out.println(taskString);
+        executorServiceManager.checkTerminated();
     }
 }

@@ -10,17 +10,9 @@ import static java.util.Objects.requireNonNull;
  * @version 0.0.0
  * @since 4/22/2019
  */
-public class Main extends Application  {
-    private static Infinity infinity = new Infinity();
-    private static ApplicationLauncher launcher;
-
-    static {
-        try {
-            launcher = new InfinityLauncher();
-        } catch (NoSuchMethodException e) {
-            emergencyExit(e);
-        }
-    }
+public class Main extends Application {
+    private static final InfinityImpl infinity = new Infinity();
+    private static final ApplicationLauncher launcher = createLauncher();
 
     public static void main(String[] args) {
         try {
@@ -33,6 +25,14 @@ public class Main extends Application  {
     private static void emergencyExit(Exception e) {
         e.printStackTrace();
         System.exit(-1);
+    }
+
+    private static InfinityLauncher createLauncher() {
+        try {
+            return new InfinityLauncher();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

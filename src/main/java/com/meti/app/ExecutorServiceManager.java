@@ -15,35 +15,27 @@ class ExecutorServiceManager {
         this.terminationDuration = terminationDuration;
     }
 
-    void terminateExecutor() throws Exception {
-        String taskString = getTaskString();
-        boolean terminationSuccessful = checkTerminated();
-    }
-
-    private String getTaskString() {
-        if (service.isShutdown()) {
-            throw new IllegalStateException("Service should still be running!");
-        }
-
-        return runnableLister.createTaskString(service.shutdownNow());
-    }
-
-    private boolean checkTerminated() throws Exception {
+    void checkTerminated() throws Exception {
         if (!service.isTerminated()) {
-            return terminate();
+            terminate();
         }
-        return true;
     }
 
-    private boolean terminate() throws InterruptedException, TimeoutException {
+    private void terminate() throws InterruptedException, TimeoutException {
         if (!terminationSuccessful()) {
             throw new TimeoutException("Service failed to terminate within " + terminationDuration.toString());
-        } else {
-            return true;
         }
     }
 
     private boolean terminationSuccessful() throws InterruptedException {
         return !service.awaitTermination(terminationDuration.toMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    String getTaskString() {
+        if (service.isShutdown()) {
+            throw new IllegalStateException("Service should still be running!");
+        }
+
+        return runnableLister.createTaskString(service.shutdownNow());
     }
 }
