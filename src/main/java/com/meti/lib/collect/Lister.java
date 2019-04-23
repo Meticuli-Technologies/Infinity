@@ -1,11 +1,11 @@
-package com.meti.app;
+package com.meti.lib.collect;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class Lister {
-    Optional<String> listFrom(List<?> collection) {
+public class Lister {
+    public Optional<String> listFrom(List<?> collection) {
         if (collection.isEmpty()) {
             return Optional.empty();
         } else {
