@@ -1,7 +1,6 @@
 package com.meti.app;
 
 import com.meti.lib.State;
-import com.meti.lib.fx.StateControllerLoader;
 import com.meti.lib.log.Console;
 import com.meti.lib.log.LoggerConsole;
 import javafx.scene.Parent;
@@ -12,6 +11,9 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
+
+import static com.meti.lib.fx.StateControllerLoader.load;
+import static com.meti.lib.util.URLUtil.getResource;
 
 /**
  * @author SirMathhman
@@ -58,7 +60,7 @@ public class Infinity implements InfinityImpl {
     }
 
     private Parent loadMenuParent() throws IOException {
-        return StateControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml"), mainState);
+        return load(getResource("/com/meti/app/control/Menu.fxml"), mainState);
     }
 
     @Override
