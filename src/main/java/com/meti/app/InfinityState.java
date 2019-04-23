@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.State;
+import com.meti.lib.log.Console;
 
 /**
  * @author SirMathhman
@@ -8,5 +9,11 @@ import com.meti.lib.State;
  * @since 4/23/2019
  */
 public class InfinityState extends State {
+    public Console getConsole() {
+        return byClassToSingle(Console.class);
+    }
 
+    public ExecutorServiceManager getExecutorServiceManager() {
+        return byClassToSingle(ExecutorServiceManager.class);
+    }
 }

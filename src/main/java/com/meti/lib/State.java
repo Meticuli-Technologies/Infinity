@@ -21,4 +21,8 @@ public class State extends ArrayList<Object> {
     private Stream<Object> byPredicate(Predicate<Object> predicate) {
         return stream().filter(predicate);
     }
+
+    protected <T> T byClassToSingle(Class<T> tClass) {
+        return byClass(tClass).findAny().orElseThrow();
+    }
 }
