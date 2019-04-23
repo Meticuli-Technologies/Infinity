@@ -37,6 +37,6 @@ public class ExecutorServiceManager {
             throw new IllegalStateException("Service should still be running!");
         }
 
-        return lister.createTaskString(service.shutdownNow());
+        return lister.listFrom(service.shutdownNow());
     }
 }
