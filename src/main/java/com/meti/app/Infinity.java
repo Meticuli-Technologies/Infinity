@@ -29,21 +29,21 @@ public class Infinity implements InfinityImpl {
 
     @Override
     public void stop() {
-  /*      try {
+        try {
             stopImpl();
         } catch (Exception e) {
-            console.log(Level.SEVERE, e);
-        }*/
+            mainState.getConsole().log(Level.SEVERE, e);
+        }
     }
 
-/*    private void stopImpl() throws Exception {
+    private void stopImpl() throws Exception {
         terminateExecutor();
     }
 
     private void terminateExecutor() throws Exception {
         logTaskString();
-        executorServiceManager.checkTerminated();
-    }*/
+        mainState.getExecutorServiceManager().checkTerminated();
+    }
 
     private void setAndShowScene(Stage primaryStage, Scene scene) {
         infinityStarter.setAndShowScene(primaryStage, scene);
