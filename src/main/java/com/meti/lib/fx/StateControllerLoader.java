@@ -7,11 +7,10 @@ import java.io.IOException;
 import java.net.URL;
 
 public class StateControllerLoader extends FXMLLoader {
-    private final State state;
 
-    public StateControllerLoader(URL url, State state) {
+    private StateControllerLoader(URL url, State state) {
         super(url);
-        this.state = state;
+        State state1 = state;
 
         setControllerFactory(new StateControllerFactory(state));
     }

@@ -2,7 +2,7 @@ package com.meti.app;
 
 import java.util.logging.Level;
 
-public class InfinityStopper {
+class InfinityStopper {
     void stopImpl(InfinityState state) throws Exception {
         terminateExecutor(state);
     }

@@ -15,7 +15,7 @@ public class URLUtil {
         return getResource(URLUtil.class, name);
     }
 
-    public static URL getResource(Class<?> clazz, String name) {
+    private static URL getResource(Class<?> clazz, String name) {
         return checkResource(name, clazz.getResource(name));
     }
 

@@ -8,7 +8,7 @@ import com.meti.lib.log.Console;
  * @version 0.0.0
  * @since 4/23/2019
  */
-public class InfinityState extends State {
+class InfinityState extends State {
     public Console getConsole() {
         return byClassToSingle(Console.class);
     }

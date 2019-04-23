@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 
-public class InfinityInitializer {
+class InfinityInitializer {
     private static final Duration AWAIT_TERMINATION = Duration.ofSeconds(1);
 
     void init(State state, Stage primaryStage) {

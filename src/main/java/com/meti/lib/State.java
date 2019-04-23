@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * @since 4/22/2019
  */
 public class State extends ArrayList<Object> {
-    public <T> Stream<T> byClass(Class<T> tClass) {
+    private <T> Stream<T> byClass(Class<T> tClass) {
         return byPredicate(new TypePredicate<>(tClass))
                 .map(new TypeFunction<>(tClass));
     }
