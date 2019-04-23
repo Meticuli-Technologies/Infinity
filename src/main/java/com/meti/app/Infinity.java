@@ -1,9 +1,9 @@
 package com.meti.app;
 
 import com.meti.lib.State;
+import com.meti.lib.fx.StateControllerLoader;
 import com.meti.lib.log.Console;
 import com.meti.lib.log.LoggerConsole;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -34,7 +34,7 @@ public class Infinity implements InfinityImpl {
         mainState.add(primaryStage);
 
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml")));
+            Scene scene = new Scene(StateControllerLoader.load(getClass().getResource("/com/meti/app/control/Menu.fxml")));
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
