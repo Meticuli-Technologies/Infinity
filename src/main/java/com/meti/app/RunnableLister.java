@@ -14,11 +14,7 @@ class RunnableLister {
     }
 
     private String createTaskListString(List<Runnable> tasks) {
-        return listTasks(tasks);
-    }
-
-    private String listTasks(List<Runnable> runnables) {
-        return runnables.stream()
+        return tasks.stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\n\t"));
     }
