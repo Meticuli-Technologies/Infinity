@@ -17,18 +17,22 @@ public class Console {
         this.handler = handler;
     }
 
-    public String log(Level level, String message, Exception exception){
+    public String log(Level level, Exception exception) {
+        return log(level, null, exception);
+    }
+
+    private String log(Level level, String message, Exception exception) {
         StringBuilder builder = new StringBuilder();
 
-        if(message != null){
+        if (message != null) {
             builder.append(message);
         }
 
-        if(message != null && exception != null){
+        if (message != null && exception != null) {
             builder.append("\n");
         }
 
-        if(exception != null){
+        if (exception != null) {
             StringWriter writer = new StringWriter();
             exception.printStackTrace(new PrintWriter(writer));
             builder.append(writer.toString());
@@ -37,5 +41,9 @@ public class Console {
         String result = builder.toString();
         handler.accept(level, result);
         return result;
+    }
+
+    public String log(Level level, String message) {
+        return log(level, message, null);
     }
 }
