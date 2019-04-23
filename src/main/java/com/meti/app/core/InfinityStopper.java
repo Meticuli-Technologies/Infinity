@@ -13,7 +13,8 @@ class InfinityStopper {
     }
 
     private void logTaskString(InfinityState state) {
-        state.getExecutorServiceManager().getTaskString().ifPresentOrElse(s -> state.getConsole().log(Level.SEVERE, s),
+        state.getExecutorServiceManager().getTaskString().ifPresentOrElse(
+                s -> state.getConsole().log(Level.SEVERE, "The ExecutorService has been shutdown, " + "but the following tasks were awaiting execution:\n\t" + s),
                 () -> state.getConsole().log(Level.INFO, "The ExecutorService has been shutdown with no tasks awaiting execution.")
         );
     }

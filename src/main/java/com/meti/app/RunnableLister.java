@@ -14,8 +14,7 @@ class RunnableLister {
     }
 
     private String createTaskListString(List<Runnable> tasks) {
-        return "The ExecutorService has been shutdown, " + "but the following tasks were awaiting execution:\n\t" +
-                listTasks(tasks);
+        return listTasks(tasks);
     }
 
     private String listTasks(List<Runnable> runnables) {
