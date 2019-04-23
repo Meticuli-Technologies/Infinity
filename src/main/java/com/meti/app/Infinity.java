@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
@@ -62,11 +61,9 @@ public class Infinity implements InfinityImpl {
     }
 
     private void logTaskString() {
-        Optional<String> taskStringOptional = executorServiceManager.getTaskString();
-        if (taskStringOptional.isPresent()) {
-            console.log(Level.SEVERE, taskStringOptional.get());
-        } else {
-            console.log(Level.INFO, "The ExecutorService has been shutdown with no tasks awaiting execution.");
-        }
+        executorServiceManager.getTaskString().ifPresentOrElse(
+                s -> console.log(Level.SEVERE, s),
+                () -> console.log(Level.INFO, "The ExecutorService has been shutdown with no tasks awaiting execution.")
+        );
     }
 }
