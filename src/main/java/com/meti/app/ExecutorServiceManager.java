@@ -1,6 +1,7 @@
 package com.meti.app;
 
 import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -31,7 +32,7 @@ class ExecutorServiceManager {
         return !service.awaitTermination(terminationDuration.toMillis(), TimeUnit.MILLISECONDS);
     }
 
-    String getTaskString() {
+    Optional<String> getTaskString() {
         if (service.isShutdown()) {
             throw new IllegalStateException("Service should still be running!");
         }

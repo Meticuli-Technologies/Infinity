@@ -1,14 +1,15 @@
 package com.meti.app;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 class RunnableLister {
-    String createTaskString(List<Runnable> tasks) {
+    Optional<String> createTaskString(List<Runnable> tasks) {
         if (tasks.isEmpty()) {
-            return "The ExecutorService has been shutdown with no tasks awaiting execution.";
+            return Optional.empty();
         } else {
-            return createTaskListString(tasks);
+            return Optional.of(createTaskListString(tasks));
         }
     }
 
