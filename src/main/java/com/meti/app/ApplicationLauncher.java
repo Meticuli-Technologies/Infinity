@@ -16,7 +16,7 @@ class ApplicationLauncher {
     }
 
     void launch(String[] args) throws Exception {
-        checkLaunchMethod().invoke(null, (Object) args);
+        checkLaunchMethod().invoke(null, Main.class, args);
     }
 
     private Method checkLaunchMethod() {

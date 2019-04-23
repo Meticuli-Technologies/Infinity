@@ -15,6 +15,6 @@ class InfinityLauncher extends ApplicationLauncher {
     }
 
     private static Method getApplicationLaunchMethod() throws NoSuchMethodException {
-        return Application.class.getMethod("launch", String[].class);
+        return Application.class.getMethod("launch", Class.class, String[].class);
     }
 }
