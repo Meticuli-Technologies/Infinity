@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -32,25 +33,39 @@ public class Infinity implements InfinityImpl {
 
     @Override
     public void stop() {
-        List<Runnable> runnables = service.shutdownNow();
-        StringBuilder taskString = createTaskString(runnables);
-        //TODO: log taskString
-
-        if (!service.isTerminated()) {
-            try {
-                boolean hasTerminated = service.awaitTermination(AWAIT_TERMINATION.toMillis(), TimeUnit.MILLISECONDS);
-                if (!hasTerminated) {
-                    //TODO: log "Service has not terminated successfully, some threads may still be running!"
-                } else {
-                    //TODO: log "Service terminated successfully!"
-                }
-            } catch (InterruptedException e) {
-                //TODO: log e
-            }
+        try {
+            terminateExecutor();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private StringBuilder createTaskString(List<Runnable> tasks) {
+    public void terminateExecutor() throws Exception {
+        String taskString = createTaskString();
+        boolean terminationSuccessful = hasTerminated();
+    }
+
+    public boolean hasTerminated() throws Exception {
+        if (!service.isTerminated()) {
+            if (!terminationSuccessful()) {
+                throw new TimeoutException("Service failed to terminate within " + AWAIT_TERMINATION.toString());
+            } else {
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean terminationSuccessful() throws InterruptedException {
+        return !service.awaitTermination(AWAIT_TERMINATION.toMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    public String createTaskString() {
+        return createTaskString(service.shutdownNow());
+    }
+
+    private String createTaskString(List<Runnable> tasks) {
         if (tasks.isEmpty()) {
             return createEmptyTaskString();
         } else {
@@ -58,15 +73,13 @@ public class Infinity implements InfinityImpl {
         }
     }
 
-    private StringBuilder createEmptyTaskString() {
-        return new StringBuilder()
-                .append("The ExecutorService has been shutdown with no tasks awaiting execution.");
+    private String createEmptyTaskString() {
+        return "The ExecutorService has been shutdown with no tasks awaiting execution.";
     }
 
-    private StringBuilder createPresentTaskString(List<Runnable> tasks) {
-        return new StringBuilder()
-                .append("The ExecutorService has been shutdown, " + "but the following tasks were awaiting execution:")
-                .append(collectTasks(tasks));
+    private String createPresentTaskString(List<Runnable> tasks) {
+        return "The ExecutorService has been shutdown, " + "but the following tasks were awaiting execution:\n\t" +
+                collectTasks(tasks);
     }
 
     private String collectTasks(List<Runnable> runnables) {
