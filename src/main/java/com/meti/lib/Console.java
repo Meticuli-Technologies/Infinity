@@ -1,9 +1,9 @@
 package com.meti.lib;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
+
+import static com.meti.lib.util.ExceptionUtil.stackTraceString;
 
 /**
  * @author SirMathhman
@@ -23,24 +23,36 @@ public class Console {
 
     private String log(Level level, String message, Exception exception) {
         StringBuilder builder = new StringBuilder();
+        appendMessage(message, builder)
+                .appendNewLine(message, exception, builder)
+                .appendException(exception, builder);
+        return logBuilder(level, builder);
+    }
 
-        if (message != null) {
-            builder.append(message);
-        }
-
-        if (message != null && exception != null) {
-            builder.append("\n");
-        }
-
-        if (exception != null) {
-            StringWriter writer = new StringWriter();
-            exception.printStackTrace(new PrintWriter(writer));
-            builder.append(writer.toString());
-        }
-
+    private String logBuilder(Level level, StringBuilder builder) {
         String result = builder.toString();
         handler.accept(level, result);
         return result;
+    }
+
+    private void appendException(Exception exception, StringBuilder builder) {
+        if (exception != null) {
+            builder.append(stackTraceString(exception));
+        }
+    }
+
+    private Console appendNewLine(String message, Exception exception, StringBuilder builder) {
+        if (message != null && exception != null) {
+            builder.append("\n");
+        }
+        return this;
+    }
+
+    private Console appendMessage(String message, StringBuilder builder) {
+        if (message != null) {
+            builder.append(message);
+        }
+        return this;
     }
 
     public String log(Level level, String message) {
