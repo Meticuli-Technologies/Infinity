@@ -8,4 +8,5 @@ import com.meti.lib.State;
  * @since 4/23/2019
  */
 public class InfinityState extends State {
+
 }
