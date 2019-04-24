@@ -19,6 +19,16 @@ public class Menu extends InfinityController {
         super(state);
     }
 
+    @FXML
+    public void exit(){
+
+    }
+
+    @FXML
+    public void next(){
+
+    }
+
     public static Parent loadMenuParent(State mainState) throws IOException {
         return load(getMenuResource(), mainState);
     }
