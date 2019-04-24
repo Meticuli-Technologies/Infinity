@@ -11,9 +11,13 @@ import java.net.URL;
 import static com.meti.lib.fx.StateControllerLoader.load;
 import static com.meti.lib.util.URLUtil.getResource;
 
-public class Menu {
+public class Menu extends InfinityController {
     @FXML
     private TextField portField;
+
+    public Menu(State state) {
+        super(state);
+    }
 
     public static Parent loadMenuParent(State mainState) throws IOException {
         return load(getMenuResource(), mainState);
