@@ -24,6 +24,14 @@ public class Client implements Closeable {
         socket.close();
     }
 
+    public boolean isOpen() {
+        return !isClosed();
+    }
+
+    public boolean isClosed() {
+        return socket.isClosed();
+    }
+
     public ObjectChannel sharedChannel() {
         return new SharedObjectChannel(inputStream, outputStream);
     }
