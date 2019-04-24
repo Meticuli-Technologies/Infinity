@@ -10,9 +10,15 @@ import com.meti.lib.fx.StateController;
  * @since 4/23/2019
  */
 public class InfinityController extends StateController {
-    private final InfinityState state = new InfinityState();
+    private final InfinityState state;
 
     public InfinityController(State state) {
         super(state);
+
+        if (state instanceof InfinityState) {
+            this.state = ((InfinityState) state);
+        } else {
+            throw new IllegalArgumentException(InfinityState.class.getSimpleName() + " is not assignable to " + state.getClass());
+        }
     }
 }
