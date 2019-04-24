@@ -1,6 +1,7 @@
 package com.meti.app.control;
 
 import com.meti.lib.State;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -21,7 +22,7 @@ public class Menu extends InfinityController {
 
     @FXML
     public void exit(){
-
+        Platform.exit();
     }
 
     @FXML
