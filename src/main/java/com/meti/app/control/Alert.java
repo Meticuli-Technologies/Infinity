@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.lib.util.ExceptionUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,10 @@ import java.net.URL;
 public class Alert {
     @FXML
     private Text messageText;
+
+    public static Stage create(Exception exception) throws IOException {
+        return create(ExceptionUtil.stackTraceString(exception));
+    }
 
     public static Stage create(String message) throws IOException {
         FXMLLoader loader = new FXMLLoader(getAlertResource());
