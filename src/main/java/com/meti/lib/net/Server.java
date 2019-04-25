@@ -18,13 +18,13 @@ public class Server {
     }
 
     public void listen(ExecutorService service) {
-        service.submit(new ClientBuilder(service));
+        service.submit(new ClientListener(service));
     }
 
-    private class ClientBuilder implements Callable<Void> {
+    private class ClientListener implements Callable<Void> {
         private final ExecutorService service;
 
-        ClientBuilder(ExecutorService service) {
+        ClientListener(ExecutorService service) {
             this.service = service;
         }
 
