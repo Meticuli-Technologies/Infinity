@@ -10,8 +10,6 @@ public class StateControllerLoader extends FXMLLoader {
 
     private StateControllerLoader(URL url, State state) {
         super(url);
-        State state1 = state;
-
         setControllerFactory(new StateControllerFactory(state));
     }
 
