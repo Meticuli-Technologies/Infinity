@@ -25,7 +25,6 @@ public class Alert {
     private static Stage buildStage(Parent root) {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.showAndWait();
         return stage;
     }
 
