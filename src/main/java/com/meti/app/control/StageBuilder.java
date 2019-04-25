@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.function.Consumer;
+
 class StageBuilder extends FunctionalConsumer<Parent, Stage> {
-    public StageBuilder(CompletableConsumer<Stage> consumer) {
+    private StageBuilder(Consumer<Stage> consumer) {
         super(consumer);
     }
 

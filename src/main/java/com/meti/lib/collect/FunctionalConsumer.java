@@ -6,7 +6,7 @@ import java.util.function.Function;
 public abstract class FunctionalConsumer<T, R> implements Consumer<T>, Function<T, R> {
     private final Consumer<R> consumer;
 
-    private FunctionalConsumer(Consumer<R> consumer) {
+    protected FunctionalConsumer(Consumer<R> consumer) {
         this.consumer = consumer;
     }
 
