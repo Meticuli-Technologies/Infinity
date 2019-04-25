@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.lib.State;
 import com.meti.lib.util.ExceptionUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +12,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-public class Alert {
+public class Alert extends InfinityController {
     @FXML
     private Text messageText;
+
+    public Alert(State state) {
+        super(state);
+    }
 
     public static Stage create(Exception exception) throws IOException {
         return create(ExceptionUtil.stackTraceString(exception));
@@ -37,8 +42,7 @@ public class Alert {
         return Alert.class.getResource("/com/meti/app/control/Alert.fxml");
     }
 
-    private Alert setMessage(String message) {
+    private void setMessage(String message) {
         messageText.setText(message);
-        return this;
     }
 }
