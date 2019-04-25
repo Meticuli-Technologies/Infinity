@@ -1,40 +1,31 @@
 package com.meti.lib.net;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.net.Socket;
 
-public class Server {
-    private final Map<Predicate<Object>, Function<Object, Object>> resultMapper = new HashMap<>();
+public abstract class Server implements Closeable {
     private final ServerSocket serverSocket;
 
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
     }
 
-    public ClientListener listen(ExecutorService service) {
-        return new ClientListener(service);
+    public Socket accept() throws IOException {
+        return serverSocket.accept();
     }
 
-    private class ClientListener implements Callable<Void> {
-        private final ExecutorService service;
+    @Override
+    public void close() throws IOException {
+        serverSocket.close();
+    }
 
-        ClientListener(ExecutorService service) {
-            this.service = service;
-        }
+    public boolean isOpen() {
+        return isClosed();
+    }
 
-        @Override
-        public Void call() throws Exception {
-            while (!serverSocket.isClosed()) {
-                Client client = new Client(serverSocket.accept());
-                service.submit(new Processor(client, resultMapper));
-            }
-            return null;
-        }
+    public boolean isClosed() {
+        return serverSocket.isClosed();
     }
 }
