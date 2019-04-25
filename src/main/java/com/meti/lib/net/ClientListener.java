@@ -17,10 +17,13 @@ abstract class ClientListener implements Callable<Void> {
     @Override
     public Void call() throws Exception {
         while (server.isOpen()) {
-            Client client = new Client(server.accept());
-            process(new Processor(client, resultMapper));
+            nextClient(new Client(server.accept()));
         }
         return null;
+    }
+
+    public void nextClient(Client client) {
+        process(new Processor(client, resultMapper));
     }
 
     protected abstract void process(Processor processor);
