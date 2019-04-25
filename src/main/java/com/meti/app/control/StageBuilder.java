@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.util.function.Consumer;
 
 class StageBuilder extends FunctionalConsumer<Parent, Stage> {
-    private StageBuilder(Consumer<Stage> consumer) {
+    StageBuilder(Consumer<Stage> consumer) {
         super(consumer);
     }
 
