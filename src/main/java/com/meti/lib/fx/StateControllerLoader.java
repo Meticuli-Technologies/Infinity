@@ -13,11 +13,15 @@ public class StateControllerLoader extends FXMLLoader {
         setControllerFactory(new StateControllerFactory(state));
     }
 
-    public <T> FXMLBundle<T> loadBundle() throws IOException {
-        return new FXMLBundle<>(load(), getController());
-    }
-
     public static <T> T loadRoot(URL url, State state) throws IOException {
         return new StateControllerLoader(url, state).load();
+    }
+
+    public static <T> FXMLBundle<T> loadBundle(URL url, State state) throws IOException {
+        return new StateControllerLoader(url, state).loadBundle();
+    }
+
+    public <T> FXMLBundle<T> loadBundle() throws IOException {
+        return new FXMLBundle<>(load(), getController());
     }
 }

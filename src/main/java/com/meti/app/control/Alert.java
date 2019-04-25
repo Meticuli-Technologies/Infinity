@@ -1,6 +1,8 @@
 package com.meti.app.control;
 
 import com.meti.lib.State;
+import com.meti.lib.fx.StateController;
+import com.meti.lib.fx.StateControllerLoader;
 import com.meti.lib.util.ExceptionUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +27,7 @@ public class Alert extends InfinityController {
     }
 
     public static Stage create(String message) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getAlertResource());
+        StateControllerLoader.loadBundle
         Stage stage = buildStage(loader.load());
         Alert controller = loader.getController();
         controller.setMessage(message);
