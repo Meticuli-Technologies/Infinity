@@ -17,8 +17,8 @@ public class Server {
         this.serverSocket = new ServerSocket(port);
     }
 
-    public void listen(ExecutorService service) {
-        service.submit(new ClientListener(service));
+    public ClientListener listen(ExecutorService service) {
+        return new ClientListener(service);
     }
 
     private class ClientListener implements Callable<Void> {
