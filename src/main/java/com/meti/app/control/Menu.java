@@ -20,21 +20,26 @@ public class Menu extends InfinityController {
         super(state);
     }
 
-    @FXML
-    public void exit(){
-        Platform.exit();
-    }
-
-    @FXML
-    public void next(){
-
-    }
-
     public static Parent loadMenuParent(State mainState) throws IOException {
         return load(getMenuResource(), mainState);
     }
 
     private static URL getMenuResource() {
         return getResource("/com/meti/app/control/Menu.fxml");
+    }
+
+    @FXML
+    public void exit() {
+        Platform.exit();
+    }
+
+    @FXML
+    public void next() {
+        int port;
+        try {
+            port = Integer.parseInt(portField.getText());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 }
