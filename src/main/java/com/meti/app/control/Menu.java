@@ -1,6 +1,7 @@
 package com.meti.app.control;
 
 import com.meti.lib.State;
+import com.meti.lib.fx.StateControllerLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -21,7 +22,7 @@ public class Menu extends InfinityController {
     }
 
     public static Parent loadMenuParent(State mainState) throws IOException {
-        return load(getMenuResource(), mainState);
+        return StateControllerLoader.loadRoot(getMenuResource(), mainState);
     }
 
     private static URL getMenuResource() {

@@ -13,7 +13,7 @@ public class StateControllerLoader extends FXMLLoader {
         setControllerFactory(new StateControllerFactory(state));
     }
 
-    public static <T> T load(URL url, State state) throws IOException {
+    public static <T> T loadRoot(URL url, State state) throws IOException {
         return new StateControllerLoader(url, state).load();
     }
 }
