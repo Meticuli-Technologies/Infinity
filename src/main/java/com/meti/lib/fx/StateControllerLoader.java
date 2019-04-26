@@ -10,12 +10,18 @@ public class StateControllerLoader extends FXMLLoader {
 
     private StateControllerLoader(URL url, State state) {
         super(url);
-        State state1 = state;
-
         setControllerFactory(new StateControllerFactory(state));
     }
 
-    public static <T> T load(URL url, State state) throws IOException {
+    public static <T> T loadRoot(URL url, State state) throws IOException {
         return new StateControllerLoader(url, state).load();
+    }
+
+    public static <T> FXMLBundle<T> loadFXMLBundleFrom(URL url, State state) throws IOException {
+        return new StateControllerLoader(url, state).loadFXMLBundleFrom();
+    }
+
+    public <T> FXMLBundle<T> loadFXMLBundleFrom() throws IOException {
+        return new FXMLBundle<>(load(), getController());
     }
 }

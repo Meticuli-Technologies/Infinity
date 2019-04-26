@@ -2,6 +2,7 @@ package com.meti.app.core.runtime;
 
 import com.meti.app.ExecutorServiceManager;
 import com.meti.lib.State;
+import com.meti.lib.fx.StageManager;
 import com.meti.lib.log.LoggerConsole;
 import javafx.stage.Stage;
 
@@ -12,11 +13,22 @@ class InfinityInitializer {
     private static final Duration AWAIT_TERMINATION = Duration.ofSeconds(1);
 
     void init(State state, Stage primaryStage) {
-        ExecutorServiceManager executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool(), AWAIT_TERMINATION);
-        LoggerConsole loggerConsole = new LoggerConsole();
+        state.add(initStageManager(primaryStage));
+        state.add(initExecutorServiceManager());
+        state.add(initLoggerConsole());
+    }
 
-        state.add(executorServiceManager);
-        state.add(loggerConsole);
-        state.add(primaryStage);
+    private StageManager initStageManager(Stage primaryStage) {
+        StageManager stageManager = new StageManager();
+        stageManager.add(primaryStage);
+        return stageManager;
+    }
+
+    private ExecutorServiceManager initExecutorServiceManager() {
+        return new ExecutorServiceManager(Executors.newCachedThreadPool(), AWAIT_TERMINATION);
+    }
+
+    private LoggerConsole initLoggerConsole() {
+        return new LoggerConsole();
     }
 }

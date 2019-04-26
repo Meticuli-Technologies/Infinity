@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
 public class ExecutorServiceManager {
     private final Lister lister = new Lister();
     private final Duration terminationDuration;
-    private final ExecutorService service;
+    public final ExecutorService service;
 
     public ExecutorServiceManager(ExecutorService service, Duration terminationDuration) {
         this.service = service;
