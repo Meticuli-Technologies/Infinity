@@ -1,5 +1,7 @@
 package com.meti.lib.fx;
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -13,7 +15,17 @@ import java.util.NoSuchElementException;
 public class StageManager {
     private final ArrayList<Stage> stages = new ArrayList<>();
 
-    public Stage create() {
+    public Stage createFrom(Parent root) {
+        return createFrom(new Scene(root));
+    }
+
+    public Stage createFrom(Scene scene) {
+        Stage stage = createWithEmptyScene();
+        stage.setScene(scene);
+        return stage;
+    }
+
+    public Stage createWithEmptyScene() {
         Stage toAdd = new Stage();
         if (!stages.isEmpty()) {
             setCoordinatesFromLastOf(toAdd);
