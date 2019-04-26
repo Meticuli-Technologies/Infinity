@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import static com.meti.lib.util.URLUtil.getResource;
 
@@ -35,12 +36,10 @@ public class Menu extends InfinityController {
 
     @FXML
     public void next() {
-        int port;
-        try {
-            port = Integer.parseInt(portField.getText());
-        } catch (NumberFormatException e) {
+        try{
+            int port = Integer.parseInt(portField.getText());
+        } catch (Exception e){
             Alerts.showInstance(e, state);
         }
     }
-
 }

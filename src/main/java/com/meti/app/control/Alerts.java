@@ -19,7 +19,7 @@ public class Alerts {
     private Alerts() {
     }
 
-    public static void showInstance(Exception e, InfinityState state) {
+    public static <T> Optional<T> showInstance(Exception e, InfinityState state) {
         try {
             newInstance(e, state)
                     .orElseThrow()
@@ -27,6 +27,8 @@ public class Alerts {
         } catch (Exception alertException) {
             state.getConsole().log(Level.WARNING, alertException);
         }
+
+        return Optional.empty();
     }
 
     private static Optional<Stage> newInstance(Exception exception, InfinityState state) {
