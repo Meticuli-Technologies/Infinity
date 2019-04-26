@@ -3,6 +3,7 @@ package com.meti.app.control;
 import com.meti.app.io.InfinityServerListener;
 import com.meti.lib.State;
 import com.meti.lib.fx.StateControllerLoader;
+import com.meti.lib.net.Processor;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
