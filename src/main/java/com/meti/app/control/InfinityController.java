@@ -10,7 +10,7 @@ import com.meti.lib.fx.StateController;
  * @since 4/23/2019
  */
 public class InfinityController extends StateController {
-    private final InfinityState state;
+    final InfinityState state;
 
     public InfinityController(State state) {
         super(state);
