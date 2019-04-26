@@ -3,7 +3,6 @@ package com.meti.app.control;
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.State;
 import com.meti.lib.fx.FXMLBundle;
-import com.meti.lib.log.Console;
 import com.meti.lib.util.ExceptionUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -31,7 +30,7 @@ public class Alert extends InfinityController {
         try {
             return Optional.of(newAlertStage(exception, state));
         } catch (Exception e) {
-            return returnEmpty(e, state.getConsole());
+            return state.getConsole().logAsEmpty(Level.WARNING, e);
         }
     }
 
@@ -41,9 +40,14 @@ public class Alert extends InfinityController {
         return state.getStageManager().createFrom(bundle.root);
     }
 
-    private static Optional<Stage> returnEmpty(Exception e, Console console) {
-        console.log(Level.WARNING, e);
-        return Optional.empty();
+    static void showInstance(InfinityState state, Exception e) {
+        try {
+            newInstance(e, state)
+                    .orElseThrow()
+                    .showAndWait();
+        } catch (Exception alertException) {
+            state.getConsole().log(Level.WARNING, alertException);
+        }
     }
 
     private void show(Exception exception) {

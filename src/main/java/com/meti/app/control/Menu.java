@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Level;
 
 import static com.meti.lib.util.URLUtil.getResource;
 
@@ -40,13 +39,8 @@ public class Menu extends InfinityController {
         try {
             port = Integer.parseInt(portField.getText());
         } catch (NumberFormatException e) {
-            try {
-                Alert.newInstance(e, state)
-                        .orElseThrow()
-                        .showAndWait();
-            } catch (Exception e1) {
-                state.getConsole().log(Level.WARNING, e1);
-            }
+            Alert.showInstance(state, e);
         }
     }
+
 }
