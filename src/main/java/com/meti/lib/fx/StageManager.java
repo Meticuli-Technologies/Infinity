@@ -1,11 +1,11 @@
 package com.meti.lib.fx;
 
+import com.meti.lib.util.CollectionUtil;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 /**
  * @author SirMathhman
@@ -34,7 +34,7 @@ public class StageManager {
     }
 
     private void setCoordinatesFromLastOf(Stage toAdd) {
-        Stage lastStage = lastStage();
+        Stage lastStage = CollectionUtil.lastStage(stages);
         double lastStageX = lastStage.getX();
         double lastStageY = lastStage.getY();
         toAdd.setX(lastStageX);
@@ -44,16 +44,5 @@ public class StageManager {
     public Stage add(Stage stage) {
         stages.add(stage);
         return stage;
-    }
-
-    public Stage lastStage() {
-        return stages.get(lastStageIndex());
-    }
-
-    public int lastStageIndex() {
-        if (stages.isEmpty()) {
-            throw new NoSuchElementException("No elements present.");
-        }
-        return stages.size() - 1;
     }
 }
