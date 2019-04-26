@@ -41,7 +41,9 @@ public class Menu extends InfinityController {
             port = Integer.parseInt(portField.getText());
         } catch (NumberFormatException e) {
             try {
-                Alert.create(e).showAndWait();
+                Alert.create(e, state)
+                        .orElseThrow()
+                        .showAndWait();
             } catch (Exception e1) {
                 state.getConsole().log(Level.WARNING, e1);
             }

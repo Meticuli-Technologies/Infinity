@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.State;
 import com.meti.lib.concurrent.CompletableConsumer;
 import com.meti.lib.fx.FXMLBundle;
@@ -9,6 +10,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Optional;
+import java.util.logging.Level;
 
 import static com.meti.lib.fx.StateControllerLoader.loadBundle;
 
@@ -20,16 +23,21 @@ public class Alert extends InfinityController {
         super(state);
     }
 
-    public static Stage create(Exception exception) throws Exception {
-        return create(ExceptionUtil.stackTraceString(exception));
+    public static Optional<Stage> create(Exception exception, InfinityState state) {
+        return create(ExceptionUtil.stackTraceString(exception), state);
     }
 
-    public static Stage create(String message) throws Exception {
-        CompletableConsumer<Stage> consumer = new CompletableConsumer<>();
-        FXMLBundle<Alert> bundle = loadBundle(getAlertResource(), new State());
-        bundle.initRoot(new StageBuilder(consumer))
-                .initController(alert -> alert.setMessage(message));
-        return consumer.get();
+    public static Optional<Stage> create(String message, InfinityState state) {
+        try {
+            CompletableConsumer<Stage> consumer = new CompletableConsumer<>();
+            FXMLBundle<Alert> bundle = loadBundle(getAlertResource(), state);
+            bundle.initRoot(new StageBuilder(consumer))
+                    .initController(alert -> alert.setMessage(message));
+            return Optional.of(consumer.get());
+        } catch (Exception e) {
+            state.getConsole().log(Level.WARNING, e);
+            return Optional.empty();
+        }
     }
 
     private static URL getAlertResource() {
