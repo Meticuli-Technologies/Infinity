@@ -17,11 +17,11 @@ public class StateControllerLoader extends FXMLLoader {
         return new StateControllerLoader(url, state).load();
     }
 
-    public static <T> FXMLBundle<T> loadBundle(URL url, State state) throws IOException {
-        return new StateControllerLoader(url, state).loadBundle();
+    public static <T> FXMLBundle<T> loadFXMLBundleFrom(URL url, State state) throws IOException {
+        return new StateControllerLoader(url, state).loadFXMLBundleFrom();
     }
 
-    public <T> FXMLBundle<T> loadBundle() throws IOException {
+    public <T> FXMLBundle<T> loadFXMLBundleFrom() throws IOException {
         return new FXMLBundle<>(load(), getController());
     }
 }

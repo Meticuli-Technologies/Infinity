@@ -3,6 +3,7 @@ package com.meti.app.control;
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.State;
 import com.meti.lib.fx.FXMLBundle;
+import com.meti.lib.log.Console;
 import com.meti.lib.util.ExceptionUtil;
 import com.meti.lib.util.FXUtil;
 import javafx.fxml.FXML;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static com.meti.lib.fx.StateControllerLoader.loadBundle;
+import static com.meti.lib.fx.StateControllerLoader.loadFXMLBundleFrom;
 
 public class Alert extends InfinityController {
     @FXML
@@ -27,23 +28,23 @@ public class Alert extends InfinityController {
         super(state);
     }
 
-    static Optional<Stage> create(Exception exception, InfinityState state) {
+    static Optional<Stage> newInstance(Exception exception, InfinityState state) {
         try {
-            return Optional.of(createOptional(exception, state));
+            return Optional.of(newAlertStage(exception, state));
         } catch (Exception e) {
-            state.getConsole().log(Level.WARNING, e);
-            return Optional.empty();
+            return returnEmpty(e, state.getConsole());
         }
     }
 
-    private static Stage createOptional(Exception exception, InfinityState state) throws java.io.IOException {
-        return loadAlertBundle(exception, state);
+    private static Stage newAlertStage(Exception exception, InfinityState state) throws java.io.IOException {
+        FXMLBundle<Alert> bundle = loadFXMLBundleFrom(getAlertResource(), state);
+        bundle.controller.show(exception);
+        return FXUtil.newStageFrom(bundle.root);
     }
 
-    private static Stage loadAlertBundle(Exception exception, InfinityState state) throws java.io.IOException {
-        FXMLBundle<Alert> bundle = loadBundle(getAlertResource(), state);
-        bundle.controller.show(exception);
-        return FXUtil.buildStage(bundle.root);
+    private static Optional<Stage> returnEmpty(Exception e, Console console) {
+        console.log(Level.WARNING, e);
+        return Optional.empty();
     }
 
     private void show(Exception exception) {
