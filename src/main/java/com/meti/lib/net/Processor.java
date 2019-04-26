@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import static com.meti.lib.util.CollectionUtil.toSingle;
 
-class Processor implements Callable<Void> {
+public class Processor implements Callable<Void> {
     private final Client client;
     private final Map<Predicate<Object>, Function<Object, Object>> resultMapper;
 

@@ -3,15 +3,20 @@ package com.meti.lib.net;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-abstract class ClientListener implements Callable<Void> {
+public abstract class ServerListener implements Callable<Void> {
     private final Map<Predicate<Object>, Function<Object, Object>> resultMapper = new HashMap<>();
     private final Server server;
 
-    public ClientListener(Server server) {
+    public ServerListener(Server server) {
         this.server = server;
+    }
+
+    public void listen(Consumer<ServerListener> consumer){
+        consumer.accept(this);
     }
 
     @Override

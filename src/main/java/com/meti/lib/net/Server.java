@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public abstract class Server implements Closeable {
+public class Server implements Closeable {
     private final ServerSocket serverSocket;
 
     public Server(int port) throws IOException {

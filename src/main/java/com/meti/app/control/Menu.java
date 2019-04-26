@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.app.io.InfinityServerListener;
 import com.meti.lib.State;
 import com.meti.lib.fx.StateControllerLoader;
 import javafx.application.Platform;
@@ -9,7 +10,6 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 
 import static com.meti.lib.util.URLUtil.getResource;
 
@@ -38,6 +38,10 @@ public class Menu extends InfinityController {
     public void next() {
         try{
             int port = Integer.parseInt(portField.getText());
+
+            InfinityServerListener serverListener = new InfinityServerListener(port, state.getExecutorServiceManager().service);
+            serverListener.listen();
+            state.add(serverListener);
         } catch (Exception e){
             Alerts.showInstance(e, state);
         }
