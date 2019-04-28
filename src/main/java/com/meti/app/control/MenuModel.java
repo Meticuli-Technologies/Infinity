@@ -1,7 +1,7 @@
 package com.meti.app.control;
 
 import com.meti.app.core.runtime.InfinityState;
-import com.meti.app.io.InfinityServerListener;
+import com.meti.app.net.InfinityListener;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Querier;
 
@@ -27,7 +27,7 @@ public class MenuModel {
     }
 
     private void constructServerListener(int port) throws IOException {
-        InfinityServerListener serverListener = new InfinityServerListener(port, state.getExecutorServiceManager().service);
+        InfinityListener serverListener = new InfinityListener(port, state.getExecutorServiceManager().service);
         serverListener.listen();
         state.add(serverListener);
     }
@@ -35,6 +35,11 @@ public class MenuModel {
     private void constructClient(int port) throws IOException {
         Client client = new Client(new Socket(InetAddress.getByName("localhost"), port));
         state.add(client);
+
+        constructQuerier(client);
+    }
+
+    private void constructQuerier(Client client) {
         Querier querier = new Querier(true, client);
         state.getExecutorServiceManager().service.submit(querier);
         state.add(querier);
