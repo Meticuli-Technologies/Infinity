@@ -35,6 +35,11 @@ public class MenuModel {
     private void constructClient(int port) throws IOException {
         Client client = new Client(new Socket(InetAddress.getByName("localhost"), port));
         state.add(client);
+
+        constructQuerier(client);
+    }
+
+    private void constructQuerier(Client client) {
         Querier querier = new Querier(true, client);
         state.getExecutorServiceManager().service.submit(querier);
         state.add(querier);
