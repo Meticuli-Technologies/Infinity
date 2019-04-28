@@ -23,7 +23,7 @@ public abstract class ServerListener implements Callable<Void> {
     }
 
     public void nextClient(Client client) {
-        process(new Processor(client, resultMapper));
+        process(new MappedProcessor(client, resultMapper));
     }
 
     public abstract void listen();
