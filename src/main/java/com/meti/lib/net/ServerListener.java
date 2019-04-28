@@ -3,7 +3,6 @@ package com.meti.lib.net;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -13,10 +12,6 @@ public abstract class ServerListener implements Callable<Void> {
 
     public ServerListener(Server server) {
         this.server = server;
-    }
-
-    public void listen(Consumer<ServerListener> consumer){
-        consumer.accept(this);
     }
 
     @Override
@@ -31,5 +26,6 @@ public abstract class ServerListener implements Callable<Void> {
         process(new Processor(client, resultMapper));
     }
 
+    public abstract void listen();
     protected abstract void process(Processor processor);
 }

@@ -18,7 +18,7 @@ public class ExecutorServiceListener extends ServerListener {
     }
 
     public void listen(){
-        listen(service::submit);
+        service.submit(this);
     }
 
     @Override
