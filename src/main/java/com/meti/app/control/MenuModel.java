@@ -2,7 +2,6 @@ package com.meti.app.control;
 
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.app.net.InfinityListener;
-import com.meti.lib.net.ExecutorServiceListener;
 import com.meti.lib.net.Client;
 import com.meti.lib.net.Querier;
 
