@@ -17,9 +17,41 @@ public class ObjectSource<S extends Source> extends ParentSource<S> {
 
     public ObjectChannel getChannel(boolean shared) {
         if (shared) {
-            return new SharedChannel(inputStream, outputStream);
+            return new SharedObjectChannel();
         } else {
-            return new UnsharedChannel(inputStream, outputStream);
+            return new UnsharedObjectChannel();
+        }
+    }
+
+    private class SharedObjectChannel extends SharedChannel {
+        public SharedObjectChannel() {
+            super(ObjectSource.this.inputStream, ObjectSource.this.outputStream);
+        }
+
+        @Override
+        public boolean isClosed() {
+            return ObjectSource.this.isClosed();
+        }
+
+        @Override
+        public boolean isOpen() {
+            return ObjectSource.this.isOpen();
+        }
+    }
+
+    private class UnsharedObjectChannel extends UnsharedChannel {
+        public UnsharedObjectChannel() {
+            super(ObjectSource.this.inputStream, ObjectSource.this.outputStream);
+        }
+
+        @Override
+        public boolean isClosed() {
+            return ObjectSource.this.isClosed();
+        }
+
+        @Override
+        public boolean isOpen() {
+            return ObjectSource.this.isOpen();
         }
     }
 }

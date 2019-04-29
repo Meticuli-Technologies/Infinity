@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class SharedChannel implements ObjectChannel {
+public abstract class SharedChannel implements ObjectChannel {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
