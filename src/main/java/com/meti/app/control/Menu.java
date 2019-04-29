@@ -42,6 +42,7 @@ public class Menu extends InfinityController {
         try {
             InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(Integer.parseInt(portField.getText()))));
             serviceManager.service.submit(server.getListener());
+            state.add(server);
             //TODO: do something with future
 
             onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"));
