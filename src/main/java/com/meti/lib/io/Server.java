@@ -18,7 +18,7 @@ public abstract class Server<S extends Source> {
 
     private class ServerListener implements Callable<Server> {
         @Override
-        public Server call() {
+        public Server call() throws IOException, ClassNotFoundException {
             while (supplier.isOpen()) {
                 accept(supplier.get());
             }
