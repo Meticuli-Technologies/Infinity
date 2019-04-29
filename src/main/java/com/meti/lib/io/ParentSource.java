@@ -17,12 +17,12 @@ public class ParentSource<S extends Source> implements Source {
     }
 
     @Override
-    public InputStream getInputStream() {
+    public InputStream getInputStream() throws IOException {
         return source.getInputStream();
     }
 
     @Override
-    public OutputStream getOutputStream() {
+    public OutputStream getOutputStream() throws IOException {
         return source.getOutputStream();
     }
 
