@@ -1,16 +1,16 @@
 package com.meti.app.io;
 
 import com.meti.lib.io.MappedServer;
+import com.meti.lib.io.ServerSocketSupplier;
 import com.meti.lib.io.SocketSource;
-import com.meti.lib.io.SourceSupplier;
 
 import java.io.IOException;
 import java.util.function.Consumer;
 
-public class InfinityServer extends MappedServer<SocketSource> {
+public class InfinityServer extends MappedServer<SocketSource, ServerSocketSupplier> {
     public Consumer<SocketSource> onAccept;
 
-    public InfinityServer(SourceSupplier<SocketSource> supplier) {
+    public InfinityServer(ServerSocketSupplier supplier) {
         super(supplier, true);
     }
 

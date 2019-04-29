@@ -3,10 +3,10 @@ package com.meti.lib.io;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-public abstract class Server<S extends Source> {
-    private final SourceSupplier<S> supplier;
+public abstract class Server<S extends Source, T extends SourceSupplier<S>> {
+    public final T supplier;
 
-    public Server(SourceSupplier<S> supplier) {
+    public Server(T supplier) {
         this.supplier = supplier;
     }
 

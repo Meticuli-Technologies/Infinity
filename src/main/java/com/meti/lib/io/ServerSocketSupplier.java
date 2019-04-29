@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerSocketSupplier implements SourceSupplier<SocketSource> {
-    private final ServerSocket serverSocket;
+    public final ServerSocket serverSocket;
 
     public ServerSocketSupplier(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;

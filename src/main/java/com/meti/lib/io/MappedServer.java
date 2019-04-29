@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 
 import static com.meti.lib.util.CollectionUtil.computeFromResults;
 
-public class MappedServer<S extends Source> extends Server<S> {
+public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
     private final Map<Predicate<Object>, Function<Object, Object>> map = new HashMap<>();
     private final boolean shared;
 
-    public MappedServer(SourceSupplier<S> supplier, boolean shared) {
+    public MappedServer(T supplier, boolean shared) {
         super(supplier);
         this.shared = shared;
     }
