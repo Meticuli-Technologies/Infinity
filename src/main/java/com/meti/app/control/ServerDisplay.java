@@ -2,8 +2,6 @@ package com.meti.app.control;
 
 import com.meti.lib.State;
 import com.meti.lib.io.Server;
-import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -27,32 +25,8 @@ public class ServerDisplay extends InfinityServerController implements Initializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        server.onAccept = socketSource -> clientListView.getItems().add(socketSource.socket.getInetAddress().toString());
         Future<Server> future = executorServiceManager.service.submit(server.getListener());
-        AnimationTimer timer = new ServerDisplayTimer(future);
-        timer.start();
-    }
-
-    private class ServerDisplayTimer extends AnimationTimer {
-        private final Future<Server> future;
-
-        public ServerDisplayTimer(Future<Server> future) {
-            this.future = future;
-        }
-
-        @Override
-        public void handle(long now) {
-            if (future.isDone()) {
-                handleResult();
-            }
-        }
-
-        public void handleResult() {
-            try {
-                future.get();
-            } catch (Exception e) {
-                console.log(Level.SEVERE, e);
-                Platform.exit();
-            }
-        }
+        new InfinityFXChecker(future, state, Level.SEVERE).start();
     }
 }

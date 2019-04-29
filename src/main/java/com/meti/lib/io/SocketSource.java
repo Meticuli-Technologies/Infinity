@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class SocketSource implements Source {
-    private final Socket socket;
+    public final Socket socket;
 
     public SocketSource(Socket socket) {
         this.socket = socket;
