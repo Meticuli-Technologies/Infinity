@@ -1,5 +1,6 @@
 package com.meti.lib.io;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 public abstract class Server<S extends Source> {
@@ -9,7 +10,7 @@ public abstract class Server<S extends Source> {
         this.supplier = supplier;
     }
 
-    protected abstract void accept(S source);
+    protected abstract void accept(S source) throws IOException, ClassNotFoundException;
 
     public ServerListener getListener() {
         return new ServerListener();

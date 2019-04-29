@@ -1,6 +1,8 @@
 package com.meti.lib.util;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class CollectionUtil {
     private CollectionUtil() {
@@ -17,15 +19,16 @@ public class CollectionUtil {
         return collection.size() - 1;
     }
 
-    public static Object toSingle(Set<Object> set) {
-        Object result;
-        if (set.size() > 1) {
-            result = new IllegalArgumentException("Too many results: " + set.size() + " results were found.");
-        } else if (set.isEmpty()) {
-            result = new IllegalArgumentException("No results found.");
-        } else {
-            result = new ArrayList<>(set).get(0);
+    public static Object computeFromResults(List<Object> results) {
+        if (results.size() > 1) {
+            return new IllegalArgumentException("Too many results.");
         }
-        return result;
+        return computeSingularResult(results);
+    }
+
+    private static Object computeSingularResult(List<Object> results) {
+        return results.isEmpty() ?
+                new IllegalArgumentException("No results found.") :
+                results.get(0);
     }
 }
