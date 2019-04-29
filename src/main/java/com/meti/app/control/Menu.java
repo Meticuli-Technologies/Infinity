@@ -13,7 +13,7 @@ import java.net.URL;
 import static com.meti.lib.util.URLUtil.getResource;
 
 public class Menu extends InfinityController {
-    private final MenuModel menuModel = new MenuModel(state);
+   /* private final MenuModel menuModel = new MenuModel(state);*/
     @FXML
     private TextField portField;
 
@@ -37,7 +37,7 @@ public class Menu extends InfinityController {
     @FXML
     public void next() {
         try{
-            menuModel.nextImpl(Integer.parseInt(portField.getText()));
+     /*       menuModel.nextImpl(Integer.parseInt(portField.getText()));*/
         } catch (Exception e){
             Alerts.showInstance(e, state);
         }
