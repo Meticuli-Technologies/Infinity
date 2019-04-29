@@ -2,6 +2,7 @@ package com.meti.app.control;
 
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.fx.FXMLBundle;
+import com.meti.lib.fx.StageManager;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -42,7 +43,7 @@ public class Alerts {
     private static Stage newAlertStage(Exception exception, InfinityState state) throws java.io.IOException {
         FXMLBundle<Alert> bundle = loadFXMLBundleFrom(getAlertResource(), state);
         bundle.controller.show(exception);
-        return state.getStageManager().createFromRoot(bundle.root);
+        return state.getStageManager().setRootToStage(bundle.root, StageManager.NEW_STAGE);
     }
 
     private static URL getAlertResource() {

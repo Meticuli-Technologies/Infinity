@@ -3,14 +3,16 @@ package com.meti.app.control;
 import com.meti.app.io.InfinityServer;
 import com.meti.lib.State;
 import com.meti.lib.fx.ControllerLoader;
-import com.meti.lib.io.ServerSocketSupplier;
+import com.meti.lib.io.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 
 import static com.meti.lib.util.URLUtil.getResource;
@@ -40,12 +42,21 @@ public class Menu extends InfinityController {
     @FXML
     public void next() {
         try {
-            InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(Integer.parseInt(portField.getText()))));
+            int port = Integer.parseInt(portField.getText());
+            InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(port)));
             serviceManager.service.submit(server.getListener());
             state.add(server);
-            //TODO: do something with future
 
-            onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"));
+            onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
+
+            ObjectSource<SocketSource> client = new ObjectSource<>(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
+            ObjectChannel channel = client.getChannel(true);
+            Querier querier = new Querier(channel);
+            serviceManager.service.submit(querier.getListener());
+
+            onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
+
+            //TODO: do something with futures
         } catch (Exception e) {
             Alerts.showInstance(e, state);
         }

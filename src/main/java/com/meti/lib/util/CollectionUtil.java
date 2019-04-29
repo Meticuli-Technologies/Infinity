@@ -2,21 +2,30 @@ package com.meti.lib.util;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 public class CollectionUtil {
     private CollectionUtil() {
     }
 
-    public static <T> T lastStage(List<T> ts) {
-        return ts.get(lastStageIndex(ts));
+    public static boolean containsIndex(Collection<?> collection, int index){
+        return collection.size() > index;
     }
 
-    public static int lastStageIndex(Collection<?> collection) {
-        if (collection.isEmpty()) {
-            throw new NoSuchElementException("No elements present.");
+    public static <T> Optional<T> lastElement(List<T> ts) {
+        if (lastIndex(ts).isPresent()) {
+            return Optional.of(ts.get(lastIndex(ts).getAsInt()));
+        } else {
+            return Optional.empty();
         }
-        return collection.size() - 1;
+    }
+
+    public static OptionalInt lastIndex(Collection<?> collection) {
+        if (collection.isEmpty()) {
+            return OptionalInt.empty();
+        }
+        return OptionalInt.of(collection.size() - 1);
     }
 
     public static Object computeFromResults(List<Object> results) {

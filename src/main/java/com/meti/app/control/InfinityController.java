@@ -40,8 +40,8 @@ public class InfinityController extends StateController {
         return state;
     }
 
-    public void onto(URL resource) throws IOException {
-        stageManager.createFromRoot(ControllerLoader.loadRoot(resource, state))
+    public void onto(URL resource, int index) throws IOException {
+        stageManager.setRootToStage(ControllerLoader.loadRoot(resource, state), index)
                 .show();
     }
 }
