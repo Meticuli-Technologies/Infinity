@@ -15,5 +15,11 @@ public class ObjectSource<S extends Source> extends ParentSource<S> {
         this.inputStream = new ObjectInputStream(source.getInputStream());
     }
 
-
+    public ObjectChannel getChannel(boolean shared) {
+        if (shared) {
+            return new SharedChannel(inputStream, outputStream);
+        } else {
+            return new UnsharedChannel(inputStream, outputStream);
+        }
+    }
 }
