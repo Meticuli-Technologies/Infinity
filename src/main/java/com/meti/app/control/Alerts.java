@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static com.meti.lib.fx.StateControllerLoader.loadFXMLBundleFrom;
+import static com.meti.lib.fx.ControllerLoader.loadFXMLBundleFrom;
 
 /**
  * @author SirMathhman
@@ -42,7 +42,7 @@ public class Alerts {
     private static Stage newAlertStage(Exception exception, InfinityState state) throws java.io.IOException {
         FXMLBundle<Alert> bundle = loadFXMLBundleFrom(getAlertResource(), state);
         bundle.controller.show(exception);
-        return state.getStageManager().createFrom(bundle.root);
+        return state.getStageManager().createFromRoot(bundle.root);
     }
 
     private static URL getAlertResource() {

@@ -27,7 +27,7 @@ public class ServerDisplay extends InfinityServerController implements Initializ
     public void initialize(URL location, ResourceBundle resources) {
         portText.setText(String.valueOf(server.supplier.serverSocket.getLocalPort()));
         server.onAccept = socketSource -> clientListView.getItems().add(socketSource.socket.getInetAddress().toString());
-        Future<Server> future = executorServiceManager.service.submit(server.getListener());
+        Future<Server> future = serviceManager.service.submit(server.getListener());
         new InfinityFXChecker(future, state, Level.SEVERE).start();
     }
 }

@@ -15,11 +15,11 @@ import java.util.ArrayList;
 public class StageManager {
     private final ArrayList<Stage> stages = new ArrayList<>();
 
-    public Stage createFrom(Parent root) {
-        return createFrom(new Scene(root));
+    public Stage createFromRoot(Parent root) {
+        return createFromScene(new Scene(root));
     }
 
-    public Stage createFrom(Scene scene) {
+    public Stage createFromScene(Scene scene) {
         Stage stage = createWithEmptyScene();
         stage.setScene(scene);
         return stage;

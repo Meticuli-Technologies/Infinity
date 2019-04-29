@@ -1,19 +1,22 @@
 package com.meti.app.control;
 
+import com.meti.app.io.InfinityServer;
 import com.meti.lib.State;
-import com.meti.lib.fx.StateControllerLoader;
+import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.io.ServerSocketSupplier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.URL;
 
 import static com.meti.lib.util.URLUtil.getResource;
 
 public class Menu extends InfinityController {
-   /* private final MenuModel menuModel = new MenuModel(state);*/
+    /* private final MenuModel menuModel = new MenuModel(state);*/
     @FXML
     private TextField portField;
 
@@ -22,7 +25,7 @@ public class Menu extends InfinityController {
     }
 
     public static Parent loadMenuParent(State mainState) throws IOException {
-        return StateControllerLoader.loadRoot(getMenuResource(), mainState);
+        return ControllerLoader.loadRoot(getMenuResource(), mainState);
     }
 
     private static URL getMenuResource() {
@@ -36,9 +39,13 @@ public class Menu extends InfinityController {
 
     @FXML
     public void next() {
-        try{
-     /*       menuModel.nextImpl(Integer.parseInt(portField.getText()));*/
-        } catch (Exception e){
+        try {
+            InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(Integer.parseInt(portField.getText()))));
+            serviceManager.service.submit(server.getListener());
+            //TODO: do something with future
+
+            onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"));
+        } catch (Exception e) {
             Alerts.showInstance(e, state);
         }
     }

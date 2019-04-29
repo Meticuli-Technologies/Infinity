@@ -3,9 +3,13 @@ package com.meti.app.control;
 import com.meti.app.ExecutorServiceManager;
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.State;
+import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.fx.StateController;
 import com.meti.lib.log.Console;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author SirMathhman
@@ -15,8 +19,8 @@ import com.meti.lib.log.Console;
 public class InfinityController extends StateController {
     final InfinityState state;
 
-    ExecutorServiceManager executorServiceManager;
-    private StageManager stageManager;
+    ExecutorServiceManager serviceManager;
+    StageManager stageManager;
     Console console;
 
     public InfinityController(State state) {
@@ -30,9 +34,14 @@ public class InfinityController extends StateController {
     }
 
     public InfinityState buildFields(InfinityState state) {
-        executorServiceManager = state.getExecutorServiceManager();
+        serviceManager = state.getExecutorServiceManager();
         console = state.getConsole();
         stageManager = state.getStageManager();
         return state;
+    }
+
+    public void onto(URL resource) throws IOException {
+        stageManager.createFromRoot(ControllerLoader.loadRoot(resource, state))
+                .show();
     }
 }
