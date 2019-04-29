@@ -15,13 +15,5 @@ public class ObjectSource<S extends Source> extends ParentSource<S> {
         this.inputStream = new ObjectInputStream(source.getInputStream());
     }
 
-    @Override
-    public ObjectInputStream getInputStream() {
-        return inputStream;
-    }
 
-    @Override
-    public ObjectOutputStream getOutputStream() {
-        return outputStream;
-    }
 }
