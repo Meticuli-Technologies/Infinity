@@ -5,5 +5,5 @@ package com.meti.app.control;
  * @version 0.0.0
  * @since 4/29/2019
  */
-public class ClientDisplay {
+public class ClientDisplay extends InfinityClientController {
 }
