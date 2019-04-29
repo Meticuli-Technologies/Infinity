@@ -8,7 +8,6 @@ public class ObjectSource<S extends Source> extends ParentSource<S> {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-
     public ObjectSource(S source) throws IOException {
         super(source);
 
