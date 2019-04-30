@@ -44,16 +44,21 @@ public class Menu extends InfinityController {
         try {
             int port = Integer.parseInt(portField.getText());
             InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(port)));
-            serviceManager.service.submit(server.getListener());
             state.add(server);
 
+            serviceManager.service.submit(server.getListener());
             onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
 
             ObjectSource<SocketSource> client = new ObjectSource<>(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
-            ObjectChannel channel = client.getChannel(true);
-            Querier querier = new Querier(channel);
-            serviceManager.service.submit(querier.getListener());
+            state.add(client);
 
+            ObjectChannel channel = client.getChannel(true);
+            state.add(channel);
+
+            Querier querier = new Querier(channel);
+            state.add(querier);
+
+            serviceManager.service.submit(querier.getListener());
             onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
 
             //TODO: do something with futures

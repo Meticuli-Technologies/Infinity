@@ -12,13 +12,15 @@ import com.meti.lib.io.SocketSource;
  * @since 4/29/2019
  */
 public class InfinityClientController extends InfinityController{
-   private final ObjectSource<SocketSource> objectSource;
+   private final ObjectSource<?> client;
    private final ObjectChannel channel;
    private final Querier querier;
 
     public InfinityClientController(State state) {
         super(state);
 
-        this.objectSource = this.state.
+        this.client = this.state.getClient();
+        this.channel = this.state.getChannel();
+        this.querier = this.state.getQuerier();
     }
 }
