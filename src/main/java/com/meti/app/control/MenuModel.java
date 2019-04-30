@@ -1,47 +1,44 @@
 package com.meti.app.control;
 
-import com.meti.app.core.runtime.InfinityState;
-import com.meti.app.net.InfinityListener;
-import com.meti.lib.net.Client;
-import com.meti.lib.net.Querier;
+import com.meti.app.io.InfinityClient;
+import com.meti.app.io.InfinityServer;
+import com.meti.lib.io.*;
+import com.meti.lib.io.channel.ObjectChannel;
+import com.meti.lib.io.source.ObjectSource;
+import com.meti.lib.io.source.supplier.ServerSocketSupplier;
+import com.meti.lib.io.source.SocketSource;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
-/**
- * @author SirMathhman
- * @version 0.0.0
- * @since 4/26/2019
- */
 public class MenuModel {
-    private final InfinityState state;
+    private final Menu menu;
 
-    public MenuModel(InfinityState state) {
-        this.state = state;
+    public MenuModel(Menu menu) {
+        this.menu = menu;
     }
 
-    void nextImpl(int port) throws IOException {
-        constructServerListener(port);
-        constructClient(port);
+    void setupIO() throws IOException {
+        int port = Integer.parseInt(menu.portField.getText());
+        setupServer(port);
+        setupClient(port);
+        //TODO: do something with futures
     }
 
-    private void constructServerListener(int port) throws IOException {
-        InfinityListener serverListener = new InfinityListener(port, state.getExecutorServiceManager().service);
-        serverListener.listen();
-        state.add(serverListener);
+    void setupServer(int port) throws IOException {
+        InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(port)));
+        menu.state.add(server);
+        menu.serviceManager.service.submit(server.getListener());
     }
 
-    private void constructClient(int port) throws IOException {
-        Client client = new Client(new Socket(InetAddress.getByName("localhost"), port));
-        state.add(client);
-
-        constructQuerier(client);
-    }
-
-    private void constructQuerier(Client client) {
-        Querier querier = new Querier(true, client);
-        state.getExecutorServiceManager().service.submit(querier);
-        state.add(querier);
+    void setupClient(int port) throws IOException {
+        InfinityClient client = new InfinityClient(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
+        ObjectChannel channel = client.getChannel(true);
+        Querier querier = new Querier(channel);
+        menu.serviceManager.service.submit(querier.getListener());
+        menu.state.addAll(Arrays.asList(client, channel, querier));
     }
 }

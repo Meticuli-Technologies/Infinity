@@ -1,10 +1,10 @@
-package com.meti.lib.net;
+package com.meti.lib.io.channel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-class UnsharedChannel implements ObjectChannel {
+public abstract class UnsharedChannel implements ObjectChannel {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 

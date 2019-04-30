@@ -1,14 +1,14 @@
-package com.meti.lib.net;
+package com.meti.lib.io.channel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-class SharedObjectChannel implements ObjectChannel {
+public abstract class SharedChannel implements ObjectChannel {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public SharedObjectChannel(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
+    public SharedChannel(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }

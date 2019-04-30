@@ -13,32 +13,45 @@ import java.util.ArrayList;
  * @since 4/26/2019
  */
 public class StageManager {
+    public static final int NEW_STAGE = -1;
     private final ArrayList<Stage> stages = new ArrayList<>();
 
-    public Stage createFrom(Parent root) {
-        return createFrom(new Scene(root));
+    public Stage setRootToStage(Parent root, int index) {
+        return setSceneToStage(new Scene(root), index);
     }
 
-    public Stage createFrom(Scene scene) {
-        Stage stage = createWithEmptyScene();
+    public Stage setSceneToStage(Scene scene, int index) {
+        Stage stage = getStage(index);
         stage.setScene(scene);
         return stage;
     }
 
-    public Stage createWithEmptyScene() {
-        Stage toAdd = new Stage();
-        if (!stages.isEmpty()) {
-            setCoordinatesFromLastOf(toAdd);
+    public Stage getStage(int index) {
+        if (index == NEW_STAGE) {
+            return allocate();
+        } else {
+            return getIndex(index);
         }
-        return add(toAdd);
     }
 
-    private void setCoordinatesFromLastOf(Stage toAdd) {
-        Stage lastStage = CollectionUtil.lastStage(stages);
+    private Stage allocate() {
+        return setCoordinatesFromLastOf(add(new Stage()));
+    }
+
+    private Stage getIndex(int index) {
+        while (!CollectionUtil.containsIndex(stages, index)) {
+            allocate();
+        }
+        return stages.get(index);
+    }
+
+    private Stage setCoordinatesFromLastOf(Stage toAdd) {
+        Stage lastStage = CollectionUtil.lastElement(stages).orElseThrow();
         double lastStageX = lastStage.getX();
         double lastStageY = lastStage.getY();
         toAdd.setX(lastStageX);
         toAdd.setY(lastStageY);
+        return toAdd;
     }
 
     public Stage add(Stage stage) {
