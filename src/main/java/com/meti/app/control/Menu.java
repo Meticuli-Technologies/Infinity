@@ -38,9 +38,15 @@ public class Menu extends InfinityController {
     @FXML
     public void next() {
         try {
-            menuModel.setupIO();
+            loadDisplays();
         } catch (Exception e) {
             Alerts.showInstance(e, state);
         }
+    }
+
+    private void loadDisplays() throws IOException {
+        menuModel.setupIO();
+        onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
+        onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
     }
 }
