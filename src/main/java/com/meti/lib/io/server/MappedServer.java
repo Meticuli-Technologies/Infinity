@@ -49,7 +49,7 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
                 .map(objectObjectFunction -> objectObjectFunction.apply(token));
     }
 
-    private ObjectSource<?> getObjectSource(S source) throws IOException {
+    protected ObjectSource<?> getObjectSource(S source) throws IOException {
         if (source instanceof ObjectSource) {
             return (ObjectSource<?>) source;
         } else {

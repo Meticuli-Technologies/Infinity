@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ParentSource<S extends Source> implements Source {
-    private final S source;
+    public final S source;
 
     public ParentSource(S source) {
         this.source = source;

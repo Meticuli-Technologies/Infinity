@@ -1,6 +1,7 @@
 package com.meti.app.core.runtime;
 
 import com.meti.app.ExecutorServiceManager;
+import com.meti.app.io.InfinityClient;
 import com.meti.app.io.InfinityServer;
 import com.meti.lib.State;
 import com.meti.lib.fx.StageManager;
@@ -19,8 +20,8 @@ public class InfinityState extends State {
         return byClassToSingle(ObjectChannel.class);
     }
 
-    public ObjectSource<?> getClient() {
-        return byClassToSingle(ObjectSource.class);
+    public InfinityClient getClient() {
+        return byClassToSingle(InfinityClient.class);
     }
 
     public Console getConsole() {
