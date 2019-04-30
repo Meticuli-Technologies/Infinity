@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,7 +33,13 @@ public class ClientDisplay extends InfinityClientController implements Initializ
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Socket socket = client.source.socket;
-        addressText.setText(socket.getInetAddress().toString());
-        portText.setText(String.valueOf(socket.getLocalPort()));
+        InetAddress inetAddress = socket.getInetAddress();
+        int localPort = socket.getLocalPort();
+        setText(inetAddress, localPort);
+    }
+
+    private void setText(InetAddress inetAddress, int localPort) {
+        addressText.setText(inetAddress.toString());
+        portText.setText(String.valueOf(localPort));
     }
 }
