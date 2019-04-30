@@ -1,5 +1,6 @@
-package com.meti.app.control.helper;
+package com.meti.app.control.server;
 
+import com.meti.app.control.util.InfinityController;
 import com.meti.app.io.InfinityServer;
 import com.meti.lib.State;
 

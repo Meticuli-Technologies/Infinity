@@ -1,5 +1,6 @@
-package com.meti.app.control.helper;
+package com.meti.app.control.util.alert;
 
+import com.meti.app.control.util.InfinityController;
 import com.meti.lib.State;
 import com.meti.lib.util.ExceptionUtil;
 import javafx.fxml.FXML;

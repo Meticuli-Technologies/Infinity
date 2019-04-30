@@ -1,6 +1,5 @@
-package com.meti.app.control;
+package com.meti.app.control.client;
 
-import com.meti.app.control.helper.InfinityClientController;
 import com.meti.lib.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
