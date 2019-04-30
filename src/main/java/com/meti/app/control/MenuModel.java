@@ -1,5 +1,6 @@
 package com.meti.app.control;
 
+import com.meti.app.io.InfinityClient;
 import com.meti.app.io.InfinityServer;
 import com.meti.lib.io.*;
 import com.meti.lib.io.channel.ObjectChannel;
@@ -34,7 +35,7 @@ public class MenuModel {
     }
 
     void setupClient(int port) throws IOException {
-        ObjectSource<SocketSource> client = new ObjectSource<>(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
+        InfinityClient client = new InfinityClient(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
         ObjectChannel channel = client.getChannel(true);
         Querier querier = new Querier(channel);
         menu.serviceManager.service.submit(querier.getListener());
