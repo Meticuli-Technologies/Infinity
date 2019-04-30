@@ -4,8 +4,8 @@ import com.meti.app.ExecutorServiceManager;
 import com.meti.app.io.InfinityServer;
 import com.meti.lib.State;
 import com.meti.lib.fx.StageManager;
-import com.meti.lib.io.ObjectChannel;
-import com.meti.lib.io.ObjectSource;
+import com.meti.lib.io.channel.ObjectChannel;
+import com.meti.lib.io.source.ObjectSource;
 import com.meti.lib.io.Querier;
 import com.meti.lib.log.Console;
 

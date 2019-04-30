@@ -1,7 +1,9 @@
 package com.meti.app.control;
 
+import com.meti.app.control.helper.InfinityFXChecker;
+import com.meti.app.control.helper.InfinityServerController;
 import com.meti.lib.State;
-import com.meti.lib.io.Server;
+import com.meti.lib.io.server.Server;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;

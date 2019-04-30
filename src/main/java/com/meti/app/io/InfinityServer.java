@@ -1,8 +1,8 @@
 package com.meti.app.io;
 
-import com.meti.lib.io.MappedServer;
-import com.meti.lib.io.ServerSocketSupplier;
-import com.meti.lib.io.SocketSource;
+import com.meti.lib.io.server.MappedServer;
+import com.meti.lib.io.source.supplier.ServerSocketSupplier;
+import com.meti.lib.io.source.SocketSource;
 
 import java.io.IOException;
 import java.util.function.Consumer;

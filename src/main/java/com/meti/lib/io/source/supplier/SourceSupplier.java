@@ -1,4 +1,6 @@
-package com.meti.lib.io;
+package com.meti.lib.io.source.supplier;
+
+import com.meti.lib.io.source.Source;
 
 import java.util.function.Supplier;
 

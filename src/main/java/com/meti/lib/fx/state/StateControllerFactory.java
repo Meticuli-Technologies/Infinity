@@ -1,12 +1,12 @@
-package com.meti.lib.fx;
+package com.meti.lib.fx.state;
 
 import com.meti.lib.State;
 import javafx.util.Callback;
 
-class StateControllerFactory implements Callback<Class<?>, Object> {
+public class StateControllerFactory implements Callback<Class<?>, Object> {
     private final State state;
 
-    StateControllerFactory(State state) {
+    public StateControllerFactory(State state) {
         this.state = state;
     }
 

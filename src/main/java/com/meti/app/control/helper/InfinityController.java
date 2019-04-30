@@ -1,11 +1,11 @@
-package com.meti.app.control;
+package com.meti.app.control.helper;
 
 import com.meti.app.ExecutorServiceManager;
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.State;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.StageManager;
-import com.meti.lib.fx.StateController;
+import com.meti.lib.fx.state.StateController;
 import com.meti.lib.log.Console;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.net.URL;
  * @since 4/23/2019
  */
 public class InfinityController extends StateController {
-    final InfinityState state;
+    public final InfinityState state;
 
-    ExecutorServiceManager serviceManager;
+    public ExecutorServiceManager serviceManager;
     StageManager stageManager;
     Console console;
 

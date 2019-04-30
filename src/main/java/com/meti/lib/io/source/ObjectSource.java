@@ -1,4 +1,8 @@
-package com.meti.lib.io;
+package com.meti.lib.io.source;
+
+import com.meti.lib.io.channel.ObjectChannel;
+import com.meti.lib.io.channel.SharedChannel;
+import com.meti.lib.io.channel.UnsharedChannel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

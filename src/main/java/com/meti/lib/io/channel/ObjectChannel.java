@@ -1,4 +1,4 @@
-package com.meti.lib.io;
+package com.meti.lib.io.channel;
 
 import java.io.IOException;
 

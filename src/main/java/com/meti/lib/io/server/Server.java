@@ -1,4 +1,7 @@
-package com.meti.lib.io;
+package com.meti.lib.io.server;
+
+import com.meti.lib.io.source.Source;
+import com.meti.lib.io.source.supplier.SourceSupplier;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;

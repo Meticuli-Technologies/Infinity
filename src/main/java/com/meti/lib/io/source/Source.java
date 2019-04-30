@@ -1,4 +1,4 @@
-package com.meti.lib.io;
+package com.meti.lib.io.source;
 
 import java.io.Closeable;
 import java.io.IOException;

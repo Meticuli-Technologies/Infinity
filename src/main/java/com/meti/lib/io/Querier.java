@@ -1,6 +1,7 @@
 package com.meti.lib.io;
 
 import com.meti.lib.collect.TypeFunction;
+import com.meti.lib.io.channel.ObjectChannel;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;

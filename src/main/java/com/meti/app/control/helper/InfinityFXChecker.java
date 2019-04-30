@@ -1,13 +1,13 @@
-package com.meti.app.control;
+package com.meti.app.control.helper;
 
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.fx.FutureFXChecker;
-import com.meti.lib.io.Server;
+import com.meti.lib.io.server.Server;
 
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-class InfinityFXChecker extends FutureFXChecker {
+public class InfinityFXChecker extends FutureFXChecker {
     private final InfinityState state;
     private final Level level;
 

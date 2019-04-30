@@ -1,6 +1,6 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.io.Server;
+import com.meti.lib.io.server.Server;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 

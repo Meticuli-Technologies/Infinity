@@ -1,4 +1,4 @@
-package com.meti.app.control;
+package com.meti.app.control.helper;
 
 import com.meti.app.core.runtime.InfinityState;
 import com.meti.lib.fx.FXMLBundle;
