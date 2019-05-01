@@ -42,7 +42,7 @@ public class Menu extends InfinityController {
         try {
             loadDisplays();
         } catch (Exception e) {
-            Alerts.showInstance(e, state);
+            Alerts.tryShowNewInstance(e, state);
         }
     }
 

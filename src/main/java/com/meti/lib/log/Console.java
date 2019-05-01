@@ -1,6 +1,5 @@
 package com.meti.lib.log;
 
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
@@ -11,11 +10,6 @@ import java.util.logging.Level;
  */
 public abstract class Console implements BiConsumer<Level, String> {
     private final LogBuilder logBuilder = new LogBuilder();
-
-    public <T> Optional<T> logAsEmpty(Level level, Exception e) {
-        log(level, e);
-        return Optional.empty();
-    }
 
     public String log(Level level, Exception exception) {
         return log(level, null, exception);

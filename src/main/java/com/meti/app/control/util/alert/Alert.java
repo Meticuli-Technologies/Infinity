@@ -18,7 +18,7 @@ public class Alert extends InfinityController {
         super(state);
     }
 
-    public void show(Exception exception) {
+    public void setText(Exception exception) {
         messageText.setText(exception.getMessage());
         stackTraceArea.setText(ExceptionUtil.stackTraceString(exception));
     }
