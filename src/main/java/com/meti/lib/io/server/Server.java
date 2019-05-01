@@ -29,9 +29,8 @@ public abstract class Server<S extends Source, T extends SourceSupplier<S>> {
         return new ServerListener();
     }
 
-    public Server<S, T> setOnAccept(Consumer<S> onAccept) {
+    public void setOnAccept(Consumer<S> onAccept) {
         this.onAccept = onAccept;
-        return this;
     }
 
     private class ServerListener implements Callable<Server> {
