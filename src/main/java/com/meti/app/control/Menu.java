@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 
-import static com.meti.lib.util.URLUtil.getResource;
+import static com.meti.lib.fx.URLs.getResource;
 
 public class Menu extends InfinityController {
     private final MenuModel menuModel = new MenuModel(this);

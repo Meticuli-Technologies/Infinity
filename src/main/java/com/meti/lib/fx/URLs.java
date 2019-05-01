@@ -1,4 +1,4 @@
-package com.meti.lib.util;
+package com.meti.lib.fx;
 
 import java.net.URL;
 
@@ -7,12 +7,12 @@ import java.net.URL;
  * @version 0.0.0
  * @since 4/23/2019
  */
-public class URLUtil {
-    private URLUtil() {
+public class URLs {
+    private URLs() {
     }
 
     public static URL getResource(String name) {
-        return checkResource(name, URLUtil.class.getResource(name));
+        return checkResource(name, URLs.class.getResource(name));
     }
 
     private static URL checkResource(String name, URL resource) {

@@ -1,12 +1,12 @@
-package com.meti.lib.util;
+package com.meti.lib.collect;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-public class CollectionUtil {
-    private CollectionUtil() {
+public class Collections {
+    private Collections() {
     }
 
     public static boolean containsIndex(Collection<?> collection, int index){

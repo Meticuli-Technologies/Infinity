@@ -1,10 +1,10 @@
-package com.meti.lib.util;
+package com.meti.lib.log;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ExceptionUtil {
-    private ExceptionUtil() {
+public class Exceptions {
+    private Exceptions() {
     }
 
     public static String stackTraceString(Exception exception) {

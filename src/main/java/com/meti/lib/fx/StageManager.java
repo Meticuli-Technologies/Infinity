@@ -1,6 +1,6 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.util.CollectionUtil;
+import com.meti.lib.collect.Collections;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -39,14 +39,14 @@ public class StageManager {
     }
 
     private Stage getIndex(int index) {
-        while (!CollectionUtil.containsIndex(stages, index)) {
+        while (!Collections.containsIndex(stages, index)) {
             allocate();
         }
         return stages.get(index);
     }
 
     private Stage setCoordinatesFromLastOf(Stage toAdd) {
-        Stage lastStage = CollectionUtil.lastElement(stages).orElseThrow();
+        Stage lastStage = Collections.lastElement(stages).orElseThrow();
         double lastStageX = lastStage.getX();
         double lastStageY = lastStage.getY();
         toAdd.setX(lastStageX);

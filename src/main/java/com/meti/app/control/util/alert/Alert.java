@@ -2,7 +2,7 @@ package com.meti.app.control.util.alert;
 
 import com.meti.app.control.util.InfinityController;
 import com.meti.lib.State;
-import com.meti.lib.util.ExceptionUtil;
+import com.meti.lib.log.Exceptions;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
@@ -28,6 +28,6 @@ public class Alert extends InfinityController {
 
     public void setText(Exception exception) {
         messageText.setText(exception.getMessage());
-        stackTraceArea.setText(ExceptionUtil.stackTraceString(exception));
+        stackTraceArea.setText(Exceptions.stackTraceString(exception));
     }
 }

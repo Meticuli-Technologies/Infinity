@@ -1,7 +1,5 @@
 package com.meti.lib.log;
 
-import com.meti.lib.util.ExceptionUtil;
-
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -18,7 +16,7 @@ class LogBuilder {
 
     private void appendException(Exception exception, StringBuilder builder) {
         if (exception != null) {
-            builder.append(ExceptionUtil.stackTraceString(exception));
+            builder.append(Exceptions.stackTraceString(exception));
         }
     }
 
