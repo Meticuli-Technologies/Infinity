@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import static com.meti.lib.util.CollectionUtil.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
+    //TODO: implement in InfinityServer
     private final Map<Predicate<Object>, Function<Object, Object>> map = new HashMap<>();
     private final boolean shared;
 

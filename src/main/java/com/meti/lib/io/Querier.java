@@ -20,6 +20,7 @@ public class Querier {
         return new QuerierListener();
     }
 
+    //TODO: use this method
     public <T> CompletableFuture<T> query(Object token, Class<T> tClass) throws IOException {
         return query(token).thenApply(new TypeFunction<>(tClass));
     }

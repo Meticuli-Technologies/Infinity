@@ -12,6 +12,7 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
     private Consumer<SocketSource> onAccept;
 
     public InfinityServer(ServerSocketSupplier supplier) {
+        //TODO: add options for non-shared servers
         super(supplier, true);
     }
 

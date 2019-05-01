@@ -12,11 +12,7 @@ public class URLUtil {
     }
 
     public static URL getResource(String name) {
-        return getResource(URLUtil.class, name);
-    }
-
-    private static URL getResource(Class<?> clazz, String name) {
-        return checkResource(name, clazz.getResource(name));
+        return checkResource(name, URLUtil.class.getResource(name));
     }
 
     private static URL checkResource(String name, URL resource) {

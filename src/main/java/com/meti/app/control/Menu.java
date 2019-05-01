@@ -48,7 +48,7 @@ public class Menu extends InfinityController {
 
     private void loadDisplays() throws IOException {
         menuModel.setupIO();
-        onto(getClass().getResource("/com/meti/app/control/ServerDisplay.fxml"), 0);
-        onto(getClass().getResource("/com/meti/app/control/ClientDisplay.fxml"), 1);
+        onto(getClass().getResource("/com/meti/app/control/server/ServerDisplay.fxml"), 0);
+        onto(getClass().getResource("/com/meti/app/control/client/ClientDisplay.fxml"), 1);
     }
 }

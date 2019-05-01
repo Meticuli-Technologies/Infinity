@@ -34,6 +34,6 @@ public class Alerts {
     }
 
     private static URL getAlertResource() {
-        return Alert.class.getResource("/com/meti/app/control/Alert.fxml");
+        return Alert.class.getResource("/com/meti/app/control/util/alert/Alert.fxml");
     }
 }
