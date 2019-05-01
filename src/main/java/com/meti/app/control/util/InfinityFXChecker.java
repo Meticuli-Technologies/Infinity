@@ -1,7 +1,7 @@
 package com.meti.app.control.util;
 
 import com.meti.app.core.runtime.InfinityState;
-import com.meti.lib.fx.FutureFXChecker;
+import com.meti.lib.fx.fxml.FutureFXChecker;
 import com.meti.lib.io.server.Server;
 
 import java.util.concurrent.Future;

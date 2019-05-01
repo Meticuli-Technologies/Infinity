@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.lib.fx.fxml;
 
 import com.meti.lib.io.server.Server;
 import javafx.animation.AnimationTimer;

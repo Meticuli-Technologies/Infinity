@@ -1,7 +1,7 @@
 package com.meti.app.control.util.alert;
 
 import com.meti.app.core.runtime.InfinityState;
-import com.meti.lib.fx.FXMLBundle;
+import com.meti.lib.fx.fxml.FXMLBundle;
 import com.meti.lib.fx.StageManager;
 import javafx.stage.Stage;
 

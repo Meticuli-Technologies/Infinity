@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.lib.fx.fxml;
 
 import javafx.scene.Parent;
 
