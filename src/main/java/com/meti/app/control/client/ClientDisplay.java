@@ -48,7 +48,7 @@ public class ClientDisplay extends InfinityClientController implements Initializ
         loadViews(console.getFactory(), state.getModuleManager().getImplementations(ViewModel.class));
     }
 
-    private void loadViews(TryableFactory factory, Stream<Class<? extends ViewModel>> implementations) {
+    private void loadViews(TryableFactory factory, Stream<Class<?>> implementations) {
         Streams.instanceStream(factory, implementations)
                 .forEach(factory.constructConsumerFrom(new ViewInitializer()));
     }
@@ -58,9 +58,10 @@ public class ClientDisplay extends InfinityClientController implements Initializ
         portText.setText(String.valueOf(localPort));
     }
 
-    private class ViewInitializer implements TryableConsumer<ViewModel> {
+    private class ViewInitializer implements TryableConsumer<Object> {
         @Override
-        public void accept(ViewModel viewModel) throws Exception {
+        public void accept(Object o) throws Exception {
+            ViewModel viewModel = (ViewModel) o;
             Parent root = ControllerLoader.loadFXMLBundleFrom(viewModel.getURL(), state).root;
             String name = viewModel.getName();
             viewListView.getItems().add(name);

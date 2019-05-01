@@ -9,5 +9,5 @@ public abstract class Module {
         this.name = name;
     }
 
-    public abstract <T> Stream<Class<? extends T>> getImplementations(Class<T> superClass);
+    public abstract <T> Stream<Class<?>> getImplementations(Class<T> superClass);
 }

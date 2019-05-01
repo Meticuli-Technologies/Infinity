@@ -14,17 +14,17 @@ public class ModuleManager {
         return this;
     }
 
-    public <T> Stream<Class<? extends T>> getImplementations(Class<T> tClass) {
+    public <T> Stream<Class<?>> getImplementations(Class<T> tClass) {
         return getModules(modules.keySet()).flatMap(module -> module.getImplementations(tClass));
     }
 
-    public Stream<Module> getModules(Set<String> names) {
+    private Stream<Module> getModules(Set<String> names) {
         return names.stream()
                 .map(this::getModule)
                 .flatMap(Optional::stream);
     }
 
-    public Optional<Module> getModule(String name) {
+    private Optional<Module> getModule(String name) {
         return Optional.ofNullable(modules.get(name));
     }
 }
