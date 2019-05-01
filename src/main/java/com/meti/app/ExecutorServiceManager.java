@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.collect.Lister;
+import com.meti.lib.util.collect.Lister;
 
 import java.time.Duration;
 import java.util.Optional;

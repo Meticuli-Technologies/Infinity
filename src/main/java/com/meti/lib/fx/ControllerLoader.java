@@ -1,6 +1,7 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
+import com.meti.lib.fx.fxml.FXMLBundle;
 import com.meti.lib.fx.state.StateControllerFactory;
 import javafx.fxml.FXMLLoader;
 
@@ -22,7 +23,7 @@ public class ControllerLoader extends FXMLLoader {
         return new ControllerLoader(url, state).loadFXMLBundleFrom();
     }
 
-    public <T> FXMLBundle<T> loadFXMLBundleFrom() throws IOException {
+    private <T> FXMLBundle<T> loadFXMLBundleFrom() throws IOException {
         return new FXMLBundle<>(load(), getController());
     }
 }

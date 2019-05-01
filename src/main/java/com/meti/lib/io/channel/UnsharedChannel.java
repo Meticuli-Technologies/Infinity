@@ -8,7 +8,7 @@ public abstract class UnsharedChannel implements ObjectChannel {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public UnsharedChannel(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
+    protected UnsharedChannel(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }

@@ -1,6 +1,6 @@
 package com.meti.lib.io;
 
-import com.meti.lib.collect.TypeFunction;
+import com.meti.lib.util.collect.TypeFunction;
 import com.meti.lib.io.channel.ObjectChannel;
 
 import java.io.IOException;
@@ -20,11 +20,12 @@ public class Querier {
         return new QuerierListener();
     }
 
+    //TODO: use this method
     public <T> CompletableFuture<T> query(Object token, Class<T> tClass) throws IOException {
         return query(token).thenApply(new TypeFunction<>(tClass));
     }
 
-    public CompletableFuture<Object> query(Object token) throws IOException {
+    private CompletableFuture<Object> query(Object token) throws IOException {
         channel.write(token);
         channel.flush();
 
@@ -43,7 +44,7 @@ public class Querier {
             return Querier.this;
         }
 
-        public void completeFuture(Object token, CompletableFuture<Object> future) {
+        void completeFuture(Object token, CompletableFuture<Object> future) {
             if (token instanceof Exception) {
                 future.completeExceptionally((Throwable) token);
             } else {

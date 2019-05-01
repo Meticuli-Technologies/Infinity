@@ -10,7 +10,5 @@ public interface Source extends Closeable {
 
     OutputStream getOutputStream() throws IOException;
 
-    boolean isClosed();
-
     boolean isOpen();
 }
