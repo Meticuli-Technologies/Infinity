@@ -18,6 +18,6 @@ public class CollectionModule extends Module {
 
     @Override
     public <T> Stream<Class<?>> getImplementations(Class<T> superClass) {
-        return classes.stream().filter(aClass -> aClass.isAssignableFrom(superClass));
+        return classes.stream().filter(superClass::isAssignableFrom);
     }
 }
