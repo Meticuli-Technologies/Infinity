@@ -16,6 +16,14 @@ public class ModuleManager {
     }
 
     public Set<Module> getModules(String... names) {
+        if (names.length == 0) {
+            return new HashSet<>(modules.values());
+        } else {
+            return getModulesWithNames(names);
+        }
+    }
+
+    private Set<Module> getModulesWithNames(String[] names) {
         return Arrays.stream(names)
                 .map(this::getModule)
                 .flatMap(Optional::stream)
