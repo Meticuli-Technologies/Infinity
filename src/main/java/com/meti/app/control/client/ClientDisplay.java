@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.InetAddress;
 import java.net.Socket;
@@ -18,6 +19,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -60,11 +62,16 @@ public class ClientDisplay extends InfinityClientController implements Initializ
 
     @FXML
     public void open() {
-        viewListView.getSelectionModel()
-                .getSelectedItems()
-                .stream()
+        selectedViewStream()
                 .map(views::get)
-                .forEach(parent -> stageManager.addRootToStage(parent));
+                .map(parent -> stageManager.addRootToStage(parent))
+                .forEach(Stage::show);
+    }
+
+    private Stream<String> selectedViewStream() {
+        return viewListView.getSelectionModel()
+                .getSelectedItems()
+                .stream();
     }
 
     private class ViewInitializer implements TryableConsumer<Object> {
