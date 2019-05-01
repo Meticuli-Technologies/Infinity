@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 public class ModuleManager {
     private final Map<String, Module> modules = new HashMap<>();
 
-    public ModuleManager addModule(Module module) {
+    public ModuleManager add(Module module) {
         modules.put(module.name, module);
         return this;
     }
