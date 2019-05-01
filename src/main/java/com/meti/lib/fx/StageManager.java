@@ -1,6 +1,6 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.collect.Collections;
+import com.meti.lib.util.collect.Collections;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

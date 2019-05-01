@@ -1,4 +1,4 @@
-package com.meti.lib.collect;
+package com.meti.lib.util.collect;
 
 import java.util.function.Predicate;
 

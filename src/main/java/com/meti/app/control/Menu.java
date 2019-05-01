@@ -2,7 +2,7 @@ package com.meti.app.control;
 
 import com.meti.app.control.util.InfinityController;
 import com.meti.app.control.util.alert.Alerts;
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 import com.meti.lib.fx.ControllerLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

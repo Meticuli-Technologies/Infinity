@@ -2,7 +2,7 @@ package com.meti.app.control.client;
 
 import com.meti.app.control.util.InfinityController;
 import com.meti.app.io.InfinityClient;
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 
 /**
  * @author SirMathhman

@@ -1,8 +1,8 @@
 package com.meti.app.control.util.alert;
 
 import com.meti.app.control.util.InfinityController;
-import com.meti.lib.State;
-import com.meti.lib.log.Exceptions;
+import com.meti.lib.util.collect.State;
+import com.meti.lib.util.log.Exceptions;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;

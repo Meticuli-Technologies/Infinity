@@ -2,7 +2,7 @@ package com.meti.app.control.util;
 
 import com.meti.app.ExecutorServiceManager;
 import com.meti.app.core.runtime.InfinityState;
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.fx.state.StateController;

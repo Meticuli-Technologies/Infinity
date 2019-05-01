@@ -1,6 +1,6 @@
 package com.meti.lib.io;
 
-import com.meti.lib.collect.TypeFunction;
+import com.meti.lib.util.collect.TypeFunction;
 import com.meti.lib.io.channel.ObjectChannel;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.meti.lib.fx;
 
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 import com.meti.lib.fx.fxml.FXMLBundle;
 import com.meti.lib.fx.state.StateControllerFactory;
 import javafx.fxml.FXMLLoader;

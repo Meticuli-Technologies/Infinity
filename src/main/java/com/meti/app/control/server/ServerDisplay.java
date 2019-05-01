@@ -2,7 +2,7 @@ package com.meti.app.control.server;
 
 import com.meti.app.control.util.InfinityFXChecker;
 import com.meti.app.io.InfinityServer;
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 import com.meti.lib.io.server.Server;
 import com.meti.lib.io.source.SocketSource;
 import javafx.fxml.FXML;

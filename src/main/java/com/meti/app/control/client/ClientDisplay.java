@@ -1,6 +1,6 @@
 package com.meti.app.control.client;
 
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;

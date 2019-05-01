@@ -1,9 +1,9 @@
 package com.meti.app.core.runtime;
 
 import com.meti.app.ExecutorServiceManager;
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 import com.meti.lib.fx.StageManager;
-import com.meti.lib.log.LoggerConsole;
+import com.meti.lib.util.log.LoggerConsole;
 import javafx.stage.Stage;
 
 import java.time.Duration;

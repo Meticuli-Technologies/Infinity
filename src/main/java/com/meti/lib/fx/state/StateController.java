@@ -1,6 +1,6 @@
 package com.meti.lib.fx.state;
 
-import com.meti.lib.State;
+import com.meti.lib.util.collect.State;
 
 public abstract class StateController {
     public StateController(State state){

@@ -1,4 +1,4 @@
-package com.meti.lib.log;
+package com.meti.lib.util.log;
 
 /**
  * @author SirMathhman
