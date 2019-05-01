@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class TryableFactory {
-    public <T> Consumer<T> accept(TryableConsumer<T> consumer) {
+    public <T> Consumer<T> constructConsumerFrom(TryableConsumer<T> consumer) {
         return new ConsumerImpl<>(consumer);
     }
 

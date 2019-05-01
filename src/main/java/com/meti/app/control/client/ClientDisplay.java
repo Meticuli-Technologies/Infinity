@@ -1,19 +1,23 @@
 package com.meti.app.control.client;
 
 import com.meti.app.control.view.ViewModel;
+import com.meti.lib.fx.ControllerLoader;
+import com.meti.lib.util.Streams;
 import com.meti.lib.util.collect.State;
+import com.meti.lib.util.tryable.TryableConsumer;
+import com.meti.lib.util.tryable.TryableFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -22,6 +26,8 @@ import java.util.stream.Stream;
  * @since 4/30/2019
  */
 public class ClientDisplay extends InfinityClientController implements Initializable {
+    private final Map<String, Parent> views = new HashMap<>();
+
     @FXML
     private Text addressText;
 
@@ -39,20 +45,26 @@ public class ClientDisplay extends InfinityClientController implements Initializ
     public void initialize(URL location, ResourceBundle resources) {
         Socket socket = client.source.socket;
         setText(socket.getInetAddress(), socket.getLocalPort());
-
-        Set<ViewModel> viewModels = viewModelStream(state.getModuleManager().getImplementations(ViewModel.class))
-                .collect(Collectors.toSet());
+        loadViews(console.getFactory(), state.getModuleManager().getImplementations(ViewModel.class));
     }
 
-    private Stream<? extends ViewModel> viewModelStream(Stream<Class<? extends ViewModel>> implStream) {
-        return implStream.map(state.getConsole().getFactory().apply(aClass -> aClass.getDeclaredConstructor()))
-                .flatMap(Optional::stream)
-                .map(state.getConsole().getFactory().apply(constructor -> constructor.newInstance()))
-                .flatMap(Optional::stream);
+    private void loadViews(TryableFactory factory, Stream<Class<? extends ViewModel>> implementations) {
+        Streams.instanceStream(factory, implementations)
+                .forEach(factory.constructConsumerFrom(new ViewInitializer()));
     }
 
     private void setText(InetAddress inetAddress, int localPort) {
         addressText.setText(inetAddress.toString());
         portText.setText(String.valueOf(localPort));
+    }
+
+    private class ViewInitializer implements TryableConsumer<ViewModel> {
+        @Override
+        public void accept(ViewModel viewModel) throws Exception {
+            Parent root = ControllerLoader.loadFXMLBundleFrom(viewModel.getURL(), state).root;
+            String name = viewModel.getName();
+            viewListView.getItems().add(name);
+            views.put(name, root);
+        }
     }
 }
