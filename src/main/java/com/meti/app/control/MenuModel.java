@@ -28,13 +28,13 @@ public class MenuModel {
         //TODO: do something with futures
     }
 
-    void setupServer(int port) throws IOException {
+    private void setupServer(int port) throws IOException {
         InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(port)));
         menu.state.add(server);
         menu.serviceManager.service.submit(server.getListener());
     }
 
-    void setupClient(int port) throws IOException {
+    private void setupClient(int port) throws IOException {
         InfinityClient client = new InfinityClient(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
         ObjectChannel channel = client.getChannel(true);
         Querier querier = new Querier(channel);
