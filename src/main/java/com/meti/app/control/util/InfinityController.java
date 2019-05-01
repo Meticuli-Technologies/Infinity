@@ -20,8 +20,8 @@ public class InfinityController extends StateController {
     public final InfinityState state;
 
     public ExecutorServiceManager serviceManager;
-    StageManager stageManager;
-    Console console;
+    private StageManager stageManager;
+    private Console console;
 
     public InfinityController(State state) {
         super(state);
