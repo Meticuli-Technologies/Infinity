@@ -1,7 +1,10 @@
 package com.meti.lib.module;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class ModuleManager {
     private final Map<String, Module> modules = new HashMap<>();
@@ -11,22 +14,17 @@ public class ModuleManager {
         return this;
     }
 
+    public <T> Stream<Class<? extends T>> getImplementations(Class<T> tClass) {
+        return getModules(modules.keySet()).flatMap(module -> module.getImplementations(tClass));
+    }
+
+    public Stream<Module> getModules(Set<String> names) {
+        return names.stream()
+                .map(this::getModule)
+                .flatMap(Optional::stream);
+    }
+
     public Optional<Module> getModule(String name) {
         return Optional.ofNullable(modules.get(name));
-    }
-
-    public Set<Module> getModules(String... names) {
-        if (names.length == 0) {
-            return new HashSet<>(modules.values());
-        } else {
-            return getModulesWithNames(names);
-        }
-    }
-
-    private Set<Module> getModulesWithNames(String[] names) {
-        return Arrays.stream(names)
-                .map(this::getModule)
-                .flatMap(Optional::stream)
-                .collect(Collectors.toSet());
     }
 }
