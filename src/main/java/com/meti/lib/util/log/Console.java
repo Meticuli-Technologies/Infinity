@@ -13,11 +13,11 @@ import java.util.logging.Level;
 public abstract class Console implements BiConsumer<Level, String> {
     private final LogBuilder logBuilder = new LogBuilder();
 
-    public TryableFactory constructFactory() {
-        return constructFactory(Level.WARNING);
+    public TryableFactory getFactory() {
+        return getFactory(Level.WARNING);
     }
 
-    public TryableFactory constructFactory(Level level) {
+    public TryableFactory getFactory(Level level) {
         return new ConsoleTryableFactory(level);
     }
 
