@@ -58,6 +58,11 @@ public class ClientDisplay extends InfinityClientController implements Initializ
         portText.setText(String.valueOf(localPort));
     }
 
+    @FXML
+    public void open() {
+
+    }
+
     private class ViewInitializer implements TryableConsumer<Object> {
         @Override
         public void accept(Object o) throws Exception {
