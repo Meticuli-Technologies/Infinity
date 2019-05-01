@@ -9,10 +9,10 @@ import com.meti.lib.util.collect.State;
  * @version 0.0.0
  * @since 4/29/2019
  */
-class InfinityClientController extends InfinityController {
+public class InfinityClientController extends InfinityController {
    final InfinityClient client;
 
-    InfinityClientController(State state) {
+    public InfinityClientController(State state) {
         super(state);
 
         this.client = state.byClassToSingle(InfinityClient.class);
