@@ -10,6 +10,6 @@ class InfinityServerController extends InfinityController {
     InfinityServerController(State state) {
         super(state);
 
-        server = this.state.getServer();
+        server = state.byClassToSingle(InfinityServer.class);
     }
 }

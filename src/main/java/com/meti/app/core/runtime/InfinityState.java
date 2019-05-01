@@ -13,20 +13,12 @@ import com.meti.lib.util.log.Console;
  * @since 4/23/2019
  */
 public class InfinityState extends State {
-    public InfinityClient getClient() {
-        return byClassToSingle(InfinityClient.class);
-    }
-
     public Console getConsole() {
         return byClassToSingle(Console.class);
     }
 
     public ExecutorServiceManager getExecutorServiceManager() {
         return byClassToSingle(ExecutorServiceManager.class);
-    }
-
-    public InfinityServer getServer() {
-        return byClassToSingle(InfinityServer.class);
     }
 
     public StageManager getStageManager() {

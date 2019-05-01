@@ -15,6 +15,6 @@ class InfinityClientController extends InfinityController {
     InfinityClientController(State state) {
         super(state);
 
-        this.client = this.state.getClient();
+        this.client = state.byClassToSingle(InfinityClient.class);
     }
 }

@@ -19,7 +19,7 @@ public class State extends ArrayList<Object> {
         return stream().filter(predicate);
     }
 
-    protected <T> T byClassToSingle(Class<T> tClass) {
+    public <T> T byClassToSingle(Class<T> tClass) {
         return byClass(tClass).findAny().orElseThrow();
     }
 }
