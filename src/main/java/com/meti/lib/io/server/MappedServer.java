@@ -19,7 +19,7 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
     private final Map<Predicate<Object>, Function<Object, Object>> map = new HashMap<>();
     private final boolean shared;
 
-    public MappedServer(T supplier, boolean shared) {
+    protected MappedServer(T supplier, boolean shared) {
         super(supplier);
         this.shared = shared;
     }

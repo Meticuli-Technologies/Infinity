@@ -7,7 +7,7 @@ import java.io.OutputStream;
 public class ParentSource<S extends Source> implements Source {
     public final S source;
 
-    public ParentSource(S source) {
+    ParentSource(S source) {
         this.source = source;
     }
 
@@ -24,11 +24,6 @@ public class ParentSource<S extends Source> implements Source {
     @Override
     public OutputStream getOutputStream() throws IOException {
         return source.getOutputStream();
-    }
-
-    @Override
-    public boolean isClosed() {
-        return source.isClosed();
     }
 
     @Override

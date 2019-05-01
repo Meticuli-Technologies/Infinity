@@ -21,7 +21,7 @@ public class CollectionUtil {
         }
     }
 
-    public static OptionalInt lastIndex(Collection<?> collection) {
+    private static OptionalInt lastIndex(Collection<?> collection) {
         if (collection.isEmpty()) {
             return OptionalInt.empty();
         }

@@ -8,7 +8,7 @@ public abstract class SharedChannel implements ObjectChannel {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public SharedChannel(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
+    protected SharedChannel(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }

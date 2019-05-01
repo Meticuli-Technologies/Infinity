@@ -4,7 +4,6 @@ import com.meti.app.io.InfinityClient;
 import com.meti.app.io.InfinityServer;
 import com.meti.lib.io.*;
 import com.meti.lib.io.channel.ObjectChannel;
-import com.meti.lib.io.source.ObjectSource;
 import com.meti.lib.io.source.supplier.ServerSocketSupplier;
 import com.meti.lib.io.source.SocketSource;
 
@@ -14,7 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 
-public class MenuModel {
+class MenuModel {
     private final Menu menu;
 
     public MenuModel(Menu menu) {

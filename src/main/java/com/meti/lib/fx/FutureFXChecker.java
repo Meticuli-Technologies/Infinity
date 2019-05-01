@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 public abstract class FutureFXChecker extends AnimationTimer implements Consumer<Exception> {
     private final Future<Server> future;
 
-    public FutureFXChecker(Future<Server> future) {
+    protected FutureFXChecker(Future<Server> future) {
         this.future = future;
     }
 
@@ -19,13 +19,13 @@ public abstract class FutureFXChecker extends AnimationTimer implements Consumer
         checkFuture();
     }
 
-    public void checkFuture() {
+    private void checkFuture() {
         if (future.isDone()) {
             handleResult();
         }
     }
 
-    public void handleResult() {
+    private void handleResult() {
         try {
             future.get();
         } catch (Exception e) {

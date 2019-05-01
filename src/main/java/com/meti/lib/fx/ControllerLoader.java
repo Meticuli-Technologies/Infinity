@@ -22,7 +22,7 @@ public class ControllerLoader extends FXMLLoader {
         return new ControllerLoader(url, state).loadFXMLBundleFrom();
     }
 
-    public <T> FXMLBundle<T> loadFXMLBundleFrom() throws IOException {
+    private <T> FXMLBundle<T> loadFXMLBundleFrom() throws IOException {
         return new FXMLBundle<>(load(), getController());
     }
 }

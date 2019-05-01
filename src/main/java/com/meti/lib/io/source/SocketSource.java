@@ -27,8 +27,7 @@ public class SocketSource implements Source {
         return socket.getOutputStream();
     }
 
-    @Override
-    public boolean isClosed() {
+    private boolean isClosed() {
         return socket.isClosed();
     }
 

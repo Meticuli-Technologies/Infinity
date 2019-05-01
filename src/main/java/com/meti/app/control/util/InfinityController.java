@@ -6,7 +6,6 @@ import com.meti.lib.State;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.fx.state.StateController;
-import com.meti.lib.log.Console;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,15 +16,17 @@ import java.net.URL;
  * @since 4/23/2019
  */
 public class InfinityController extends StateController {
-    public final InfinityState state;
+    public InfinityState state;
 
     public ExecutorServiceManager serviceManager;
     private StageManager stageManager;
-    private Console console;
 
-    public InfinityController(State state) {
+    protected InfinityController(State state) {
         super(state);
+    }
 
+    @Override
+    public void buildFields(State state) {
         if (state instanceof InfinityState) {
             this.state = buildFields((InfinityState) state);
         } else {
@@ -33,14 +34,13 @@ public class InfinityController extends StateController {
         }
     }
 
-    public InfinityState buildFields(InfinityState state) {
+    private InfinityState buildFields(InfinityState state) {
         serviceManager = state.getExecutorServiceManager();
-        console = state.getConsole();
         stageManager = state.getStageManager();
         return state;
     }
 
-    public void onto(URL resource, int index) throws IOException {
+    protected void onto(URL resource, int index) throws IOException {
         stageManager.setRootToStage(ControllerLoader.loadRoot(resource, state), index)
                 .show();
     }

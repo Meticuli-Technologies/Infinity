@@ -7,7 +7,7 @@ import com.meti.lib.util.ExceptionUtil;
  * @version 0.0.0
  * @since 4/26/2019
  */
-public class LogBuilder {
+class LogBuilder {
     String log(String message, Exception exception) {
         StringBuilder builder = new StringBuilder();
         appendMessage(message, builder)

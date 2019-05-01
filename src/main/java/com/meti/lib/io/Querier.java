@@ -24,7 +24,7 @@ public class Querier {
         return query(token).thenApply(new TypeFunction<>(tClass));
     }
 
-    public CompletableFuture<Object> query(Object token) throws IOException {
+    private CompletableFuture<Object> query(Object token) throws IOException {
         channel.write(token);
         channel.flush();
 
@@ -43,7 +43,7 @@ public class Querier {
             return Querier.this;
         }
 
-        public void completeFuture(Object token, CompletableFuture<Object> future) {
+        void completeFuture(Object token, CompletableFuture<Object> future) {
             if (token instanceof Exception) {
                 future.completeExceptionally((Throwable) token);
             } else {

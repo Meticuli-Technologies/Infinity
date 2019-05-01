@@ -11,17 +11,16 @@ import java.util.logging.Level;
 public abstract class Console implements BiConsumer<Level, String> {
     private final LogBuilder logBuilder = new LogBuilder();
 
-    public String log(Level level, Exception exception) {
-        return log(level, null, exception);
+    public void log(Level level, Exception exception) {
+        log(level, null, exception);
     }
 
-    public String log(Level level, String message) {
-        return log(level, message, null);
+    public void log(Level level, String message) {
+        log(level, message, null);
     }
 
-    public String log(Level level, String message, Exception exception){
+    private void log(Level level, String message, Exception exception){
         String result = logBuilder.log(message, exception);
         accept(level, result);
-        return result;
     }
 }

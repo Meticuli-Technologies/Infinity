@@ -20,13 +20,13 @@ public class StageManager {
         return setSceneToStage(new Scene(root), index);
     }
 
-    public Stage setSceneToStage(Scene scene, int index) {
+    private Stage setSceneToStage(Scene scene, int index) {
         Stage stage = getStage(index);
         stage.setScene(scene);
         return stage;
     }
 
-    public Stage getStage(int index) {
+    private Stage getStage(int index) {
         if (index == NEW_STAGE) {
             return allocate();
         } else {

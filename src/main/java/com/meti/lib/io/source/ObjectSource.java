@@ -28,13 +28,8 @@ public class ObjectSource<S extends Source> extends ParentSource<S> {
     }
 
     private class SharedObjectChannel extends SharedChannel {
-        public SharedObjectChannel() {
+        SharedObjectChannel() {
             super(ObjectSource.this.inputStream, ObjectSource.this.outputStream);
-        }
-
-        @Override
-        public boolean isClosed() {
-            return ObjectSource.this.isClosed();
         }
 
         @Override
@@ -44,13 +39,8 @@ public class ObjectSource<S extends Source> extends ParentSource<S> {
     }
 
     private class UnsharedObjectChannel extends UnsharedChannel {
-        public UnsharedObjectChannel() {
+        UnsharedObjectChannel() {
             super(ObjectSource.this.inputStream, ObjectSource.this.outputStream);
-        }
-
-        @Override
-        public boolean isClosed() {
-            return ObjectSource.this.isClosed();
         }
 
         @Override

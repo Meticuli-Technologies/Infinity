@@ -27,19 +27,18 @@
           </GridPane>
       </center>
       <bottom>
-         <GridPane BorderPane.alignment="CENTER">
-           <columnConstraints>
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-           </columnConstraints>
-           <rowConstraints>
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-           </rowConstraints>
-            <children>
-               <Button mnemonicParsing="false" onAction="#next" text="Next" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-               <Button mnemonicParsing="false" onAction="#exit" text="Exit" />
-            </children>
-         </GridPane>
+          <GridPane BorderPane.alignment="CENTER">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+              </rowConstraints>
+              <Button mnemonicParsing="false" onAction="#next" text="Next" GridPane.columnIndex="1"
+                      GridPane.halignment="RIGHT"/>
+              <Button mnemonicParsing="false" onAction="#exit" text="Exit"/>
+          </GridPane>
       </bottom>
    </BorderPane>
 </AnchorPane>
