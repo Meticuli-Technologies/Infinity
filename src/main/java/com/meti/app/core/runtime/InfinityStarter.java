@@ -1,6 +1,6 @@
 package com.meti.app.core.runtime;
 
-import com.meti.app.control.Menu;
+import com.meti.app.control.menu.Menu;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

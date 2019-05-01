@@ -1,4 +1,4 @@
-package com.meti.app.control;
+package com.meti.app.control.menu;
 
 import com.meti.app.control.util.InfinityController;
 import com.meti.app.control.util.alert.Alerts;
@@ -29,7 +29,7 @@ public class Menu extends InfinityController {
     }
 
     private static URL getMenuResource() {
-        return getResource("/com/meti/app/control/Menu.fxml");
+        return getResource("/com/meti/app/control/menu/Menu.fxml");
     }
 
     @FXML

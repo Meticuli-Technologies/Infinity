@@ -1,4 +1,4 @@
-package com.meti.app.control;
+package com.meti.app.control.menu;
 
 import com.meti.app.io.InfinityClient;
 import com.meti.app.io.InfinityServer;
