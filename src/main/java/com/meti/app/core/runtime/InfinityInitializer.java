@@ -1,8 +1,9 @@
 package com.meti.app.core.runtime;
 
 import com.meti.app.ExecutorServiceManager;
-import com.meti.lib.util.collect.State;
 import com.meti.lib.fx.StageManager;
+import com.meti.lib.module.ModuleManager;
+import com.meti.lib.util.collect.State;
 import com.meti.lib.util.log.LoggerConsole;
 import javafx.stage.Stage;
 
@@ -16,6 +17,7 @@ class InfinityInitializer {
         state.add(initStageManager(primaryStage));
         state.add(initExecutorServiceManager());
         state.add(initLoggerConsole());
+        state.add(new ModuleManager());
     }
 
     private StageManager initStageManager(Stage primaryStage) {
