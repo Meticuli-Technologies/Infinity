@@ -9,9 +9,8 @@ import java.util.stream.Stream;
 public class ModuleManager {
     private final Map<String, Module> modules = new HashMap<>();
 
-    public ModuleManager add(Module module) {
+    protected void add(Module module) {
         modules.put(module.name, module);
-        return this;
     }
 
     public <T> Stream<Class<?>> getImplementations(Class<T> tClass) {

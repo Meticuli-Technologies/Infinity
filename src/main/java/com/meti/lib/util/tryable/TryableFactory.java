@@ -18,12 +18,12 @@ public abstract class TryableFactory {
         return new SupplierImpl<>(supplier);
     }
 
-    public abstract void handle(Exception e);
+    protected abstract void handle(Exception e);
 
     private class ConsumerImpl<T> implements Consumer<T> {
         private final TryableConsumer<T> consumer;
 
-        public ConsumerImpl(TryableConsumer<T> consumer) {
+        ConsumerImpl(TryableConsumer<T> consumer) {
             this.consumer = consumer;
         }
 
@@ -40,7 +40,7 @@ public abstract class TryableFactory {
     private class FunctionImpl<T, R> implements Function<T, Optional<R>> {
         private final TryableFunction<T, R> function;
 
-        public FunctionImpl(TryableFunction<T, R> function) {
+        FunctionImpl(TryableFunction<T, R> function) {
             this.function = function;
         }
 
@@ -53,7 +53,7 @@ public abstract class TryableFactory {
             }
         }
 
-        public Optional<R> handleException(Exception e) {
+        Optional<R> handleException(Exception e) {
             handle(e);
             return Optional.empty();
         }
@@ -62,7 +62,7 @@ public abstract class TryableFactory {
     private class SupplierImpl<T> implements Supplier<Optional<T>> {
         private final TryableSupplier<T> supplier;
 
-        public SupplierImpl(TryableSupplier<T> supplier) {
+        SupplierImpl(TryableSupplier<T> supplier) {
             this.supplier = supplier;
         }
 
@@ -75,7 +75,7 @@ public abstract class TryableFactory {
             }
         }
 
-        public Optional<T> handleException(Exception e) {
+        Optional<T> handleException(Exception e) {
             handle(e);
             return Optional.empty();
         }

@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public abstract class Server<S extends Source, T extends SourceSupplier<S>> {
     public final List<S> sources = new ArrayList<>();
     public final T supplier;
-    protected Consumer<S> onAccept;
+    private Consumer<S> onAccept;
     private boolean listening = false;
 
     Server(T supplier) {

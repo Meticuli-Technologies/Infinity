@@ -7,7 +7,7 @@ import java.util.function.Predicate;
  * @version 0.0.0
  * @since 4/23/2019
  */
-public class TypePredicate<T> implements Predicate<Object> {
+class TypePredicate<T> implements Predicate<Object> {
     private final Class<T> tClass;
 
     public TypePredicate(Class<T> tClass) {
