@@ -60,7 +60,11 @@ public class ClientDisplay extends InfinityClientController implements Initializ
 
     @FXML
     public void open() {
-
+        viewListView.getSelectionModel()
+                .getSelectedItems()
+                .stream()
+                .map(views::get)
+                .forEach(parent -> stageManager.addRootToStage(parent));
     }
 
     private class ViewInitializer implements TryableConsumer<Object> {

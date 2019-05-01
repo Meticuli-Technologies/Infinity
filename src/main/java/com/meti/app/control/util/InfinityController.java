@@ -22,7 +22,7 @@ public class InfinityController extends StateController {
     public ExecutorServiceManager serviceManager;
     public Console console;
 
-    private StageManager stageManager;
+    protected StageManager stageManager;
 
     protected InfinityController(State state) {
         super(state);

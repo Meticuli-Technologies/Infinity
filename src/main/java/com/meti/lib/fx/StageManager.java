@@ -16,6 +16,10 @@ public class StageManager {
     public static final int NEW_STAGE = -1;
     private final ArrayList<Stage> stages = new ArrayList<>();
 
+    public Stage addRootToStage(Parent parent) {
+        return setRootToStage(parent, -1);
+    }
+
     public Stage setRootToStage(Parent root, int index) {
         return setSceneToStage(new Scene(root), index);
     }
@@ -38,13 +42,6 @@ public class StageManager {
         return setCoordinatesFromLastOf(add(new Stage()));
     }
 
-    private Stage getIndex(int index) {
-        while (!Collections.containsIndex(stages, index)) {
-            allocate();
-        }
-        return stages.get(index);
-    }
-
     private Stage setCoordinatesFromLastOf(Stage toAdd) {
         Stage lastStage = Collections.lastElement(stages).orElseThrow();
         double lastStageX = lastStage.getX();
@@ -57,5 +54,12 @@ public class StageManager {
     public Stage add(Stage stage) {
         stages.add(stage);
         return stage;
+    }
+
+    private Stage getIndex(int index) {
+        while (!Collections.containsIndex(stages, index)) {
+            allocate();
+        }
+        return stages.get(index);
     }
 }
