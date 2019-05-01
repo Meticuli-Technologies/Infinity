@@ -13,6 +13,7 @@ public abstract class Server<S extends Source, T extends SourceSupplier<S>> {
     public final List<S> sources = new ArrayList<>();
     public final T supplier;
     protected Consumer<S> onAccept;
+    private boolean listening = false;
 
     Server(T supplier) {
         this.supplier = supplier;
@@ -21,6 +22,10 @@ public abstract class Server<S extends Source, T extends SourceSupplier<S>> {
     protected abstract void accept(S source) throws IOException, ClassNotFoundException;
 
     public ServerListener getListener() {
+        if (listening) {
+            throw new IllegalStateException("Server already listening");
+        }
+        listening = true;
         return new ServerListener();
     }
 
