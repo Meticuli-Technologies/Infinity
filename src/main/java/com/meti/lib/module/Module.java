@@ -1,4 +1,9 @@
 package com.meti.lib.module;
 
-public interface Module {
+public class Module {
+    public final String name;
+
+    public Module(String name) {
+        this.name = name;
+    }
 }
