@@ -1,7 +1,7 @@
 package com.meti.app.control;
 
-import com.meti.app.control.util.alert.Alerts;
 import com.meti.app.control.util.InfinityController;
+import com.meti.app.control.util.alert.Alerts;
 import com.meti.lib.State;
 import com.meti.lib.fx.ControllerLoader;
 import javafx.application.Platform;
@@ -16,7 +16,7 @@ import static com.meti.lib.util.URLUtil.getResource;
 
 public class Menu extends InfinityController {
     private final MenuModel menuModel = new MenuModel(this);
-    /* private final MenuModel menuModel = new MenuModel(state);*/
+
     @FXML
     TextField portField;
 
