@@ -1,5 +1,6 @@
 package com.meti.app.control.client;
 
+import com.meti.app.control.view.ViewModel;
 import com.meti.lib.util.collect.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +37,8 @@ public class ClientDisplay extends InfinityClientController implements Initializ
         InetAddress inetAddress = socket.getInetAddress();
         int localPort = socket.getLocalPort();
         setText(inetAddress, localPort);
+
+        state.getModuleManager().getImplementations(ViewModel.class);
     }
 
     private void setText(InetAddress inetAddress, int localPort) {
