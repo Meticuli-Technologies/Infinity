@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 public abstract class Server<S extends Source, T extends SourceSupplier<S>> {
     public final T supplier;
 
-    public Server(T supplier) {
+    Server(T supplier) {
         this.supplier = supplier;
     }
 

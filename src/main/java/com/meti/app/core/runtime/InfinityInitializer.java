@@ -1,9 +1,13 @@
 package com.meti.app.core.runtime;
 
 import com.meti.app.ExecutorServiceManager;
-import com.meti.lib.State;
+import com.meti.app.control.client.view.Chat;
+import com.meti.app.control.client.view.ChatView;
 import com.meti.lib.fx.StageManager;
-import com.meti.lib.log.LoggerConsole;
+import com.meti.lib.module.CollectionModule;
+import com.meti.lib.module.ModuleManager;
+import com.meti.lib.util.collect.State;
+import com.meti.lib.util.log.LoggerConsole;
 import javafx.stage.Stage;
 
 import java.time.Duration;
@@ -16,6 +20,13 @@ class InfinityInitializer {
         state.add(initStageManager(primaryStage));
         state.add(initExecutorServiceManager());
         state.add(initLoggerConsole());
+        state.add(initModuleManager());
+    }
+
+    private ModuleManager initModuleManager() {
+        ModuleManager moduleManager = new ModuleManager();
+        moduleManager.add(new CollectionModule("Chat", ChatView.class));
+        return moduleManager;
     }
 
     private StageManager initStageManager(Stage primaryStage) {

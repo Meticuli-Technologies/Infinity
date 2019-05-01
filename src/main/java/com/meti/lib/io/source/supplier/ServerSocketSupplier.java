@@ -21,8 +21,7 @@ public class ServerSocketSupplier implements SourceSupplier<SocketSource> {
         }
     }
 
-    @Override
-    public boolean isClosed() {
+    private boolean isClosed() {
         return serverSocket.isClosed();
     }
 

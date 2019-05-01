@@ -13,13 +13,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.meti.lib.util.CollectionUtil.computeFromResults;
+import static com.meti.lib.util.collect.Collections.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
+    //TODO: implement in InfinityServer
     private final Map<Predicate<Object>, Function<Object, Object>> map = new HashMap<>();
     private final boolean shared;
 
-    public MappedServer(T supplier, boolean shared) {
+    protected MappedServer(T supplier, boolean shared) {
         super(supplier);
         this.shared = shared;
     }

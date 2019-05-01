@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.meti.app.control.util.alert.Alert">
+   <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0"
+               AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+      <center>
+         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="304.0" prefViewportWidth="550.0">
+            <TextArea fx:id="stackTraceArea" editable="false" prefHeight="200.0" prefWidth="200.0"
+                      BorderPane.alignment="CENTER"/>
+         </ScrollPane>
+      </center>
+      <top>
+         <Text fx:id="messageText" strokeType="OUTSIDE" strokeWidth="0.0" text="[message]"
+               BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+               <Insets bottom="25.0"/>
+            </BorderPane.margin>
+         </Text>
+      </top>
+   </BorderPane>
+</AnchorPane>

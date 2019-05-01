@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 public class InfinityServer extends MappedServer<SocketSource, ServerSocketSupplier> {
-    public Consumer<SocketSource> onAccept;
+    private Consumer<SocketSource> onAccept;
 
     public InfinityServer(ServerSocketSupplier supplier) {
+        //TODO: add options for non-shared servers
         super(supplier, true);
     }
 
@@ -24,5 +25,10 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
     @Override
     protected ObjectSource<?> getObjectSource(SocketSource source) throws IOException {
         return new InfinityClient(source);
+    }
+
+    public InfinityServer setOnAccept(Consumer<SocketSource> onAccept) {
+        this.onAccept = onAccept;
+        return this;
     }
 }
