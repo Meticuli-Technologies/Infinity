@@ -9,21 +9,26 @@ import com.meti.lib.io.source.supplier.ServerSocketSupplier;
 import java.io.IOException;
 
 public class InfinityServer extends MappedServer<SocketSource, ServerSocketSupplier> {
-
     public InfinityServer(ServerSocketSupplier supplier) {
         //TODO: add options for non-shared servers
         super(supplier, true);
 
-        handlers.add(new TypeHandler<UpdateRequest, UpdateBundle>(UpdateRequest.class) {
-            @Override
-            protected UpdateBundle handle(UpdateRequest o) {
-                return null;
-            }
-        });
+        handlers.add(new UpdateHandler());
     }
 
     @Override
     protected ObjectSource<?> getObjectSource(SocketSource source) throws IOException {
         return new InfinityClient(source);
+    }
+
+    private static class UpdateHandler extends TypeHandler<UpdateRequest, SocketSource, UpdateBundle> {
+        public UpdateHandler() {
+            super(UpdateRequest.class);
+        }
+
+        @Override
+        protected UpdateBundle handle(UpdateRequest updateRequest, SocketSource source) {
+            return null;
+        }
     }
 }
