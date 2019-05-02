@@ -24,9 +24,8 @@ class MenuModel {
 
     Future<Querier> setupClient(int port) throws IOException {
         InfinityClient client = new InfinityClient(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
-        ObjectChannel channel = client.getChannel(true);
-        Querier querier = new Querier(channel);
-        menu.state.addAll(Arrays.asList(client, channel, querier));
+        Querier querier = client.getQuerier(true);
+        menu.state.addAll(Arrays.asList(client, querier));
         return menu.serviceManager.service.submit(querier.getListener());
     }
 
