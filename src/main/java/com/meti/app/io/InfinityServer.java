@@ -16,8 +16,6 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
     public InfinityServer(ServerSocketSupplier supplier) {
         //TODO: add options for non-shared servers
         super(supplier, true);
-
-        handlerMap.put(new TypePredicate<>(UpdateBundleRequest.class), );
     }
 
     @Override
