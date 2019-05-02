@@ -1,4 +1,4 @@
-package com.meti.app.io;
+package com.meti.app.io.update;
 
 import java.io.Serializable;
 

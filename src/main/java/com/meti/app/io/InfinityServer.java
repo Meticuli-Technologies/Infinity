@@ -1,5 +1,7 @@
 package com.meti.app.io;
 
+import com.meti.app.io.update.UpdateBundle;
+import com.meti.app.io.update.UpdateRequest;
 import com.meti.lib.io.server.MappedServer;
 import com.meti.lib.io.server.handle.TypeHandler;
 import com.meti.lib.io.source.ObjectSource;
