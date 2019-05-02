@@ -1,6 +1,6 @@
 package com.meti.app.control.client;
 
-import com.meti.app.control.view.ViewModel;
+import com.meti.app.control.view.ClientView;
 import com.meti.lib.fx.ControllerLoader;
 import com.meti.lib.util.Streams;
 import com.meti.lib.util.collect.State;
@@ -46,7 +46,7 @@ public class ClientDisplay extends InfinityClientController implements Initializ
     public void initialize(URL location, ResourceBundle resources) {
         Socket socket = client.source.socket;
         setText(socket.getInetAddress(), socket.getLocalPort());
-        loadViews(console.getFactory(), state.getModuleManager().getImplementations(ViewModel.class));
+        loadViews(console.getFactory(), state.getModuleManager().getImplementations(ClientView.class));
     }
 
     private void loadViews(TryableFactory factory, Stream<Class<?>> implementations) {
@@ -76,9 +76,9 @@ public class ClientDisplay extends InfinityClientController implements Initializ
     private class ViewInitializer implements TryableConsumer<Object> {
         @Override
         public void accept(Object o) throws Exception {
-            ViewModel viewModel = (ViewModel) o;
-            Parent root = ControllerLoader.loadFXMLBundleFrom(viewModel.getURL(), state).root;
-            String name = viewModel.getName();
+            ClientView clientView = (ClientView) o;
+            Parent root = ControllerLoader.loadFXMLBundleFrom(clientView.getURL(), state).root;
+            String name = clientView.getName();
             viewListView.getItems().add(name);
             views.put(name, root);
         }

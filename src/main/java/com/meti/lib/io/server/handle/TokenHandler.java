@@ -5,5 +5,5 @@ import com.meti.lib.io.source.Source;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
-public interface Handler<T, S extends Source, R> extends Predicate<T>, BiFunction<T, S, R> {
+public interface TokenHandler<T, S extends Source, R> extends Predicate<T>, BiFunction<T, S, R> {
 }

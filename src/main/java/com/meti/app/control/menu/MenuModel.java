@@ -2,6 +2,8 @@ package com.meti.app.control.menu;
 
 import com.meti.app.io.InfinityClient;
 import com.meti.app.io.InfinityServer;
+import com.meti.app.io.update.client.MappedUpdater;
+import com.meti.app.io.update.client.Updater;
 import com.meti.lib.io.query.Querier;
 import com.meti.lib.io.channel.ObjectChannel;
 import com.meti.lib.io.server.Server;
@@ -25,7 +27,8 @@ class MenuModel {
     Future<Querier> setupClient(int port) throws IOException {
         InfinityClient client = new InfinityClient(new SocketSource(new Socket(InetAddress.getByName("localhost"), port)));
         Querier querier = client.getQuerier(true);
-        menu.state.addAll(Arrays.asList(client, querier));
+        Updater updater = new MappedUpdater(querier);
+        menu.state.addAll(Arrays.asList(client, querier, updater));
         return menu.serviceManager.service.submit(querier.getListener());
     }
 

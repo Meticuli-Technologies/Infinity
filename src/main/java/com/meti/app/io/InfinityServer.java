@@ -1,6 +1,6 @@
 package com.meti.app.io;
 
-import com.meti.app.io.update.server.UpdateHandler;
+import com.meti.app.io.update.server.UpdateTokenHandler;
 import com.meti.app.io.update.server.UpdateManager;
 import com.meti.lib.io.server.MappedServer;
 import com.meti.lib.io.source.ObjectSource;
@@ -16,7 +16,7 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
         //TODO: update options for non-shared servers
         super(supplier, true);
 
-        handlers.add(new UpdateHandler(updateManager));
+        tokenHandlers.add(new UpdateTokenHandler(updateManager));
     }
 
     @Override

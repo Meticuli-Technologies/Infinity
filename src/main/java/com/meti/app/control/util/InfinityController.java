@@ -17,9 +17,8 @@ import java.net.URL;
  * @since 4/23/2019
  */
 public class InfinityController extends StateController {
-    public InfinityState state;
-
     public ExecutorServiceManager serviceManager;
+    public InfinityState state;
     protected Console console;
 
     protected StageManager stageManager;

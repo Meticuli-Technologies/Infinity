@@ -1,10 +1,10 @@
 package com.meti.app.control.client.view;
 
-import com.meti.app.control.view.ViewModel;
+import com.meti.app.control.view.ClientView;
 
 import java.net.URL;
 
-public class ChatView implements ViewModel  {
+public class ChatClientView implements ClientView {
     @Override
     public String getName() {
         return "Chat";

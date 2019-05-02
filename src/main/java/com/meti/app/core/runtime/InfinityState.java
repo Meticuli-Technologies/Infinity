@@ -1,6 +1,7 @@
 package com.meti.app.core.runtime;
 
 import com.meti.app.ExecutorServiceManager;
+import com.meti.app.io.update.client.MappedUpdater;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.module.ModuleManager;
 import com.meti.lib.util.collect.State;

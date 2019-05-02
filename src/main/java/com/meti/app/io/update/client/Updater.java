@@ -14,7 +14,11 @@ public abstract class Updater {
         this.querier = querier;
     }
 
-    public UpdateBundle getUpdates() throws IOException, ExecutionException, InterruptedException {
+    public void update() throws InterruptedException, ExecutionException, IOException {
+        getUpdates().forEach(this::handleUpdate);
+    }
+
+    private UpdateBundle getUpdates() throws IOException, ExecutionException, InterruptedException {
         return querier.query(new UpdateRequest()).get();
     }
 

@@ -2,6 +2,7 @@ package com.meti.app.control.client;
 
 import com.meti.app.control.util.InfinityController;
 import com.meti.app.io.InfinityClient;
+import com.meti.app.io.update.client.MappedUpdater;
 import com.meti.lib.io.query.Querier;
 import com.meti.lib.util.collect.State;
 
@@ -13,11 +14,13 @@ import com.meti.lib.util.collect.State;
 public class InfinityClientController extends InfinityController {
     final InfinityClient client;
     protected final Querier querier;
+    protected final MappedUpdater updater;
 
     protected InfinityClientController(State state) {
         super(state);
 
         this.client = state.byClassToSingle(InfinityClient.class);
         this.querier = state.byClassToSingle(Querier.class);
+        this.updater = state.byClassToSingle(MappedUpdater.class);
     }
 }
