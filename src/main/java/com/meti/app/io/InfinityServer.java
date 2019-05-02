@@ -29,9 +29,9 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
         Streams.instanceStream(state.getConsole().getFactory(), state.getModuleManager().getImplementations(ServerHandler.class))
                 .filter(new TypePredicate<>(ServerHandler.class))
                 .map(new TypeFunction<>(ServerHandler.class))
-                .map((Function<ServerHandler, Collection<? extends TokenHandler<Object,  ?>>>) serverHandler -> serverHandler.getHandlers(SocketSource.class))
+                .map(ServerHandler::getHandlers)
                 .flatMap(Collection::stream)
-                .forEach((Consumer<TokenHandler<Object, ?>>) tokenHandlers::add);
+                .forEach(tokenHandlers::add);
     }
 
     @Override

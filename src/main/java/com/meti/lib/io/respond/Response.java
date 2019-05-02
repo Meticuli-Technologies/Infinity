@@ -1,6 +1,8 @@
 package com.meti.lib.io.respond;
 
-public interface Response {
+import java.io.Serializable;
+
+public interface Response extends Serializable {
     Exception getException();
 
     String getValue();
