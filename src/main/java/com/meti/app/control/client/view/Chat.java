@@ -16,4 +16,9 @@ public class Chat extends InfinityClientController {
     public Chat(State state) {
         super(state);
     }
+
+    @FXML
+    public void handleInput(){
+
+    }
 }
