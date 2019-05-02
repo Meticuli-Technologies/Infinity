@@ -1,15 +1,14 @@
 package com.meti.lib.io.server;
 
 import com.meti.lib.io.channel.ObjectChannel;
+import com.meti.lib.io.server.handle.Handler;
 import com.meti.lib.io.source.ObjectSource;
 import com.meti.lib.io.source.Source;
 import com.meti.lib.io.source.supplier.SourceSupplier;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,7 +16,7 @@ import static com.meti.lib.util.collect.Collections.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
     //TODO: implement in InfinityServer
-    protected final Map<Predicate<Object>, BiFunction<Object, S, Object>> handlerMap = new HashMap<>();
+    protected final Set<Handler<Object, ?>> handlerMap = new HashSet<>();
     private final boolean shared;
 
     protected MappedServer(T supplier, boolean shared) {
@@ -43,11 +42,9 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
     }
 
     private Stream<Object> applyMap(Object token, S source) {
-        return handlerMap.keySet()
-                .stream()
-                .filter(predicate -> predicate.test(token))
-                .map(handlerMap::get)
-                .map(objectObjectFunction -> objectObjectFunction.apply(token, source));
+        return handlerMap.stream()
+                .filter(handler -> handler.test(token))
+                .map(handler -> handler.apply(source));
     }
 
     protected ObjectSource<?> getObjectSource(S source) throws IOException {
