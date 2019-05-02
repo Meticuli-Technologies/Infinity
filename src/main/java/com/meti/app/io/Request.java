@@ -1,4 +1,6 @@
 package com.meti.app.io;
 
-public interface Request {
+import com.meti.lib.io.query.Query;
+
+public interface Request<T> extends Query<T> {
 }
