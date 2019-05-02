@@ -7,7 +7,7 @@ import java.net.URL;
 public class ChatClientView implements ClientView {
     @Override
     public String getName() {
-        return "Chat";
+        return "ChatController";
     }
 
     @Override

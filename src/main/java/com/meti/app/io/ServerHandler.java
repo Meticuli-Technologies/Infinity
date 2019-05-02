@@ -1,5 +1,6 @@
 package com.meti.app.io;
 
+import com.meti.app.io.update.server.UpdateManager;
 import com.meti.lib.io.server.handle.TokenHandler;
 
 import java.util.Collection;
@@ -10,5 +11,5 @@ import java.util.Collection;
  * @since 5/2/2019
  */
 public interface ServerHandler {
-    Collection<? extends TokenHandler<Object, ?>> getHandlers();
+    Collection<? extends TokenHandler<Object, ?>> getHandlers(UpdateManager updateManager);
 }

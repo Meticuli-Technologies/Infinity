@@ -12,7 +12,7 @@ import com.meti.lib.util.collect.State;
  * @since 4/29/2019
  */
 public class InfinityClientController extends InfinityController {
-    final InfinityClient client;
+    protected final InfinityClient client;
     protected final Querier querier;
     protected final MappedUpdater updater;
 

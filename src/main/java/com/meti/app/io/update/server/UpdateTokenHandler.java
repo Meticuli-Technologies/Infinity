@@ -6,9 +6,9 @@ import com.meti.lib.io.server.handle.TypeTokenHandler;
 import com.meti.lib.io.source.Source;
 
 public class UpdateTokenHandler extends TypeTokenHandler<UpdateRequest, UpdateBundle> {
-    private UpdateManager<Source> updateManager;
+    private UpdateManager updateManager;
 
-    public UpdateTokenHandler(UpdateManager<Source> updateManager) {
+    public UpdateTokenHandler(UpdateManager updateManager) {
         super(UpdateRequest.class);
         this.updateManager = updateManager;
     }

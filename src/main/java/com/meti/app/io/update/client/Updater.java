@@ -15,7 +15,8 @@ public abstract class Updater {
     }
 
     public void update() throws InterruptedException, ExecutionException, IOException {
-        getUpdates().forEach(this::handleUpdate);
+        UpdateBundle updates = getUpdates();
+        updates.forEach(this::handleUpdate);
     }
 
     private UpdateBundle getUpdates() throws IOException, ExecutionException, InterruptedException {

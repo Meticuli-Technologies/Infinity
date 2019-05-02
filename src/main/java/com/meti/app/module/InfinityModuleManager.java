@@ -7,6 +7,6 @@ import com.meti.lib.module.ModuleManager;
 
 public class InfinityModuleManager extends ModuleManager {
     {
-        add(new CollectionModule("Chat", ChatClientView.class, ChatServerHandler.class));
+        add(new CollectionModule("ChatController", ChatClientView.class, ChatServerHandler.class));
     }
 }
