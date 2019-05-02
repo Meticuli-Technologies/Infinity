@@ -1,5 +1,7 @@
-package com.meti.app.io.update;
+package com.meti.app.io.update.server;
 
+import com.meti.app.io.update.UpdateBundle;
+import com.meti.app.io.update.client.UpdateRequest;
 import com.meti.lib.io.server.handle.TypeHandler;
 import com.meti.lib.io.source.SocketSource;
 

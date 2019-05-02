@@ -1,4 +1,4 @@
-package com.meti.app.io.update;
+package com.meti.app.io.update.client;
 
 import com.meti.app.io.Request;
 

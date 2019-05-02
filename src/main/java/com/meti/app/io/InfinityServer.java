@@ -1,7 +1,7 @@
 package com.meti.app.io;
 
-import com.meti.app.io.update.UpdateHandler;
-import com.meti.app.io.update.UpdateManager;
+import com.meti.app.io.update.server.UpdateHandler;
+import com.meti.app.io.update.server.UpdateManager;
 import com.meti.lib.io.server.MappedServer;
 import com.meti.lib.io.source.ObjectSource;
 import com.meti.lib.io.source.SocketSource;

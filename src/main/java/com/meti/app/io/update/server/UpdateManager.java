@@ -1,5 +1,6 @@
-package com.meti.app.io.update;
+package com.meti.app.io.update.server;
 
+import com.meti.app.io.update.Update;
 import com.meti.lib.io.source.Source;
 
 import java.util.*;
