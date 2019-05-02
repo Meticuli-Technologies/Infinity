@@ -1,9 +1,7 @@
 package com.meti.app.io;
 
-import com.meti.app.io.update.UpdateBundle;
-import com.meti.app.io.update.UpdateRequest;
+import com.meti.app.io.update.UpdateHandler;
 import com.meti.lib.io.server.MappedServer;
-import com.meti.lib.io.server.handle.TypeHandler;
 import com.meti.lib.io.source.ObjectSource;
 import com.meti.lib.io.source.SocketSource;
 import com.meti.lib.io.source.supplier.ServerSocketSupplier;
@@ -23,14 +21,4 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
         return new InfinityClient(source);
     }
 
-    private static class UpdateHandler extends TypeHandler<UpdateRequest, SocketSource, UpdateBundle> {
-        public UpdateHandler() {
-            super(UpdateRequest.class);
-        }
-
-        @Override
-        protected UpdateBundle handle(UpdateRequest updateRequest, SocketSource source) {
-            return null;
-        }
-    }
 }
