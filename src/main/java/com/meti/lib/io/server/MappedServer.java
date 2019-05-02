@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 import static com.meti.lib.util.collect.Collections.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
-    protected final Set<TokenHandler<Object, S, ?>> tokenHandlers = new HashSet<>();
+    protected final Set<TokenHandler<Object, ?>> tokenHandlers = new HashSet<>();
     private final boolean shared;
 
     protected MappedServer(T supplier, boolean shared) {

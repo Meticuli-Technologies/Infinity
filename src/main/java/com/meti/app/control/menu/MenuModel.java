@@ -5,7 +5,6 @@ import com.meti.app.io.InfinityServer;
 import com.meti.app.io.update.client.MappedUpdater;
 import com.meti.app.io.update.client.Updater;
 import com.meti.lib.io.query.Querier;
-import com.meti.lib.io.channel.ObjectChannel;
 import com.meti.lib.io.server.Server;
 import com.meti.lib.io.source.SocketSource;
 import com.meti.lib.io.source.supplier.ServerSocketSupplier;
@@ -33,7 +32,7 @@ class MenuModel {
     }
 
     Future<Server> setupServer(int port) throws IOException {
-        InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(port)));
+        InfinityServer server = new InfinityServer(new ServerSocketSupplier(new ServerSocket(port)), menu.state);
         menu.state.add(server);
         return menu.serviceManager.service.submit(server.getListener());
     }
