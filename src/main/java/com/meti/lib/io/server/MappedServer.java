@@ -8,7 +8,7 @@ import com.meti.lib.io.source.supplier.SourceSupplier;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,7 +17,7 @@ import static com.meti.lib.util.collect.Collections.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
     //TODO: implement in InfinityServer
-    protected final Map<Predicate<Object>, Function<Object, Object>> handlerMap = new HashMap<>();
+    protected final Map<Predicate<Object>, BiFunction<Object, S, Object>> handlerMap = new HashMap<>();
     private final boolean shared;
 
     protected MappedServer(T supplier, boolean shared) {
@@ -30,24 +30,24 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
         ObjectSource<?> objectSource = getObjectSource(source);
         ObjectChannel channel = objectSource.getChannel(shared);
         while (channel.isOpen()) {
-            readNextToken(channel);
+            readNextToken(channel, source);
         }
     }
 
-    private void readNextToken(ObjectChannel channel) throws IOException, ClassNotFoundException {
+    private void readNextToken(ObjectChannel channel, S source) throws IOException, ClassNotFoundException {
         Object token = channel.read();
-        Object result = computeFromResults(applyMap(token)
+        Object result = computeFromResults(applyMap(token, source)
                 .collect(Collectors.toList()));
         channel.write(result);
         channel.flush();
     }
 
-    private Stream<Object> applyMap(Object token) {
+    private Stream<Object> applyMap(Object token, S source) {
         return handlerMap.keySet()
                 .stream()
                 .filter(predicate -> predicate.test(token))
                 .map(handlerMap::get)
-                .map(objectObjectFunction -> objectObjectFunction.apply(token));
+                .map(objectObjectFunction -> objectObjectFunction.apply(token, source));
     }
 
     protected ObjectSource<?> getObjectSource(S source) throws IOException {

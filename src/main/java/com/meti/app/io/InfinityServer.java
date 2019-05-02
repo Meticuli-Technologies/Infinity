@@ -8,6 +8,7 @@ import com.meti.lib.util.collect.TypeFunction;
 import com.meti.lib.util.collect.TypePredicate;
 
 import java.io.IOException;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class InfinityServer extends MappedServer<SocketSource, ServerSocketSupplier> {
@@ -16,12 +17,7 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
         //TODO: add options for non-shared servers
         super(supplier, true);
 
-        handlerMap.put(new TypePredicate<>(UpdateBundleRequest.class), new TypeFunction<>(UpdateBundleRequest.class).andThen(new Function<UpdateBundleRequest, Object>() {
-            @Override
-            public Object apply(UpdateBundleRequest updateBundleRequest) {
-                return null;
-            }
-        }));
+        handlerMap.put(new TypePredicate<>(UpdateBundleRequest.class), );
     }
 
     @Override
