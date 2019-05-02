@@ -1,4 +1,4 @@
-package com.meti.lib.io;
+package com.meti.lib.io.query;
 
 import com.meti.lib.util.collect.TypeFunction;
 import com.meti.lib.io.channel.ObjectChannel;
@@ -21,11 +21,11 @@ public class Querier {
     }
 
     //TODO: use this method
-    public <T> CompletableFuture<T> query(Object token, Class<T> tClass) throws IOException {
-        return query(token).thenApply(new TypeFunction<>(tClass));
+    public <T> CompletableFuture<T> query(Query<T> query) throws IOException {
+        return queryObject(query).thenApply(new TypeFunction<>(query.getTypeClass()));
     }
 
-    private CompletableFuture<Object> query(Object token) throws IOException {
+    private CompletableFuture<Object> queryObject(Object token) throws IOException {
         channel.write(token);
         channel.flush();
 
