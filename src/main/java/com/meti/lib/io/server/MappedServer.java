@@ -1,23 +1,21 @@
 package com.meti.lib.io.server;
 
 import com.meti.lib.io.channel.ObjectChannel;
+import com.meti.lib.io.server.handle.Handler;
 import com.meti.lib.io.source.ObjectSource;
 import com.meti.lib.io.source.Source;
 import com.meti.lib.io.source.supplier.SourceSupplier;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.meti.lib.util.collect.Collections.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
-    //TODO: implement in InfinityServer
-    private final Map<Predicate<Object>, Function<Object, Object>> map = new HashMap<>();
+    protected final Set<Handler<Object, S, ?>> handlers = new HashSet<>();
     private final boolean shared;
 
     protected MappedServer(T supplier, boolean shared) {
@@ -30,24 +28,22 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
         ObjectSource<?> objectSource = getObjectSource(source);
         ObjectChannel channel = objectSource.getChannel(shared);
         while (channel.isOpen()) {
-            readNextToken(channel);
+            readNextToken(channel, source);
         }
     }
 
-    private void readNextToken(ObjectChannel channel) throws IOException, ClassNotFoundException {
+    private void readNextToken(ObjectChannel channel, S source) throws IOException, ClassNotFoundException {
         Object token = channel.read();
-        Object result = computeFromResults(applyMap(token)
+        Object result = computeFromResults(applyMap(token, source)
                 .collect(Collectors.toList()));
         channel.write(result);
         channel.flush();
     }
 
-    private Stream<Object> applyMap(Object token) {
-        return map.keySet()
-                .stream()
-                .filter(predicate -> predicate.test(token))
-                .map(map::get)
-                .map(objectObjectFunction -> objectObjectFunction.apply(token));
+    private Stream<Object> applyMap(Object token, S source) {
+        return handlers.stream()
+                .filter(handler -> handler.test(token))
+                .map(handler -> handler.apply(token, source));
     }
 
     protected ObjectSource<?> getObjectSource(S source) throws IOException {

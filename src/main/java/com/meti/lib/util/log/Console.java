@@ -17,7 +17,7 @@ public abstract class Console implements BiConsumer<Level, String> {
         return getFactory(Level.WARNING);
     }
 
-    public TryableFactory getFactory(Level level) {
+    private TryableFactory getFactory(Level level) {
         return new ConsoleTryableFactory(level);
     }
 
@@ -37,7 +37,7 @@ public abstract class Console implements BiConsumer<Level, String> {
     private class ConsoleTryableFactory extends TryableFactory {
         private final Level level;
 
-        public ConsoleTryableFactory(Level level) {
+        ConsoleTryableFactory(Level level) {
             this.level = level;
         }
 

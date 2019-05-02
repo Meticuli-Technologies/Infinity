@@ -2,10 +2,10 @@ package com.meti.lib.module;
 
 import java.util.stream.Stream;
 
-public abstract class Module {
+abstract class Module {
     public final String name;
 
-    public Module(String name) {
+    Module(String name) {
         this.name = name;
     }
 

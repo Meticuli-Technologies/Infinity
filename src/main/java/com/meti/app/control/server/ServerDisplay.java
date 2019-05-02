@@ -1,10 +1,8 @@
 package com.meti.app.control.server;
 
-import com.meti.app.control.util.InfinityFXChecker;
 import com.meti.app.io.InfinityServer;
-import com.meti.lib.util.collect.State;
-import com.meti.lib.io.server.Server;
 import com.meti.lib.io.source.SocketSource;
+import com.meti.lib.util.collect.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -12,9 +10,7 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Future;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 
 public class ServerDisplay extends InfinityServerController implements Initializable {
     @FXML
@@ -29,23 +25,23 @@ public class ServerDisplay extends InfinityServerController implements Initializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Future<Server> future = setPortText(server).listen(setPortText(server).server);
-        new InfinityFXChecker(future, state, Level.SEVERE).start();
+        setPortText(server).setOnAccept(new AcceptConsumer());
+        server.sources.forEach(this::addClient);
     }
 
-    private Future<Server> listen(InfinityServer server) {
-        return serviceManager.service.submit(server.setOnAccept(new AcceptConsumer()).getListener());
-    }
-
-    private ServerDisplay setPortText(InfinityServer server) {
+    private InfinityServer setPortText(InfinityServer server) {
         portText.setText(String.valueOf(server.supplier.serverSocket.getLocalPort()));
-        return this;
+        return server;
     }
 
     private class AcceptConsumer implements Consumer<SocketSource> {
         @Override
         public void accept(SocketSource socketSource) {
-            clientListView.getItems().add(socketSource.socket.getInetAddress().toString());
+            addClient(socketSource);
         }
+    }
+
+    private void addClient(SocketSource socketSource) {
+        clientListView.getItems().add(socketSource.socket.getInetAddress().toString());
     }
 }

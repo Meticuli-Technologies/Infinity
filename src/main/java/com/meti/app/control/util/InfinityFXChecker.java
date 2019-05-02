@@ -7,7 +7,7 @@ import com.meti.lib.io.server.Server;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-public class InfinityFXChecker extends FutureFXChecker {
+class InfinityFXChecker extends FutureFXChecker {
     private final InfinityState state;
     private final Level level;
 

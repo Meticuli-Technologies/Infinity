@@ -11,7 +11,7 @@ public class CollectionModule extends Module {
         this(name, Arrays.asList(classes));
     }
 
-    public CollectionModule(String name, Collection<Class<?>> classes) {
+    private CollectionModule(String name, Collection<Class<?>> classes) {
         super(name);
         this.classes = classes;
     }
