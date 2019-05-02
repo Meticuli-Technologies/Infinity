@@ -16,7 +16,7 @@ import static com.meti.lib.util.collect.Collections.computeFromResults;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
     //TODO: implement in InfinityServer
-    protected final Set<Handler<Object, ?>> handlerMap = new HashSet<>();
+    protected final Set<Handler<Object, ?>> handlers = new HashSet<>();
     private final boolean shared;
 
     protected MappedServer(T supplier, boolean shared) {
@@ -42,7 +42,7 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
     }
 
     private Stream<Object> applyMap(Object token, S source) {
-        return handlerMap.stream()
+        return handlers.stream()
                 .filter(handler -> handler.test(token))
                 .map(handler -> handler.apply(source));
     }
