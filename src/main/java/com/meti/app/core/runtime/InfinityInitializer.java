@@ -32,7 +32,7 @@ class InfinityInitializer {
     }
 
     private ExecutorServiceManager initExecutorServiceManager() {
-        return new ExecutorServiceManager(Executors.newCachedThreadPool(), AWAIT_TERMINATION);
+        return new ExecutorServiceManager(Executors.newCachedThreadPool());
     }
 
     private LoggerConsole initLoggerConsole() {

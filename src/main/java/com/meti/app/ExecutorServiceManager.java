@@ -1,44 +1,32 @@
 package com.meti.app;
 
-import com.meti.lib.util.collect.Lister;
-
 import java.time.Duration;
-import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 public class ExecutorServiceManager {
-    private final Lister lister = new Lister();
-    private final Duration terminationDuration;
-    public final ExecutorService service;
+    private final List<Future<?>> futures = new ArrayList<>();
+    private final ExecutorService service;
 
-    public ExecutorServiceManager(ExecutorService service, Duration terminationDuration) {
+    public ExecutorServiceManager(ExecutorService service) {
         this.service = service;
-        this.terminationDuration = terminationDuration;
     }
 
-    public void checkTerminated() throws Exception {
+    public ExecutorServiceManager submit(Callable<?> callable) {
+        futures.add(service.submit(callable));
+        return this;
+    }
+
+    public void terminate(Duration timeout) throws Exception {
+        futures.forEach(future -> future.cancel(true));
+
+        if (!service.isShutdown()) service.shutdown();
         if (!service.isTerminated()) {
-            terminate();
+            boolean result = service.awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS);
+            if (!result) {
+                throw new TimeoutException("Termination sequence timed out.");
+            }
         }
-    }
-
-    private void terminate() throws InterruptedException, TimeoutException {
-        if (!terminationSuccessful()) {
-            throw new TimeoutException("Service failed to terminate within " + terminationDuration.toString());
-        }
-    }
-
-    private boolean terminationSuccessful() throws InterruptedException {
-        return !service.awaitTermination(terminationDuration.toMillis(), TimeUnit.MILLISECONDS);
-    }
-
-    public Optional<String> getTaskString() {
-        if (service.isShutdown()) {
-            throw new IllegalStateException("Service should still be running!");
-        }
-
-        return lister.listFrom(service.shutdownNow());
     }
 }

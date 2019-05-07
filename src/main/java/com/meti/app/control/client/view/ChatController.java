@@ -2,7 +2,6 @@ package com.meti.app.control.client.view;
 
 import com.meti.app.control.client.InfinityClientController;
 import com.meti.app.io.update.client.TypeUpdateHandler;
-import com.meti.lib.fx.fxml.FutureFXChecker;
 import com.meti.lib.util.collect.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +12,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -38,20 +37,12 @@ public class ChatController extends InfinityClientController implements Initiali
             }
         });
 
-        Future<Object> future = serviceManager.service.submit(() -> {
+        serviceManager.submit((Callable<Void>) () -> {
             while (client.isOpen()) {
                 updater.update();
             }
             return null;
         });
-
-        FutureFXChecker checker = new FutureFXChecker(future) {
-            @Override
-            public void accept(Exception e) {
-                console.log(Level.WARNING, e);
-            }
-        };
-        checker.start();
     }
 
     @FXML
