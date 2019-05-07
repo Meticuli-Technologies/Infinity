@@ -28,7 +28,7 @@ public class Collections {
         return OptionalInt.of(collection.size() - 1);
     }
 
-    public static Object computeFromResults(List<Object> results) {
+    public static Object toSingle(List<Object> results) {
         if (results.size() > 1) {
             return new IllegalArgumentException("Too many results.");
         }

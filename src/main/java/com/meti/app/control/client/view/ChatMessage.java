@@ -3,7 +3,9 @@ package com.meti.app.control.client.view;
 import com.meti.lib.io.query.Query;
 import com.meti.lib.io.respond.OKResponse;
 
-public class ChatMessage implements Query<OKResponse> {
+import java.io.Serializable;
+
+public class ChatMessage implements Query<OKResponse>, Serializable {
     private final String value;
 
     public ChatMessage(String value) {

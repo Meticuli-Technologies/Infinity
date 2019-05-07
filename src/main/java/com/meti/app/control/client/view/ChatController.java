@@ -2,6 +2,7 @@ package com.meti.app.control.client.view;
 
 import com.meti.app.control.client.InfinityClientController;
 import com.meti.app.io.update.client.TypeUpdateHandler;
+import com.meti.lib.io.respond.OKResponse;
 import com.meti.lib.util.collect.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
 public class ChatController extends InfinityClientController implements Initializable {
@@ -62,7 +64,12 @@ public class ChatController extends InfinityClientController implements Initiali
 
     private TextField writeMessage(TextField input) throws Exception {
         String value = input.getText();
-        querier.query(new ChatMessage(value)).get(1, TimeUnit.SECONDS);
+        querier.query(new ChatMessage(value)).whenCompleteAsync(new BiConsumer<OKResponse, Throwable>() {
+            @Override
+            public void accept(OKResponse okResponse, Throwable throwable) {
+                if(throwable != null) throw new RuntimeException(throwable);
+            }
+        });
         return input;
     }
 }

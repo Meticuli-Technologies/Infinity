@@ -19,8 +19,8 @@ public class InfinityServer extends MappedServer<SocketSource, ServerSocketSuppl
     private final UpdateManager updateManager = new UpdateManager();
 
     public InfinityServer(ServerSocketSupplier supplier, TryableFactory factory, ModuleManager moduleManager) {
-        //TODO: update options for non-shared servers
-        super(supplier, true);
+        //TODO: update options for shared servers
+        super(supplier, false);
 
         tokenHandlers.add(new UpdateTokenHandler(updateManager));
         Streams.instanceStream(factory, moduleManager.getImplementations(ServerHandler.class))

@@ -1,5 +1,7 @@
 package com.meti.lib.io.query;
 
+import com.meti.app.control.client.view.ChatMessage;
+import com.meti.lib.io.respond.OKResponse;
 import com.meti.lib.util.collect.TypeFunction;
 import com.meti.lib.io.channel.ObjectChannel;
 
@@ -21,16 +23,16 @@ public class Querier {
     }
 
     //TODO: use this method
-    public <T> CompletableFuture<T> query(Query<T> query) throws IOException {
+    public <T> CompletableFuture<T> query(Query<T> query) throws IOException, InterruptedException {
         return queryObject(query).thenApply(new TypeFunction<>(query.getTypeClass()));
     }
 
-    private CompletableFuture<Object> queryObject(Object token) throws IOException {
+    private CompletableFuture<Object> queryObject(Object token) throws IOException, InterruptedException {
         channel.write(token);
         channel.flush();
 
         CompletableFuture<Object> future = new CompletableFuture<>();
-        futures.offer(future);
+        futures.put(future);
         return future;
     }
 
@@ -39,6 +41,7 @@ public class Querier {
         public Querier call() throws Exception {
             while (channel.isOpen()) {
                 Object token = channel.read();
+                System.out.println(token);
                 completeFuture(token, futures.take());
             }
             return Querier.this;

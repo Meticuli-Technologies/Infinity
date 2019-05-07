@@ -19,7 +19,14 @@ public class ExecutorServiceManager {
     }
 
     public void terminate(Duration timeout) throws Exception {
-        futures.forEach(future -> future.cancel(true));
+        for(Future<?> future : futures) {
+            if (future.isDone()) {
+                System.out.println(future.get());
+            }
+            else{
+                future.cancel(true);
+            }
+        }
 
         if (!service.isShutdown()) service.shutdown();
         if (!service.isTerminated()) {

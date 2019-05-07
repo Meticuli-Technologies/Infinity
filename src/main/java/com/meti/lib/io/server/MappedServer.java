@@ -1,5 +1,6 @@
 package com.meti.lib.io.server;
 
+import com.meti.app.control.client.view.ChatMessage;
 import com.meti.lib.io.channel.ObjectChannel;
 import com.meti.lib.io.server.handle.TokenHandler;
 import com.meti.lib.io.source.ObjectSource;
@@ -12,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.meti.lib.util.collect.Collections.computeFromResults;
+import static com.meti.lib.util.collect.Collections.toSingle;
 
 public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends Server<S, T> {
     protected final Set<TokenHandler<Object, ?>> tokenHandlers = new HashSet<>();
@@ -34,7 +35,7 @@ public class MappedServer<S extends Source, T extends SourceSupplier<S>> extends
 
     private void readNextToken(ObjectChannel channel, S source) throws IOException, ClassNotFoundException {
         Object token = channel.read();
-        Object result = computeFromResults(applyMap(token, source)
+        Object result = toSingle(applyMap(token, source)
                 .collect(Collectors.toList()));
         channel.write(result);
         channel.flush();
