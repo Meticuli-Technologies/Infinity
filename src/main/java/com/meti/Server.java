@@ -1,5 +1,6 @@
 package com.meti;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,7 +15,7 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 5/7/2019
  */
-public class Server implements Callable<Server> {
+public class Server implements Callable<Server>, Closeable {
     private final Set<TokenHandler> handlers = new HashSet<>();
     private final ExecutorServiceManager manager;
     private final ServerSocket serverSocket;
@@ -32,6 +33,11 @@ public class Server implements Callable<Server> {
         }
 
         return this;
+    }
+
+    @Override
+    public void close() throws IOException {
+        serverSocket.close();
     }
 
     public Server listen() {
