@@ -1,9 +1,9 @@
 package com.meti;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +13,7 @@ import java.util.logging.Logger;
  * @since 5/7/2019
  */
 public class Main extends Application {
+    private final ExecutorServiceManager executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool());
     private final Logger logger = Logger.getLogger("Infinity");
 
     public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class Main extends Application {
         logger.log(Level.INFO, "Starting application.");
 
         try {
-            primaryStage.setScene(new Scene(Injector.load(getClass().getResource("/com/meti/Menu.fxml"))));
+            primaryStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/Menu.fxml"), logger, executorServiceManager));
             primaryStage.show();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to start Infinity: " + e);

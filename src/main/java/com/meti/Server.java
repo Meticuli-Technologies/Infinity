@@ -14,7 +14,7 @@ public class Server implements Callable<Server>, Closeable {
     private final SourceSupplier sourceSupplier;
     private final TokenHandler handler;
 
-    public Server(SourceSupplier sourceSupplier, ExecutorServiceManager manager, TokenHandler handler) throws IOException {
+    public Server(SourceSupplier sourceSupplier, ExecutorServiceManager manager, TokenHandler handler) {
         this.sourceSupplier = sourceSupplier;
         this.manager = manager;
         this.handler = handler;

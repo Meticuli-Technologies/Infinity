@@ -1,6 +1,7 @@
 package com.meti;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -17,7 +18,11 @@ public class Injector extends FXMLLoader {
         setControllerFactory(new ControllerFactory());
     }
 
-    public <T> T load(Source source, Object... injectableArray) throws IOException {
+    public static Scene loadAsScene(Source source, Object... injectableArray) throws IOException {
+        return new Scene(load(source, injectableArray));
+    }
+
+    public static <T> T load(Source source, Object... injectableArray) throws IOException {
         return new Injector(injectableArray).load(source.getInputStream());
     }
 
