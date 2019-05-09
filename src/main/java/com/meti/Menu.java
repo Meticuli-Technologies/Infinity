@@ -1,6 +1,7 @@
 package com.meti;
 
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -16,13 +17,15 @@ import java.util.logging.Logger;
 public class Menu {
     private final Logger logger;
     private final ExecutorServiceManager executorServiceManager;
+    private final StageManager stageManager;
 
     private Consumer<Server> onServerConstructed;
     private Consumer<Client> onClientConstructed;
 
-    public Menu(Logger logger, ExecutorServiceManager executorServiceManager) {
+    public Menu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager) {
         this.logger = logger;
         this.executorServiceManager = executorServiceManager;
+        this.stageManager = stageManager;
     }
 
     @FXML
@@ -39,7 +42,12 @@ public class Menu {
     public void local() {
         try {
             SocketSourceSupplier supplier = new SocketSourceSupplier();
-            constructServer(supplier);
+            Server server = constructServer(supplier);
+
+            Stage stage = stageManager.getPrimaryStage();
+            stage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ServerDisplay.fxml"), server));
+            stage.show();
+
             Client client = constructClient(supplier.getLocalPort());
             buildClientHandler(client);
         } catch (IOException e) {
@@ -47,7 +55,7 @@ public class Menu {
         }
     }
 
-    private void constructServer(SocketSourceSupplier supplier) {
+    private Server constructServer(SocketSourceSupplier supplier) {
         logger.log(Level.INFO, "Constructing server.");
         Server server = new Server(supplier, executorServiceManager, new InfinityServerHandler()).listen();
         if (onServerConstructed != null) {
@@ -55,6 +63,7 @@ public class Menu {
         } else {
             logger.log(Level.WARNING, "The server was constructed, but there were no consumers to accept it.");
         }
+        return server;
     }
 
     private Client constructClient(int localPort) throws IOException {

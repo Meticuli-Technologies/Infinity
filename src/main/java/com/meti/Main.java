@@ -11,8 +11,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class Main extends Application {
     private final ExecutorServiceManager executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool());
+    private final StageManager stageManager = new StageManager();
     private final List<Closeable> closeables = new ArrayList<>();
     private final Logger logger = Logger.getLogger("Infinity");
 
@@ -33,12 +32,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         logger.log(Level.INFO, "Starting application.");
+        stageManager.addStage(primaryStage);
 
         try {
-            Injector injector = new Injector(logger, executorServiceManager);
+            Injector injector = new Injector(logger, executorServiceManager, stageManager);
             Parent parent = injector.load(URLSource.of("/com/meti/Menu.fxml"));
-            primaryStage.setScene(new Scene(parent));
-            primaryStage.show();
+            Stage stage = stageManager.getPrimaryStage();
+            stage.setScene(new Scene(parent));
+            stage.show();
 
             Menu menu = injector.getController();
             menu.setOnServerConstructed(closeables::add);

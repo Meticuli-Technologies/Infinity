@@ -2,9 +2,11 @@ package com.meti;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.function.Consumer;
 
 public class SocketSourceSupplier implements SourceSupplier {
     private final ServerSocket serverSocket;
+    private Consumer<SocketSource> onAccept;
 
     public SocketSourceSupplier() throws IOException {
         this(0);
@@ -20,7 +22,11 @@ public class SocketSourceSupplier implements SourceSupplier {
 
     @Override
     public Source accept() throws IOException {
-        return new SocketSource(serverSocket.accept());
+        SocketSource source = new SocketSource(serverSocket.accept());
+        if (onAccept != null) {
+            onAccept.accept(source);
+        }
+        return source;
     }
 
     @Override
