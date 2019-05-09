@@ -19,7 +19,6 @@ public class Menu {
 
     private Consumer<Server> onServerConstructed;
     private Consumer<Client> onClientConstructed;
-    private Consumer<ClientHandler> onClientHandlerConstructed;
 
     public Menu(Logger logger, ExecutorServiceManager executorServiceManager) {
         this.logger = logger;
@@ -70,11 +69,14 @@ public class Menu {
     }
 
     private void buildClientHandler(Client client) {
-        ClientHandler handler = new ClientHandler(client, new InfinityClientTokenHandler()).listen(executorServiceManager);
-        if (onClientHandlerConstructed != null) {
-            onClientHandlerConstructed.accept(handler);
-        } else {
-            logger.log(Level.WARNING, "The client handler was constructed, but there were no consumers to accept it.");
-        }
+        new ClientHandler(client, new InfinityClientTokenHandler()).listen(executorServiceManager);
+    }
+
+    public void setOnClientConstructed(Consumer<Client> onClientConstructed) {
+        this.onClientConstructed = onClientConstructed;
+    }
+
+    public void setOnServerConstructed(Consumer<Server> onServerConstructed) {
+        this.onServerConstructed = onServerConstructed;
     }
 }

@@ -18,12 +18,16 @@ public class Injector extends FXMLLoader {
         setControllerFactory(new ControllerFactory());
     }
 
+    public <T> T load(Source source) throws IOException {
+        return load(source.getInputStream());
+    }
+
     public static Scene loadAsScene(Source source, Object... injectableArray) throws IOException {
         return new Scene(load(source, injectableArray));
     }
 
     public static <T> T load(Source source, Object... injectableArray) throws IOException {
-        return new Injector(injectableArray).load(source.getInputStream());
+        return new Injector(injectableArray).load(source);
     }
 
     private class ControllerFactory implements Callback<Class<?>, Object> {
