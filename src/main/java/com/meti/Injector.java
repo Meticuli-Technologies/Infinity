@@ -32,7 +32,7 @@ public class Injector extends FXMLLoader {
             try {
                 Class[] classes = getClassArray(injectableList);
                 return param.getDeclaredConstructor(classes)
-                        .newInstance(injectableList);
+                        .newInstance(injectableList.toArray());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
