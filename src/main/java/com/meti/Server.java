@@ -6,8 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
@@ -16,20 +14,21 @@ import java.util.concurrent.Callable;
  * @since 5/7/2019
  */
 public class Server implements Callable<Server>, Closeable {
-    private final Set<TokenHandler> handlers = new HashSet<>();
     private final ExecutorServiceManager manager;
     private final ServerSocket serverSocket;
+    private final TokenHandler handler;
 
-    public Server(ExecutorServiceManager manager, int port) throws IOException {
-        this.manager = manager;
+    public Server(int port, ExecutorServiceManager manager, TokenHandler handler) throws IOException {
         this.serverSocket = new ServerSocket(port);
+        this.manager = manager;
+        this.handler = handler;
     }
 
     @Override
     public Server call() throws Exception {
         while (!serverSocket.isClosed()) {
             Socket accepted = serverSocket.accept();
-            manager.submit(new SocketAcceptor(accepted));
+            manager.submit(new SocketAcceptor(handler, accepted));
         }
 
         return this;
@@ -46,11 +45,13 @@ public class Server implements Callable<Server>, Closeable {
     }
 
     private class SocketAcceptor implements Callable<SocketAcceptor> {
+        private final TokenHandler handler;
         private final Socket socket;
         private final ObjectInputStream inputStream;
         private final ObjectOutputStream outputStream;
 
-        public SocketAcceptor(Socket socket) throws IOException {
+        public SocketAcceptor(TokenHandler handler, Socket socket) throws IOException {
+            this.handler = handler;
             this.socket = socket;
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
@@ -60,16 +61,19 @@ public class Server implements Callable<Server>, Closeable {
         public SocketAcceptor call() throws Exception {
             while (!socket.isClosed()) {
                 Object token = inputStream.readUnshared();
-                Object toWrite = handlers.parallelStream()
-                        .filter(tokenHandler -> tokenHandler.canHandle(token))
-                        .map(tokenHandler -> tokenHandler.handle(token))
-                        .findAny()
-                        .orElseGet(() -> new IllegalArgumentException("No results found"));
+                Object toWrite = handle(token);
                 outputStream.writeUnshared(toWrite);
                 outputStream.flush();
             }
             return this;
         }
-    }
 
+        public Object handle(Object token) {
+            if (handler.canHandle(token)) {
+                return handler.handle(token);
+            } else {
+                return new IllegalArgumentException("Cannot handle " + token.toString());
+            }
+        }
+    }
 }

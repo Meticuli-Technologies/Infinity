@@ -6,10 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 /**
  * @author SirMathhman
@@ -36,46 +32,11 @@ public class Client implements Closeable {
         outputStream.flush();
     }
 
-    public Querier listen(Consumer<Querier> executor) {
-        Querier querier = new Querier();
-        executor.accept(querier);
-        return querier;
-    }
-
     public Object read() throws IOException, ClassNotFoundException {
         return inputStream.readUnshared();
     }
 
     public void write(Object token) throws IOException {
         outputStream.writeUnshared(token);
-    }
-
-    private class Querier implements Callable<Querier> {
-        private final ArrayBlockingQueue<CompletableFuture<Object>> futures = new ArrayBlockingQueue<>(16);
-
-        @Override
-        public Querier call() throws Exception {
-            CompletableFuture<Object> future = futures.take();
-            Object token = inputStream.readUnshared();
-            if (token instanceof Throwable) {
-                future.completeExceptionally((Throwable) token);
-            } else {
-                future.complete(token);
-            }
-            return this;
-        }
-
-        public <T> CompletableFuture<T> query(Object token, Class<T> expectedClass) throws IOException {
-            return query(token).thenApply(expectedClass::cast);
-        }
-
-        public CompletableFuture<Object> query(Object token) throws IOException {
-            outputStream.writeUnshared(token);
-            outputStream.flush();
-
-            CompletableFuture<Object> future = new CompletableFuture<>();
-            futures.add(future);
-            return future;
-        }
     }
 }

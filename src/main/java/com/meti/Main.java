@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +16,10 @@ import java.util.logging.Logger;
 public class Main extends Application {
     private final Logger logger = Logger.getLogger("Infinity");
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) {
         logger.log(Level.INFO, "Starting application.");
@@ -27,9 +30,5 @@ public class Main extends Application {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to start Infinity: " + e);
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
