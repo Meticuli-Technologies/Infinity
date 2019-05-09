@@ -1,7 +1,6 @@
 package com.meti;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -25,7 +24,7 @@ public class Main extends Application {
         logger.log(Level.INFO, "Starting application.");
 
         try {
-            primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml"))));
+            primaryStage.setScene(new Scene(Injector.load(getClass().getResource("/com/meti/Menu.fxml"))));
             primaryStage.show();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to start Infinity: " + e);

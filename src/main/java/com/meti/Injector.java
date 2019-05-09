@@ -9,16 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class ControllerLoader extends FXMLLoader {
+public class Injector extends FXMLLoader {
     private final List<Object> injectableList = new ArrayList<>();
 
-    public ControllerLoader(Object... injectableArray) {
+    public Injector(Object... injectableArray) {
         this.injectableList.addAll(Arrays.asList(injectableArray));
         setControllerFactory(new ControllerFactory());
     }
 
     public <T> T load(Source source, Object... injectableArray) throws IOException {
-        return new ControllerLoader(injectableArray).load(source.getInputStream());
+        return new Injector(injectableArray).load(source.getInputStream());
     }
 
     private class ControllerFactory implements Callback<Class<?>, Object> {
