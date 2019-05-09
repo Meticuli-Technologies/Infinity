@@ -1,39 +1,45 @@
 package com.meti;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.io.*;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 5/7/2019
  */
-public class Client implements Closeable {
-    private final Socket socket;
+public class Client implements Closeable, Source {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
+    private Source source;
 
-    public Client(InetAddress address, int port) throws IOException {
-        this.socket = new Socket(address, port);
-        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.inputStream = new ObjectInputStream(socket.getInputStream());
+    public Client(Source source) throws IOException {
+        this.outputStream = new ObjectOutputStream(source.getOutputStream());
+        this.inputStream = new ObjectInputStream(source.getInputStream());
+        this.source = source;
     }
 
     @Override
     public void close() throws IOException {
-        socket.close();
+        source.close();
     }
 
     public void flush() throws IOException {
         outputStream.flush();
     }
 
-    public boolean isOpen() {
-        return !socket.isClosed();
+    @Override
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    @Override
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return source.isClosed();
     }
 
     public Object read() throws IOException, ClassNotFoundException {
