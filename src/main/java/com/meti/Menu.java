@@ -42,10 +42,10 @@ public class Menu {
     public void local() {
         try {
             SocketSourceSupplier supplier = new SocketSourceSupplier();
-            Server server = constructServer(supplier);
+            constructServer(supplier);
 
             Stage stage = stageManager.getPrimaryStage();
-            stage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ServerDisplay.fxml"), server));
+            stage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ServerDisplay.fxml"), supplier));
             stage.show();
 
             Client client = constructClient(supplier.getLocalPort());
@@ -55,15 +55,15 @@ public class Menu {
         }
     }
 
-    private Server constructServer(SocketSourceSupplier supplier) {
+    private void constructServer(SocketSourceSupplier supplier) {
         logger.log(Level.INFO, "Constructing server.");
-        Server server = new Server(supplier, executorServiceManager, new InfinityServerHandler()).listen();
+        InfinityServerHandler handler = new InfinityServerHandler();
+        Server server = new Server(supplier, executorServiceManager, handler).listen();
         if (onServerConstructed != null) {
             onServerConstructed.accept(server);
         } else {
             logger.log(Level.WARNING, "The server was constructed, but there were no consumers to accept it.");
         }
-        return server;
     }
 
     private Client constructClient(int localPort) throws IOException {

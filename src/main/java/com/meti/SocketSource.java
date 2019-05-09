@@ -26,6 +26,10 @@ public class SocketSource implements Source {
         socket.close();
     }
 
+    public InetAddress getInetAddress() {
+        return socket.getInetAddress();
+    }
+
     @Override
     public InputStream getInputStream() throws IOException {
         return socket.getInputStream();
@@ -39,5 +43,9 @@ public class SocketSource implements Source {
     @Override
     public boolean isClosed() {
         return socket.isClosed();
+    }
+
+    public int getPort() {
+        return socket.getPort();
     }
 }

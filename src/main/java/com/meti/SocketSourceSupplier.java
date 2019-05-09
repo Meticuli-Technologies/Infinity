@@ -42,4 +42,8 @@ public class SocketSourceSupplier implements SourceSupplier {
     public int getLocalPort() {
         return serverSocket.getLocalPort();
     }
+
+    public void setOnAccept(Consumer<SocketSource> onAccept) {
+        this.onAccept = onAccept;
+    }
 }

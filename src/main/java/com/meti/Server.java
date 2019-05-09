@@ -35,6 +35,10 @@ public class Server implements Callable<Server>, Closeable {
         sourceSupplier.close();
     }
 
+    public SourceSupplier getSourceSupplier() {
+        return sourceSupplier;
+    }
+
     public Server listen() {
         manager.submit(this);
         return this;
