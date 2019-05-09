@@ -6,10 +6,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,8 +49,34 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
-        executorServiceManager.finalizeFutures();
-        executorServiceManager.stop(Duration.ofSeconds(1));
+    public void stop() {
+        close();
+        terminate();
+    }
+
+    private void terminate() {
+        try {
+            logger.log(Level.INFO, "Finalizing futures.");
+            executorServiceManager.finalizeFutures()
+                    .values()
+                    .stream()
+                    .filter(o -> o instanceof Throwable)
+                    .forEach(o -> logger.log(Level.WARNING, o.toString()));
+            logger.log(Level.INFO, "Stopping executor service.");
+            executorServiceManager.stop(Duration.ofSeconds(1));
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
+        }
+    }
+
+    private void close() {
+        logger.log(Level.INFO, "Closing closeables.");
+        for (Closeable closeable : closeables) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, e.getMessage());
+            }
+        }
     }
 }

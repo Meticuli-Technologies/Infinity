@@ -20,12 +20,15 @@ public class ExecutorServiceManager {
         this.service = service;
     }
 
-    public Map<Future<?>, Object> finalizeFutures() throws ExecutionException, InterruptedException {
+    public Map<Future<?>, Object> finalizeFutures() {
         Map<Future<?>, Object> map = new HashMap<>();
         for (Future<?> future : futures) {
             if (future.isDone()) {
-                Object token = future.get();
-                map.put(future, token);
+                try {
+                    map.put(future, future.get());
+                } catch (Exception e) {
+                    map.put(future, e);
+                }
             } else {
                 future.cancel(true);
             }

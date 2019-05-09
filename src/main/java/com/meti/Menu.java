@@ -38,18 +38,17 @@ public class Menu {
     @FXML
     public void local() {
         try {
-            logger.log(Level.INFO, "Constructing server.");
-
             SocketSourceSupplier supplier = new SocketSourceSupplier();
-            buildServer(supplier);
-            Client client = buildClient(supplier.getLocalPort());
+            constructServer(supplier);
+            Client client = constructClient(supplier.getLocalPort());
             buildClientHandler(client);
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
-    private void buildServer(SocketSourceSupplier supplier) {
+    private void constructServer(SocketSourceSupplier supplier) {
+        logger.log(Level.INFO, "Constructing server.");
         Server server = new Server(supplier, executorServiceManager, new InfinityServerHandler()).listen();
         if (onServerConstructed != null) {
             onServerConstructed.accept(server);
@@ -58,7 +57,8 @@ public class Menu {
         }
     }
 
-    private Client buildClient(int localPort) throws IOException {
+    private Client constructClient(int localPort) throws IOException {
+        logger.log(Level.INFO, "Constructing client.");
         Client client = new Client(new SocketSource(InetAddress.getByName("localhost"), localPort));
         if (onClientConstructed != null) {
             onClientConstructed.accept(client);
