@@ -41,5 +41,4 @@ public class Server implements Callable<Server>, Closeable {
         manager.submit(this);
         return this;
     }
-
 }
