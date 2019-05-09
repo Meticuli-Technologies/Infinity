@@ -32,6 +32,10 @@ public class Client implements Closeable {
         outputStream.flush();
     }
 
+    public boolean isOpen() {
+        return !socket.isClosed();
+    }
+
     public Object read() throws IOException, ClassNotFoundException {
         return inputStream.readUnshared();
     }
