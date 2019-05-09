@@ -25,7 +25,7 @@ public class Main extends Application {
         logger.log(Level.INFO, "Starting application.");
 
         try {
-            primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/com/meti/Menu.fxml"))));
+            primaryStage.setScene(new Scene(ControllerLoader.load(getClass().getResource("/com/meti/Menu.fxml"))));
             primaryStage.show();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to start Infinity: " + e);
