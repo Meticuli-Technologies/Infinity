@@ -2,8 +2,6 @@ package com.meti;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.Callable;
 
 /**
@@ -13,19 +11,19 @@ import java.util.concurrent.Callable;
  */
 public class Server implements Callable<Server>, Closeable {
     private final ExecutorServiceManager manager;
-    private final ServerSocket serverSocket;
+    private final SourceSupplier sourceSupplier;
     private final TokenHandler handler;
 
-    public Server(int port, ExecutorServiceManager manager, TokenHandler handler) throws IOException {
-        this.serverSocket = new ServerSocket(port);
+    public Server(SourceSupplier sourceSupplier, ExecutorServiceManager manager, TokenHandler handler) throws IOException {
+        this.sourceSupplier = sourceSupplier;
         this.manager = manager;
         this.handler = handler;
     }
 
     @Override
     public Server call() throws Exception {
-        while (!serverSocket.isClosed()) {
-            Socket accepted = serverSocket.accept();
+        while (sourceSupplier.isOpen()) {
+            Source accepted = sourceSupplier.accept();
             manager.submit(new ServerHandler(handler, accepted));
         }
 
@@ -34,7 +32,7 @@ public class Server implements Callable<Server>, Closeable {
 
     @Override
     public void close() throws IOException {
-        serverSocket.close();
+        sourceSupplier.close();
     }
 
     public Server listen() {

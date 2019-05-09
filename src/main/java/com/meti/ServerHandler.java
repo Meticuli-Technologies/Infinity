@@ -1,31 +1,24 @@
 package com.meti;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.concurrent.Callable;
 
 class ServerHandler implements Callable<ServerHandler> {
     private final TokenHandler handler;
-    private final Socket socket;
-    private final ObjectInputStream inputStream;
-    private final ObjectOutputStream outputStream;
+    private final Client client;
 
-    public ServerHandler(TokenHandler handler, Socket socket) throws IOException {
+    public ServerHandler(TokenHandler handler, Source source) throws IOException {
         this.handler = handler;
-        this.socket = socket;
-        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.inputStream = new ObjectInputStream(socket.getInputStream());
+        this.client = new Client(source);
     }
 
     @Override
     public ServerHandler call() throws Exception {
-        while (!socket.isClosed()) {
-            Object token = inputStream.readUnshared();
+        while (client.isOpen()) {
+            Object token = client.read();
             Object toWrite = handle(token);
-            outputStream.writeUnshared(toWrite);
-            outputStream.flush();
+            client.write(toWrite);
+            client.flush();
         }
         return this;
     }
