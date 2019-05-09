@@ -3,6 +3,7 @@ package com.meti;
 import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,10 @@ public class ControllerLoader extends FXMLLoader {
     public ControllerLoader(Object... injectableArray) {
         this.injectableList.addAll(Arrays.asList(injectableArray));
         setControllerFactory(new ControllerFactory());
+    }
+
+    public <T> T load(Source source, Object... injectableArray) throws IOException {
+        return new ControllerLoader(injectableArray).load(source.getInputStream());
     }
 
     private class ControllerFactory implements Callback<Class<?>, Object> {
