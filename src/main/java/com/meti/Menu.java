@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -18,14 +19,16 @@ public class Menu {
     private final Logger logger;
     private final ExecutorServiceManager executorServiceManager;
     private final StageManager stageManager;
+    private final ModuleManager moduleManager;
 
     private Consumer<Server> onServerConstructed;
     private Consumer<Client> onClientConstructed;
 
-    public Menu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager) {
+    public Menu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
         this.logger = logger;
         this.executorServiceManager = executorServiceManager;
         this.stageManager = stageManager;
+        this.moduleManager = moduleManager;
     }
 
     @FXML
@@ -54,7 +57,7 @@ public class Menu {
             Stage clientStage = stageManager.getStage(1);
             clientStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ClientDisplay.fxml")));
             clientStage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage());
         }
     }
@@ -81,8 +84,8 @@ public class Menu {
         return client;
     }
 
-    private void buildClientHandler(Client client) {
-        new ClientHandler(client, new InfinityClientTokenHandler()).listen(executorServiceManager);
+    private void buildClientHandler(Client client) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        new ClientHandler(client, new InfinityClientTokenHandler(moduleManager.constructInstances(ClientComponent.class))).listen(executorServiceManager);
     }
 
     public void setOnClientConstructed(Consumer<Client> onClientConstructed) {

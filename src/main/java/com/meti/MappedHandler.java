@@ -1,10 +1,15 @@
 package com.meti;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MappedHandler implements TokenHandler {
-    private final Set<TokenHandler> handlers = new HashSet<>();
+    protected final Set<TokenHandler> handlers = new HashSet<>();
+
+    public MappedHandler(TokenHandler... initial) {
+        handlers.addAll(Arrays.asList(initial));
+    }
 
     @Override
     public boolean canHandle(Object token) {

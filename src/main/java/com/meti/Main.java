@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class Main extends Application {
     private final ExecutorServiceManager executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool());
+    private final InfinityModuleManager moduleManager = new InfinityModuleManager();
     private final StageManager stageManager = new StageManager();
     private final List<Closeable> closeables = new ArrayList<>();
     private final Logger logger = Logger.getLogger("Infinity");
@@ -35,7 +36,7 @@ public class Main extends Application {
         stageManager.addStage(primaryStage);
 
         try {
-            Injector injector = new Injector(logger, executorServiceManager, stageManager);
+            Injector injector = new Injector(logger, executorServiceManager, stageManager, moduleManager);
             Parent parent = injector.load(URLSource.of("/com/meti/Menu.fxml"));
             Stage stage = stageManager.getPrimaryStage();
             stage.setScene(new Scene(parent));
