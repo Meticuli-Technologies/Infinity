@@ -44,12 +44,16 @@ public class Menu {
             SocketSourceSupplier supplier = new SocketSourceSupplier();
             constructServer(supplier);
 
-            Stage stage = stageManager.getPrimaryStage();
-            stage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ServerDisplay.fxml"), supplier));
-            stage.show();
+            Stage serverStage = stageManager.getPrimaryStage();
+            serverStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ServerDisplay.fxml"), supplier));
+            serverStage.show();
 
             Client client = constructClient(supplier.getLocalPort());
             buildClientHandler(client);
+
+            Stage clientStage = stageManager.getStage(1);
+            clientStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ClientDisplay.fxml")));
+            clientStage.show();
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.getMessage());
         }

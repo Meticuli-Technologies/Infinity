@@ -23,17 +23,16 @@ public class StageManager {
         return stages.size() > index;
     }
 
+    public Stage getPrimaryStage() {
+        return getStage(0);
+    }
+
     public Stage getStage(int index) {
         if (containsStageIndex(index)) {
             return stages.get(index);
         } else {
             allocate();
-            getStage(index);
+            return getStage(index);
         }
-        return null;
-    }
-
-    public Stage getPrimaryStage() {
-        return getStage(0);
     }
 }
