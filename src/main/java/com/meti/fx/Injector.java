@@ -7,17 +7,19 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.Arrays.asList;
 
 public class Injector extends FXMLLoader {
     private final List<Object> injectableList = new ArrayList<>();
 
     public Injector(Object... injectableArray) {
-        this.injectableList.addAll(Arrays.asList(injectableArray));
+        this.injectableList.addAll(asList(injectableArray));
         setControllerFactory(new ControllerFactory());
     }
 
@@ -33,60 +35,63 @@ public class Injector extends FXMLLoader {
         return load(source.getInputStream());
     }
 
+    private List<Class<?>> injectableClasses() {
+        return injectableList.stream()
+                .map(Object::getClass)
+                .collect(Collectors.toList());
+    }
+
     private class ControllerFactory implements Callback<Class<?>, Object> {
         @Override
         public Object call(Class<?> instantiatee) {
             try {
-                List<Class<?>> dependencyClasses = getClassArray(injectableList);
-                Map<Parameter[], Constructor<?>> constructorMap = buildConstructorMap(instantiatee);
-                Optional<Constructor<?>> constructor = matchConstructor(dependencyClasses, constructorMap);
-                if (!constructor.isPresent()) {
-                    throw new NoSuchMethodException();
-                }
-
-                return constructor.get().newInstance(injectableList.toArray());
+                return construct(instantiatee);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
-        private Optional<Constructor<?>> matchConstructor(List<Class<?>> classes, Map<Parameter[], Constructor<?>> constructorMap) {
-            return constructorMap.keySet()
-                    .stream()
-                    .filter(parameters -> testParameters(parameters, classes))
-                    .map((Function<Parameter[], Constructor<?>>) constructorMap::get)
-                    .findAny();
+        private Object construct(Class<?> instantiatee) {
+            Map<List<Class<?>>, Constructor<?>> constructorMap = buildConstructorMap(instantiatee);
+            List<Constructor<?>> validConstructors = findValidConstructors(constructorMap);
+            if (validConstructors.isEmpty()) throw new IllegalStateException("No valid constructors found.");
+            if (validConstructors.size() > 1) throw new IllegalStateException("Too many valid constructors.");
+            return validConstructors.get(0);
         }
 
-        private boolean testParameters(Parameter[] parameters, List<Class<?>> classes) {
-            Class<?>[] parameterClasses = Arrays.stream(parameters)
-                    .map(Parameter::getType)
-                    .toArray(Class[]::new);
-/*
-            if (parameterClasses.length != classes.length) {
-                return false;
+        private Map<List<Class<?>>, Constructor<?>> buildConstructorMap(Class<?> instantiatee) {
+            Map<List<Class<?>>, Constructor<?>> constructorMap = new HashMap<>();
+            for (Constructor<?> constructor : instantiatee.getConstructors()) {
+                constructorMap.put(getTypes(constructor.getParameters()), constructor);
             }
-
-            boolean allImplementations = true;
-            for (int i = 0; i < parameterClasses.length; i++) {
-                if (!parameterClasses[i].isAssignableFrom(classes[i])) {
-                    allImplementations = false;
-                }
-            }*/
-
-            return allImplementations;
+            return constructorMap;
         }
 
-        private Map<Parameter[], Constructor<?>> buildConstructorMap(Class<?> instantiatee) {
-            List<Constructor<?>> constructors = Arrays.asList(instantiatee.getDeclaredConstructors());
-            return constructors.stream()
-                    .collect(Collectors.toMap(Executable::getParameters, Function.identity()));
-        }
-
-        private List<Class<?>> getClassArray(List<Object> objects) {
-            return objects.stream()
-                    .map(Object::getClass)
+        private List<Constructor<?>> findValidConstructors(Map<List<Class<?>>, Constructor<?>> constructorMap) {
+            List<Class<?>> injectableClasses = injectableClasses();
+            return constructorMap.keySet().stream()
+                    .filter(parameterClasses -> areInstances(injectableClasses, parameterClasses))
+                    .map(constructorMap::get)
                     .collect(Collectors.toList());
+        }
+
+        private List<Class<?>> getTypes(Parameter[] parameters) {
+            return Arrays.stream(parameters)
+                    .map(Parameter::getType)
+                    .collect(Collectors.toList());
+        }
+
+        private boolean areInstances(List<Class<?>> checked, List<Class<?>> checking) {
+            if (checked.size() != checking.size()) {
+                return false;
+            } else return IntStream.range(0, checked.size()).noneMatch(checkedIndex -> isInstance(
+                    checked.get(checkedIndex),
+                    checking.get(checkedIndex)
+            ));
+        }
+
+        private boolean isInstance(Class<?> classChecked, Class<?> classToCheck) {
+            return !classChecked.isInstance(classToCheck);
         }
     }
 }

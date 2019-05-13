@@ -24,12 +24,7 @@ public class ChatView {
     public ChatView(Logger logger, Client client, InfinityClientTokenHandler handler) {
         this.logger = logger;
         this.client = client;
-        handler.addHandler(new TypeTokenHandler<>(ChatMessage.class) {
-            @Override
-            protected void handleGeneric(ChatMessage token) {
-                Platform.runLater(() -> output.getItems().add(token.getValue()));
-            }
-        });
+        handler.addHandler(new ChatMessageHandler());
     }
 
     @FXML
@@ -42,5 +37,16 @@ public class ChatView {
             logger.log(Level.WARNING, e.getMessage());
         }
         input.clear();
+    }
+
+    private class ChatMessageHandler extends TypeTokenHandler<ChatMessage> {
+        public ChatMessageHandler() {
+            super(ChatMessage.class);
+        }
+
+        @Override
+        protected void handleGeneric(ChatMessage token) {
+            Platform.runLater(() -> output.getItems().add(token.getValue()));
+        }
     }
 }
