@@ -12,11 +12,9 @@ public class MappedHandler implements TokenHandler {
     }
 
     @Override
-    public Object handle(Object token) {
-        return handlers.parallelStream()
+    public void handle(Object token) {
+        handlers.parallelStream()
                 .filter(tokenHandler -> tokenHandler.canHandle(token))
-                .map(tokenHandler -> tokenHandler.handle(token))
-                .findAny()
-                .orElseGet(() -> new IllegalArgumentException("No results found"));
+                .forEach(tokenHandler -> tokenHandler.handle(token));
     }
 }

@@ -2,6 +2,8 @@ package com.meti;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -10,6 +12,7 @@ import java.util.concurrent.Callable;
  * @since 5/7/2019
  */
 public class Server implements Callable<Server>, Closeable {
+    private final List<Client> clients = new ArrayList<>();
     private final ExecutorServiceManager manager;
     private final SourceSupplier sourceSupplier;
     private final TokenHandler handler;
@@ -23,11 +26,17 @@ public class Server implements Callable<Server>, Closeable {
     @Override
     public Server call() throws Exception {
         while (sourceSupplier.isOpen()) {
-            Source accepted = sourceSupplier.accept();
-            manager.submit(new ServerHandler(handler, accepted));
+            Client client = acceptClient();
+            manager.submit(new ReflectionHandler(handler, client));
         }
-
         return this;
+    }
+
+    private Client acceptClient() throws IOException {
+        Source accepted = sourceSupplier.accept();
+        Client client = new Client(accepted);
+        clients.add(client);
+        return client;
     }
 
     @Override
@@ -42,5 +51,19 @@ public class Server implements Callable<Server>, Closeable {
     public Server listen() {
         manager.submit(this);
         return this;
+    }
+
+    private class ReflectionHandler extends ServerHandler {
+        ReflectionHandler(TokenHandler handler, Client client) {
+            super(handler, client);
+        }
+
+        @Override
+        public void processImpl(Object token) throws IOException {
+            for (Client client : clients) {
+                client.write(token);
+                client.flush();
+            }
+        }
     }
 }

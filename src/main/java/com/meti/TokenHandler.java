@@ -8,5 +8,5 @@ package com.meti;
 interface TokenHandler {
     boolean canHandle(Object token);
 
-    Object handle(Object token);
+    void handle(Object token);
 }

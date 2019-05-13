@@ -3,31 +3,31 @@ package com.meti;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-class ServerHandler implements Callable<ServerHandler> {
+abstract class ServerHandler implements Callable<ServerHandler> {
     private final TokenHandler handler;
     private final Client client;
 
-    public ServerHandler(TokenHandler handler, Source source) throws IOException {
+    public ServerHandler(TokenHandler handler, Client client) {
         this.handler = handler;
-        this.client = new Client(source);
+        this.client = client;
     }
 
     @Override
     public ServerHandler call() throws Exception {
         while (client.isOpen()) {
             Object token = client.read();
-            Object toWrite = handle(token);
-            client.write(toWrite);
-            client.flush();
+            process(token);
         }
         return this;
     }
 
-    public Object handle(Object token) {
+    private void process(Object token) throws IOException {
         if (handler.canHandle(token)) {
-            return handler.handle(token);
-        } else {
-            return new IllegalArgumentException("Cannot handle " + token.toString());
+            handler.handle(token);
         }
+
+        processImpl(token);
     }
+
+    public abstract void processImpl(Object token) throws IOException;
 }

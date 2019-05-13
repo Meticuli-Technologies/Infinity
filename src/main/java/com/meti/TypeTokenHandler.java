@@ -18,9 +18,9 @@ abstract class TypeTokenHandler<T> implements TokenHandler {
     }
 
     @Override
-    public Object handle(Object token) {
-        return handleGeneric(clazz.cast(token));
+    public void handle(Object token) {
+        handleGeneric(clazz.cast(token));
     }
 
-    protected abstract boolean handleGeneric(T token);
+    protected abstract void handleGeneric(T token);
 }
