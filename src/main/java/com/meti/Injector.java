@@ -23,10 +23,10 @@ public class Injector extends FXMLLoader {
     }
 
     public static Scene loadAsScene(Source source, Object... injectableArray) throws IOException {
-        return new Scene(load(source, injectableArray));
+        return new Scene(loadStatic(source, injectableArray));
     }
 
-    public static <T> T load(Source source, Object... injectableArray) throws IOException {
+    public static <T> T loadStatic(Source source, Object... injectableArray) throws IOException {
         return new Injector(injectableArray).load(source);
     }
 

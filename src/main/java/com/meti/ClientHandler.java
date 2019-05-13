@@ -24,6 +24,10 @@ public class ClientHandler implements Callable<ClientHandler> {
         return null;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
     public ClientHandler listen(ExecutorServiceManager manager) {
         manager.submit(this);
         return this;

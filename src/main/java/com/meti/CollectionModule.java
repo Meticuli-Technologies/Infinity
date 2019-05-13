@@ -22,7 +22,7 @@ public class CollectionModule extends Module {
     public <T> Set<Class<?>> getImplementations(Class<T> tClass) {
         return classes
                 .stream()
-                .filter(aClass -> aClass.isAssignableFrom(tClass))
+                .filter(tClass::isAssignableFrom)
                 .collect(Collectors.toSet());
     }
 }

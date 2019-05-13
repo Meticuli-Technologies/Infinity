@@ -52,10 +52,10 @@ public class Menu {
             serverStage.show();
 
             Client client = constructClient(supplier.getLocalPort());
-            buildClientHandler(client);
+            InfinityClientTokenHandler handler = buildClientHandler(client);
 
             Stage clientStage = stageManager.getStage(1);
-            clientStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ClientDisplay.fxml")));
+            clientStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ClientDisplay.fxml"), logger, stageManager, moduleManager, client, handler));
             clientStage.show();
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage());
@@ -84,8 +84,10 @@ public class Menu {
         return client;
     }
 
-    private void buildClientHandler(Client client) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        new ClientHandler(client, new InfinityClientTokenHandler(moduleManager.constructInstances(ClientComponent.class))).listen(executorServiceManager);
+    private InfinityClientTokenHandler buildClientHandler(Client client) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        InfinityClientTokenHandler subHandler = new InfinityClientTokenHandler(moduleManager.constructInstances(ClientComponent.class));
+        new ClientHandler(client, subHandler).listen(executorServiceManager);
+        return subHandler;
     }
 
     public void setOnClientConstructed(Consumer<Client> onClientConstructed) {
