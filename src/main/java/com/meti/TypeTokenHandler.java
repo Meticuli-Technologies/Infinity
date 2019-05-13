@@ -8,7 +8,7 @@ package com.meti;
 abstract class TypeTokenHandler<T> implements TokenHandler {
     private final Class<T> clazz;
 
-    private TypeTokenHandler(Class<T> clazz) {
+    protected TypeTokenHandler(Class<T> clazz) {
         this.clazz = clazz;
     }
 
