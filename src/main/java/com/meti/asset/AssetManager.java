@@ -15,17 +15,27 @@ public class AssetManager {
 
     public void load(Source source) throws IOException {
         if (source instanceof SuperSource) {
-            SuperSource superSource = (SuperSource) source;
-            for (Source subSource : superSource.getSubSources()) {
-                load(subSource);
-            }
+            loadSuperSource((SuperSource) source);
         }
+        loadFromBuilders(source);
+    }
 
+    private void loadFromBuilders(Source source) throws IOException {
         for (AssetBuilder<?> builder : builders) {
             if (builder.canBuild(source)) {
-                Asset asset = builder.build(source);
-                assetMap.put(asset.getName(), asset);
+                useBuilder(source, builder);
             }
+        }
+    }
+
+    private void useBuilder(Source source, AssetBuilder<?> builder) throws IOException {
+        Asset asset = builder.build(source);
+        assetMap.put(asset.getName(), asset);
+    }
+
+    private void loadSuperSource(SuperSource source) throws IOException {
+        for (Source subSource : source.getSubSources()) {
+            load(subSource);
         }
     }
 }
