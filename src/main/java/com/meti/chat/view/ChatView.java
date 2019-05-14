@@ -1,10 +1,7 @@
 package com.meti.chat.view;
 
 import com.meti.chat.ChatMessage;
-import com.meti.handle.TypeTokenHandler;
 import com.meti.net.client.Client;
-import com.meti.net.client.InfinityClientTokenHandler;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -21,32 +18,29 @@ public class ChatView {
     @FXML
     private TextField input;
 
-    public ChatView(Logger logger, Client client, InfinityClientTokenHandler handler) {
+    public ChatView(Logger logger, Client client, ChatMessageHandler handler) {
         this.logger = logger;
         this.client = client;
-        handler.addHandler(new ChatMessageHandler());
+        handler.setOutput(output);
     }
 
     @FXML
     public void send() {
         ChatMessage message = new ChatMessage(input.getText());
-        try {
-            client.write(message);
-            client.flush();
-        } catch (IOException e) {
-            logger.log(Level.WARNING, e.getMessage());
-        }
+        tryWriteMessage(message);
         input.clear();
     }
 
-    private class ChatMessageHandler extends TypeTokenHandler<ChatMessage> {
-        public ChatMessageHandler() {
-            super(ChatMessage.class);
+    private void tryWriteMessage(ChatMessage message) {
+        try {
+            writeImpl(message);
+        } catch (IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
         }
+    }
 
-        @Override
-        protected void handleGeneric(ChatMessage token) {
-            Platform.runLater(() -> output.getItems().add(token.getValue()));
-        }
+    private void writeImpl(ChatMessage message) throws IOException {
+        client.write(message);
+        client.flush();
     }
 }

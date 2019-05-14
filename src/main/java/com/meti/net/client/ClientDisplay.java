@@ -1,8 +1,8 @@
 package com.meti.net.client;
 
+import com.meti.fx.StageManager;
 import com.meti.module.InfinityModuleManager;
 import com.meti.module.ModuleManager;
-import com.meti.fx.StageManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,8 +43,9 @@ public class ClientDisplay implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            models.putAll(moduleManager.constructInstances(ClientViewModel.class, logger, client, handler)
+            models.putAll(moduleManager.constructInstances(ClientViewModel.class, logger, client)
                     .stream()
+                    .peek(clientViewModel -> handler.addHandlers(clientViewModel.getHandlers()))
                     .collect(Collectors.toMap(ClientViewModel::getName, Function.identity())));
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.toString());
