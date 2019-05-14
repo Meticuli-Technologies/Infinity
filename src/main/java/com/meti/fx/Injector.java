@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -51,12 +50,26 @@ public class Injector extends FXMLLoader {
             }
         }
 
+        private String buildConstructorString(Constructor<?> constructor) {
+            return "Name: " + constructor.getName() + "\nParameters:\n\t" +
+                    Arrays.stream(constructor.getParameters())
+                            .map(Parameter::getType)
+                            .map(Class::getSimpleName)
+                            .collect(Collectors.joining("\n\t"));
+        }
+
         private Object construct(Class<?> instantiatee) {
             Map<List<Class<?>>, Constructor<?>> constructorMap = buildConstructorMap(instantiatee);
             List<Constructor<?>> validConstructors = findValidConstructors(constructorMap);
-            if (validConstructors.isEmpty()) throw new IllegalStateException("No valid constructors found.");
-            if (validConstructors.size() > 1) throw new IllegalStateException("Too many valid constructors.");
+            if (validConstructors.isEmpty())
+                throw new IllegalStateException("No valid constructors found, these constructors were found:\n" + buildConstructorsString(constructorMap.values()));
+            if (validConstructors.size() > 1)
+                throw new IllegalStateException("Too many valid constructors:\n" + buildConstructorsString(validConstructors));
             return validConstructors.get(0);
+        }
+
+        private String buildConstructorsString(Collection<Constructor<?>> values) {
+            return values.stream().map(this::buildConstructorString).collect(Collectors.joining("\n"));
         }
 
         private Map<List<Class<?>>, Constructor<?>> buildConstructorMap(Class<?> instantiatee) {

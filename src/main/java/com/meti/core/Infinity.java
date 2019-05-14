@@ -3,6 +3,7 @@ package com.meti.core;
 import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.fx.StageManager;
 import com.meti.module.InfinityModuleManager;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.Closeable;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.meti.util.ExceptionUtil.stackTraceString;
 
 class Infinity {
     private final ExecutorServiceManager executorServiceManager = new ExecutorServiceManager(Executors.newCachedThreadPool());
@@ -45,7 +48,8 @@ class Infinity {
         try {
             infinityStarter.startImpl(primaryStage);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to start Infinity: " + e);
+            logger.log(Level.SEVERE, "Failed to start Infinity: " + stackTraceString(e));
+            Platform.exit();
         }
     }
 
