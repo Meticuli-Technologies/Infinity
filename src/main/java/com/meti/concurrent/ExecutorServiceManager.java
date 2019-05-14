@@ -22,18 +22,13 @@ public class ExecutorServiceManager {
 
     public Map<Future<?>, Object> finalizeFutures() {
         Map<Future<?>, Object> map = new HashMap<>();
-        for (Future<?> future : futures) {
-            finalizeFuture(map, future);
-        }
+        for (Future<?> future : futures) finalizeFuture(map, future);
         return map;
     }
 
     private void finalizeFuture(Map<Future<?>, Object> map, Future<?> future) {
-        if (future.isDone()) {
-            map.put(future, computeResult(future));
-        } else {
-            future.cancel(true);
-        }
+        if (future.isDone()) map.put(future, computeResult(future));
+        else future.cancel(true);
     }
 
     private Object computeResult(Future<?> future) {
@@ -52,9 +47,7 @@ public class ExecutorServiceManager {
     private void terminate(Duration terminationTimeout) throws InterruptedException, TimeoutException {
         if (!service.isTerminated()) {
             boolean timeElapsed = service.awaitTermination(terminationTimeout.toMillis(), TimeUnit.MILLISECONDS);
-            if (!timeElapsed) {
-                throw new TimeoutException("Termination timeout was exceeded.");
-            }
+            if (!timeElapsed) throw new TimeoutException("Termination timeout was exceeded.");
         }
     }
 
