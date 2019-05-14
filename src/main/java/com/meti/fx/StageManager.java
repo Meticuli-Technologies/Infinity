@@ -28,11 +28,8 @@ public class StageManager {
     }
 
     public Stage getStage(int index) {
-        if (containsStageIndex(index)) {
-            return stages.get(index);
-        } else {
-            allocate();
-            return getStage(index);
-        }
+        if (containsStageIndex(index)) return stages.get(index);
+        allocate();
+        return getStage(index);
     }
 }
