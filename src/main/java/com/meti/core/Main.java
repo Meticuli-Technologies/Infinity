@@ -49,8 +49,8 @@ public class Main extends Application {
             stage.show();
 
             Menu menu = injector.getController();
-            menu.setOnServerConstructed(closeables::add);
-            menu.setOnClientConstructed(closeables::add);
+            menu.getServerLoader().setOnConstructed(closeables::add);
+            menu.getClientLoader().setOnConstructed(closeables::add);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to start Infinity: " + e);
         }
