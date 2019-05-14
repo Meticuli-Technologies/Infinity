@@ -23,24 +23,33 @@ public class ExecutorServiceManager {
     public Map<Future<?>, Object> finalizeFutures() {
         Map<Future<?>, Object> map = new HashMap<>();
         for (Future<?> future : futures) {
-            if (future.isDone()) {
-                try {
-                    map.put(future, future.get());
-                } catch (Exception e) {
-                    map.put(future, e);
-                }
-            } else {
-                future.cancel(true);
-            }
+            finalizeFuture(map, future);
         }
         return map;
     }
 
-    public void stop(Duration terminationTimeout) throws InterruptedException, TimeoutException {
-        if (!service.isShutdown()) {
-            service.shutdown();
+    private void finalizeFuture(Map<Future<?>, Object> map, Future<?> future) {
+        if (future.isDone()) {
+            map.put(future, computeResult(future));
+        } else {
+            future.cancel(true);
         }
+    }
 
+    private Object computeResult(Future<?> future) {
+        try {
+            return future.get();
+        } catch (Exception e) {
+            return e;
+        }
+    }
+
+    public void stop(Duration terminationTimeout) throws InterruptedException, TimeoutException {
+        if (!service.isShutdown()) service.shutdown();
+        terminate(terminationTimeout);
+    }
+
+    private void terminate(Duration terminationTimeout) throws InterruptedException, TimeoutException {
         if (!service.isTerminated()) {
             boolean timeElapsed = service.awaitTermination(terminationTimeout.toMillis(), TimeUnit.MILLISECONDS);
             if (!timeElapsed) {
