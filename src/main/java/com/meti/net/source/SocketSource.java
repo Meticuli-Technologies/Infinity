@@ -9,7 +9,7 @@ import java.net.Socket;
 public class SocketSource implements Source {
     private final Socket socket;
 
-    public SocketSource(Socket socket) {
+       public SocketSource(Socket socket) {
         this.socket = socket;
     }
 
@@ -43,9 +43,5 @@ public class SocketSource implements Source {
     @Override
     public boolean isClosed() {
         return socket.isClosed();
-    }
-
-    public int getPort() {
-        return socket.getPort();
     }
 }
