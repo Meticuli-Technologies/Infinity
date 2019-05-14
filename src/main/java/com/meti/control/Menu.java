@@ -3,6 +3,7 @@ package com.meti.control;
 import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.fx.StageManager;
 import com.meti.module.InfinityModuleManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.util.logging.Level;
@@ -14,7 +15,6 @@ import java.util.logging.Logger;
  * @since 5/7/2019
  */
 public class Menu extends InfinityController {
-
     private final ClientLoader clientLoader = new ClientLoader();
     private final ServerLoader serverLoader = new ServerLoader();
     private final MenuModel menuModel = new MenuModel(this);
@@ -24,7 +24,7 @@ public class Menu extends InfinityController {
     }
 
     @FXML
-    public void connect() {
+    public void connect(ActionEvent event) {
     }
 
     public ClientLoader getClientLoader() {

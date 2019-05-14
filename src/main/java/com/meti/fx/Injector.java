@@ -97,14 +97,14 @@ public class Injector extends FXMLLoader {
         private boolean areInstances(List<Class<?>> checked, List<Class<?>> checking) {
             if (checked.size() != checking.size()) {
                 return false;
-            } else return IntStream.range(0, checked.size()).noneMatch(checkedIndex -> isInstance(
+            } else return IntStream.range(0, checked.size()).allMatch(checkedIndex -> isInstance(
                     checked.get(checkedIndex),
                     checking.get(checkedIndex)
             ));
         }
 
-        private boolean isInstance(Class<?> classChecked, Class<?> classToCheck) {
-            return !classChecked.isInstance(classToCheck);
+        private boolean isInstance(Class<?> checked, Class<?> checking) {
+            return checked.isAssignableFrom(checking);
         }
     }
 }

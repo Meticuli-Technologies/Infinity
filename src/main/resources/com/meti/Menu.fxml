@@ -7,7 +7,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.control.Menu">
    <children>
       <GridPane layoutX="39.0" layoutY="192.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -22,8 +21,8 @@
         </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Infinity" GridPane.halignment="CENTER" />
-            <Button minWidth="200.0" mnemonicParsing="false" onAction="#connect" text="Connect to a Server" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button minWidth="200.0" mnemonicParsing="false" onAction="#host" text="Host a Server" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button minWidth="200.0" mnemonicParsing="false" text="Connect to a Server" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button minWidth="200.0" mnemonicParsing="false" text="Host a Server" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Button minWidth="200.0" mnemonicParsing="false" onAction="#local" text="Host a Local Server" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
          </children>
       </GridPane>
