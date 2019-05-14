@@ -42,12 +42,4 @@ public class ModuleManager {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
     }
-
-    public Set<Class<?>> getAllClasses() {
-        return modules.stream()
-                .map(Module::getClasses)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-    }
-
 }
