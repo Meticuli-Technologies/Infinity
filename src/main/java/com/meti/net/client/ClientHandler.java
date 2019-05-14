@@ -16,23 +16,20 @@ public class ClientHandler implements Callable<ClientHandler> {
 
     @Override
     public ClientHandler call() throws Exception {
-        while (client.isOpen()) {
-            Object token = client.read();
-            if (handler.canHandle(token)) {
-                handler.handle(token);
-            } else {
-                throw new IllegalStateException("Unknown token: " + token.toString());
-            }
-        }
+        while (client.isOpen()) process(client.read());
         return null;
+    }
+
+    private void process(Object token) {
+        if (handler.canHandle(token)) handler.handle(token);
+        else throw new IllegalStateException("Unknown token: " + token.toString());
     }
 
     public Client getClient() {
         return client;
     }
 
-    public ClientHandler listen(ExecutorServiceManager manager) {
+    public void listen(ExecutorServiceManager manager) {
         manager.submit(this);
-        return this;
     }
 }
