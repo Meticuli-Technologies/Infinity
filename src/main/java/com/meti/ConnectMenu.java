@@ -1,11 +1,9 @@
 package com.meti;
 
-import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.control.ClientLoader;
 import com.meti.control.InfinityController;
+import com.meti.core.InfinitySystem;
 import com.meti.fx.Injector;
-import com.meti.fx.StageManager;
-import com.meti.module.InfinityModuleManager;
 import com.meti.net.source.URLSource;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -15,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static com.meti.util.ExceptionUtil.stackTraceString;
 
@@ -26,19 +23,19 @@ public class ConnectMenu extends InfinityController {
     @FXML
     private TextField portField;
 
-    public ConnectMenu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager, ClientLoader loader) {
-        super(logger, executorServiceManager, stageManager, moduleManager);
+    public ConnectMenu(InfinitySystem system, ClientLoader loader) {
+        super(system);
         this.loader = loader;
     }
 
     @FXML
     public void back() {
         try {
-            Stage stage = stageManager.getStage(0);
-            stage.setScene(new Scene(new Injector(URLSource.of("/com/meti/Menu.fxml"), logger, executorServiceManager, stageManager, moduleManager).load()));
+            Stage stage = system.getStageManager().allocate();
+            stage.setScene(new Scene(new Injector(URLSource.of("/com/meti/Menu.fxml"), system).load()));
             stage.show();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, stackTraceString(e));
+            system.getLogger().log(Level.SEVERE, stackTraceString(e));
         }
     }
 
@@ -46,9 +43,9 @@ public class ConnectMenu extends InfinityController {
     public void next() {
         try {
             int port = Integer.parseInt(portField.getText());
-            loader.loadClient(port, InetAddress.getByName(address.getText()), logger, executorServiceManager, stageManager, moduleManager, stageManager.allocate());
+            loader.loadClient(port, InetAddress.getByName(address.getText()), system, system.getStageManager().allocate());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, stackTraceString(e));
+            system.getLogger().log(Level.SEVERE, stackTraceString(e));
         }
     }
 }

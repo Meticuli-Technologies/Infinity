@@ -1,6 +1,7 @@
 package com.meti.control;
 
 import com.meti.concurrent.ExecutorServiceManager;
+import com.meti.core.InfinitySystem;
 import com.meti.fx.Injector;
 import com.meti.fx.StageManager;
 import com.meti.module.ModuleManager;
@@ -23,10 +24,10 @@ import java.util.logging.Logger;
 public class ClientLoader implements Constructable<Client> {
     private Consumer<Client> onClientConstructed;
 
-    public void loadClient(int port, InetAddress address, Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, ModuleManager moduleManager, Stage stage) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void loadClient(int port, InetAddress address, InfinitySystem system, Stage stage) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Client client = construct(port, address);
-        InfinityClientTokenHandler handler = buildClientHandler(client, moduleManager, executorServiceManager);
-        loadClientDisplay(stageManager, logger, executorServiceManager, moduleManager, client, handler, stage);
+        InfinityClientTokenHandler handler = buildClientHandler(client, system.getModuleManager(), system.getExecutorServiceManager());
+        loadClientDisplay(system, client, handler, stage);
     }
 
     private Client construct(int localPort, InetAddress address) throws IOException {
@@ -41,8 +42,8 @@ public class ClientLoader implements Constructable<Client> {
         return subHandler;
     }
 
-    private void loadClientDisplay(StageManager stageManager, Logger logger, ExecutorServiceManager executorServiceManager, ModuleManager moduleManager, Client client, InfinityClientTokenHandler handler, Stage stage) throws IOException {
-        stage.setScene(new Scene(new Injector((URLSource.of("/com/meti/ClientDisplay.fxml")), logger, executorServiceManager, stageManager, moduleManager, client, handler).load()));
+    private void loadClientDisplay(InfinitySystem system, Client client, InfinityClientTokenHandler handler, Stage stage) throws IOException {
+        stage.setScene(new Scene(new Injector((URLSource.of("/com/meti/ClientDisplay.fxml")), system, client, handler).load()));
         stage.show();
     }
 

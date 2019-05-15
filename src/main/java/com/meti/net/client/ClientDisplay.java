@@ -1,9 +1,7 @@
 package com.meti.net.client;
 
-import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.control.InfinityController;
-import com.meti.fx.StageManager;
-import com.meti.module.InfinityModuleManager;
+import com.meti.core.InfinitySystem;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,7 +18,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ClientDisplay extends InfinityController implements Initializable {
@@ -31,8 +28,8 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     private ListView<String> viewList;
 
-    public ClientDisplay(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager, Client client, InfinityClientTokenHandler handler) {
-        super(logger, executorServiceManager, stageManager, moduleManager);
+    public ClientDisplay(InfinitySystem system, Client client, InfinityClientTokenHandler handler) {
+        super(system);
         this.client = client;
         this.handler = handler;
     }
@@ -42,12 +39,12 @@ public class ClientDisplay extends InfinityController implements Initializable {
         try {
             initModels();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e.toString());
+            system.getLogger().log(Level.SEVERE, e.toString());
         }
     }
 
     private void initModels() throws NoSuchMethodException, IllegalAccessException, java.lang.reflect.InvocationTargetException, InstantiationException {
-        models.putAll(moduleManager.constructInstances(ClientViewModel.class, logger, client)
+        models.putAll(system.getModuleManager().constructInstances(ClientViewModel.class, system.getLogger(), client)
                 .stream()
                 .peek(clientViewModel -> handler.addHandlers(clientViewModel.getHandlers()))
                 .collect(Collectors.toMap(ClientViewModel::getName, Function.identity())));
@@ -65,12 +62,12 @@ public class ClientDisplay extends InfinityController implements Initializable {
         try {
             openRoot(model.getRoot());
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            system.getLogger().log(Level.SEVERE, e.getMessage());
         }
     }
 
     private void openRoot(Parent root) {
-        Stage nextStage = stageManager.allocate();
+        Stage nextStage = system.getStageManager().allocate();
         nextStage.setScene(new Scene(root));
         nextStage.show();
     }
