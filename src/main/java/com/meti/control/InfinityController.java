@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class InfinityController {
     protected final Logger logger;
-    private final ExecutorServiceManager executorServiceManager;
+    protected final ExecutorServiceManager executorServiceManager;
     protected final StageManager stageManager;
     protected final ModuleManager moduleManager;
 
