@@ -2,6 +2,7 @@ package com.meti.core;
 
 import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.fx.StageManager;
+import com.meti.module.InfinityModuleManager;
 import com.meti.module.ModuleManager;
 
 import java.util.concurrent.ExecutorService;
@@ -9,7 +10,7 @@ import java.util.logging.Logger;
 
 public class InfinitySystem {
     private final StageManager stageManager = new StageManager();
-    private final ModuleManager moduleManager = new ModuleManager();
+    private final ModuleManager moduleManager = new InfinityModuleManager();
     private final ExecutorServiceManager executorServiceManager;
     private final Logger logger;
 
