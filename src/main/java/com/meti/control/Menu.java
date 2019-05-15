@@ -32,6 +32,11 @@ public class Menu extends InfinityController {
     }
 
     @FXML
+    public void connect(){
+
+    }
+
+    @FXML
     public void local() {
         try {
             menuModel.loadClient(menuModel.loadServer());
