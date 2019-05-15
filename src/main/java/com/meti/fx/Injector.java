@@ -33,7 +33,7 @@ public class Injector extends FXMLLoader {
             return "Name: " + constructor.getName() + "\nParameters:\n\t" +
                     Arrays.stream(constructor.getParameters())
                             .map(Parameter::getType)
-                            .map(Class::getSimpleName)
+                            .map(Class::toString)
                             .collect(Collectors.joining("\n\t"));
         }
 

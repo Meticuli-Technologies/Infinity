@@ -23,14 +23,14 @@ import java.util.logging.Logger;
 public class ClientLoader implements Constructable<Client> {
     private Consumer<Client> onClientConstructed;
 
-    void loadClient(int port, ModuleManager moduleManager, ExecutorServiceManager executorServiceManager, StageManager stageManager, Logger logger, Stage stage) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Client client = construct(port);
+    public void loadClient(int port, InetAddress address, Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, ModuleManager moduleManager, Stage stage) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Client client = construct(port, address);
         InfinityClientTokenHandler handler = buildClientHandler(client, moduleManager, executorServiceManager);
         loadClientDisplay(stageManager, logger, executorServiceManager, moduleManager, client, handler, stage);
     }
 
-    private Client construct(int localPort) throws IOException {
-        Client client = new Client(new SocketSource(InetAddress.getByName("localhost"), localPort));
+    private Client construct(int localPort, InetAddress address) throws IOException {
+        Client client = new Client(new SocketSource(address, localPort));
         Objects.requireNonNull(onClientConstructed).accept(client);
         return client;
     }

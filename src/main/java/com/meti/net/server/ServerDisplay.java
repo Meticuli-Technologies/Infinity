@@ -1,6 +1,7 @@
 package com.meti.net.server;
 
 import com.meti.net.source.SocketSourceSupplier;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -23,7 +24,7 @@ public class ServerDisplay implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        supplier.setOnAccept(socketSource -> clientListView.getItems().add(socketSource.getInetAddress().toString()));
+        supplier.setOnAccept(socketSource -> Platform.runLater(() -> clientListView.getItems().add(socketSource.getInetAddress().toString())));
         portText.setText(String.valueOf(supplier.getLocalPort()));
     }
 }

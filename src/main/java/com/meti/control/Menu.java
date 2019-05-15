@@ -32,7 +32,7 @@ public class Menu extends InfinityController {
     public void connect() {
         try {
             Stage stage = stageManager.getStage(0);
-            stage.setScene(new Scene(new Injector(URLSource.of("/com/meti/ConnectMenu.fxml"), logger, executorServiceManager, stageManager, moduleManager).load()));
+            stage.setScene(new Scene(new Injector(URLSource.of("/com/meti/ConnectMenu.fxml"),logger, executorServiceManager, stageManager, moduleManager, menuModel.getClientLoader()).load()));
             stage.show();
         } catch (IOException e) {
             logger.log(Level.SEVERE, stackTraceString(e));

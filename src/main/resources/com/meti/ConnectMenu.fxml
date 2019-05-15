@@ -36,7 +36,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IP Address:" GridPane.halignment="CENTER" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <TextField fx:id="address" GridPane.columnIndex="1" />
-                  <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="portField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Button mnemonicParsing="false" onAction="#back" text="Back" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                   <Button mnemonicParsing="false" onAction="#next" text="Next" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                </children>

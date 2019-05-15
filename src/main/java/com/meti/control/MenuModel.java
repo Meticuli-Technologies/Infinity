@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.InetAddress;
 import java.util.logging.Logger;
 
 public class MenuModel {
@@ -38,7 +39,7 @@ public class MenuModel {
     }
 
     void loadClient(int port) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        clientLoader.loadClient(port, moduleManager, executorServiceManager, stageManager, logger, stageManager.allocate());
+        clientLoader.loadClient(port, InetAddress.getByName("localhost"), logger, executorServiceManager, stageManager, moduleManager, stageManager.allocate());
     }
 
     int loadServer() throws IOException {
