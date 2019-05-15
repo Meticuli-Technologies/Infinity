@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class CollectionModule extends Module {
     private final Set<Class<?>> classes = new HashSet<>();
 
-    public CollectionModule(String name, Class<?>... classes) {
+    protected CollectionModule(String name, Class<?>... classes) {
         super(name);
         this.classes.addAll(Arrays.asList(classes));
     }

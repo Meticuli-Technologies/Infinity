@@ -4,9 +4,9 @@ import com.meti.asset.Asset;
 
 import java.util.Set;
 
-public abstract class Module extends Asset {
+abstract class Module extends Asset {
 
-    public Module(String name) {
+    Module(String name) {
         super(name);
     }
 

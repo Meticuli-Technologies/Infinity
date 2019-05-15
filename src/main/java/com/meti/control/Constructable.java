@@ -7,6 +7,6 @@ import java.util.function.Consumer;
  * @version 0.0.0
  * @since 5/14/2019
  */
-public interface Constructable<T> {
+interface Constructable<T> {
     void setOnConstructed(Consumer<T> consumer);
 }

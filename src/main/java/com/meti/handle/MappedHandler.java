@@ -6,13 +6,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MappedHandler implements TokenHandler {
-    public final Set<TokenHandler> handlers = new HashSet<>();
+    protected final Set<TokenHandler> handlers = new HashSet<>();
 
-    public MappedHandler(TokenHandler... initial) {
+    protected MappedHandler(TokenHandler... initial) {
         handlers.addAll(Arrays.asList(initial));
     }
 
-    public void addHandler(TokenHandler handler) {
+    private void addHandler(TokenHandler handler) {
         handlers.add(handler);
     }
 

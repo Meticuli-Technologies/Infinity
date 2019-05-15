@@ -1,5 +1,7 @@
 package com.meti.handle;
 
+import com.meti.chat.ChatMessage;
+
 /**
  * @author SirMathhman
  * @version 0.0.0

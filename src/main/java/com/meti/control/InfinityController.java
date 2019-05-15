@@ -14,11 +14,11 @@ import java.util.logging.Logger;
  */
 public class InfinityController {
     protected final Logger logger;
-    protected final ExecutorServiceManager executorServiceManager;
+    private final ExecutorServiceManager executorServiceManager;
     protected final StageManager stageManager;
     protected final ModuleManager moduleManager;
 
-    public InfinityController(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
+    protected InfinityController(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
         this.logger = logger;
         this.executorServiceManager = executorServiceManager;
         this.stageManager = stageManager;

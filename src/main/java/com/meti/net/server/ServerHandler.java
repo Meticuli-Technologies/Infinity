@@ -10,7 +10,7 @@ abstract class ServerHandler implements Callable<ServerHandler> {
     private final TokenHandler handler;
     private final Client client;
 
-    public ServerHandler(TokenHandler handler, Client client) {
+    ServerHandler(TokenHandler handler, Client client) {
         this.handler = handler;
         this.client = client;
     }
@@ -32,5 +32,5 @@ abstract class ServerHandler implements Callable<ServerHandler> {
         processImpl(token);
     }
 
-    public abstract void processImpl(Object token) throws IOException;
+    protected abstract void processImpl(Object token) throws IOException;
 }

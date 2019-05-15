@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 
-public class InfinityStopper {
+class InfinityStopper {
     private final Infinity infinity;
 
     public InfinityStopper(Infinity infinity) {
@@ -20,14 +20,14 @@ public class InfinityStopper {
         terminate();
     }
 
-    void close() {
+    private void close() {
         infinity.getLogger().log(Level.INFO, "Closing closeables.");
         for (Closeable closeable : infinity.getCloseables()) {
             closeImpl(closeable);
         }
     }
 
-    void terminate() {
+    private void terminate() {
         try {
             terminateImpl();
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class InfinityStopper {
         }
     }
 
-    void closeImpl(Closeable closeable) {
+    private void closeImpl(Closeable closeable) {
         try {
             closeable.close();
         } catch (IOException e) {
@@ -43,14 +43,14 @@ public class InfinityStopper {
         }
     }
 
-    void terminateImpl() throws InterruptedException, TimeoutException {
+    private void terminateImpl() throws InterruptedException, TimeoutException {
         infinity.getLogger().log(Level.INFO, "Finalizing futures.");
         logFutures(infinity.getExecutorServiceManager().finalizeFutures());
         infinity.getLogger().log(Level.INFO, "Stopping executor service.");
         infinity.getExecutorServiceManager().stop(Duration.ofSeconds(1));
     }
 
-    void logFutures(Map<Future<?>, Object> futureMap) {
+    private void logFutures(Map<Future<?>, Object> futureMap) {
         futureMap.values()
                 .stream()
                 .filter(o -> o instanceof Throwable)

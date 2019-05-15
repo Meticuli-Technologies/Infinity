@@ -9,7 +9,7 @@ import java.util.Objects;
 public class URLSource implements Source {
     private final URL url;
 
-    public URLSource(URL url) {
+    private URLSource(URL url) {
         Objects.requireNonNull(url);
         this.url = url;
     }
@@ -18,7 +18,7 @@ public class URLSource implements Source {
         return of(URLSource.class, resourcePath);
     }
 
-    public static URLSource of(Class<URLSource> clazz, String resourcePath) {
+    private static URLSource of(Class<URLSource> clazz, String resourcePath) {
         URL url = clazz.getResource(resourcePath);
         if (url == null) {
             throw new IllegalArgumentException("Could not find resource at path: " + resourcePath);

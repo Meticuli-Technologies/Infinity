@@ -12,11 +12,11 @@ public class SocketSourceSupplier implements SourceSupplier {
         this(0);
     }
 
-    public SocketSourceSupplier(int port) throws IOException {
+    private SocketSourceSupplier(int port) throws IOException {
         this(new ServerSocket(port));
     }
 
-    public SocketSourceSupplier(ServerSocket serverSocket) {
+    private SocketSourceSupplier(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 

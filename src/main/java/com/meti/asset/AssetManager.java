@@ -9,11 +9,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class AssetManager {
+class AssetManager {
     private final Map<String, Asset> assetMap = new HashMap<>();
     private final Set<AssetBuilder<?>> builders = new HashSet<>();
 
-    public void load(Source source) throws IOException {
+    private void load(Source source) throws IOException {
         if (source instanceof SuperSource) {
             loadSuperSource((SuperSource) source);
         }

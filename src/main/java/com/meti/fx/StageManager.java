@@ -8,9 +8,8 @@ import java.util.List;
 public class StageManager {
     private final List<Stage> stages = new ArrayList<>();
 
-    public Stage addStage(Stage stage) {
+    public void addStage(Stage stage) {
         this.stages.add(stage);
-        return stage;
     }
 
     public Stage allocate() {

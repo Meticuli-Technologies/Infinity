@@ -3,7 +3,7 @@ package com.meti.chat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Chat {
+class Chat {
     private final ObservableList<ChatMessage> messages = FXCollections.observableArrayList();
 
     public void log(ChatMessage token) {

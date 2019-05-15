@@ -21,9 +21,7 @@ class ChatMessageHandler extends TypeTokenHandler<ChatMessage> {
     @Override
     protected void handleGeneric(ChatMessage token) {
         if (messageConsumer != null) {
-            Platform.runLater(() -> {
-                messageConsumer.accept(token);
-            });
+            Platform.runLater(() -> messageConsumer.accept(token));
         } else {
             throw new IllegalStateException("Message consumer has not been set!");
         }

@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class InfinityStarter {
+class InfinityStarter {
     private final Infinity infinity;
 
     public InfinityStarter(Infinity infinity) {

@@ -10,9 +10,8 @@ import java.util.stream.Collectors;
 public class ModuleManager {
     private final Set<Module> modules = new HashSet<>();
 
-    public ModuleManager addModule(Module module) {
+    void addModule(Module module) {
         modules.add(module);
-        return this;
     }
 
     public <T> Set<T> constructInstances(Class<T> tClass, Object... parameters) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -36,7 +35,7 @@ public class ModuleManager {
                 .toArray(Class[]::new);
     }
 
-    public Set<Class<?>> getImplementations(Class<?> tClass) {
+    private Set<Class<?>> getImplementations(Class<?> tClass) {
         return modules.stream()
                 .map(module -> module.getImplementations(tClass))
                 .flatMap(Collection::stream)

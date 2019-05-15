@@ -51,9 +51,8 @@ public class ExecutorServiceManager {
         }
     }
 
-    public ExecutorServiceManager submit(Callable<?> callable) {
+    public void submit(Callable<?> callable) {
         Future<?> future = service.submit(callable);
         futures.add(future);
-        return this;
     }
 }
