@@ -24,8 +24,8 @@ class InfinityStarter {
     }
 
     private void setConsumers(Menu menu) {
-        menu.getServerLoader().setOnConstructed(infinity.getCloseables()::add);
-        menu.getClientLoader().setOnConstructed(infinity.getCloseables()::add);
+        menu.getModel().getServerLoader().setOnConstructed(infinity.getCloseables()::add);
+        menu.getModel().getClientLoader().setOnConstructed(infinity.getCloseables()::add);
     }
 
     private Menu initMenu() throws IOException {

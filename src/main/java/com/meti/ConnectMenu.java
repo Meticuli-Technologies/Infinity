@@ -6,7 +6,6 @@ import com.meti.fx.Injector;
 import com.meti.fx.StageManager;
 import com.meti.module.InfinityModuleManager;
 import com.meti.net.source.URLSource;
-import com.meti.util.ExceptionUtil;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -16,7 +15,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.meti.util.ExceptionUtil.*;
+import static com.meti.util.ExceptionUtil.stackTraceString;
 
 public class ConnectMenu extends InfinityController {
     @FXML
@@ -25,7 +24,7 @@ public class ConnectMenu extends InfinityController {
     @FXML
     private TextField port;
 
-    protected ConnectMenu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
+    public ConnectMenu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
         super(logger, executorServiceManager, stageManager, moduleManager);
     }
 

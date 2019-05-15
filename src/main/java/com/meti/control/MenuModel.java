@@ -2,11 +2,8 @@ package com.meti.control;
 
 import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.fx.Injector;
-import com.meti.module.ModuleManager;
-import com.meti.net.client.Client;
-import com.meti.net.client.ClientComponent;
-import com.meti.net.client.ClientHandler;
-import com.meti.net.client.InfinityClientTokenHandler;
+import com.meti.fx.StageManager;
+import com.meti.module.InfinityModuleManager;
 import com.meti.net.source.SocketSourceSupplier;
 import com.meti.net.source.URLSource;
 import javafx.scene.Scene;
@@ -14,41 +11,45 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
-class MenuModel {
-    private final Menu menu;
+public class MenuModel {
+    private final ClientLoader clientLoader = new ClientLoader();
+    private final ServerLoader serverLoader = new ServerLoader();
 
-    MenuModel(Menu menu) {
-        this.menu = menu;
+    private final Logger logger;
+    private final ExecutorServiceManager executorServiceManager;
+    private final StageManager stageManager;
+    private final InfinityModuleManager moduleManager;
+
+    public MenuModel(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
+        this.logger = logger;
+        this.executorServiceManager = executorServiceManager;
+        this.stageManager = stageManager;
+        this.moduleManager = moduleManager;
+    }
+
+    public ClientLoader getClientLoader() {
+        return clientLoader;
+    }
+
+    public ServerLoader getServerLoader() {
+        return serverLoader;
     }
 
     void loadClient(int port) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Client client = menu.getClientLoader().construct(port);
-        InfinityClientTokenHandler handler = buildClientHandler(client, menu.getModuleManager(), menu.getExecutorServiceManager());
-        loadClientDisplay(client, handler);
-    }
-
-    private InfinityClientTokenHandler buildClientHandler(Client client, ModuleManager moduleManager, ExecutorServiceManager executorServiceManager) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        InfinityClientTokenHandler subHandler = new InfinityClientTokenHandler(moduleManager.constructInstances(ClientComponent.class));
-        new ClientHandler(client, subHandler).listen(executorServiceManager);
-        return subHandler;
-    }
-
-    private void loadClientDisplay(Client client, InfinityClientTokenHandler handler) throws IOException {
-        Stage clientStage = menu.getStageManager().getStage(1);
-        clientStage.setScene(new Scene(new Injector((URLSource.of("/com/meti/ClientDisplay.fxml")), menu.getLogger(), menu.getExecutorServiceManager(), menu.getStageManager(), menu.getModuleManager(), client, handler).load()));
-        clientStage.show();
+        clientLoader.loadClient(port, moduleManager, executorServiceManager, stageManager, logger, stageManager.allocate());
     }
 
     int loadServer() throws IOException {
         SocketSourceSupplier supplier = new SocketSourceSupplier();
-        menu.getServerLoader().construct(supplier, menu.getExecutorServiceManager());
+        serverLoader.construct(supplier, executorServiceManager);
         loadServerDisplay(supplier);
         return supplier.getLocalPort();
     }
 
     private void loadServerDisplay(SocketSourceSupplier supplier) throws IOException {
-        Stage serverStage = menu.getStageManager().getPrimaryStage();
+        Stage serverStage = stageManager.allocate();
         serverStage.setScene(new Scene(new Injector(URLSource.of("/com/meti/ServerDisplay.fxml"), supplier).load()));
         serverStage.show();
     }

@@ -31,4 +31,8 @@ public class StageManager {
         allocate();
         return getStage(index);
     }
+
+    public Stage lastStage() {
+        return getStage(stages.size() - 1);
+    }
 }

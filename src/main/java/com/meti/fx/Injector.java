@@ -42,7 +42,7 @@ public class Injector extends FXMLLoader {
             try {
                 return checkInstance(construct(instantiatee), instantiatee);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to instantiate " + instantiatee, e);
             }
         }
 
@@ -60,7 +60,7 @@ public class Injector extends FXMLLoader {
 
         private void checkValidConstructors(Map<List<Class<?>>, Constructor<?>> constructorMap, List<Constructor<?>> validConstructors) {
             if (validConstructors.isEmpty())
-                throw new IllegalStateException("No valid constructors found for parameters:\n" + injectableClasses().stream().map(Objects::toString).collect(Collectors.joining("\n\t")) +
+                throw new IllegalStateException("No valid constructors found for parameters:\n\t" + injectableClasses().stream().map(Objects::toString).collect(Collectors.joining("\n\t")) +
                         "\nThese constructors were found:\n" + buildConstructorsString(constructorMap.values()));
             if (validConstructors.size() > 1)
                 throw new IllegalStateException("Too many valid constructors:\n" + buildConstructorsString(validConstructors));

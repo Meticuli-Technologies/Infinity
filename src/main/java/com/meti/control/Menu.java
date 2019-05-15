@@ -5,7 +5,6 @@ import com.meti.fx.Injector;
 import com.meti.fx.StageManager;
 import com.meti.module.InfinityModuleManager;
 import com.meti.net.source.URLSource;
-import com.meti.util.ExceptionUtil;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.meti.util.ExceptionUtil.*;
+import static com.meti.util.ExceptionUtil.stackTraceString;
 
 /**
  * @author SirMathhman
@@ -22,12 +21,11 @@ import static com.meti.util.ExceptionUtil.*;
  * @since 5/7/2019
  */
 public class Menu extends InfinityController {
-    private final ClientLoader clientLoader = new ClientLoader();
-    private final ServerLoader serverLoader = new ServerLoader();
-    private final MenuModel menuModel = new MenuModel(this);
+    private final MenuModel menuModel;
 
     public Menu(Logger logger, ExecutorServiceManager executorServiceManager, StageManager stageManager, InfinityModuleManager moduleManager) {
         super(logger, executorServiceManager, stageManager, moduleManager);
+        menuModel = new MenuModel(logger, executorServiceManager, stageManager, moduleManager);
     }
 
     @FXML
@@ -41,12 +39,8 @@ public class Menu extends InfinityController {
         }
     }
 
-    public ClientLoader getClientLoader() {
-        return clientLoader;
-    }
-
-    public ServerLoader getServerLoader() {
-        return serverLoader;
+    public MenuModel getModel() {
+        return menuModel;
     }
 
     @FXML
