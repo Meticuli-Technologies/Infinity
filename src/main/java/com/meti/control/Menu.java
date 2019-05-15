@@ -3,6 +3,7 @@ package com.meti.control;
 import com.meti.concurrent.ExecutorServiceManager;
 import com.meti.fx.StageManager;
 import com.meti.module.InfinityModuleManager;
+import com.meti.util.ExceptionUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -44,7 +45,7 @@ public class Menu extends InfinityController {
         try {
             menuModel.loadClient(menuModel.loadServer());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, ExceptionUtil.stackTraceString(e));
         }
     }
 }

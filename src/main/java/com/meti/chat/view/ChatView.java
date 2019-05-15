@@ -7,6 +7,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,10 +19,13 @@ public class ChatView {
     @FXML
     private TextField input;
 
-    public ChatView(Logger logger, Client client, ChatMessageHandler handler) {
+    public ChatView(Logger logger, Client client) {
         this.logger = logger;
         this.client = client;
-        handler.setOutput(output);
+    }
+
+    public Consumer<ChatMessage> getMessageConsumer() {
+        return chatMessage -> output.getItems().add(chatMessage.getValue());
     }
 
     @FXML

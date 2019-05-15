@@ -9,6 +9,7 @@ import com.meti.net.client.ClientHandler;
 import com.meti.net.client.InfinityClientTokenHandler;
 import com.meti.net.source.SocketSourceSupplier;
 import com.meti.net.source.URLSource;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ class MenuModel {
 
     private void loadClientDisplay(Client client, InfinityClientTokenHandler handler) throws IOException {
         Stage clientStage = menu.getStageManager().getStage(1);
-        clientStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ClientDisplay.fxml"), menu.getLogger(), menu.getStageManager(), menu.getModuleManager(), client, handler));
+        clientStage.setScene(new Scene(new Injector((URLSource.of("/com/meti/ClientDisplay.fxml")), menu.getLogger(), menu.getExecutorServiceManager(), menu.getStageManager(), menu.getModuleManager(), client, handler).load()));
         clientStage.show();
     }
 
@@ -48,7 +49,7 @@ class MenuModel {
 
     private void loadServerDisplay(SocketSourceSupplier supplier) throws IOException {
         Stage serverStage = menu.getStageManager().getPrimaryStage();
-        serverStage.setScene(Injector.loadAsScene(URLSource.of("/com/meti/ServerDisplay.fxml"), supplier));
+        serverStage.setScene(new Scene(new Injector(URLSource.of("/com/meti/ServerDisplay.fxml"), supplier).load()));
         serverStage.show();
     }
 }

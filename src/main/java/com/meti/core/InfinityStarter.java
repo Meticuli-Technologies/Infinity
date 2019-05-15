@@ -23,19 +23,19 @@ public class InfinityStarter {
         setConsumers(initMenu());
     }
 
-    void setConsumers(Menu menu) {
+    private void setConsumers(Menu menu) {
         menu.getServerLoader().setOnConstructed(infinity.getCloseables()::add);
         menu.getClientLoader().setOnConstructed(infinity.getCloseables()::add);
     }
 
-    Menu initMenu() throws IOException {
-        Injector injector = new Injector(infinity.getLogger(), infinity.getExecutorServiceManager(), infinity.getStageManager(), infinity.getModuleManager());
+    private Menu initMenu() throws IOException {
+        Injector injector = new Injector(URLSource.of("/com/meti/Menu.fxml"), infinity.getLogger(), infinity.getExecutorServiceManager(), infinity.getStageManager(), infinity.getModuleManager());
         loadMenuDisplay(injector);
         return injector.getController();
     }
 
-    void loadMenuDisplay(Injector injector) throws IOException {
-        Parent parent = injector.load(URLSource.of("/com/meti/Menu.fxml"));
+    private void loadMenuDisplay(Injector injector) throws IOException {
+        Parent parent = injector.load();
         Stage stage = infinity.getStageManager().getPrimaryStage();
         stage.setScene(new Scene(parent));
         stage.show();

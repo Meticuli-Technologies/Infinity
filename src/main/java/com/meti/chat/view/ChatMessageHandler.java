@@ -3,7 +3,8 @@ package com.meti.chat.view;
 import com.meti.chat.ChatMessage;
 import com.meti.handle.TypeTokenHandler;
 import javafx.application.Platform;
-import javafx.scene.control.ListView;
+
+import java.util.function.Consumer;
 
 /**
  * @author SirMathhman
@@ -11,7 +12,7 @@ import javafx.scene.control.ListView;
  * @since 5/13/2019
  */
 class ChatMessageHandler extends TypeTokenHandler<ChatMessage> {
-    private ListView<String> output;
+    private Consumer<ChatMessage> messageConsumer;
 
     public ChatMessageHandler() {
         super(ChatMessage.class);
@@ -19,10 +20,16 @@ class ChatMessageHandler extends TypeTokenHandler<ChatMessage> {
 
     @Override
     protected void handleGeneric(ChatMessage token) {
-        Platform.runLater(() -> output.getItems().add(token.getValue()));
+        if (messageConsumer != null) {
+            Platform.runLater(() -> {
+                messageConsumer.accept(token);
+            });
+        } else {
+            throw new IllegalStateException("Message consumer has not been set!");
+        }
     }
 
-    public void setOutput(ListView<String> output) {
-        this.output = output;
+    public void setMessageConsumer(Consumer<ChatMessage> messageConsumer) {
+        this.messageConsumer = messageConsumer;
     }
 }

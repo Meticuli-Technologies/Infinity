@@ -20,7 +20,7 @@ public class URLSource implements Source {
 
     public static URLSource of(Class<URLSource> clazz, String resourcePath) {
         URL url = clazz.getResource(resourcePath);
-        if(url == null){
+        if (url == null) {
             throw new IllegalArgumentException("Could not find resource at path: " + resourcePath);
         }
         return new URLSource(url);
@@ -44,5 +44,9 @@ public class URLSource implements Source {
     @Override
     public boolean isClosed() {
         throw new UnsupportedOperationException("URLs cannot be closed.");
+    }
+
+    public URL getURL() {
+        return url;
     }
 }
