@@ -1,4 +1,4 @@
-package com.meti.chat.view;
+package com.meti.fx;
 
 import com.meti.handle.TypeTokenHandler;
 import javafx.application.Platform;

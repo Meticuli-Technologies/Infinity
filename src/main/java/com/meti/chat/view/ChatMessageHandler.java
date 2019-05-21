@@ -1,6 +1,7 @@
 package com.meti.chat.view;
 
 import com.meti.chat.ChatMessage;
+import com.meti.fx.FXConsumerHandler;
 
 /**
  * @author SirMathhman

@@ -1,6 +1,7 @@
 package com.meti.chat.view;
 
 import com.meti.chat.ChatMessage;
+import com.meti.fx.FXConsumerHandler;
 import com.meti.fx.Injector;
 import com.meti.handle.TokenHandler;
 import com.meti.net.client.Client;

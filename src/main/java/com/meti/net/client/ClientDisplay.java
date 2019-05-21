@@ -2,6 +2,7 @@ package com.meti.net.client;
 
 import com.meti.control.InfinityController;
 import com.meti.core.InfinitySystem;
+import com.meti.util.ExceptionUtil;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,7 +63,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
         try {
             openRoot(model.getRoot());
         } catch (IOException e) {
-            system.getLogger().log(Level.SEVERE, e.getMessage());
+            system.getLogger().log(Level.SEVERE, ExceptionUtil.stackTraceString(e));
         }
     }
 
