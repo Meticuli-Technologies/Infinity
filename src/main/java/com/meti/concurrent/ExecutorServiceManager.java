@@ -40,7 +40,7 @@ public class ExecutorServiceManager {
     }
 
     public void stop(Duration terminationTimeout) throws InterruptedException, TimeoutException {
-        if (!service.isShutdown()) service.shutdown();
+        if (!service.isShutdown()) service.shutdownNow();
         terminate(terminationTimeout);
     }
 
