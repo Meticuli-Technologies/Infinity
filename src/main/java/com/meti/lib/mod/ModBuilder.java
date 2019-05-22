@@ -1,4 +1,4 @@
-package com.meti.lib.module;
+package com.meti.lib.mod;
 
 /**
  * @author SirMathhman

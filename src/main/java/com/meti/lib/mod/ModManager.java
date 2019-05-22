@@ -1,4 +1,4 @@
-package com.meti.lib.module;
+package com.meti.lib.mod;
 
 import java.util.HashSet;
 import java.util.Set;
