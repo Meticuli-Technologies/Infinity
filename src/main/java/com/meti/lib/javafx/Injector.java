@@ -16,8 +16,12 @@ public class Injector extends FXMLLoader {
         super(null, null, new InjectorFactory(dependencies));
     }
 
-    public void read(Readable<?> readable) throws IOException {
-        //TODO: run test if FXMLLoader.load(InputStream stream) closes the stream or not
-        this.load(readable.getInputStream());
+    public static <T> T read(Readable<?> readable, List<Object> dependencies) throws IOException {
+        return new Injector(dependencies).read(readable);
+    }
+
+    public static <T> T read(Readable<?> readable) throws IOException {
+        //TODO: run test if FXMLLoader.read(InputStream stream) closes the stream or not
+        return this.load(readable.getInputStream());
     }
 }

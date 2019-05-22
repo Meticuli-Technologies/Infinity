@@ -6,7 +6,13 @@ import java.net.URL;
 
 public class URLSource implements Source, Readable<InputStream> {
     private final InputStream inputStream;
-    private boolean closed = false;
+    private boolean closed;
+
+    public static URLSource fromResource(String resourcePath) throws IOException {
+        URL resource = URLSource.class.getResource(resourcePath);
+        if (resource == null) throw new IllegalArgumentException("Cannot find resource at \"" + resourcePath);
+        return new URLSource(resource);
+    }
 
     public URLSource(URL url) throws IOException {
         this.inputStream = url.openStream();
