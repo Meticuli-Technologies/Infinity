@@ -1,12 +1,14 @@
 package com.meti.lib.mod;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,7 +22,7 @@ import java.util.zip.ZipInputStream;
  */
 public class ModManager implements ModManagerImpl {
     private static final String CLASS_SUFFIX = ".class";
-    private final Set<Mod> mods = new HashSet<>();
+    private final Set<ModImpl> modImpls = new HashSet<>();
 
     @Override
     public void loadAll(Path directory) throws IOException {
@@ -29,6 +31,16 @@ public class ModManager implements ModManagerImpl {
         for (URI uri : listURIs(directory)) {
             load(uri.toURL());
         }
+    }
+
+    @Override
+    public void load(URL jarURL) throws IOException {
+        Set<String> contentNames = getContentNames(jarURL);
+        Set<String> classNames = convertToClassNames(contentNames);
+        Set<Class<?>> initialClasses = loadInitialClasses(jarURL, classNames);
+        throwIfNoInitialClasses(initialClasses);
+        ModImpl modImpl = new Mod(initialClasses);
+        modImpls.add(modImpl);
     }
 
     private Set<URI> listURIs(Path directory) throws IOException {
@@ -40,13 +52,15 @@ public class ModManager implements ModManagerImpl {
     }
 
     @Override
-    public void load(URL jarURL) throws IOException {
-        Set<String> contentNames = getContentNames(jarURL);
-        Set<String> classNames = convertToClassNames(contentNames);
-        Set<Class<?>> initialClasses = loadInitialClasses(jarURL, classNames);
-        throwIfNoInitialClasses(initialClasses);
-        Mod mod = new Mod(initialClasses);
-        mods.add(mod);
+    public <T> Set<T> getAllInstances(Class<T> tClass, List<Object> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Set<ModImpl> mods = modImpls.stream()
+                .filter(mod -> mod.containsImplementationClass(tClass))
+                .collect(Collectors.toSet());
+        Set<T> instances = new HashSet<>();
+        for (ModImpl mod : mods) {
+            instances.addAll(mod.instantiate(tClass, dependencies));
+        }
+        return instances;
     }
 
     private void throwIfNoInitialClasses(Set<Class<?>> initialClasses) throws IOException {

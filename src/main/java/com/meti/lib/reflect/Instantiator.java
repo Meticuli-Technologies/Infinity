@@ -24,7 +24,7 @@ public class Instantiator implements InstantiatorImpl {
     public List<Object> instantiate(Class<?> instantiatee, List<Object> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         Map<List<Class<?>>, Constructor<?>> parameterTypeMap = this.constructParameterTypeMap(instantiatee);
         List<Class<?>> dependencyClasses = this.getDependencyClasses(dependencies);
-        List<? extends Constructor<?>> constructors = this.matchConstructors(parameterTypeMap, dependencyClasses);
+        List<Constructor<?>> constructors = this.matchConstructors(parameterTypeMap, dependencyClasses);
         return this.instantiateConstructors(dependencies, constructors);
     }
 
