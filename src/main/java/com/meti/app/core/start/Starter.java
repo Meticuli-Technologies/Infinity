@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import java.io.IOException;
 
 import static com.meti.lib.javafx.Injector.*;
-import static com.meti.lib.source.URLSource.*;
+import static com.meti.lib.source.url.URLSource.*;
 
 /**
  * @author SirMathhman

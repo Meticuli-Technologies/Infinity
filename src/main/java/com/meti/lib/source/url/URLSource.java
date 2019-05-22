@@ -1,21 +1,23 @@
-package com.meti.lib.source;
+package com.meti.lib.source.url;
+
+import com.meti.lib.source.ReadableSource;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class URLSource implements Source, Readable<InputStream> {
+public class URLSource implements ReadableSource<InputStream> {
     private final InputStream inputStream;
-    private boolean closed;
+    private boolean closed = false;
 
-    public static URLSource fromResource(String resourcePath) throws IOException {
+    private URLSource(URL url) throws IOException {
+        this.inputStream = url.openStream();
+    }
+
+    public static ReadableSource<InputStream> fromResource(String resourcePath) throws IOException {
         URL resource = URLSource.class.getResource(resourcePath);
         if (resource == null) throw new IllegalArgumentException("Cannot find resource at \"" + resourcePath);
         return new URLSource(resource);
-    }
-
-    public URLSource(URL url) throws IOException {
-        this.inputStream = url.openStream();
     }
 
     @Override
