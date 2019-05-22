@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  * @version 0.0.0
  * @since 5/22/2019
  */
-public abstract class ExecutorServer<S extends CompoundSource<?, ?>, O extends SourceSupplier<S>> extends Server<S, O> {
+public abstract class ExecutorServer<S extends CompoundSource<?, ?>, O extends SourceSupplier<S>> extends Server<S, O> implements Listener {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(4L);
     private final ExecutorService service;
     private final Duration timeout;
@@ -47,7 +47,8 @@ public abstract class ExecutorServer<S extends CompoundSource<?, ?>, O extends S
 
     public abstract Callable<?> buildHopper(S next);
 
-    public Future<O> listen() {
-        return service.submit(this);
+    @Override
+    public void listen() {
+        service.submit(this);
     }
 }

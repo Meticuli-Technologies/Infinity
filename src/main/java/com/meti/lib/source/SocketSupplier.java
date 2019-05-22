@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 
-public class SocketSupplier implements SourceSupplier<CompoundSource<InputStream, OutputStream>> {
+public class SocketSupplier implements SourceSupplier<CompoundSource<?, ?>> {
     private final ServerSocket serverSocket;
 
     public SocketSupplier(int port) throws IOException {
@@ -29,7 +29,7 @@ public class SocketSupplier implements SourceSupplier<CompoundSource<InputStream
     }
 
     @Override
-    public CompoundSource<InputStream, OutputStream> next() throws IOException {
+    public CompoundSource<?, ?> next() throws IOException {
         return new SocketSource(serverSocket.accept());
     }
 }
