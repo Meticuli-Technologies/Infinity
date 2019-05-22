@@ -5,6 +5,7 @@ import com.meti.app.core.state.InfinityToolkit;
 import com.meti.app.core.state.StateImpl;
 import com.meti.app.core.state.Toolkit;
 import com.meti.lib.fx.StageManager;
+import com.meti.lib.fx.StageManagerImpl;
 import com.meti.lib.mod.ModManager;
 import com.meti.lib.mod.ModManagerImpl;
 import com.meti.lib.util.PathUtil;
@@ -63,7 +64,7 @@ public class Initializer implements InitializerImpl {
         return modManagerImpl;
     }
 
-    private StageManager initStageManager(Stage primaryStage) {
+    private StageManagerImpl initStageManager(Stage primaryStage) {
         return new StageManager(primaryStage);
     }
 }

@@ -1,6 +1,7 @@
 package com.meti.app.core.state;
 
 import com.meti.lib.fx.StageManager;
+import com.meti.lib.fx.StageManagerImpl;
 import com.meti.lib.mod.ModManagerImpl;
 
 import java.util.Properties;
@@ -30,7 +31,7 @@ public class InfinityToolkit implements Toolkit {
     }
 
     @Override
-    public StageManager getStageManager() {
+    public StageManagerImpl getStageManager() {
         return state.getInstance(StageManager.class);
     }
 

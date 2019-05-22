@@ -1,6 +1,6 @@
 package com.meti.app.core.state;
 
-import com.meti.lib.fx.StageManager;
+import com.meti.lib.fx.StageManagerImpl;
 import com.meti.lib.mod.ModManagerImpl;
 
 import java.util.Properties;
@@ -18,7 +18,7 @@ public interface Toolkit {
 
     Properties getProperties();
 
-    StageManager getStageManager();
+    StageManagerImpl getStageManager();
 
     StateImpl getState();
 }

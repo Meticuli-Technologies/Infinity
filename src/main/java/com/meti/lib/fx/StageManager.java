@@ -10,10 +10,15 @@ import java.util.List;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public class StageManager {
+public class StageManager extends StageManagerImpl {
     private final List<Stage> stages = new ArrayList<>();
 
     public StageManager(Stage primaryStage) {
         stages.add(primaryStage);
+    }
+
+    @Override
+    public Stage getPrimaryStage() {
+        return stages.get(0);
     }
 }

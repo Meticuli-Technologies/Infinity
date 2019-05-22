@@ -10,6 +10,6 @@ import com.meti.app.core.state.Toolkit;
 public class Starter implements StarterImpl {
     @Override
     public void start(Toolkit toolkit) {
-
+       /* toolkit.getStageManager();*/
     }
 }
