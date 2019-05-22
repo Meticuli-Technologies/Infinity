@@ -8,7 +8,7 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public class ModuleManager {
-    private final Set<ModuleBuilder> builders = new HashSet<>();
-
+public class ModManager {
+    private final Set<ModBuilder> builders = new HashSet<>();
+    private final Set<Mod> mods = new HashSet<>();
 }
