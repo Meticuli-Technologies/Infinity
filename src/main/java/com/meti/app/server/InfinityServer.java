@@ -6,6 +6,7 @@ import com.meti.lib.handle.MappedHandler;
 import com.meti.lib.net.ExecutorServer;
 import com.meti.lib.source.CompoundSource;
 import com.meti.lib.source.ObjectSource;
+import com.meti.lib.source.ObjectSourceImpl;
 import com.meti.lib.source.PortSourceSupplier;
 
 import java.util.concurrent.Callable;
@@ -16,7 +17,7 @@ import java.util.concurrent.Callable;
  * @since 5/22/2019
  */
 public class InfinityServer extends ExecutorServer<CompoundSource<?, ?>, PortSourceSupplier> {
-    private final Handler<Object, ObjectSource> serverHandler = new MappedHandler<>();
+    private final Handler<Object, ObjectSourceImpl> serverHandler = new MappedHandler<>();
 
     public InfinityServer(PortSourceSupplier supplier) {
         super(supplier);
@@ -24,7 +25,7 @@ public class InfinityServer extends ExecutorServer<CompoundSource<?, ?>, PortSou
 
     @Override
     public Callable<?> buildHopper(CompoundSource<?, ?> next) {
-        return new HandlerHopper<>(new ObjectSource(next), serverHandler);
+        return new HandlerHopper<>(ObjectSource.from(next), serverHandler);
     }
 
     @Override

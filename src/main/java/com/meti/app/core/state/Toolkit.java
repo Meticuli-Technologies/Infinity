@@ -1,5 +1,6 @@
 package com.meti.app.core.state;
 
+import com.meti.app.client.ClientImpl;
 import com.meti.lib.javafx.StageManagerImpl;
 import com.meti.lib.mod.ModManagerImpl;
 import com.meti.lib.net.ServerImpl;
@@ -15,6 +16,8 @@ import java.util.logging.Logger;
  * @since 5/21/2019
  */
 public interface Toolkit {
+    ClientImpl getClient();
+
     Logger getLogger();
 
     ModManagerImpl getModManager();

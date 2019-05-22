@@ -14,4 +14,6 @@ public interface StageManagerImpl {
     Stage ontoLastStage(Scene scene);
 
     Stage ontoStage(Scene scene, int index);
+
+    int size();
 }

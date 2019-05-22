@@ -45,4 +45,9 @@ public class StageManager implements StageManagerImpl {
         if (!stage.isShowing()) stage.show();
         return stage;
     }
+
+    @Override
+    public int size() {
+        return stages.size();
+    }
 }
