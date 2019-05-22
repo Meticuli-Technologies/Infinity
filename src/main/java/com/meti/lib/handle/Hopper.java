@@ -6,19 +6,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.concurrent.Callable;
 
-public class Hopper implements Callable<ReadableSource<ObjectInputStream>> {
-    private final ReadableSource<ObjectInputStream> readable;
+public abstract class Hopper<R extends ReadableSource<ObjectInputStream>> implements Callable<R> {
+    private final R readable;
 
-    public Hopper(ReadableSource<ObjectInputStream> readable) {
+    protected abstract void handle(Object token, R readable);
+
+    Hopper(R readable) {
         this.readable = readable;
     }
 
     @Override
-    public ReadableSource<ObjectInputStream> call() throws IOException, ClassNotFoundException {
+    public R call() throws IOException, ClassNotFoundException {
         try (ObjectInputStream inputStream = readable.getInputStream()) {
             while (readable.isOpen()) {
-                Object token = inputStream.readObject();
-                //TODO: handle token
+                this.handle(inputStream.readObject(), readable);
             }
         }
         return readable;
