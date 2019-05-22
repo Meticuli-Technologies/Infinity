@@ -1,4 +1,4 @@
-package com.meti.core.state;
+package com.meti.app.core.state;
 
 import java.util.Collection;
 import java.util.stream.Stream;

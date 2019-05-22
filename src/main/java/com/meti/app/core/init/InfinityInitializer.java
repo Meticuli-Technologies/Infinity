@@ -1,7 +1,7 @@
-package com.meti.core.init;
+package com.meti.app.core.init;
 
-import com.meti.core.load.PropertiesLoader;
-import com.meti.core.state.StateImpl;
+import com.meti.app.core.load.PropertiesLoader;
+import com.meti.app.core.state.StateImpl;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.mod.ModManager;
 import com.meti.lib.mod.ModManagerImpl;

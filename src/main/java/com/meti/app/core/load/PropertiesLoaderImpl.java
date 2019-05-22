@@ -1,4 +1,4 @@
-package com.meti.core.load;
+package com.meti.app.core.load;
 
 import java.io.IOException;
 import java.util.Properties;

@@ -1,9 +1,9 @@
-package com.meti.core;
+package com.meti.app.core;
 
-import com.meti.core.init.InfinityInitializer;
-import com.meti.core.start.InfinityStarter;
-import com.meti.core.state.InfinityState;
-import com.meti.core.state.StateImpl;
+import com.meti.app.core.init.InfinityInitializer;
+import com.meti.app.core.state.InfinityState;
+import com.meti.app.core.state.StateImpl;
+import com.meti.app.core.start.InfinityStarter;
 import javafx.stage.Stage;
 
 import java.io.IOException;

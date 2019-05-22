@@ -1,4 +1,4 @@
-package com.meti.core.state;
+package com.meti.app.core.state;
 
 import com.meti.lib.collect.TypeFunction;
 import com.meti.lib.collect.TypePredicate;

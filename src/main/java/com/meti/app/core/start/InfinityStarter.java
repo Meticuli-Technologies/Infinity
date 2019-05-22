@@ -1,6 +1,6 @@
-package com.meti.core.start;
+package com.meti.app.core.start;
 
-import com.meti.core.state.StateImpl;
+import com.meti.app.core.state.StateImpl;
 
 /**
  * @author SirMathhman

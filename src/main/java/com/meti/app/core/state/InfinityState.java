@@ -1,7 +1,6 @@
-package com.meti.core.state;
+package com.meti.app.core.state;
 
 import com.meti.lib.fx.StageManager;
-import com.meti.lib.mod.ModManager;
 import com.meti.lib.mod.ModManagerImpl;
 
 import java.util.Properties;
