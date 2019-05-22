@@ -3,7 +3,7 @@ package com.meti.lib.source;
 import java.io.*;
 
 public class ObjectSource extends DelegateSource<ObjectInputStream, ObjectOutputStream> {
-    protected ObjectSource(CompoundSource<?, ?> parentSource) {
+    public ObjectSource(CompoundSource<?, ?> parentSource) {
         super(parentSource);
     }
 

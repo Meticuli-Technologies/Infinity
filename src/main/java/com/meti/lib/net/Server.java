@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 5/22/2019
  */
-public abstract class Server<S extends CompoundSource<?, ?>, O extends SourceSupplier<?, ?, S>> implements Callable<O>, Closeable {
+public abstract class Server<S extends CompoundSource<?, ?>, O extends SourceSupplier<S>> implements Callable<O>, Closeable {
     private final Set<S> sources = new HashSet<>();
     private final O supplier;
 

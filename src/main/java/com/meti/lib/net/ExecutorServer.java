@@ -1,23 +1,18 @@
 package com.meti.lib.net;
 
-import com.meti.lib.handle.Hopper;
 import com.meti.lib.source.CompoundSource;
 import com.meti.lib.source.SourceSupplier;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 5/22/2019
  */
-public abstract class ExecutorServer<S extends CompoundSource<ObjectInputStream, ?>, O extends SourceSupplier<?, ?, S>, H extends Hopper<S>> extends Server<S, O> {
+public abstract class ExecutorServer<S extends CompoundSource<?, ?>, O extends SourceSupplier<S>> extends Server<S, O> {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(4L);
     private final ExecutorService service;
     private final Duration timeout;
@@ -50,7 +45,7 @@ public abstract class ExecutorServer<S extends CompoundSource<ObjectInputStream,
         }
     }
 
-    public abstract H buildHopper(S next);
+    public abstract Callable<?> buildHopper(S next);
 
     public Future<O> listen() {
         return service.submit(this);
