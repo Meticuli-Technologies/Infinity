@@ -14,6 +14,9 @@ public class HandlerHopper<R extends ReadableSource<ObjectInputStream>> extends 
 
     @Override
     protected void handle(Object token, R readable) {
+        if (!handler.canHandle(token)) {
+            throw new IllegalArgumentException("Cannot handle " + token);
+        }
         handler.handle(token, readable);
     }
 }
