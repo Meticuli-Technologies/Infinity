@@ -13,6 +13,7 @@ public class Infinity {
     private final Logger logger = Logger.getLogger("Infinity");
 
     public void start(Stage primaryStage) {
+        logger.log(Level.INFO, "Starting Infinity.");
         try {
             Properties properties = new PropertiesLoader().load();
             stateImpl.add(properties);
@@ -22,6 +23,6 @@ public class Infinity {
     }
 
     public void stop() {
-
+        logger.log(Level.INFO, "Stopping Infinity.");
     }
 }
