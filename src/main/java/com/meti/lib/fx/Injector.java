@@ -15,7 +15,7 @@ public class Injector extends FXMLLoader {
         this.setControllerFactory(new InjectorFactory(dependencies));
     }
 
-    private class InjectorFactory implements Callback<Class<?>, Object> {
+    private static class InjectorFactory implements Callback<Class<?>, Object> {
         private final List<Object> dependencies;
 
         public InjectorFactory(List<Object> dependencies) {
