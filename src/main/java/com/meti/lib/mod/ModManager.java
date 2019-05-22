@@ -16,7 +16,6 @@ import java.util.zip.ZipInputStream;
  */
 public class ModManager {
     private static final String CLASS_SUFFIX = ".class";
-    private final Set<ModBuilder> builders = new HashSet<>();
     private final Set<Mod> mods = new HashSet<>();
 
     public Mod load(URL jarURL) throws IOException {
