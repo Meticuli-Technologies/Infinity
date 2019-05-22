@@ -5,7 +5,11 @@ import com.meti.lib.source.SourceSupplier;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static com.meti.lib.concurrent.ExecutorUtil.terminate;
 
 /**
  * @author SirMathhman
@@ -35,14 +39,7 @@ public abstract class ExecutorServer<S extends CompoundSource<?, ?>, O extends S
     @Override
     public void close() throws IOException {
         super.close();
-        service.shutdownNow();
-        if (!service.isTerminated()) {
-            try {
-                service.awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                throw new IOException("Could not terminate service", e);
-            }
-        }
+        terminate(service, timeout);
     }
 
     public abstract Callable<?> buildHopper(S next);

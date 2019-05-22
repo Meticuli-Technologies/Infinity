@@ -7,11 +7,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 
-public class SocketSupplier implements SourceSupplier<CompoundSource<?, ?>> {
+public class SocketSupplier implements SourceSupplier<CompoundSource<?, ?>>, PortUser {
     private final ServerSocket serverSocket;
 
     public SocketSupplier(int port) throws IOException {
         this(new ServerSocket(port));
+    }
+
+    @Override
+    public int getLocalPort() {
+        return serverSocket.getLocalPort();
     }
 
     private SocketSupplier(ServerSocket serverSocket) {

@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.util.concurrent.Callable;
 
 public abstract class Hopper<R extends ReadableSource<ObjectInputStream>> implements Callable<R> {
-    private final R readable;
+    protected final R readable;
 
     protected abstract void handle(Object token, R readable);
 
