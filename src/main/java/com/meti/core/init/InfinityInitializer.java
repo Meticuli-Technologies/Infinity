@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @since 5/21/2019
  */
 public final class InfinityInitializer {
-    public static final Path MODS_DIRECTORY = Paths.get(".\\mods");
+    private static final Path MODS_DIRECTORY = Paths.get(".\\mods");
     private final StateImpl stateImpl;
     private final Logger logger;
 
