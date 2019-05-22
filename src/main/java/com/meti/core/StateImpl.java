@@ -5,5 +5,6 @@ package com.meti.core;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public class InfinityState extends State {
+public interface StateImpl {
+    void add(Object object);
 }

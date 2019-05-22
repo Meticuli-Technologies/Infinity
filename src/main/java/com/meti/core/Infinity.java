@@ -1,31 +1,18 @@
 package com.meti.core;
 
+import com.meti.core.load.PropertiesLoader;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Infinity {
-    private final InfinityState state = new InfinityState();
-
-    public Infinity() {
-    }
+    private final StateImpl stateImpl = new InfinityState();
 
     public void start(Stage primaryStage) {
         try {
-            Path propertiesPath = Paths.get(".\\Infinity.properties");
-            if(!Files.exists(propertiesPath)){
-                Files.createFile(propertiesPath);
-            }
-
-            InputStream inStream = Files.newInputStream(propertiesPath);
-            Properties properties = new Properties();
-            properties.load(inStream);
-            inStream.close();
+            Properties properties = new PropertiesLoader().load();
+            stateImpl.add(properties);
         } catch (IOException e) {
             e.printStackTrace();
         }
