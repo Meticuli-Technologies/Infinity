@@ -1,11 +1,13 @@
 package com.meti.core.init;
 
-import com.meti.core.Infinity;
 import com.meti.core.load.PropertiesLoader;
 import com.meti.core.state.StateImpl;
 import com.meti.lib.mod.ModManager;
+import com.meti.lib.util.PathUtil;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -28,7 +30,8 @@ public final class InfinityInitializer {
         stateImpl.add(properties);
 
         ModManager modManager = new ModManager();
-        modManager.load()
+        Path modDirectory = PathUtil.ensureDirectory(Paths.get(".\\mods"));
+        modManager.loadAll(modDirectory);
         stateImpl.add(logger);
     }
 }
