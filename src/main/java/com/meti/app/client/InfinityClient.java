@@ -31,11 +31,11 @@ public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStre
     private final ExecutorService service = Executors.newSingleThreadExecutor();
     private final Duration timeout;
 
-    public InfinityClient(ObjectSourceImpl objectSource, ObjectImpl implementation) {
+    public InfinityClient(ReadableSource<ObjectInputStream> objectSource, ObjectImpl implementation) {
         this(objectSource, implementation, new MappedHandler<>(), DEFAULT_TIMEOUT);
     }
 
-    private InfinityClient(ObjectSourceImpl objectSource, ObjectImpl implementation, MappedHandlerImpl<Object, ReadableSource<ObjectInputStream>> handler, Duration timeout) {
+    private InfinityClient(ReadableSource<ObjectInputStream> objectSource, ObjectImpl implementation, MappedHandlerImpl<Object, ReadableSource<ObjectInputStream>> handler, Duration timeout) {
         super(objectSource, handler);
         this.implementation = implementation;
         this.handler = handler;
