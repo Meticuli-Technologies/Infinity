@@ -5,6 +5,7 @@ import com.meti.core.state.StateImpl;
 import com.meti.lib.mod.ModManager;
 import com.meti.lib.mod.ModManagerImpl;
 import com.meti.lib.util.PathUtil;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,13 +27,15 @@ public final class InfinityInitializer {
         this.logger = logger;
     }
 
-    public void initializer() throws IOException {
+    public void initializer(Stage primaryStage) throws IOException {
         Properties properties = initProperties();
         stateImpl.add(properties);
 
         Path modDirectory = PathUtil.ensureDirectory(Paths.get(".\\mods"));
         initModuleManager(modDirectory);
         stateImpl.add(logger);
+
+
     }
 
     private Properties initProperties() throws IOException {

@@ -16,7 +16,7 @@ public class Infinity {
     public void start(Stage primaryStage) {
         logger.log(Level.INFO, "Starting Infinity.");
         try {
-            new InfinityInitializer(this.stateImpl, this.logger).initializer();
+            new InfinityInitializer(this.stateImpl, this.logger).initializer(primaryStage);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to start Infinity", e);
         }
