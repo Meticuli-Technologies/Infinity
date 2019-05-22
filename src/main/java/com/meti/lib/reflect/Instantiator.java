@@ -4,10 +4,7 @@ import com.meti.lib.collect.TypeFunction;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +12,7 @@ import java.util.stream.Collectors;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public class Instantiator extends InstantiatorImpl {
+public class Instantiator implements InstantiatorImpl {
     @Override
     public <T> List<T> instantiateGeneric(Class<T> tClass, List<Object> dependencies) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         return instantiate(tClass, dependencies).stream()
@@ -25,10 +22,10 @@ public class Instantiator extends InstantiatorImpl {
 
     @Override
     public List<Object> instantiate(Class<?> instantiatee, List<Object> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Map<List<Class<?>>, Constructor<?>> parameterTypeMap = constructParameterTypeMap(instantiatee);
-        List<Class<?>> dependencyClasses = getDependencyClasses(dependencies);
-        List<? extends Constructor<?>> constructors = matchConstructors(parameterTypeMap, dependencyClasses);
-        return instantiateConstructors(dependencies, constructors);
+        Map<List<Class<?>>, Constructor<?>> parameterTypeMap = this.constructParameterTypeMap(instantiatee);
+        List<Class<?>> dependencyClasses = this.getDependencyClasses(dependencies);
+        List<? extends Constructor<?>> constructors = this.matchConstructors(parameterTypeMap, dependencyClasses);
+        return this.instantiateConstructors(dependencies, constructors);
     }
 
     private Map<List<Class<?>>, Constructor<?>> constructParameterTypeMap(Class<?> instantiatee) {
@@ -39,34 +36,36 @@ public class Instantiator extends InstantiatorImpl {
         return parameterTypeMap;
     }
 
-    private List<Class<?>> getDependencyClasses(List<Object> dependencies) {
+    private List<Class<?>> getDependencyClasses(Collection<Object> dependencies) {
         return dependencies.stream().map(Object::getClass).collect(Collectors.toList());
     }
 
-    private List<Constructor<?>> matchConstructors(Map<List<Class<?>>, Constructor<?>> parameterTypeMap, List<Class<?>> dependencyClasses) {
+    private List<Constructor<?>> matchConstructors(Map<? extends List<Class<?>>, Constructor<?>> parameterTypeMap, List<Class<?>> dependencyClasses) {
         return parameterTypeMap.keySet().stream()
-                .filter(classes -> matchParameters(classes, dependencyClasses))
+                .filter(classes -> this.isEqualSize(classes, dependencyClasses))
                 .map(parameterTypeMap::get)
                 .collect(Collectors.toList());
     }
 
-    private List<Object> instantiateConstructors(List<Object> dependencies, List<? extends Constructor<?>> constructors) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    private List<Object> instantiateConstructors(Collection<Object> dependencies, List<? extends Constructor<?>> constructors) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         List<Object> instances = new ArrayList<>();
         for (Constructor<?> constructor : constructors) {
-            instances.add(constructor.newInstance(dependencies));
+            instances.add(constructor.newInstance(dependencies.toArray()));
         }
         return instances;
     }
 
-    private boolean matchParameters(List<Class<?>> superClasses, List<Class<?>> implementors) {
+    private boolean isEqualSize(List<Class<?>> superClasses, List<Class<?>> implementors) {
         if (superClasses.size() != implementors.size()) throw new IllegalArgumentException("List sizes aren't equal.");
-        for (int i = 0; i < superClasses.size(); i++) {
+        boolean matching = true;
+        int listSize = superClasses.size();
+        for (int i = 0; i < listSize; i++) {
             Class<?> superClass = superClasses.get(i);
             Class<?> implementor = implementors.get(i);
             if (!superClass.isAssignableFrom(implementor)) {
-                return false;
+                matching = false;
             }
         }
-        return true;
+        return matching;
     }
 }

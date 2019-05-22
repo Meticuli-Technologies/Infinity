@@ -8,8 +8,8 @@ import java.util.List;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public abstract class InstantiatorImpl {
-    public abstract List<Object> instantiate(Class<?> instantiatee, List<Object> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException;
+public interface InstantiatorImpl {
+    List<Object> instantiate(Class<?> instantiatee, List<Object> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException;
 
-    public abstract <T> List<T> instantiateGeneric(Class<T> tClass, List<Object> dependencies) throws IllegalAccessException, InstantiationException, InvocationTargetException;
+    <T> List<T> instantiateGeneric(Class<T> tClass, List<Object> dependencies) throws IllegalAccessException, InstantiationException, InvocationTargetException;
 }

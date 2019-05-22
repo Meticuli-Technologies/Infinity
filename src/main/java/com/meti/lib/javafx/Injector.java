@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class Injector extends FXMLLoader {
     private Injector(Object... dependencies) {
-        super(null, null, new InjectorFactory(Arrays.asList(dependencies)));
+        super(null, null, null, new InjectorFactory(Arrays.asList(dependencies)));
     }
 
     public static Scene readAsScene(Readable<?> readable, Object... dependencies) throws IOException {
