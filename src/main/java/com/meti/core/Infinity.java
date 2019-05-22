@@ -17,6 +17,7 @@ public class Infinity {
         try {
             Properties properties = new PropertiesLoader().load();
             stateImpl.add(properties);
+            stateImpl.add(logger);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to start Infinity", e);
         }
