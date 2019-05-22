@@ -32,6 +32,8 @@ public class Menu {
             StateImpl state = toolkit.getState();
             int localPort = constructServer(state, new SocketSupplier(0));
             constructClient(state, localPort);
+
+
         } catch (IOException e) {
             toolkit.getLogger().log(Level.WARNING, "Failed to build IO", e);
         }
