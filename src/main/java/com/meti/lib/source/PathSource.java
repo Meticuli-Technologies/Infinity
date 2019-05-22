@@ -16,14 +16,12 @@ import java.util.stream.Collectors;
  */
 public class PathSource implements PathSourceImpl {
     private final Path path;
-    private final InputStream inputStream;
-    private final OutputStream outputStream;
+    private InputStream inputStream;
+    private OutputStream outputStream;
     private boolean closed = false;
 
-    public PathSource(Path path) throws IOException {
+    public PathSource(Path path) {
         this.path = path;
-        this.inputStream = Files.newInputStream(path);
-        this.outputStream = Files.newOutputStream(path);
     }
 
     @Override
@@ -32,17 +30,24 @@ public class PathSource implements PathSourceImpl {
     }
 
     @Override
+    public PathSourceImpl ensure(boolean directory) throws IOException {
+        if (!Files.exists(path)) {
+            if (directory) Files.createDirectory(path);
+            else Files.createFile(path);
+        }
+        return new PathSource(path);
+    }
+
+    @Override
     public Set<? extends PathSourceImpl> getSubSources() throws IOException {
+        Set<PathSourceImpl> sources = new HashSet<>();
         if (Files.isDirectory(path)) {
             Set<Path> children = Files.list(path).collect(Collectors.toSet());
-            Set<PathSourceImpl> sources = new HashSet<>();
             for (Path child : children) {
                 sources.add(new PathSource(child));
             }
-            return sources;
-        } else {
-            return new HashSet<>();
         }
+        return sources;
     }
 
     @Override
@@ -59,11 +64,30 @@ public class PathSource implements PathSourceImpl {
 
     @Override
     public InputStream getInputStream() throws IOException {
+        if (inputStream == null) {
+            throwIfDirectory();
+            inputStream = Files.newInputStream(path);
+        }
         return inputStream;
+    }
+
+    private void throwIfDirectory() {
+        if (Files.isDirectory(path)) {
+            throw new UnsupportedOperationException(path + " is a directory");
+        }
+    }
+
+    @Override
+    public String getName() {
+        return path.getFileName().toString();
     }
 
     @Override
     public OutputStream getOutputStream() throws IOException {
+        if (outputStream == null) {
+            throwIfDirectory();
+            outputStream = Files.newOutputStream(path);
+        }
         return outputStream;
     }
 }

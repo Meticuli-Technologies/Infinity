@@ -1,5 +1,6 @@
 package com.meti.lib.source;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -9,6 +10,8 @@ import java.nio.file.Path;
  * @version 0.0.0
  * @since 5/22/2019
  */
-public interface PathSourceImpl extends Readable<InputStream>, Writable<OutputStream>, ParentSource<PathSourceImpl> {
+public interface PathSourceImpl extends Readable<InputStream>, Writable<OutputStream>, NamedParentSource<PathSourceImpl> {
     Path getPath();
+
+    PathSourceImpl ensure(boolean directory) throws IOException;
 }

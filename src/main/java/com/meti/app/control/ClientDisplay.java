@@ -37,12 +37,13 @@ public class ClientDisplay implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        assetView.getSelectionModel().getSelectedItems().forEach(new Consumer<TreeItem<String>>() {
+    /*    assetView.getSelectionModel().getSelectedItems().forEach(new Consumer<TreeItem<String>>() {
             @Override
             public void accept(TreeItem<String> stringTreeItem) {
-                stringTreeItem.getValue();
+                String value = stringTreeItem.getValue();
+
             }
-        });
+        });*/
 
         try {
             loadEditors(toolkit.getModManager());
