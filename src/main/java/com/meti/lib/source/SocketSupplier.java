@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 
-public class SocketSupplier implements SourceSupplier<InputStream, OutputStream, SocketSource> {
+public class SocketSupplier implements SourceSupplier<InputStream, OutputStream, CompoundSource<InputStream, OutputStream>> {
     private final ServerSocket serverSocket;
 
     public SocketSupplier(int port) throws IOException {
@@ -19,17 +19,17 @@ public class SocketSupplier implements SourceSupplier<InputStream, OutputStream,
     }
 
     @Override
-    public SocketSource next() {
-        return null;
-    }
-
-    @Override
     public boolean isClosed() {
-        return false;
+        return serverSocket.isClosed();
     }
 
     @Override
     public void close() throws IOException {
+        serverSocket.close();
+    }
 
+    @Override
+    public CompoundSource<InputStream, OutputStream> next() throws IOException {
+        return new SocketSource(serverSocket.accept());
     }
 }
