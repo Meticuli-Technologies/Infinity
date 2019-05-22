@@ -13,4 +13,8 @@ public class Injector extends FXMLLoader {
     public Injector(List<Object> dependencies) {
         super(null, null, new InjectorFactory(dependencies));
     }
+
+    public void read(){
+
+    }
 }
