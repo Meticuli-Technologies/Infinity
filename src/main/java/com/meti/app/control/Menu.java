@@ -25,6 +25,7 @@ public class Menu {
     public void local() throws IOException {
         StateImpl state = toolkit.getState();
         constructServer(state);
+
     }
 
     private void constructServer(StateImpl state) throws IOException {

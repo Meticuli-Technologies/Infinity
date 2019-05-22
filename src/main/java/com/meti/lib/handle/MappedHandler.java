@@ -11,7 +11,7 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/22/2019
  */
-public class MappedHandler<T, R extends ReadableSource<ObjectInputStream>> implements Handler<T, R> {
+public class MappedHandler<T, R extends ReadableSource<ObjectInputStream>> implements MappedHandlerImpl<T, R> {
     private final Set<Handler<T, R>> subHandlers = new HashSet<>();
 
     @Override
@@ -27,6 +27,7 @@ public class MappedHandler<T, R extends ReadableSource<ObjectInputStream>> imple
                 .forEach(handler -> handler.handle(token, readable));
     }
 
+    @Override
     public void add(Handler<T, R> subHandler) {
         subHandlers.add(subHandler);
     }
