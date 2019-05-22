@@ -18,10 +18,11 @@ import java.util.zip.ZipInputStream;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public class ModManager {
+public class ModManager implements ModManagerImpl {
     private static final String CLASS_SUFFIX = ".class";
     private final Set<Mod> mods = new HashSet<>();
 
+    @Override
     public void loadAll(Path directory) throws IOException {
         if (!Files.isDirectory(directory))
             throw new IllegalArgumentException(directory + " is not a directory.");
@@ -38,6 +39,7 @@ public class ModManager {
         }
     }
 
+    @Override
     public void load(URL jarURL) throws IOException {
         Set<String> contentNames = getContentNames(jarURL);
         Set<String> classNames = convertToClassNames(contentNames);
