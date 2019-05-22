@@ -17,7 +17,7 @@ import static com.meti.lib.source.url.URLSource.*;
 public class Starter implements StarterImpl {
     @Override
     public void start(Toolkit toolkit) throws IOException {
-        Scene menuScene = readAsScene(fromResource("/com/meti/app/control/Menu.fxml"));
+        Scene menuScene = readAsScene(fromResource("/com/meti/app/control/Menu.fxml"), toolkit);
         StageManagerImpl stageManager = toolkit.getStageManager();
         this.loadMenu(menuScene, stageManager);
     }
