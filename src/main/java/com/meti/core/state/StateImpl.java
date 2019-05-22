@@ -1,5 +1,6 @@
 package com.meti.core.state;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 
 /**
@@ -11,6 +12,8 @@ public interface StateImpl {
     <T> Stream<T> filterByClass(Class<T> tClass);
 
     void add(Object object);
+
+    void addAll(Collection<?> collection);
 
     <T> T getInstance(Class<T> tClass);
 }

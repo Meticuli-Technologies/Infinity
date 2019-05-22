@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -31,10 +32,12 @@ public class InfinityInitializer {
 
     public void initializer(Stage primaryStage) throws IOException {
         Path modDirectory = PathUtil.ensureDirectory(MODS_DIRECTORY);
-        stateImpl.add(logger);
-        stateImpl.add(initProperties());
-        stateImpl.add(initModuleManager(modDirectory));
-        stateImpl.add(initStageManager(primaryStage));
+        stateImpl.addAll(Set.of(
+                logger,
+                initProperties(),
+                initModuleManager(modDirectory),
+                initStageManager(primaryStage)
+        ));
     }
 
     private Properties initProperties() throws IOException {

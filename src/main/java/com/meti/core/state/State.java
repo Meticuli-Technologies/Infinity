@@ -3,6 +3,7 @@ package com.meti.core.state;
 import com.meti.lib.collect.TypeFunction;
 import com.meti.lib.collect.TypePredicate;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -29,6 +30,11 @@ public class State implements StateImpl {
             throw new IllegalArgumentException("Already contains " + object);
         }
         components.add(object);
+    }
+
+    @Override
+    public void addAll(Collection<?> collection) {
+        collection.forEach(this::add);
     }
 
     @Override
