@@ -23,7 +23,7 @@ import static com.meti.lib.concurrent.ExecutorUtil.terminate;
  * @version 0.0.0
  * @since 5/22/2019
  */
-public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStream>> implements Listener, ClientImpl {
+public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStream>> implements ClientImpl {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(4L);
     private final ObjectImpl implementation;
 
