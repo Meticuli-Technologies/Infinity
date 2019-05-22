@@ -2,6 +2,7 @@ package com.meti.core.init;
 
 import com.meti.core.load.PropertiesLoader;
 import com.meti.core.state.StateImpl;
+import com.meti.lib.fx.StageManager;
 import com.meti.lib.mod.ModManager;
 import com.meti.lib.mod.ModManagerImpl;
 import com.meti.lib.util.PathUtil;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
  * @since 5/21/2019
  */
 public final class InfinityInitializer {
+    public static final Path MODS_DIRECTORY = Paths.get(".\\mods");
     private final StateImpl stateImpl;
     private final Logger logger;
 
@@ -28,22 +30,24 @@ public final class InfinityInitializer {
     }
 
     public void initializer(Stage primaryStage) throws IOException {
-        Properties properties = initProperties();
-        stateImpl.add(properties);
-
-        Path modDirectory = PathUtil.ensureDirectory(Paths.get(".\\mods"));
-        initModuleManager(modDirectory);
+        Path modDirectory = PathUtil.ensureDirectory(MODS_DIRECTORY);
         stateImpl.add(logger);
-
-
+        stateImpl.add(initProperties());
+        stateImpl.add(initModuleManager(modDirectory));
+        stateImpl.add(initStageManager(primaryStage));
     }
 
     private Properties initProperties() throws IOException {
         return new PropertiesLoader().load();
     }
 
-    private void initModuleManager(Path modDirectory) throws IOException {
+    private ModManagerImpl initModuleManager(Path modDirectory) throws IOException {
         ModManagerImpl modManagerImpl = new ModManager();
         modManagerImpl.loadAll(modDirectory);
+        return modManagerImpl;
+    }
+
+    private StageManager initStageManager(Stage primaryStage) {
+        return new StageManager(primaryStage);
     }
 }
