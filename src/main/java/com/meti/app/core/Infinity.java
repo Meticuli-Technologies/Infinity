@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Infinity {
+public class Infinity extends InfinityImpl {
     private final Logger logger = Logger.getLogger("Infinity");
     private final InitializerImpl initializerImpl;
     private final StarterImpl starterImpl;
@@ -22,6 +22,7 @@ public class Infinity {
         this.starterImpl = new Starter();
     }
 
+    @Override
     public void start(Stage primaryStage) {
         logger.log(Level.INFO, "Starting Infinity.");
         try {
@@ -32,6 +33,7 @@ public class Infinity {
         }
     }
 
+    @Override
     public void stop() {
         logger.log(Level.INFO, "Stopping Infinity.");
     }

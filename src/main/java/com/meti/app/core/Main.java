@@ -9,16 +9,16 @@ import javafx.stage.Stage;
  * @since 5/21/2019
  */
 public class Main extends Application  {
-    private final Infinity infinity = new Infinity();
+    private final InfinityImpl infinityImpl = new Infinity();
 
     @Override
     public void start(Stage primaryStage) {
-        infinity.start(primaryStage);
+        infinityImpl.start(primaryStage);
     }
 
     @Override
     public void stop() {
-        infinity.stop();
+        infinityImpl.stop();
     }
 
     public static void main(String[] args) {
