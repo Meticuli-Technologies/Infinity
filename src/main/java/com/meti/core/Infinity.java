@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Infinity {
+    private final InfintyState state = new InfinityState();
+
     public Infinity() {
     }
 
