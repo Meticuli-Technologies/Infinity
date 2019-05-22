@@ -4,7 +4,7 @@ import com.meti.lib.javafx.StageManagerImpl;
 import com.meti.lib.mod.ModManagerImpl;
 import com.meti.lib.net.ServerImpl;
 import com.meti.lib.source.CompoundSource;
-import com.meti.lib.source.SourceSupplier;
+import com.meti.lib.source.PortSourceSupplier;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -21,7 +21,7 @@ public interface Toolkit {
 
     Properties getProperties();
 
-    ServerImpl<CompoundSource<?, ?>, SourceSupplier<CompoundSource<?, ?>>> getServer();
+    ServerImpl<CompoundSource<?, ?>, PortSourceSupplier> getServer();
 
     StageManagerImpl getStageManager();
 

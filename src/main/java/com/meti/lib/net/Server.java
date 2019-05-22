@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public abstract class Server<S extends CompoundSource<?, ?>, O extends SourceSupplier<S>> implements ServerImpl<S, O> {
     private final Collection<S> sources = new HashSet<>();
-    private final O supplier;
+    protected final O supplier;
 
     private Consumer<S> onAccept;
 

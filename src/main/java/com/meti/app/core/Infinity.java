@@ -5,6 +5,8 @@ import com.meti.app.core.init.InitializerImpl;
 import com.meti.app.core.start.Starter;
 import com.meti.app.core.start.StarterImpl;
 import com.meti.app.core.state.Toolkit;
+import com.meti.app.core.stop.Stopper;
+import com.meti.app.core.stop.StopperImpl;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,11 +17,13 @@ public class Infinity extends InfinityImpl {
     private final Logger logger = Logger.getLogger("Infinity");
     private final InitializerImpl initializerImpl;
     private final StarterImpl starterImpl;
+    private final StopperImpl stopper;
     private Toolkit toolkit;
 
     public Infinity() {
         this.initializerImpl = new Initializer(logger);
         this.starterImpl = new Starter();
+        this.stopper = new Stopper();
     }
 
     @Override
@@ -36,5 +40,6 @@ public class Infinity extends InfinityImpl {
     @Override
     public void stop() {
         logger.log(Level.INFO, "Stopping Infinity.");
+        stopper.stop(toolkit);
     }
 }

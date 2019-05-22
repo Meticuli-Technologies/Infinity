@@ -16,4 +16,6 @@ public interface ServerImpl<S extends CompoundSource<?, ?>, O extends SourceSupp
     Consumer<S> getOnAccept();
 
     void setOnAccept(Consumer<S> onAccept);
+
+    int getPort();
 }
