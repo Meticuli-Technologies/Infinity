@@ -1,6 +1,8 @@
 package com.meti.app.core.state;
 
+import com.meti.app.client.ClientImpl;
 import com.meti.app.server.InfinityServer;
+import com.meti.lib.asset.AssetManagerImpl;
 import com.meti.lib.javafx.StageManager;
 import com.meti.lib.javafx.StageManagerImpl;
 import com.meti.lib.mod.ModManagerImpl;
@@ -18,6 +20,16 @@ import java.util.logging.Logger;
  */
 public class InfinityToolkit implements Toolkit {
     private final StateImpl state = new State();
+
+    @Override
+    public AssetManagerImpl getAssetManager() {
+        return state.getInstance(AssetManagerImpl.class);
+    }
+
+    @Override
+    public ClientImpl getClient() {
+        return state.getInstance(ClientImpl.class);
+    }
 
     @Override
     public Logger getLogger() {
