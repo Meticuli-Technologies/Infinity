@@ -1,7 +1,9 @@
 package com.meti.lib.javafx;
 
+import com.meti.lib.source.Readable;
 import javafx.fxml.FXMLLoader;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,7 +16,8 @@ public class Injector extends FXMLLoader {
         super(null, null, new InjectorFactory(dependencies));
     }
 
-    public void read(){
-
+    public void read(Readable<?> readable) throws IOException {
+        //TODO: run test if FXMLLoader.load(InputStream stream) closes the stream or not
+        load(readable.getInputStream());
     }
 }
