@@ -1,7 +1,9 @@
 package com.meti.app.core.init;
 
 import com.meti.app.core.load.PropertiesLoader;
+import com.meti.app.core.state.InfinityToolkit;
 import com.meti.app.core.state.StateImpl;
+import com.meti.app.core.state.Toolkit;
 import com.meti.lib.fx.StageManager;
 import com.meti.lib.mod.ModManager;
 import com.meti.lib.mod.ModManagerImpl;
@@ -11,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -20,24 +23,34 @@ import java.util.logging.Logger;
  * @version 0.0.0
  * @since 5/21/2019
  */
-public class InfinityInitializer {
+public class Initializer implements InitializerImpl {
     private static final Path MODS_DIRECTORY = Paths.get(".\\mods");
-    private final StateImpl stateImpl;
     private final Logger logger;
 
-    public InfinityInitializer(StateImpl stateImpl, Logger logger) {
-        this.stateImpl = stateImpl;
+    public Initializer(Logger logger) {
         this.logger = logger;
     }
 
-    public void initializer(Stage primaryStage) throws IOException {
+    @Override
+    public Toolkit init(Stage primaryStage) throws IOException {
         Path modDirectory = PathUtil.ensureDirectory(MODS_DIRECTORY);
-        stateImpl.addAll(Set.of(
-                logger,
-                initProperties(),
-                initModuleManager(modDirectory),
-                initStageManager(primaryStage)
-        ));
+        Toolkit toolkit = new InfinityToolkit();
+        Set<Object> components = initComponents(primaryStage, modDirectory);
+        installComponents(components, toolkit.getState());
+        return toolkit;
+    }
+
+    private Set<Object> initComponents(Stage primaryStage, Path modDirectory) throws IOException {
+        return Set.of(
+                    this.logger,
+                    initProperties(),
+                    initModuleManager(modDirectory),
+                    initStageManager(primaryStage)
+            );
+    }
+
+    private void installComponents(Collection<Object> components, StateImpl stateImpl) {
+        stateImpl.addAll(components);
     }
 
     private Properties initProperties() throws IOException {
