@@ -1,6 +1,7 @@
 package com.meti.core;
 
 import com.meti.core.init.InfinityInitializer;
+import com.meti.core.start.InfinityStarter;
 import com.meti.core.state.InfinityState;
 import com.meti.core.state.StateImpl;
 import javafx.stage.Stage;
@@ -17,6 +18,7 @@ public class Infinity {
         logger.log(Level.INFO, "Starting Infinity.");
         try {
             new InfinityInitializer(this.stateImpl, this.logger).initializer(primaryStage);
+            new InfinityStarter(this.stateImpl).start();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to start Infinity", e);
         }
