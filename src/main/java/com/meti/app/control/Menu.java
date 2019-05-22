@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
  */
 public class Menu {
     @FXML
-    void local(){
+    public void local(){
 
     }
 }
