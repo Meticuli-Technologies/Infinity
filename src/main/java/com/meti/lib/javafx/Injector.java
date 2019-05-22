@@ -18,6 +18,6 @@ public class Injector extends FXMLLoader {
 
     public void read(Readable<?> readable) throws IOException {
         //TODO: run test if FXMLLoader.load(InputStream stream) closes the stream or not
-        load(readable.getInputStream());
+        this.load(readable.getInputStream());
     }
 }
