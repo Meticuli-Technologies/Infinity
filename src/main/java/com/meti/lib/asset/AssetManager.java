@@ -3,6 +3,7 @@ package com.meti.lib.asset;
 import com.meti.lib.source.NamedParentSource;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,11 @@ import java.util.Set;
 public class AssetManager implements AssetManagerImpl {
     private final Set<AssetTransformer> transformers = new HashSet<>();
     private final Set<Asset> assets = new HashSet<>();
+
+    @Override
+    public Set<Asset> getAssets() {
+        return Collections.unmodifiableSet(assets);
+    }
 
     @Override
     public <T extends NamedParentSource<T>> void load(T source) throws IOException {
