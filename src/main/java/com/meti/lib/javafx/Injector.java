@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.lib.javafx;
 
 import javafx.fxml.FXMLLoader;
 
@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class Injector extends FXMLLoader {
     public Injector(List<Object> dependencies) {
-        //noinspection OverridableMethodCallDuringObjectConstruction
-        this.setControllerFactory(new InjectorFactory(dependencies));
+        super(null, null, new InjectorFactory(dependencies));
     }
 }
