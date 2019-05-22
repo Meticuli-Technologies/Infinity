@@ -1,6 +1,8 @@
 package com.meti.core;
 
 import com.meti.core.load.PropertiesLoader;
+import com.meti.core.state.InfinityState;
+import com.meti.core.state.StateImpl;
 import javafx.stage.Stage;
 
 import java.io.IOException;
