@@ -3,6 +3,7 @@ package com.meti.core.init;
 import com.meti.core.Infinity;
 import com.meti.core.load.PropertiesLoader;
 import com.meti.core.state.StateImpl;
+import com.meti.lib.mod.ModManager;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -25,6 +26,9 @@ public final class InfinityInitializer {
     public void initializer() throws IOException {
         Properties properties = new PropertiesLoader().load();
         stateImpl.add(properties);
+
+        ModManager modManager = new ModManager();
+        modManager.load()
         stateImpl.add(logger);
     }
 }

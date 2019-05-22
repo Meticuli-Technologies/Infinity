@@ -1,11 +1,15 @@
 package com.meti.lib.mod;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -18,14 +22,29 @@ public class ModManager {
     private static final String CLASS_SUFFIX = ".class";
     private final Set<Mod> mods = new HashSet<>();
 
-    public Mod load(URL jarURL) throws IOException {
+    public void loadAll(Path directory) throws IOException {
+        if (!Files.isDirectory(directory))
+            throw new IllegalArgumentException(directory + " is not a directory.");
+        for (URI uri : listURIs(directory)) {
+            load(uri.toURL());
+        }
+    }
+
+    private Set<URI> listURIs(Path directory) throws IOException {
+        try (Stream<Path> paths = Files.list(directory)) {
+            return paths.filter(path -> path.endsWith(".jar"))
+                    .map(Path::toUri)
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    public void load(URL jarURL) throws IOException {
         Set<String> contentNames = getContentNames(jarURL);
         Set<String> classNames = convertToClassNames(contentNames);
         Set<Class<?>> initialClasses = loadInitialClasses(jarURL, classNames);
         throwIfNoInitialClasses(initialClasses);
         Mod mod = new Mod(initialClasses);
         mods.add(mod);
-        return mod;
     }
 
     private void throwIfNoInitialClasses(Set<Class<?>> initialClasses) throws IOException {
