@@ -1,8 +1,12 @@
 package com.meti.app.core.state;
 
+import com.meti.app.server.InfinityServer;
 import com.meti.lib.javafx.StageManager;
 import com.meti.lib.javafx.StageManagerImpl;
 import com.meti.lib.mod.ModManagerImpl;
+import com.meti.lib.net.ServerImpl;
+import com.meti.lib.source.CompoundSource;
+import com.meti.lib.source.SourceSupplier;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -28,6 +32,11 @@ public class InfinityToolkit implements Toolkit {
     @Override
     public Properties getProperties() {
         return state.getInstance(Properties.class);
+    }
+
+    @Override
+    public ServerImpl<CompoundSource<?,?>, SourceSupplier<CompoundSource<?, ?>>> getServer() {
+        return state.getInstance(InfinityServer.class);
     }
 
     @Override
