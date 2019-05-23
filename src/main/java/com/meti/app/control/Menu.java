@@ -53,7 +53,7 @@ public class Menu {
     private void loadClient(StateImpl state, int localPort) throws IOException {
         constructClient(state, localPort);
         Scene clientDisplayScene = readAsScene(fromResource("/com/meti/app/control/ClientDisplay.fxml"), toolkit);
-        loadStageManager(clientDisplayScene, toolkit.getStageManager(), toolkit.getStageManager().size() - 1);
+        loadStageManager(clientDisplayScene, toolkit.getStageManager(), toolkit.getStageManager().size());
     }
 
     private int constructServer(StateImpl state, PortSourceSupplier supplier) {

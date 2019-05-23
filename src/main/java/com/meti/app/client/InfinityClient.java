@@ -1,10 +1,10 @@
 package com.meti.app.client;
 
+import com.meti.app.server.MappedHandlerProvider;
 import com.meti.lib.handle.Handler;
 import com.meti.lib.handle.HandlerHopper;
 import com.meti.lib.handle.MappedHandler;
 import com.meti.lib.handle.MappedHandlerImpl;
-import com.meti.lib.net.Listener;
 import com.meti.lib.source.ObjectImpl;
 import com.meti.lib.source.ObjectSourceImpl;
 import com.meti.lib.source.ReadableSource;
@@ -23,7 +23,7 @@ import static com.meti.lib.concurrent.ExecutorUtil.terminate;
  * @version 0.0.0
  * @since 5/22/2019
  */
-public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStream>> implements ClientImpl {
+public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStream>> implements ClientImpl, MappedHandlerProvider {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(4L);
     private final ObjectImpl implementation;
 
@@ -47,8 +47,19 @@ public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStre
     }
 
     @Override
+    public void close() throws IOException {
+        readable.close();
+        terminate(service, timeout);
+    }
+
+    @Override
     public void flush() throws IOException {
         implementation.flush();
+    }
+
+    @Override
+    public MappedHandlerImpl<Object, ? extends ReadableSource<ObjectInputStream>> getHandler() {
+        return handler;
     }
 
     @Override
@@ -69,11 +80,5 @@ public class InfinityClient extends HandlerHopper<ReadableSource<ObjectInputStre
     @Override
     public void listen() {
         service.submit(this);
-    }
-
-    @Override
-    public void close() throws IOException {
-        readable.close();
-        terminate(service, timeout);
     }
 }

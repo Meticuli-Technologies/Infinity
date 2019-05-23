@@ -17,12 +17,12 @@ public class ObjectSource extends DelegateSource<ObjectInputStream, ObjectOutput
 
     @Override
     protected ObjectInputStream build(InputStream inputStream) throws IOException {
+        if (this.getOutputStream() == null) throw new IllegalStateException("Object output stream cannot be null.");
         return new ObjectInputStream(inputStream);
     }
 
     @Override
     protected ObjectOutputStream build(OutputStream outputStream) throws IOException {
-        if (this.getInputStream() == null) throw new IllegalStateException("Object input stream cannot be null.");
         return new ObjectOutputStream(outputStream);
     }
 

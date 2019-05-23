@@ -36,7 +36,12 @@ public class ServerDisplay implements Initializable {
     }
 
     private void initServer(ServerImpl<CompoundSource<?, ?>, PortSourceSupplier> server) {
-        server.setOnAccept(compoundSource -> clients.getItems().add(compoundSource.toString()));
+        server.getClients().forEach(this::indexClient);
+        server.setOnAccept(this::indexClient);
         portText.setText(String.valueOf(server.getPort()));
+    }
+
+    private boolean indexClient(CompoundSource<?, ?> compoundSource) {
+        return clients.getItems().add(compoundSource.toString());
     }
 }

@@ -5,6 +5,7 @@ import com.meti.lib.source.SourceSupplier;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.Consumer;
 
@@ -14,20 +15,9 @@ import java.util.function.Consumer;
  * @since 5/22/2019
  */
 public abstract class Server<S extends CompoundSource<?, ?>, O extends SourceSupplier<S>> implements ServerImpl<S, O> {
-    private final Collection<S> sources = new HashSet<>();
     protected final O supplier;
-
+    private final Collection<S> sources = new HashSet<>();
     private Consumer<S> onAccept;
-
-    @Override
-    public Consumer<S> getOnAccept() {
-        return onAccept;
-    }
-
-    @Override
-    public void setOnAccept(Consumer<S> onAccept) {
-        this.onAccept = onAccept;
-    }
 
     protected Server(O supplier) {
         this.supplier = supplier;
@@ -52,5 +42,20 @@ public abstract class Server<S extends CompoundSource<?, ?>, O extends SourceSup
         for (S source : sources) {
             source.close();
         }
+    }
+
+    @Override
+    public Collection<S> getClients() {
+        return Collections.unmodifiableCollection(sources);
+    }
+
+    @Override
+    public Consumer<S> getOnAccept() {
+        return onAccept;
+    }
+
+    @Override
+    public void setOnAccept(Consumer<S> onAccept) {
+        this.onAccept = onAccept;
     }
 }
