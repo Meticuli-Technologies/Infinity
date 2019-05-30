@@ -1,47 +1,19 @@
 package com.meti;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class Client {
-    private Socket socket;
+public class Client implements Closeable {
+    private final Socket socket;
+    private final ObjectInputStream inputStream;
+    private final ObjectOutputStream outputStream;
 
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    private ObjectInputStream inputStream;
-
-    public ObjectInputStream getInputStream() {
-        return inputStream;
-    }
-
-    public void setInputStream(ObjectInputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-
-    private ObjectOutputStream outputStream;
-
-    public ObjectOutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    public void setOutputStream(ObjectOutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
-
-    public Client(int port) throws IOException {
+    Client(int port) throws IOException {
         this(InetAddress.getLocalHost(), port);
     }
 
-    public Client(InetAddress address, int port) throws IOException {
+    private Client(InetAddress address, int port) throws IOException {
         this(new Socket(address, port));
     }
 
@@ -52,5 +24,35 @@ public class Client {
              */
         this.outputStream = new ObjectOutputStream(this.socket.getOutputStream());
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
+    }
+
+    @Override
+    public void close() throws IOException {
+        socket.close();
+    }
+
+    void readResponse() throws IOException, ClassNotFoundException {
+        processResponse(inputStream.readObject());
+    }
+
+    private void processResponse(Object response) {
+        if (response instanceof Throwable) {
+            ((Throwable) response).printStackTrace();
+        } else {
+            processResponseNonThrowable(response);
+        }
+    }
+
+    private void processResponseNonThrowable(Object response) {
+        if (response instanceof String) {
+            System.out.println(response);
+        } else {
+            throw new UnsupportedOperationException("Unknown response: " + response);
+        }
+    }
+
+    void writeAndFlush(Serializable serializable) throws IOException {
+        outputStream.writeObject(serializable);
+        outputStream.flush();
     }
 }

@@ -1,7 +1,7 @@
 package com.meti;
 
 import java.io.IOException;
-import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -36,41 +36,19 @@ public class ClientMain {
         stop();
     }
 
-    private void writeMessage(String message) {
+    private void writeMessage(Serializable message) {
         try {
-            writeToStream(message, client.getOutputStream());
-            processResponse(client.getInputStream().readObject());
+            client.writeAndFlush(message);
+            client.readResponse();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void writeToStream(String message, ObjectOutput outputStream) throws IOException {
-        outputStream.writeObject(message);
-        outputStream.flush();
-    }
-
-    private void processResponse(Object response) {
-        if (response instanceof Throwable) {
-            ((Throwable) response).printStackTrace();
-        } else {
-            processResponseNonThrowable(response);
-        }
-    }
-
-    private void processResponseNonThrowable(Object response) {
-        if (response instanceof String) {
-            System.out.println(response);
-        } else {
-            throw new UnsupportedOperationException("Unknown response: " + response);
         }
     }
 
     private void start() {
         try {
             scanner = new Scanner(System.in);
-            int port = getPort();
-            client = new Client(port);
+            client = new Client(getPort());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,7 +61,7 @@ public class ClientMain {
 
     private void stop() {
         try {
-            client.getSocket().close();
+            client.close();
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
