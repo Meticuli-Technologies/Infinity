@@ -23,7 +23,6 @@ public class ClientMain {
         clientMain.init();
         clientMain.start();
         clientMain.run();
-        clientMain.stop();
     }
 
     private void init() {
