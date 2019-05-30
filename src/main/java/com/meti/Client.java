@@ -3,6 +3,7 @@ package com.meti;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client {
@@ -34,6 +35,14 @@ public class Client {
 
     public void setOutputStream(ObjectOutputStream outputStream) {
         this.outputStream = outputStream;
+    }
+
+    public Client(int port) throws IOException {
+        this(InetAddress.getLocalHost(), port);
+    }
+
+    public Client(InetAddress address, int port) throws IOException {
+        this(new Socket(address, port));
     }
 
     public Client(Socket socket) throws IOException {

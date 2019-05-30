@@ -2,8 +2,6 @@ package com.meti;
 
 import java.io.IOException;
 import java.io.ObjectOutput;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -72,7 +70,7 @@ public class ClientMain {
         try {
             scanner = new Scanner(System.in);
             int port = getPort();
-            client = new Client(new Socket(InetAddress.getLocalHost(), port));
+            client = new Client(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
