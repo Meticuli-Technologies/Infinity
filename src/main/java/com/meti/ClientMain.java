@@ -36,6 +36,10 @@ public class ClientMain {
             int port = scanner.nextInt();
 
             socket = new Socket(InetAddress.getLocalHost(), port);
+
+            /*
+            The OOS must be constructed before the OIS because of the header.
+             */
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
