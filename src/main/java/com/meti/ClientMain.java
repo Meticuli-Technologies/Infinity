@@ -49,6 +49,17 @@ public class ClientMain {
         try {
             scanner = new Scanner(System.in);
             client = new SocketClient(getPort());
+            client.getHandlers().add(new ResponseHandler() {
+                @Override
+                public boolean canHandle(Object response) {
+                    return response instanceof String;
+                }
+
+                @Override
+                public void handle(Object response, Client client) {
+                    System.out.println(response);
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

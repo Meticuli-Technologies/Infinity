@@ -51,19 +51,10 @@ public class SocketClient implements Client {
 
     private final Set<ResponseHandler> handlers = new HashSet<>();
 
-    {
-        handlers.add(new ResponseHandler() {
-            @Override
-            public boolean canHandle(Object response) {
-                return response instanceof String;
-            }
-
-            @Override
-            public void handle(Object response, Client client) {
-                System.out.println(response);
-            }
-        });
+    public Set<ResponseHandler> getHandlers() {
+        return handlers;
     }
+
     private void processResponseNonThrowable(Object response) {
         boolean noHandlerFound = !processWithHandlers(response)
                 .findAny()
