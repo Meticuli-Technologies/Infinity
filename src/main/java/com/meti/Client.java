@@ -18,6 +18,8 @@ public interface Client extends Closeable {
 
     void processNextResponse() throws Throwable;
 
+    void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException;
+
     Set<ResponseHandler> getHandlers();
 
     void write(Serializable serializable) throws IOException;

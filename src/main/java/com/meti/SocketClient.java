@@ -38,7 +38,17 @@ public class SocketClient implements Client {
 
     @Override
     public void processNextResponse() throws Throwable {
-        handlerManager.processResponse(inputStream.readObject());
+        Object nextResponse = inputStream.readObject();
+        Set<Serializable> serializablesToWrite = handlerManager.processResponse(nextResponse);
+        writeAndFlushIterable(serializablesToWrite);
+    }
+
+    @Override
+    public void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException {
+        for (Serializable serializable : collection) {
+            write(serializable);
+        }
+        flush();
     }
 
     @Override

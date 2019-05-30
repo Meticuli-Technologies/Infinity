@@ -1,18 +1,20 @@
 package com.meti;
 
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class SetBasedHandlerManager implements HandlerManager {
     private final Set<ResponseHandler> handlers = new HashSet<>();
 
     @Override
-    public void processResponse(Object response) throws Throwable {
+    public Set<Serializable> processResponse(Object response) throws Throwable {
         if (response instanceof Throwable) {
             throw (Throwable) response;
         } else {
-            processResponseNonThrowable(response);
+            return processResponseNonThrowable(response);
         }
     }
 
@@ -21,18 +23,19 @@ public class SetBasedHandlerManager implements HandlerManager {
         return handlers;
     }
 
-    private void processResponseNonThrowable(Object response) {
-        boolean noHandlerFound = !processWithHandlers(response)
-                .findAny()
-                .isPresent();
-        if (noHandlerFound) {
+    private Set<Serializable> processResponseNonThrowable(Object response) {
+        Set<Serializable> responses = processWithHandlers(response);
+        if (responses.isEmpty()) {
             throw new UnsupportedOperationException("Unknown response: " + response);
         }
+        return responses;
     }
 
-    private Stream<ResponseHandler> processWithHandlers(Object response) {
+    private Set<Serializable> processWithHandlers(Object response) {
         return handlers.stream()
                 .filter(handler -> handler.canHandle(response))
-                .peek(handler -> handler.handle(response, null));
+                .map(handler -> handler.handle(response, null))
+                .flatMap(Optional::stream)
+                .collect(Collectors.toSet());
     }
 }

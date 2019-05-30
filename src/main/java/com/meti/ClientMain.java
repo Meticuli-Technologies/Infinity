@@ -2,6 +2,7 @@ package com.meti;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -76,8 +77,9 @@ public class ClientMain {
         }
 
         @Override
-        public void handle(Object response, Client client) {
+        public Optional<Serializable> handle(Object response, Client client) {
             System.out.println(response);
+            return Optional.empty();
         }
     }
 }

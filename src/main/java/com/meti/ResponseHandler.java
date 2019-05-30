@@ -1,5 +1,8 @@
 package com.meti;
 
+import java.io.Serializable;
+import java.util.Optional;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
@@ -8,5 +11,5 @@ package com.meti;
 public interface ResponseHandler {
     boolean canHandle(Object response);
 
-    void handle(Object response, Client client);
+    Optional<Serializable> handle(Object response, Client client);
 }

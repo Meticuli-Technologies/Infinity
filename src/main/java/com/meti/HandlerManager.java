@@ -1,5 +1,6 @@
 package com.meti;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Set;
  * @since 5/30/2019
  */
 public interface HandlerManager {
-    void processResponse(Object response) throws Throwable;
+    Set<Serializable> processResponse(Object response) throws Throwable;
 
     Set<ResponseHandler> getHandlers();
 }
