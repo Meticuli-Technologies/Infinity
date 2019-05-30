@@ -64,6 +64,7 @@ public class Main {
 
     private void stop() {
         try {
+            clientSocket.close();
             serverSocket.close();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to stop Infinity", e);
