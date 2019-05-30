@@ -1,5 +1,7 @@
 package com.meti;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Scanner;
 
 /**
@@ -24,8 +26,14 @@ public class ServerMain {
         port = scanner.nextInt();
     }
 
-    private void start() {
+    private ServerSocket serverSocket;
 
+    private void start() {
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void run() {
@@ -37,7 +45,12 @@ public class ServerMain {
     }
 
     private void stop() {
-        scanner.close();
+        try {
+            serverSocket.close();
+            scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean shouldContinue() {
