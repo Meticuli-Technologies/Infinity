@@ -4,6 +4,8 @@ import com.meti.lib.net.client.Client;
 import com.meti.lib.net.handle.ResponseHandler;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -13,11 +15,11 @@ import java.util.concurrent.Callable;
  * @since 5/30/2019
  */
 public abstract class ClientAcceptor implements Callable<Void>, Stoppable {
-    private final Set<? extends ResponseHandler> handlers;
+    private final Collection<ResponseHandler> handlers = new HashSet<>();
     private boolean running;
 
-    protected ClientAcceptor(Set<? extends ResponseHandler> handlers) {
-        this.handlers = handlers;
+    protected ClientAcceptor(Collection<? extends ResponseHandler> initialHandlers) {
+        this.handlers.addAll(initialHandlers);
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
@@ -99,7 +100,7 @@ public class ServerMain {
     }
 
     private class InfinityClientAcceptor extends ClientAcceptor {
-        InfinityClientAcceptor(Set<? extends ResponseHandler> handlers) {
+        InfinityClientAcceptor(Collection<? extends ResponseHandler> handlers) {
             super(handlers);
         }
 
