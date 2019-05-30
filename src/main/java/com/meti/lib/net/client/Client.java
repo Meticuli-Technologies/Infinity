@@ -12,7 +12,7 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public interface Client extends ComplexCloseable {
+public interface Client extends ComplexCloseable, ResponseProcessor {
     String getName();
 
     default void writeAndFlush(Serializable message) throws IOException {
@@ -20,11 +20,7 @@ public interface Client extends ComplexCloseable {
         flush();
     }
 
-    void processNextResponse() throws Throwable;
-
     void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException;
-
-    Set<ResponseHandler> getHandlers();
 
     void write(Serializable serializable) throws IOException;
 
