@@ -1,11 +1,23 @@
 package com.meti;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.Scanner;
+
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 5/30/2019
  */
 public class ClientMain {
+    private Scanner scanner;
+    private Socket socket;
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
+
     public static void main(String[] args) {
         ClientMain clientMain = new ClientMain();
         clientMain.init();
@@ -15,11 +27,20 @@ public class ClientMain {
     }
 
     private void init() {
-
+        scanner = new Scanner(System.in);
     }
 
     private void start() {
+        try {
+            System.out.print("Enter in the local port: ");
+            int port = scanner.nextInt();
 
+            socket = new Socket(InetAddress.getLocalHost(), port);
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void run() {
@@ -31,7 +52,12 @@ public class ClientMain {
     }
 
     private void stop() {
-
+        try {
+            socket.close();
+            scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean shouldContinue() {
