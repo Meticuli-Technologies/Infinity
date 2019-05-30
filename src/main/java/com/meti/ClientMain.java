@@ -24,23 +24,7 @@ public class ClientMain {
         clientMain.run();
     }
 
-    private void start() {
-        try {
-            scanner = new Scanner(System.in);
-            System.out.print("Enter in the local port: ");
-            int port = scanner.nextInt();
-
-            socket = new Socket(InetAddress.getLocalHost(), port);
-
-            /*
-            The OOS must be constructed before the OIS because of the header.
-             */
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            inputStream = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private boolean shouldContinue = true;
 
     private void run() {
         while (shouldContinue()) {
@@ -50,39 +34,79 @@ public class ClientMain {
         stop();
     }
 
+    private void loop() {
+        String message = scanner.nextLine();
+        if (message.equals("exit")) {
+            shouldContinue = false;
+        } else {
+            writeMessage(message);
+        }
+    }
+
+    private void writeMessage(String message) {
+        try {
+            writeMessageAndProcessResponse(message);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeMessageAndProcessResponse(String message) throws IOException, ClassNotFoundException {
+        writeToStream(message);
+        processResponse(inputStream.readObject());
+    }
+
+    private void writeToStream(String message) throws IOException {
+        outputStream.writeObject(message);
+        outputStream.flush();
+    }
+
+    private void processResponse(Object response) {
+        if (response instanceof Throwable) {
+            ((Throwable) response).printStackTrace();
+        } else {
+            processResponseNonThrowable(response);
+        }
+    }
+
+    private void processResponseNonThrowable(Object response) {
+        if (response instanceof String) {
+            System.out.println(response);
+        } else {
+            throw new UnsupportedOperationException("Unknown response: " + response);
+        }
+    }
+
+    private void start() {
+        try {
+            scanner = new Scanner(System.in);
+            int port = getPort();
+            bindToPort(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int getPort() {
+        System.out.print("Enter in the local port: ");
+        return scanner.nextInt();
+    }
+
+    private void bindToPort(int port) throws IOException {
+        socket = new Socket(InetAddress.getLocalHost(), port);
+            /*
+            The OOS must be constructed before the OIS because of the header.
+             */
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        inputStream = new ObjectInputStream(socket.getInputStream());
+    }
+
     private void stop() {
         try {
             socket.close();
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private boolean shouldContinue = true;
-
-    private void loop() {
-        String message = scanner.nextLine();
-        if (message.equals("exit")) {
-            shouldContinue = false;
-        } else {
-            try {
-                outputStream.writeObject(message);
-                outputStream.flush();
-
-                Object response = inputStream.readObject();
-                if (response instanceof Throwable) {
-                    ((Throwable) response).printStackTrace();
-                } else {
-                    if (response instanceof String) {
-                        System.out.println(response);
-                    } else {
-                        throw new UnsupportedOperationException("Unknown response: " + response);
-                    }
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 
