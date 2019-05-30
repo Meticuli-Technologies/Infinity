@@ -14,21 +14,13 @@ public class SetBasedHandlerManager implements HandlerManager {
         if (response instanceof Throwable) {
             throw (Throwable) response;
         } else {
-            return processResponseNonThrowable(response, client);
+            return processWithHandlers(response, client);
         }
     }
 
     @Override
     public Set<ResponseHandler> getHandlers() {
         return handlers;
-    }
-
-    private Set<Serializable> processResponseNonThrowable(Object response, Client client) {
-        Set<Serializable> responses = processWithHandlers(response, client);
-        if (responses.isEmpty()) {
-            throw new UnsupportedOperationException("Unknown response: " + response);
-        }
-        return responses;
     }
 
     private Set<Serializable> processWithHandlers(Object response, Client client) {
