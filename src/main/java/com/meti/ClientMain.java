@@ -2,6 +2,7 @@ package com.meti;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -24,39 +25,32 @@ public class ClientMain {
         clientMain.run();
     }
 
-    private boolean shouldContinue = true;
-
-    private void run() {
-        while (shouldContinue) {
-            shouldContinue = loop(scanner.nextLine());
-        }
-
-        stop();
+    private boolean isNotExitMessage(String message) {
+        return !message.equals("exit");
     }
 
-    private boolean loop(String message) {
-        if (message.equals("exit")) {
-            return false;
-        } else {
+    private void loop(String message) {
+        if (isNotExitMessage(message)) {
             writeMessage(message);
-            return true;
+            loop(scanner.nextLine());
         }
+    }
+
+    private void run() {
+        loop(scanner.nextLine());
+        stop();
     }
 
     private void writeMessage(String message) {
         try {
-            writeMessageAndProcessResponse(message);
+            writeToStream(message, outputStream);
+            processResponse(inputStream.readObject());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void writeMessageAndProcessResponse(String message) throws IOException, ClassNotFoundException {
-        writeToStream(message);
-        processResponse(inputStream.readObject());
-    }
-
-    private void writeToStream(String message) throws IOException {
+    private void writeToStream(String message, ObjectOutput outputStream) throws IOException {
         outputStream.writeObject(message);
         outputStream.flush();
     }
