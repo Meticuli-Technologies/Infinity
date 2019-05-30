@@ -20,17 +20,13 @@ public class ClientMain {
 
     public static void main(String[] args) {
         ClientMain clientMain = new ClientMain();
-        clientMain.init();
         clientMain.start();
         clientMain.run();
     }
 
-    private void init() {
-        scanner = new Scanner(System.in);
-    }
-
     private void start() {
         try {
+            scanner = new Scanner(System.in);
             System.out.print("Enter in the local port: ");
             int port = scanner.nextInt();
 
