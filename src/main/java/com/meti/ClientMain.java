@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.function.Supplier;
 
 /**
  * @author SirMathhman
@@ -29,15 +30,15 @@ public class ClientMain {
         return !message.equals("exit");
     }
 
-    private void loop(String message) {
-        if (isNotExitMessage(message)) {
-            writeMessage(message);
-            loop(scanner.nextLine());
+    private void loop(Supplier<String> supplier) {
+        if (isNotExitMessage(supplier.get())) {
+            writeMessage(supplier.get());
+            loop(supplier);
         }
     }
 
     private void run() {
-        loop(scanner.nextLine());
+        loop(() -> scanner.nextLine());
         stop();
     }
 
