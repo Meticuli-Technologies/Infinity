@@ -1,9 +1,7 @@
 package com.meti;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -74,7 +72,7 @@ public class ClientMain {
         try {
             scanner = new Scanner(System.in);
             int port = getPort();
-            bindToSocket(new Socket(InetAddress.getLocalHost(), port));
+            client.bindToSocket(new Socket(InetAddress.getLocalHost(), port));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,15 +81,6 @@ public class ClientMain {
     private int getPort() {
         System.out.print("Enter in the local port: ");
         return scanner.nextInt();
-    }
-
-    private void bindToSocket(Socket socket) throws IOException {
-        client.setSocket(socket);
-            /*
-            The OOS must be constructed before the OIS because of the header.
-             */
-        client.setOutputStream(new ObjectOutputStream(client.getSocket().getOutputStream()));
-        client.setInputStream(new ObjectInputStream(client.getSocket().getInputStream()));
     }
 
     private void stop() {

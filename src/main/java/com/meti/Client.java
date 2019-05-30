@@ -1,5 +1,6 @@
 package com.meti;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -36,5 +37,14 @@ public class Client {
     }
 
     public Client() {
+    }
+
+    void bindToSocket(Socket socket) throws IOException {
+        this.socket = socket;
+    /*
+            The OOS must be constructed before the OIS because of the header.
+             */
+        this.outputStream = new ObjectOutputStream(this.socket.getOutputStream());
+        this.inputStream = new ObjectInputStream(this.socket.getInputStream());
     }
 }
