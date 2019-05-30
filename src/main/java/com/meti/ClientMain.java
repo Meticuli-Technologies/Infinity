@@ -74,7 +74,7 @@ public class ClientMain {
         try {
             scanner = new Scanner(System.in);
             int port = getPort();
-            bindToPort(port);
+            bindToSocket(new Socket(InetAddress.getLocalHost(), port));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,8 +85,8 @@ public class ClientMain {
         return scanner.nextInt();
     }
 
-    private void bindToPort(int port) throws IOException {
-        client.setSocket(new Socket(InetAddress.getLocalHost(), port));
+    private void bindToSocket(Socket socket) throws IOException {
+        client.setSocket(socket);
             /*
             The OOS must be constructed before the OIS because of the header.
              */
