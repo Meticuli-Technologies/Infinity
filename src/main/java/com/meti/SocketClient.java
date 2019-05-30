@@ -1,8 +1,14 @@
 package com.meti;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class SocketClient implements Client {
     private final Socket socket;
@@ -43,12 +49,34 @@ public class SocketClient implements Client {
         }
     }
 
+    private final Set<ResponseHandler> handlers = new HashSet<>();
+
+    {
+        handlers.add(new ResponseHandler() {
+            @Override
+            public boolean canHandle(Object response) {
+                return response instanceof String;
+            }
+
+            @Override
+            public void handle(Object response, Client client) {
+                System.out.println(response);
+            }
+        });
+    }
     private void processResponseNonThrowable(Object response) {
-        if (response instanceof String) {
-            System.out.println(response);
-        } else {
+        boolean noHandlerFound = !processWithHandlers(response)
+                .findAny()
+                .isPresent();
+        if (noHandlerFound) {
             throw new UnsupportedOperationException("Unknown response: " + response);
         }
+    }
+
+    private Stream<ResponseHandler> processWithHandlers(Object response) {
+        return handlers.stream()
+                .filter(handler -> handler.canHandle(response))
+                .peek(handler -> handler.handle(response, this));
     }
 
     @Override
