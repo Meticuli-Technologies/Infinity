@@ -37,10 +37,6 @@ public class Client {
     }
 
     public Client(Socket socket) throws IOException {
-        bindToSocket(socket);
-    }
-
-    private void bindToSocket(Socket socket) throws IOException {
         this.socket = socket;
     /*
             The OOS must be constructed before the OIS because of the header.
