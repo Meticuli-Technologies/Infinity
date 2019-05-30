@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * @since 5/30/2019
  */
 public class ClientMain {
-    private Client client;
+    private SocketClient client;
     private Scanner scanner;
 
     public static void main(String[] args) {
@@ -48,7 +48,7 @@ public class ClientMain {
     private void start() {
         try {
             scanner = new Scanner(System.in);
-            client = new Client(getPort());
+            client = new SocketClient(getPort());
         } catch (IOException e) {
             e.printStackTrace();
         }
