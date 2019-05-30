@@ -45,7 +45,7 @@ public class Client {
         this(new Socket(address, port));
     }
 
-    public Client(Socket socket) throws IOException {
+    private Client(Socket socket) throws IOException {
         this.socket = socket;
     /*
             The OOS must be constructed before the OIS because of the header.
