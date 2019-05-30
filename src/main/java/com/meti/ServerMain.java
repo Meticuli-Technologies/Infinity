@@ -66,6 +66,7 @@ public class ServerMain {
     private void start() {
         try {
             serverSocket = new ServerSocket(port);
+            System.out.println("Launched server on port " + serverSocket.getLocalPort() + ".");
 
             service.submit((Callable<Void>) () -> {
                 while (shouldContinue()) {
