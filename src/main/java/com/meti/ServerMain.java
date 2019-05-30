@@ -1,8 +1,12 @@
 package com.meti;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -10,7 +14,8 @@ import java.util.Scanner;
  * @since 5/30/2019
  */
 public class ServerMain {
-    private Scanner scanner;
+    private final ExecutorService service = Executors.newCachedThreadPool();
+    private final Scanner scanner = new Scanner(System.in);
     private int port;
 
     public static void main(String[] args) {
@@ -21,20 +26,12 @@ public class ServerMain {
     }
 
     private void init() {
-        scanner = new Scanner(System.in);
         System.out.print("Enter in a port, or 0 for a local one: ");
         port = scanner.nextInt();
     }
 
     private ServerSocket serverSocket;
-
-    private void start() {
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private boolean shouldContinue;
 
     private void run() {
         while (shouldContinue()) {
@@ -44,20 +41,60 @@ public class ServerMain {
         stop();
     }
 
+    private boolean shouldContinue() {
+        return shouldContinue;
+    }
+
+    private void loop() {
+        String input = scanner.nextLine();
+        if (input.equals("exit")) {
+            shouldContinue = false;
+        }
+    }
+
     private void stop() {
         try {
             serverSocket.close();
             scanner.close();
+
+            service.shutdownNow();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private boolean shouldContinue() {
-        return false;
-    }
+    private void start() {
+        try {
+            serverSocket = new ServerSocket(port);
 
-    private void loop() {
+            service.submit((Callable<Void>) () -> {
+                while (shouldContinue()) {
+                    Socket acceptedSocket = serverSocket.accept();
+                    service.submit((Callable<Void>) () -> {
+                        ObjectOutput outputStream = new ObjectOutputStream(acceptedSocket.getOutputStream());
+                        ObjectInput inputStream = new ObjectInputStream(acceptedSocket.getInputStream());
 
+                        while (acceptedSocket.isConnected()) {
+                            Object token = inputStream.readObject();
+                            Serializable toReturn;
+                            if (token instanceof String) {
+                                toReturn = acceptedSocket.getInetAddress() + ": " + token;
+                            } else {
+                                toReturn = new IllegalArgumentException("Invalid token: " + token);
+                            }
+
+                            outputStream.writeObject(toReturn);
+                            outputStream.close();
+                        }
+
+                        acceptedSocket.close();
+                        return null;
+                    });
+                }
+                return null;
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
