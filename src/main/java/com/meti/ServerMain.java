@@ -68,22 +68,18 @@ public class ServerMain {
 
     private void start() {
         try {
-            serverSocket = new ServerSocket(port);
-            System.out.println("Launched server on port " + serverSocket.getLocalPort() + '.');
+            buildServerSocket(port);
 
             Set<ResponseHandler> handlers = Set.of(new StringResponseHandler());
-            service.submit((Callable<Void>) () -> {
-                while (shouldContinue()) {
-                    Socket acceptedSocket = serverSocket.accept();
-                    Client client = new SocketClient(acceptedSocket);
-                    client.getHandlers().addAll(handlers);
-                    service.submit(new ClientHandler(client));
-                }
-                return null;
-            });
+            service.submit(new ClientAcceptor(handlers));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void buildServerSocket(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+        System.out.println("Launched server on port " + serverSocket.getLocalPort() + '.');
     }
 
     private static class StringResponseHandler implements ResponseHandler {
@@ -101,7 +97,7 @@ public class ServerMain {
     private static class ClientHandler implements Callable<Void> {
         private final Client client;
 
-        public ClientHandler(Client client) {
+        ClientHandler(Client client) {
             this.client = client;
         }
 
@@ -116,6 +112,33 @@ public class ServerMain {
             }
             client.close();
             return null;
+        }
+    }
+
+    private class ClientAcceptor implements Callable<Void> {
+        private final Set<? extends ResponseHandler> handlers;
+
+        ClientAcceptor(Set<? extends ResponseHandler> handlers) {
+            this.handlers = handlers;
+        }
+
+        @Override
+        public Void call() throws Exception {
+            while (ServerMain.this.shouldContinue()) {
+                Client client = acceptClient();
+                submitClient(client);
+            }
+            return null;
+        }
+
+        private Client acceptClient() throws IOException {
+            Socket acceptedSocket = serverSocket.accept();
+            return new SocketClient(acceptedSocket);
+        }
+
+        private void submitClient(Client client) {
+            client.getHandlers().addAll(handlers);
+            service.submit(new ClientHandler(client));
         }
     }
 }
