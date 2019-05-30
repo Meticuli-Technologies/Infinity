@@ -71,12 +71,15 @@ public class ServerMain {
             service.submit((Callable<Void>) () -> {
                 while (shouldContinue()) {
                     Socket acceptedSocket = serverSocket.accept();
+                    Client client = new SocketClient(acceptedSocket);
+
                     service.submit((Callable<Void>) () -> {
                         ObjectOutput outputStream = new ObjectOutputStream(acceptedSocket.getOutputStream());
                         ObjectInput inputStream = new ObjectInputStream(acceptedSocket.getInputStream());
 
                         while (acceptedSocket.isConnected()) {
                             Object token = inputStream.readObject();
+
                             Serializable toReturn;
                             if (token instanceof String) {
                                 toReturn = acceptedSocket.getInetAddress() + ": " + token;
@@ -84,8 +87,7 @@ public class ServerMain {
                                 toReturn = new IllegalArgumentException("Invalid token: " + token);
                             }
 
-                            outputStream.writeObject(toReturn);
-                            outputStream.flush();
+                            client.writeAndFlush(toReturn);
                         }
 
                         acceptedSocket.close();

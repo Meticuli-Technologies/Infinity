@@ -22,7 +22,7 @@ public class SocketClient implements Client {
         this(new Socket(address, port));
     }
 
-    private SocketClient(Socket socket) throws IOException {
+    public SocketClient(Socket socket) throws IOException {
         this.socket = socket;
     /*
             The OOS must be constructed before the OIS because of the header.
