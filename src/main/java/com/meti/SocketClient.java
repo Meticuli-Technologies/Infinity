@@ -37,7 +37,7 @@ public class SocketClient implements Client {
         socket.close();
     }
 
-    void readResponse() throws Throwable {
+    void processNextResponse() throws Throwable {
         processResponse(inputStream.readObject());
     }
 

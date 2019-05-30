@@ -39,7 +39,7 @@ public class ClientMain {
     private void writeMessage(Serializable message) {
         try {
             client.writeAndFlush(message);
-            client.readResponse();
+            client.processNextResponse();
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -49,17 +49,7 @@ public class ClientMain {
         try {
             scanner = new Scanner(System.in);
             client = new SocketClient(getPort());
-            client.getHandlers().add(new ResponseHandler() {
-                @Override
-                public boolean canHandle(Object response) {
-                    return response instanceof String;
-                }
-
-                @Override
-                public void handle(Object response, Client client) {
-                    System.out.println(response);
-                }
-            });
+            client.getHandlers().add(new StringResponsePrinter());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,6 +66,18 @@ public class ClientMain {
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class StringResponsePrinter implements ResponseHandler {
+        @Override
+        public boolean canHandle(Object response) {
+            return response instanceof String;
+        }
+
+        @Override
+        public void handle(Object response, Client client) {
+            System.out.println(response);
         }
     }
 }
