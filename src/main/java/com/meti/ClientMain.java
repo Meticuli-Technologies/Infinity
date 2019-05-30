@@ -40,7 +40,7 @@ public class ClientMain {
         try {
             client.writeAndFlush(message);
             client.readResponse();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }

@@ -31,13 +31,13 @@ public class Client implements Closeable {
         socket.close();
     }
 
-    void readResponse() throws IOException, ClassNotFoundException {
+    void readResponse() throws Throwable {
         processResponse(inputStream.readObject());
     }
 
-    private void processResponse(Object response) {
+    private void processResponse(Object response) throws Throwable {
         if (response instanceof Throwable) {
-            ((Throwable) response).printStackTrace();
+            throw (Throwable) response;
         } else {
             processResponseNonThrowable(response);
         }
