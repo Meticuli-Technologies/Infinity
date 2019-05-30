@@ -75,7 +75,7 @@ public class ServerMain {
             buildServerSocket(port);
 
             Set<ResponseHandler> handlers = Set.of(new StringResponseHandler());
-            service.submit(new ClientAcceptor(handlers));
+            service.submit(new InfinityClientAcceptor(handlers));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,51 +98,20 @@ public class ServerMain {
         }
     }
 
-    private static class ClientHandler implements Callable<Void> {
-        private final Client client;
-
-        ClientHandler(Client client) {
-            this.client = client;
+    private class InfinityClientAcceptor extends ClientAcceptor {
+        InfinityClientAcceptor(Set<? extends ResponseHandler> handlers) {
+            super(handlers);
         }
 
         @Override
-        public Void call() throws Exception {
-            while (client.isOpen()) {
-                try {
-                    client.processNextResponse();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }
-            client.close();
-            return null;
-        }
-    }
-
-    private class ClientAcceptor implements Callable<Void> {
-        private final Set<? extends ResponseHandler> handlers;
-
-        ClientAcceptor(Set<? extends ResponseHandler> handlers) {
-            this.handlers = handlers;
-        }
-
-        @Override
-        public Void call() throws Exception {
-            while (ServerMain.this.shouldContinue()) {
-                Client client = acceptClient();
-                submitClient(client);
-            }
-            return null;
-        }
-
-        private Client acceptClient() throws IOException {
+        protected Client acceptClient() throws IOException {
             Socket acceptedSocket = serverSocket.accept();
             return new SocketClient(acceptedSocket);
         }
 
-        private void submitClient(Client client) {
-            client.getHandlers().addAll(handlers);
-            service.submit(new ClientHandler(client));
+        @Override
+        protected void submitHandler(Callable<Void> handler) {
+            service.submit(handler);
         }
     }
 }
