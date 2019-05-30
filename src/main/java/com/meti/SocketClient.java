@@ -37,6 +37,11 @@ public class SocketClient implements Client {
     }
 
     @Override
+    public String getName() {
+        return socket.getInetAddress().toString();
+    }
+
+    @Override
     public void processNextResponse() throws Throwable {
         Object nextResponse = inputStream.readObject();
         Set<Serializable> serializablesToWrite = handlerManager.processResponse(nextResponse);
@@ -64,5 +69,10 @@ public class SocketClient implements Client {
     @Override
     public void flush() throws IOException {
         outputStream.flush();
+    }
+
+    @Override
+    public boolean isClosed() {
+        return socket.isClosed();
     }
 }

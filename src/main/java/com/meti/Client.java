@@ -10,6 +10,8 @@ import java.util.Set;
  * @since 5/30/2019
  */
 public interface Client extends ComplexCloseable {
+    String getName();
+
     default void writeAndFlush(Serializable message) throws IOException {
         write(message);
         flush();
