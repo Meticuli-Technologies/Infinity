@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * @since 5/30/2019
  */
 public class ClientMain {
-    private final Client client = new Client();
+    private Client client;
     private Scanner scanner;
 
     public static void main(String[] args) {
@@ -72,7 +72,7 @@ public class ClientMain {
         try {
             scanner = new Scanner(System.in);
             int port = getPort();
-            client.bindToSocket(new Socket(InetAddress.getLocalHost(), port));
+            client = new Client(new Socket(InetAddress.getLocalHost(), port));
         } catch (IOException e) {
             e.printStackTrace();
         }
