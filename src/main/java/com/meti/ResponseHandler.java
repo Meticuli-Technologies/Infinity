@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ResponseHandler {
     boolean canHandle(Object response);
 
-    Optional<Serializable> handle(Object response, Client client);
+    Optional<Serializable> handle(Object response, ComplexCloseable client);
 }

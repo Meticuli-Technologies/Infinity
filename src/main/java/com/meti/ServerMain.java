@@ -3,6 +3,7 @@ package com.meti;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -72,24 +73,26 @@ public class ServerMain {
                 while (shouldContinue()) {
                     Socket acceptedSocket = serverSocket.accept();
                     Client client = new SocketClient(acceptedSocket);
-
-                    service.submit((Callable<Void>) () -> {
-                        ObjectOutput outputStream = new ObjectOutputStream(acceptedSocket.getOutputStream());
-                        ObjectInput inputStream = new ObjectInputStream(acceptedSocket.getInputStream());
-
-                        while (acceptedSocket.isConnected()) {
-                            Object token = inputStream.readObject();
-
-                            Serializable toReturn;
-                            if (token instanceof String) {
-                                toReturn = acceptedSocket.getInetAddress() + ": " + token;
-                            } else {
-                                toReturn = new IllegalArgumentException("Invalid token: " + token);
-                            }
-
-                            client.writeAndFlush(toReturn);
+                    client.getHandlers().add(new ResponseHandler() {
+                        @Override
+                        public boolean canHandle(Object response) {
+                            return response instanceof String;
                         }
 
+                        @Override
+                        public Optional<Serializable> handle(Object response, ComplexCloseable client) {
+                            return Optional.of(acceptedSocket.getInetAddress() + ": " + response);
+                        }
+                    });
+
+                    service.submit((Callable<Void>) () -> {
+                        while (acceptedSocket.isConnected()) {
+                            try {
+                                client.processNextResponse();
+                            } catch (Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        }
                         acceptedSocket.close();
                         return null;
                     });

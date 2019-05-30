@@ -77,7 +77,7 @@ public class ClientMain {
         }
 
         @Override
-        public Optional<Serializable> handle(Object response, Client client) {
+        public Optional<Serializable> handle(Object response, ComplexCloseable client) {
             System.out.println(response);
             return Optional.empty();
         }
