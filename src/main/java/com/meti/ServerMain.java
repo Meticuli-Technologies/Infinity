@@ -31,7 +31,7 @@ public class ServerMain {
     }
 
     private ServerSocket serverSocket;
-    private boolean shouldContinue;
+    private boolean shouldContinue = true;
 
     private void run() {
         while (shouldContinue()) {
@@ -85,7 +85,7 @@ public class ServerMain {
                             }
 
                             outputStream.writeObject(toReturn);
-                            outputStream.close();
+                            outputStream.flush();
                         }
 
                         acceptedSocket.close();
