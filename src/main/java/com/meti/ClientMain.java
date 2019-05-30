@@ -27,19 +27,19 @@ public class ClientMain {
     private boolean shouldContinue = true;
 
     private void run() {
-        while (shouldContinue()) {
-            loop();
+        while (shouldContinue) {
+            shouldContinue = loop(scanner.nextLine());
         }
 
         stop();
     }
 
-    private void loop() {
-        String message = scanner.nextLine();
+    private boolean loop(String message) {
         if (message.equals("exit")) {
-            shouldContinue = false;
+            return false;
         } else {
             writeMessage(message);
+            return true;
         }
     }
 
@@ -108,9 +108,5 @@ public class ClientMain {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean shouldContinue() {
-        return shouldContinue;
     }
 }
