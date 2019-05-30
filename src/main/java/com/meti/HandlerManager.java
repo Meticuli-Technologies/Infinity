@@ -9,7 +9,7 @@ import java.util.Set;
  * @since 5/30/2019
  */
 public interface HandlerManager {
-    Set<Serializable> processResponse(Object response) throws Throwable;
+    Set<Serializable> processResponse(Object response, Client client) throws Throwable;
 
     Set<ResponseHandler> getHandlers();
 }

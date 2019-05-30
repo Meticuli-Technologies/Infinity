@@ -10,11 +10,11 @@ public class SetBasedHandlerManager implements HandlerManager {
     private final Set<ResponseHandler> handlers = new HashSet<>();
 
     @Override
-    public Set<Serializable> processResponse(Object response) throws Throwable {
+    public Set<Serializable> processResponse(Object response, Client client) throws Throwable {
         if (response instanceof Throwable) {
             throw (Throwable) response;
         } else {
-            return processResponseNonThrowable(response);
+            return processResponseNonThrowable(response, client);
         }
     }
 
@@ -23,18 +23,18 @@ public class SetBasedHandlerManager implements HandlerManager {
         return handlers;
     }
 
-    private Set<Serializable> processResponseNonThrowable(Object response) {
-        Set<Serializable> responses = processWithHandlers(response);
+    private Set<Serializable> processResponseNonThrowable(Object response, Client client) {
+        Set<Serializable> responses = processWithHandlers(response, client);
         if (responses.isEmpty()) {
             throw new UnsupportedOperationException("Unknown response: " + response);
         }
         return responses;
     }
 
-    private Set<Serializable> processWithHandlers(Object response) {
+    private Set<Serializable> processWithHandlers(Object response, Client client) {
         return handlers.stream()
                 .filter(handler -> handler.canHandle(response))
-                .map(handler -> handler.handle(response, null))
+                .map(handler -> handler.handle(response, client))
                 .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
     }
