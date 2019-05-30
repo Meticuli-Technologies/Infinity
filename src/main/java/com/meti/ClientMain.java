@@ -64,11 +64,34 @@ public class ClientMain {
         }
     }
 
-    private boolean shouldContinue() {
-        return false;
-    }
+    private boolean shouldContinue = true;
 
     private void loop() {
+        String message = scanner.nextLine();
+        if (message.equals("exit")) {
+            shouldContinue = false;
+        } else {
+            try {
+                outputStream.writeObject(message);
+                outputStream.flush();
 
+                Object response = inputStream.readObject();
+                if (response instanceof Throwable) {
+                    ((Throwable) response).printStackTrace();
+                } else {
+                    if (response instanceof String) {
+                        System.out.println(response);
+                    } else {
+                        throw new UnsupportedOperationException("Unknown response: " + response);
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean shouldContinue() {
+        return shouldContinue;
     }
 }
