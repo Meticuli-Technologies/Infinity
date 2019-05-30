@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * @since 5/30/2019
  */
 public class ClientMain {
-    private SocketClient client;
+    private Client client;
     private Scanner scanner;
 
     public static void main(String[] args) {

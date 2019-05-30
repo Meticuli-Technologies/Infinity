@@ -37,7 +37,8 @@ public class SocketClient implements Client {
         socket.close();
     }
 
-    void processNextResponse() throws Throwable {
+    @Override
+    public void processNextResponse() throws Throwable {
         processResponse(inputStream.readObject());
     }
 
@@ -51,6 +52,7 @@ public class SocketClient implements Client {
 
     private final Set<ResponseHandler> handlers = new HashSet<>();
 
+    @Override
     public Set<ResponseHandler> getHandlers() {
         return handlers;
     }

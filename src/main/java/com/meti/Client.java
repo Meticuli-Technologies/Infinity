@@ -3,6 +3,7 @@ package com.meti;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -14,6 +15,10 @@ public interface Client extends Closeable {
         write(message);
         flush();
     }
+
+    void processNextResponse() throws Throwable;
+
+    Set<ResponseHandler> getHandlers();
 
     void write(Serializable serializable) throws IOException;
 
