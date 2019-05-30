@@ -6,14 +6,13 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class SocketClient implements Client {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
+    private final HandlerManager handlerManager = new SetBasedHandlerManager();
 
     SocketClient(int port) throws IOException {
         this(InetAddress.getLocalHost(), port);
@@ -39,37 +38,12 @@ public class SocketClient implements Client {
 
     @Override
     public void processNextResponse() throws Throwable {
-        processResponse(inputStream.readObject());
+        handlerManager.processResponse(inputStream.readObject());
     }
-
-    private void processResponse(Object response) throws Throwable {
-        if (response instanceof Throwable) {
-            throw (Throwable) response;
-        } else {
-            processResponseNonThrowable(response);
-        }
-    }
-
-    private final Set<ResponseHandler> handlers = new HashSet<>();
 
     @Override
     public Set<ResponseHandler> getHandlers() {
-        return handlers;
-    }
-
-    private void processResponseNonThrowable(Object response) {
-        boolean noHandlerFound = !processWithHandlers(response)
-                .findAny()
-                .isPresent();
-        if (noHandlerFound) {
-            throw new UnsupportedOperationException("Unknown response: " + response);
-        }
-    }
-
-    private Stream<ResponseHandler> processWithHandlers(Object response) {
-        return handlers.stream()
-                .filter(handler -> handler.canHandle(response))
-                .peek(handler -> handler.handle(response, this));
+        return handlerManager.getHandlers();
     }
 
     @Override
