@@ -15,10 +15,8 @@ import java.util.function.Supplier;
  * @since 5/30/2019
  */
 public class ClientMain {
+    private final Client client = new Client();
     private Scanner scanner;
-    private Socket socket;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
 
     public static void main(String[] args) {
         ClientMain clientMain = new ClientMain();
@@ -44,8 +42,8 @@ public class ClientMain {
 
     private void writeMessage(String message) {
         try {
-            writeToStream(message, outputStream);
-            processResponse(inputStream.readObject());
+            writeToStream(message, client.getOutputStream());
+            processResponse(client.getInputStream().readObject());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -88,17 +86,17 @@ public class ClientMain {
     }
 
     private void bindToPort(int port) throws IOException {
-        socket = new Socket(InetAddress.getLocalHost(), port);
+        client.setSocket(new Socket(InetAddress.getLocalHost(), port));
             /*
             The OOS must be constructed before the OIS because of the header.
              */
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
+        client.setOutputStream(new ObjectOutputStream(client.getSocket().getOutputStream()));
+        client.setInputStream(new ObjectInputStream(client.getSocket().getInputStream()));
     }
 
     private void stop() {
         try {
-            socket.close();
+            client.getSocket().close();
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
