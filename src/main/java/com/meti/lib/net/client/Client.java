@@ -26,11 +26,6 @@ public interface Client extends ComplexCloseable {
 
     Set<ResponseHandler> getHandlers();
 
-    @Override
-    default boolean isOpen() {
-        return !isClosed();
-    }
-
     void write(Serializable serializable) throws IOException;
 
     void flush() throws IOException;

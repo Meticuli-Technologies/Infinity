@@ -8,7 +8,9 @@ import java.io.Closeable;
  * @since 5/30/2019
  */
 public interface ComplexCloseable extends Closeable {
-    boolean isOpen();
+    default boolean isOpen() {
+        return !isClosed();
+    }
 
     boolean isClosed();
 }
