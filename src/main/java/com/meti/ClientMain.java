@@ -58,7 +58,13 @@ public class ClientMain {
 
     private int getPort() {
         System.out.print("Enter in the local port: ");
-        return scanner.nextInt();
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid port, please try again.");
+            }
+        }
     }
 
     private void stop() {
