@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.lib.net.client;
+
+import com.meti.lib.net.handle.ResponseHandler;
 
 import java.io.IOException;
 import java.io.Serializable;

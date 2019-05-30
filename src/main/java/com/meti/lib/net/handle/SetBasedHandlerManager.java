@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.lib.net.handle;
+
+import com.meti.lib.net.client.Client;
 
 import java.io.Serializable;
 import java.util.HashSet;
