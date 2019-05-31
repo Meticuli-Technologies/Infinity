@@ -1,6 +1,7 @@
-package com.meti.net.handle;
+package com.meti.net.handle.manage;
 
 import com.meti.net.client.Client;
+import com.meti.net.handle.ResponseHandler;
 
 import java.io.Serializable;
 import java.util.HashSet;

@@ -1,8 +1,8 @@
 package com.meti.net.client;
 
-import com.meti.net.handle.HandlerManager;
+import com.meti.net.handle.manage.HandlerManager;
 import com.meti.net.handle.ResponseHandler;
-import com.meti.net.handle.SetBasedHandlerManager;
+import com.meti.net.handle.manage.SetBasedHandlerManager;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
