@@ -1,4 +1,4 @@
-package com.meti.lib.net.server;
+package com.meti.app.server;
 
 import com.meti.lib.net.server.server.InfinityServer;
 import com.meti.lib.net.server.server.Server;

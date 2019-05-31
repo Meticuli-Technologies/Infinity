@@ -1,6 +1,6 @@
 package com.meti.lib.net.server.server;
 
-import com.meti.lib.net.server.StringResponseHandler;
+import com.meti.app.server.StringResponseHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -18,7 +18,7 @@ public class SocketClient implements Client {
     private final ObjectOutputStream outputStream;
     private final HandlerManager handlerManager = new SetBasedHandlerManager();
 
-    SocketClient(int port) throws IOException {
+    public SocketClient(int port) throws IOException {
         this(InetAddress.getLocalHost(), port);
     }
 

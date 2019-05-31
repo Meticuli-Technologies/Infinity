@@ -1,5 +1,7 @@
-package com.meti.lib.net.client;
+package com.meti.app.client;
 
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.handle.ResponseHandler;
 
 import java.io.IOException;
