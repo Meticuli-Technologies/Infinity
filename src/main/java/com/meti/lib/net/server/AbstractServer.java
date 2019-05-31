@@ -1,7 +1,7 @@
 package com.meti.lib.net.server;
 
 import com.meti.lib.concurrent.Listener;
-import com.meti.lib.concurrent.executable.LoopedExecutable;
+import com.meti.lib.concurrent.LoopedExecutable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.handle.ResponseHandler;
 

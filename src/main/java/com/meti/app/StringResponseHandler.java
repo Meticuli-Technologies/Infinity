@@ -1,4 +1,4 @@
-package com.meti.app.server;
+package com.meti.app;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.handle.ResponseHandler;

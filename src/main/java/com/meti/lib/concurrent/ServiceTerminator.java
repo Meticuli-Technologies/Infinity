@@ -1,4 +1,4 @@
-package com.meti.lib.concurrent.terminate;
+package com.meti.lib.concurrent;
 
 import java.time.Duration;
 import java.util.List;

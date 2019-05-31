@@ -1,8 +1,4 @@
-package com.meti.lib.concurrent.executable;
-
-import com.meti.lib.concurrent.Listener;
-import com.meti.lib.concurrent.terminate.ServiceTerminator;
-import com.meti.lib.concurrent.terminate.Terminator;
+package com.meti.lib.concurrent;
 
 import java.io.Closeable;
 import java.io.IOException;
