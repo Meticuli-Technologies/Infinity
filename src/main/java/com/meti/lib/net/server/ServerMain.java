@@ -1,7 +1,6 @@
 package com.meti.lib.net.server;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.Scanner;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Scanner;
  */
 public class ServerMain {
     private final Scanner scanner = new Scanner(System.in);
-    private Server acceptor;
+    private Server server;
     private int port;
 
     public static void main(String[] args) {
@@ -49,8 +48,8 @@ public class ServerMain {
 
     private void start() {
         try {
-            acceptor = new InfinityServer(port);
-            acceptor.listen();
+            server = new InfinityServer(port);
+            server.listen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +58,7 @@ public class ServerMain {
     private void stop() {
         try {
             scanner.close();
-            acceptor.close();
+            server.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
