@@ -22,6 +22,10 @@ public abstract class ServerSocketServer extends AbstractServer {
         this.serverSocket = serverSocket;
     }
 
+    @Override
+    public int getPort() {
+        return serverSocket.getLocalPort();
+    }
 
     @Override
     public void close() throws IOException {
