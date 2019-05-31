@@ -52,8 +52,7 @@ public class SocketClient implements Client {
         writeAndFlushIterable(serializablesToWrite);
     }
 
-    @Override
-    public void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException {
+    private void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException {
         for (Serializable serializable : collection) {
             write(serializable);
         }

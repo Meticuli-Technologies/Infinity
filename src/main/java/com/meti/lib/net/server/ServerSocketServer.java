@@ -17,7 +17,7 @@ import java.util.Collection;
 public abstract class ServerSocketServer extends AbstractServer {
     private final ServerSocket serverSocket;
 
-    public ServerSocketServer(ServerSocket serverSocket, Collection<? extends ResponseHandler> initialHandlers) {
+    protected ServerSocketServer(ServerSocket serverSocket, Collection<? extends ResponseHandler> initialHandlers) {
         super(initialHandlers);
         this.serverSocket = serverSocket;
     }

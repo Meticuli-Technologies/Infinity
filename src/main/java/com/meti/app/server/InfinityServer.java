@@ -11,7 +11,7 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class InfinityServer extends ServerSocketServer {
+class InfinityServer extends ServerSocketServer {
     public InfinityServer(int port) throws IOException {
         this(new ServerSocket(port));
     }

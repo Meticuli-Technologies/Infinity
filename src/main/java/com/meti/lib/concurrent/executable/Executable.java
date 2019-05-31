@@ -22,7 +22,7 @@ public abstract class Executable implements Callable<Void>, Closeable, Listener 
     private final Terminator serviceTerminator;
     private final Duration timeout;
 
-    protected Executable() {
+    Executable() {
         this(DEFAULT_TIMEOUT);
     }
 

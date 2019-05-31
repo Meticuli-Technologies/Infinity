@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class ServerMain {
+class ServerMain {
     private final Scanner scanner = new Scanner(System.in);
     private Server server;
     private int port;
