@@ -7,6 +7,7 @@ import java.io.Closeable;
  * @version 0.0.0
  * @since 5/30/2019
  */
+@SuppressWarnings("ClassWithTooManyDependents")
 public interface Client extends Closeable, ObjectReader, ObjectWriter {
     String getName();
 }

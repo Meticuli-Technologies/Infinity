@@ -1,7 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.handle.ResponseHandler;
+import com.meti.lib.net.client.handle.ResponseHandler;
 
 import java.io.Serializable;
 import java.util.Optional;

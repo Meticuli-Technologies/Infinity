@@ -1,10 +1,10 @@
 package com.meti.app;
 
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.client.ClientProcessor;
-import com.meti.lib.net.client.ResponseProcessor;
+import com.meti.lib.net.client.handle.ClientProcessor;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 import com.meti.lib.net.client.SocketClient;
-import com.meti.lib.net.handle.ResponseHandler;
+import com.meti.lib.net.client.handle.ResponseHandler;
 
 import java.io.IOException;
 import java.io.Serializable;

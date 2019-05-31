@@ -1,4 +1,4 @@
-package com.meti.lib.net.handle;
+package com.meti.lib.net.client.handle;
 
 import com.meti.lib.net.client.Client;
 

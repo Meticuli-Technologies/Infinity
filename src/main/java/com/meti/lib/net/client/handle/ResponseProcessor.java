@@ -1,6 +1,4 @@
-package com.meti.lib.net.client;
-
-import com.meti.lib.net.handle.ResponseHandler;
+package com.meti.lib.net.client.handle;
 
 import java.util.Collection;
 

@@ -1,8 +1,6 @@
-package com.meti.lib.net.client;
+package com.meti.lib.net.client.handle;
 
-import com.meti.lib.net.handle.HandlerManager;
-import com.meti.lib.net.handle.ResponseHandler;
-import com.meti.lib.net.handle.SetBasedHandlerManager;
+import com.meti.lib.net.client.Client;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,8 +18,12 @@ public class ClientProcessor implements ResponseProcessor {
     @Override
     public void processNextResponse() throws Throwable {
         Object nextResponse = nextResponse();
-        Set<Serializable> serializablesToWrite = handlerManager.processResponse(nextResponse, client);
-        client.writeAndFlushIterable(serializablesToWrite);
+        Set<Serializable> results = handlerManager.processResponse(nextResponse, client);
+        writeResults(results);
+    }
+
+    private void writeResults(Iterable<? extends Serializable> results) throws IOException {
+        client.writeAndFlushIterable(results);
     }
 
     @Override

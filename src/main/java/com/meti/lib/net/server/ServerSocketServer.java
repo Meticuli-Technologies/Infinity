@@ -2,7 +2,7 @@ package com.meti.lib.net.server;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
-import com.meti.lib.net.handle.ResponseHandler;
+import com.meti.lib.net.client.handle.ResponseHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

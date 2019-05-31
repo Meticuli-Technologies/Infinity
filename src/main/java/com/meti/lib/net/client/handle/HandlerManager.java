@@ -1,4 +1,4 @@
-package com.meti.lib.net.handle;
+package com.meti.lib.net.client.handle;
 
 import com.meti.lib.net.client.Client;
 
@@ -10,7 +10,7 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public interface HandlerManager {
+interface HandlerManager {
     Set<Serializable> processResponse(Object response, Client client) throws Throwable;
 
     Set<ResponseHandler> getHandlers();

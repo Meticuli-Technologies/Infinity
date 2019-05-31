@@ -2,7 +2,7 @@ package com.meti.lib.net.server;
 
 import com.meti.lib.concurrent.LoopedExecutable;
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.client.ResponseProcessor;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 
 import java.io.IOException;
 

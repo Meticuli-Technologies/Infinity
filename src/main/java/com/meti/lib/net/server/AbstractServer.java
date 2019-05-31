@@ -3,8 +3,9 @@ package com.meti.lib.net.server;
 import com.meti.lib.concurrent.Listener;
 import com.meti.lib.concurrent.LoopedExecutable;
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.client.ClientProcessor;
-import com.meti.lib.net.handle.ResponseHandler;
+import com.meti.lib.net.client.handle.ClientProcessor;
+import com.meti.lib.net.client.handle.ResponseProcessor;
+import com.meti.lib.net.client.handle.ResponseHandler;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -33,7 +34,7 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
     protected abstract Client acceptClient() throws IOException;
 
     private void submitClient(Client client) {
-        ClientProcessor processor = new ClientProcessor(client);
+        ResponseProcessor processor = new ClientProcessor(client);
         processor.addHandlers(handlers);
 
         Listener handler = new ProcessorExecutable(client, processor);
