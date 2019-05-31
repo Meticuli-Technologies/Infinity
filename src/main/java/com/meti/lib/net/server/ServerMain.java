@@ -49,18 +49,11 @@ public class ServerMain {
 
     private void start() {
         try {
-            ServerSocket serverSocket = buildServerSocket(port);
-            acceptor = new InfinityServer(serverSocket);
+            acceptor = new InfinityServer(port);
             acceptor.listen();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private ServerSocket buildServerSocket(int port) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(port);
-        System.out.println("Launched server on port " + serverSocket.getLocalPort() + '.');
-        return serverSocket;
     }
 
     private void stop() {
