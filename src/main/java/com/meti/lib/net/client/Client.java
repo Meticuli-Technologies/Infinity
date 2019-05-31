@@ -1,6 +1,6 @@
-package com.meti.net.client;
+package com.meti.lib.net.client;
 
-import com.meti.net.ComplexCloseable;
+import com.meti.lib.net.ComplexCloseable;
 
 import java.io.IOException;
 import java.io.Serializable;

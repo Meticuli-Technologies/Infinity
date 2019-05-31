@@ -1,7 +1,7 @@
-package com.meti.net.server;
+package com.meti.lib.net.server;
 
-import com.meti.net.server.server.InfinityServer;
-import com.meti.net.server.server.Server;
+import com.meti.lib.net.server.server.InfinityServer;
+import com.meti.lib.net.server.server.Server;
 
 import java.io.IOException;
 import java.util.Scanner;

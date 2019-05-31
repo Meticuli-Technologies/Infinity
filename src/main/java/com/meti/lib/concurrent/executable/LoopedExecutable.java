@@ -1,6 +1,6 @@
-package com.meti.concurrent.executable;
+package com.meti.lib.concurrent.executable;
 
-import com.meti.concurrent.Stoppable;
+import com.meti.lib.concurrent.Stoppable;
 
 import java.io.IOException;
 

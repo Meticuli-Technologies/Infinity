@@ -1,10 +1,9 @@
-package com.meti.net.server;
+package com.meti.lib.net.server;
 
-import com.meti.concurrent.executable.LoopedExecutable;
-import com.meti.net.client.Client;
+import com.meti.lib.concurrent.executable.LoopedExecutable;
+import com.meti.lib.net.client.Client;
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
 
 /**
  * @author SirMathhman

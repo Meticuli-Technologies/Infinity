@@ -1,4 +1,4 @@
-package com.meti.concurrent;
+package com.meti.lib.concurrent;
 
 /**
  * @author SirMathhman

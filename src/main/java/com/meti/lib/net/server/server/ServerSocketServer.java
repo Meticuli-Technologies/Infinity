@@ -1,8 +1,8 @@
-package com.meti.net.server.server;
+package com.meti.lib.net.server.server;
 
-import com.meti.net.client.Client;
-import com.meti.net.client.SocketClient;
-import com.meti.net.handle.ResponseHandler;
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.SocketClient;
+import com.meti.lib.net.handle.ResponseHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

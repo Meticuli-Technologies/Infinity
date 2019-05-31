@@ -1,7 +1,7 @@
-package com.meti.net.server.server;
+package com.meti.lib.net.server.server;
 
-import com.meti.concurrent.Listener;
-import com.meti.concurrent.Stoppable;
+import com.meti.lib.concurrent.Listener;
+import com.meti.lib.concurrent.Stoppable;
 
 import java.io.Closeable;
 import java.util.concurrent.Callable;
