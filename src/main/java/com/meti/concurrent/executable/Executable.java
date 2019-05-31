@@ -40,10 +40,6 @@ public abstract class Executable implements Callable<Void>, Closeable, Listener 
         }
     }
 
-    protected ExecutorService getInternalService() {
-        return internalService;
-    }
-
     @Override
     public void listen() {
         internalService.submit(this);
