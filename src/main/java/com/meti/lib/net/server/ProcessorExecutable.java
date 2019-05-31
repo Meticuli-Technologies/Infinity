@@ -22,6 +22,9 @@ public class ProcessorExecutable extends LoopedExecutable {
 
     @Override
     protected void loop() {
+        if (client.isClosed()) {
+            stop();
+        }
         processNextResponseOrThrow();
     }
 

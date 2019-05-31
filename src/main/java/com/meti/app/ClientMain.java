@@ -33,8 +33,9 @@ public class ClientMain {
     }
 
     private void loop(Supplier<String> supplier) {
-        if (isNotExitMessage(supplier.get())) {
-            writeMessage(supplier.get());
+        String message = supplier.get();
+        if (isNotExitMessage(message)) {
+            writeMessage(message);
             loop(supplier);
         }
     }

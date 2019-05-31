@@ -2,6 +2,7 @@ package com.meti.lib.net.client.handle;
 
 import com.meti.lib.net.client.Client;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,9 +18,17 @@ public class ClientProcessor implements ResponseProcessor {
 
     @Override
     public void processNextResponse() throws Throwable {
-        Object nextResponse = nextResponse();
-        Set<Serializable> results = handlerManager.processResponse(nextResponse, client);
-        writeResults(results);
+        try {
+            Object nextResponse = nextResponse();
+            Set<Serializable> results = handlerManager.processResponse(nextResponse, client);
+            writeResults(results);
+        } catch (Throwable throwable) {
+            if (throwable instanceof EOFException) {
+                client.close();
+            } else {
+                throw throwable;
+            }
+        }
     }
 
     private void writeResults(Iterable<? extends Serializable> results) throws IOException {

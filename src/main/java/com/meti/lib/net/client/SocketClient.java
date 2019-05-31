@@ -40,6 +40,11 @@ public class SocketClient implements Client {
     }
 
     @Override
+    public boolean isClosed() {
+        return socket.isClosed();
+    }
+
+    @Override
     public Object read() throws IOException, ClassNotFoundException {
         return inputStream.readObject();
     }

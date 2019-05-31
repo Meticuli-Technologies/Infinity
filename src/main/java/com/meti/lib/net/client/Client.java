@@ -10,4 +10,10 @@ import java.io.Closeable;
 @SuppressWarnings("ClassWithTooManyDependents")
 public interface Client extends Closeable, ObjectReader, ObjectWriter {
     String getName();
+
+    boolean isClosed();
+
+    default boolean isOpen() {
+        return !isClosed();
+    }
 }
