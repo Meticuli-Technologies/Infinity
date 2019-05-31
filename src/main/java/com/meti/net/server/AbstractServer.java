@@ -1,5 +1,7 @@
 package com.meti.net.server;
 
+import com.meti.concurrent.Listener;
+import com.meti.concurrent.executable.LoopedExecutable;
 import com.meti.net.client.Client;
 import com.meti.net.handle.ResponseHandler;
 
@@ -17,7 +19,7 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
     private final Collection<ResponseHandler> handlers = new HashSet<>();
     private final Collection<Client> clients = new HashSet<>();
 
-    protected AbstractServer(Collection<? extends ResponseHandler> initialHandlers) {
+    AbstractServer(Collection<? extends ResponseHandler> initialHandlers) {
         this.handlers.addAll(initialHandlers);
     }
 
@@ -32,7 +34,8 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
     private void submitClient(Client client) {
         clients.add(client);
         client.getHandlers().addAll(handlers);
-        submitHandler(new ClientHandler(client));
+        Listener handler = new ClientHandler(client);
+        handler.listen();
     }
 
     @Override
@@ -40,10 +43,6 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
         stop();
         closeClients();
         super.close();
-    }
-
-    private void submitHandler(Callable<Void> handler) {
-        getInternalService().submit(handler);
     }
 
     private void closeClients() throws IOException {

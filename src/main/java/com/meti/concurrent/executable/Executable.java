@@ -1,4 +1,8 @@
-package com.meti.net.server;
+package com.meti.concurrent.executable;
+
+import com.meti.concurrent.Listener;
+import com.meti.concurrent.terminate.ServiceTerminator;
+import com.meti.concurrent.terminate.Terminator;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -12,8 +16,8 @@ import java.util.concurrent.Executors;
  * @version 0.0.0
  * @since 5/31/2019
  */
-public abstract class Executable implements Callable<Void>, Closeable {
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(1);
+public abstract class Executable implements Callable<Void>, Closeable, Listener {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(1L);
     private final ExecutorService internalService = Executors.newCachedThreadPool();
     private final Terminator serviceTerminator;
     private final Duration timeout;
@@ -22,7 +26,7 @@ public abstract class Executable implements Callable<Void>, Closeable {
         this(DEFAULT_TIMEOUT);
     }
 
-    protected Executable(Duration timeout) {
+    private Executable(Duration timeout) {
         this.timeout = timeout;
         this.serviceTerminator = new ServiceTerminator(internalService);
     }
@@ -40,6 +44,7 @@ public abstract class Executable implements Callable<Void>, Closeable {
         return internalService;
     }
 
+    @Override
     public void listen() {
         internalService.submit(this);
     }

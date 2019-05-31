@@ -1,7 +1,9 @@
 package com.meti.net.server;
 
+import com.meti.concurrent.executable.LoopedExecutable;
 import com.meti.net.client.Client;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 /**
@@ -9,7 +11,7 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 5/30/2019
  */
-class ClientHandler implements Callable<Void> {
+class ClientHandler extends LoopedExecutable {
     private final Client client;
 
     ClientHandler(Client client) {
@@ -17,15 +19,21 @@ class ClientHandler implements Callable<Void> {
     }
 
     @Override
-    public Void call() throws Exception {
-        while (client.isOpen()) {
-            try {
-                client.processNextResponse();
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        }
+    protected void loop() {
+        processNextResponseOrThrow();
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
         client.close();
-        return null;
+    }
+
+    private void processNextResponseOrThrow() {
+        try {
+            client.processNextResponse();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 }
