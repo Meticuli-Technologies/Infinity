@@ -1,6 +1,8 @@
 package com.meti.app;
 
 import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.ClientProcessor;
+import com.meti.lib.net.client.ResponseProcessor;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.handle.ResponseHandler;
 
@@ -17,6 +19,7 @@ import java.util.function.Supplier;
  */
 public class ClientMain {
     private Client client;
+    private ResponseProcessor processor;
     private Scanner scanner;
 
     public static void main(String[] args) {
@@ -41,21 +44,22 @@ public class ClientMain {
         stop();
     }
 
-    private void writeMessage(Serializable message) {
-        try {
-            client.writeAndFlush(message);
-            client.processNextResponse();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
     private void start() {
         try {
             scanner = new Scanner(System.in);
             client = new SocketClient(getPort());
-            client.getHandlers().add(new StringResponsePrinter());
+            processor = new ClientProcessor(client);
+            processor.addHandler(new StringResponsePrinter());
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeMessage(Serializable message) {
+        try {
+            client.writeAndFlush(message);
+            processor.processNextResponse();
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }

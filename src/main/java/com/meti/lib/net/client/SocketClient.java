@@ -1,22 +1,16 @@
 package com.meti.lib.net.client;
 
-import com.meti.lib.net.handle.HandlerManager;
-import com.meti.lib.net.handle.ResponseHandler;
-import com.meti.lib.net.handle.SetBasedHandlerManager;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Set;
 
 public class SocketClient implements Client {
     private final Socket socket;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
-    private final HandlerManager handlerManager = new SetBasedHandlerManager();
 
     public SocketClient(int port) throws IOException {
         this(InetAddress.getLocalHost(), port);
@@ -46,22 +40,16 @@ public class SocketClient implements Client {
     }
 
     @Override
-    public void processNextResponse() throws Throwable {
-        Object nextResponse = inputStream.readObject();
-        Set<Serializable> serializablesToWrite = handlerManager.processResponse(nextResponse, this);
-        writeAndFlushIterable(serializablesToWrite);
+    public Object read() throws IOException, ClassNotFoundException {
+        return inputStream.readObject();
     }
 
-    private void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException {
+    @Override
+    public void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException {
         for (Serializable serializable : collection) {
             write(serializable);
         }
         flush();
-    }
-
-    @Override
-    public Set<ResponseHandler> getHandlers() {
-        return handlerManager.getHandlers();
     }
 
     @Override
@@ -72,10 +60,5 @@ public class SocketClient implements Client {
     @Override
     public void flush() throws IOException {
         outputStream.flush();
-    }
-
-    @Override
-    public boolean isClosed() {
-        return socket.isClosed();
     }
 }

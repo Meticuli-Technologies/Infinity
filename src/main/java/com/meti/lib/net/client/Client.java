@@ -9,13 +9,17 @@ import java.io.Serializable;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public interface Client extends Closeable, ResponseProcessor {
+public interface Client extends Closeable {
     String getName();
+
+    Object read() throws IOException, ClassNotFoundException;
 
     default void writeAndFlush(Serializable message) throws IOException {
         write(message);
         flush();
     }
+
+    void writeAndFlushIterable(Iterable<? extends Serializable> collection) throws IOException;
 
     void write(Serializable serializable) throws IOException;
 

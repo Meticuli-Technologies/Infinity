@@ -2,6 +2,7 @@ package com.meti.lib.net.server;
 
 import com.meti.lib.concurrent.LoopedExecutable;
 import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.ResponseProcessor;
 
 import java.io.IOException;
 
@@ -10,11 +11,13 @@ import java.io.IOException;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class ClientHandler extends LoopedExecutable {
+public class ProcessorExecutable extends LoopedExecutable {
     private final Client client;
+    private final ResponseProcessor processor;
 
-    public ClientHandler(Client client) {
+    public ProcessorExecutable(Client client, ResponseProcessor processor) {
         this.client = client;
+        this.processor = processor;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class ClientHandler extends LoopedExecutable {
 
     private void processNextResponseOrThrow() {
         try {
-            client.processNextResponse();
+            processor.processNextResponse();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

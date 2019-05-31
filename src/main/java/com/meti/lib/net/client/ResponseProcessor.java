@@ -2,6 +2,7 @@ package com.meti.lib.net.client;
 
 import com.meti.lib.net.handle.ResponseHandler;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -11,6 +12,10 @@ import java.util.Set;
  */
 public interface ResponseProcessor {
     void processNextResponse() throws Throwable;
+
+    void addHandler(ResponseHandler handler);
+
+    void addHandlers(Collection<? extends ResponseHandler> handlers);
 
     Set<ResponseHandler> getHandlers();
 }
