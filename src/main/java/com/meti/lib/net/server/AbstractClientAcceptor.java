@@ -13,11 +13,11 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public abstract class ClientAcceptorImpl extends LoopedExecutable implements ClientAcceptor {
+public abstract class AbstractClientAcceptor extends LoopedExecutable implements ClientAcceptor {
     private final Collection<ResponseHandler> handlers = new HashSet<>();
     private final Collection<Client> clients = new HashSet<>();
 
-    protected ClientAcceptorImpl(Collection<? extends ResponseHandler> initialHandlers) {
+    protected AbstractClientAcceptor(Collection<? extends ResponseHandler> initialHandlers) {
         this.handlers.addAll(initialHandlers);
     }
 

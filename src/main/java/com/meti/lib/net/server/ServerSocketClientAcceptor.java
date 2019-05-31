@@ -14,7 +14,7 @@ import java.util.Collection;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public abstract class ServerSocketClientAcceptor extends ClientAcceptorImpl {
+public abstract class ServerSocketClientAcceptor extends AbstractClientAcceptor {
     private final ServerSocket serverSocket;
 
     ServerSocketClientAcceptor(ServerSocket serverSocket, Collection<? extends ResponseHandler> initialHandlers) {
