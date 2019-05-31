@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public class ClientProcessor implements ResponseProcessor {
-    final HandlerManager handlerManager = new SetBasedHandlerManager();
+    private final HandlerManager handlerManager = new SetBasedHandlerManager();
     private final Client client;
 
     public ClientProcessor(Client client) {
@@ -32,11 +32,6 @@ public class ClientProcessor implements ResponseProcessor {
     @Override
     public void addHandlers(Collection<? extends ResponseHandler> handlers) {
         handlerManager.getHandlers().addAll(handlers);
-    }
-
-    @Override
-    public Set<ResponseHandler> getHandlers() {
-        return handlerManager.getHandlers();
     }
 
     private Object nextResponse() throws IOException, ClassNotFoundException {

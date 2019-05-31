@@ -7,6 +7,6 @@ import java.time.Duration;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public interface Terminator {
+interface Terminator {
     void terminate(Duration duration) throws InterruptedException;
 }
