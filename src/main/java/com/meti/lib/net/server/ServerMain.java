@@ -50,6 +50,8 @@ public class ServerMain {
         try {
             server = new InfinityServer(port);
             server.listen();
+
+            System.out.println("Started server on port: " + server.getPort());
         } catch (IOException e) {
             e.printStackTrace();
         }
