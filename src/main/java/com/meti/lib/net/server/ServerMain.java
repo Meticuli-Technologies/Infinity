@@ -3,8 +3,6 @@ package com.meti.lib.net.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author SirMathhman
@@ -13,7 +11,7 @@ import java.util.concurrent.Executors;
  */
 public class ServerMain {
     private final Scanner scanner = new Scanner(System.in);
-    private ClientAcceptor acceptor;
+    private Server acceptor;
     private int port;
 
     public static void main(String[] args) {
@@ -52,7 +50,7 @@ public class ServerMain {
     private void start() {
         try {
             ServerSocket serverSocket = buildServerSocket(port);
-            acceptor = new InfinityClientAcceptor(serverSocket);
+            acceptor = new InfinityServer(serverSocket);
             acceptor.listen();
         } catch (IOException e) {
             e.printStackTrace();

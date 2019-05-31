@@ -14,10 +14,10 @@ import java.util.Collection;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public abstract class ServerSocketClientAcceptor extends AbstractClientAcceptor {
+public abstract class ServerSocketServer extends AbstractServer {
     private final ServerSocket serverSocket;
 
-    ServerSocketClientAcceptor(ServerSocket serverSocket, Collection<? extends ResponseHandler> initialHandlers) {
+    ServerSocketServer(ServerSocket serverSocket, Collection<? extends ResponseHandler> initialHandlers) {
         super(initialHandlers);
         this.serverSocket = serverSocket;
     }

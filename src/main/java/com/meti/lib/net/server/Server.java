@@ -8,5 +8,5 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public interface ClientAcceptor extends Callable<Void>, Closeable, Stoppable, Listener {
+public interface Server extends Callable<Void>, Closeable, Stoppable, Listener {
 }

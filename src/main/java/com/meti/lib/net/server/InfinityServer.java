@@ -8,8 +8,8 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/30/2019
  */
-class InfinityClientAcceptor extends ServerSocketClientAcceptor {
-    InfinityClientAcceptor(ServerSocket serverSocket) {
+class InfinityServer extends ServerSocketServer {
+    InfinityServer(ServerSocket serverSocket) {
         super(serverSocket, Set.of(new StringResponseHandler()));
     }
 }
