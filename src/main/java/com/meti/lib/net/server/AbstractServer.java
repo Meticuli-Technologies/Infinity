@@ -1,10 +1,9 @@
-package com.meti.lib.net.server.server;
+package com.meti.lib.net.server;
 
 import com.meti.lib.concurrent.Listener;
 import com.meti.lib.concurrent.executable.LoopedExecutable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.handle.ResponseHandler;
-import com.meti.lib.net.server.ClientHandler;
 
 import java.io.IOException;
 import java.util.Collection;

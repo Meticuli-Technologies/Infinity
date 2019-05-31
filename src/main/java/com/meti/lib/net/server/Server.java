@@ -1,4 +1,4 @@
-package com.meti.lib.net.server.server;
+package com.meti.lib.net.server;
 
 import com.meti.lib.concurrent.Listener;
 import com.meti.lib.concurrent.Stoppable;
