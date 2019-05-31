@@ -1,4 +1,6 @@
-package com.meti.net.server;
+package com.meti.net.server.server;
+
+import com.meti.net.server.StringResponseHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,8 +11,8 @@ import java.util.Set;
  * @version 0.0.0
  * @since 5/30/2019
  */
-class InfinityServer extends ServerSocketServer {
-    InfinityServer(int port) throws IOException {
+public class InfinityServer extends ServerSocketServer {
+    public InfinityServer(int port) throws IOException {
         this(new ServerSocket(port));
     }
 

@@ -11,7 +11,7 @@ import java.util.Optional;
  * @version 0.0.0
  * @since 5/30/2019
  */
-class StringResponseHandler implements ResponseHandler {
+public class StringResponseHandler implements ResponseHandler {
     @Override
     public boolean canHandle(Object response) {
         return response instanceof String;

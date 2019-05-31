@@ -1,14 +1,14 @@
-package com.meti.net.server;
+package com.meti.net.server.server;
 
 import com.meti.concurrent.Listener;
 import com.meti.concurrent.executable.LoopedExecutable;
 import com.meti.net.client.Client;
 import com.meti.net.handle.ResponseHandler;
+import com.meti.net.server.ClientHandler;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.concurrent.Callable;
 
 /**
  * @author SirMathhman

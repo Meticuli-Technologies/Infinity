@@ -11,10 +11,10 @@ import java.util.concurrent.Callable;
  * @version 0.0.0
  * @since 5/30/2019
  */
-class ClientHandler extends LoopedExecutable {
+public class ClientHandler extends LoopedExecutable {
     private final Client client;
 
-    ClientHandler(Client client) {
+    public ClientHandler(Client client) {
         this.client = client;
     }
 

@@ -1,4 +1,4 @@
-package com.meti.net.server;
+package com.meti.net.server.server;
 
 import com.meti.net.client.Client;
 import com.meti.net.client.SocketClient;
