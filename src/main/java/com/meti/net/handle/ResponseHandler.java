@@ -1,6 +1,6 @@
-package com.meti.lib.net.handle;
+package com.meti.net.handle;
 
-import com.meti.lib.net.client.Client;
+import com.meti.net.client.Client;
 
 import java.io.Serializable;
 import java.util.Optional;

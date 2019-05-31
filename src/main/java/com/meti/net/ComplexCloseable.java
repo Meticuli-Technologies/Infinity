@@ -1,4 +1,4 @@
-package com.meti.lib.net;
+package com.meti.net;
 
 import java.io.Closeable;
 

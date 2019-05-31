@@ -1,6 +1,6 @@
-package com.meti.lib.net.server;
+package com.meti.net.server;
 
-import com.meti.lib.net.client.Client;
+import com.meti.net.client.Client;
 
 import java.util.concurrent.Callable;
 
