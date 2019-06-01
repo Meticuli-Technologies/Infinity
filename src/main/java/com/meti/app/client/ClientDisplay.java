@@ -1,10 +1,16 @@
 package com.meti.app.client;
 
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.SocketClient;
+import com.meti.lib.net.client.handle.ClientProcessor;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 /**
  * @author SirMathhman
@@ -59,7 +65,15 @@ public class ClientDisplay {
         }
     }
 
-    private void loadClient(int port) {
+    private Client client;
+    private ResponseProcessor processor;
 
+    private void loadClient(int port) {
+        try {
+            client = new SocketClient(port);
+            processor = new ClientProcessor(client);
+        } catch (IOException e) {
+            statusText.setText(e.getLocalizedMessage());
+        }
     }
 }
