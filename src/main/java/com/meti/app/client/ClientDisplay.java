@@ -50,6 +50,7 @@ public class ClientDisplay {
     public void nextInput() {
         try {
             String message = input.getText();
+            input.clear();
             client.writeAndFlush(message);
             processor.processNextResponse();
         } catch (Throwable throwable) {
@@ -81,7 +82,6 @@ public class ClientDisplay {
 
     private void connectToPort() {
         String portValue = portField.getText();
-        portField.clear();
         try {
             int port = Integer.parseInt(portValue);
             loadClient(port);
