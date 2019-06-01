@@ -4,7 +4,10 @@ import com.meti.lib.reflect.Instantiator;
 import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -15,6 +18,14 @@ import java.util.List;
 public final class InjectorLoader extends FXMLLoader {
     public InjectorLoader(List<?> dependencies) {
         setControllerFactory(new InstantiatorCallback(dependencies));
+    }
+
+    public static <T> T load(List<?> dependencies, URL url) throws IOException {
+        return load(dependencies, url.openStream());
+    }
+
+    public static <T> T load(List<?> dependencies, InputStream inputStream) throws IOException {
+        return new InjectorLoader(dependencies).load(inputStream);
     }
 
     private static class InstantiatorCallback implements Callback<Class<?>, Object> {
