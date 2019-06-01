@@ -1,5 +1,6 @@
 package com.meti.app.client;
 
+import com.meti.app.StringResponseHandler;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
@@ -72,6 +73,7 @@ public class ClientDisplay {
         try {
             client = new SocketClient(port);
             processor = new ClientProcessor(client);
+            processor.addHandler(new StringResponseHandler());
         } catch (IOException e) {
             statusText.setText(e.getLocalizedMessage());
         }
