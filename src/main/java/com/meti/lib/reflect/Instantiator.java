@@ -3,6 +3,8 @@ package com.meti.lib.reflect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
@@ -16,11 +18,27 @@ public class Instantiator {
         this.dependencies.addAll(dependencies);
     }
 
-    public Set<Object> instantiate(Class<?> clazz) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static <T> Set<T> genericInstanceSet(List<?> dependencies, Class<? extends T> clazz) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        return genericInstanceStream(dependencies, clazz).collect(Collectors.toSet());
+    }
+
+    private static <T> Stream<? extends T> genericInstanceStream(List<?> dependencies, Class<? extends T> clazz) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        return new Instantiator(dependencies)
+                .instantiate(clazz)
+                .stream()
+                .filter(clazz::isInstance)
+                .map(clazz::cast);
+    }
+
+    private Set<Object> instantiate(Class<?> clazz) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         List<Constructor<?>> constructors = List.of(clazz.getConstructors());
         Map<List<Class<?>>, Constructor<?>> parameterTypeMap = createParameterTypeMap(constructors);
         List<Constructor<?>> validConstructors = filterValidConstructors(parameterTypeMap);
         return instantiate(validConstructors);
+    }
+
+    public static <T> Optional<? extends T> genericInstanceToSingle(List<?> dependencies, Class<? extends T> clazz) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        return genericInstanceStream(dependencies, clazz).findAny();
     }
 
     private Map<List<Class<?>>, Constructor<?>> createParameterTypeMap(Iterable<Constructor<?>> constructors) {
