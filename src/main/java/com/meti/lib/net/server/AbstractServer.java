@@ -42,10 +42,9 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
     }
 
     @Override
-    public void close() throws IOException {
+    protected void preClose() throws IOException {
         stop();
         closeClients();
-        super.close();
     }
 
     private void closeClients() throws IOException {
