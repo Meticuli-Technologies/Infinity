@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
@@ -80,9 +81,11 @@ public class ClientDisplay {
 
     private void connectToPort() {
         String portValue = portField.getText();
+        portField.clear();
         try {
             int port = Integer.parseInt(portValue);
             loadClient(port);
+            statusText.setText("Successfully connected to server.");
         } catch (NumberFormatException e) {
             statusText.setText("Invalid integer: " + portValue);
         }
@@ -91,7 +94,7 @@ public class ClientDisplay {
     private Client client;
     private ResponseProcessor processor;
 
-    private void disconnectFromPort(Client client) {
+    private void disconnectFromPort(Closeable client) {
         try {
             client.close();
         } catch (IOException e) {
