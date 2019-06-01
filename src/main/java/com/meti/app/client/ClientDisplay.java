@@ -3,6 +3,7 @@ package com.meti.app.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  * @author SirMathhman
@@ -15,4 +16,10 @@ public class ClientDisplay {
 
     @FXML
     private TextField input;
+
+    @FXML
+    private Text statusText;
+
+    @FXML
+    private TextField portField;
 }
