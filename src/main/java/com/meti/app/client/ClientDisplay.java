@@ -49,7 +49,7 @@ public class ClientDisplay {
 
     }
 
-    public void connectToPort() {
+    private void connectToPort() {
         String portValue = portField.getText();
         try {
             int port = Integer.parseInt(portValue);
