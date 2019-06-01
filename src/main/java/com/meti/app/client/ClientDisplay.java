@@ -27,6 +27,8 @@ public class ClientDisplay {
     @FXML
     private Button changePortButton;
 
+    private boolean canChangePort = true;
+
     @FXML
     public void changePort(){
         portField.setEditable(true);
