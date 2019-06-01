@@ -13,7 +13,4 @@ public interface Client extends Closeable, ObjectReader, ObjectWriter {
 
     boolean isClosed();
 
-    default boolean isOpen() {
-        return !isClosed();
-    }
 }
