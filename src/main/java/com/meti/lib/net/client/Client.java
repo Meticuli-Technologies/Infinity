@@ -12,5 +12,4 @@ public interface Client extends Closeable, ObjectReader, ObjectWriter {
     String getName();
 
     boolean isClosed();
-
 }

@@ -1,5 +1,6 @@
 package com.meti.app.client;
 
+import com.meti.lib.collect.State;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
@@ -37,6 +38,12 @@ public class ClientDisplay {
     private Button changePortButton;
 
     private boolean shouldChangePort = true;
+
+    private final State state;
+
+    public ClientDisplay(State state) {
+        this.state = state;
+    }
 
     @FXML
     public void nextInput() {
@@ -95,6 +102,8 @@ public class ClientDisplay {
             client = new SocketClient(port);
             processor = new ClientProcessor(client);
             processor.addHandler(new OutputHandler());
+
+            state.add(client);
         } catch (IOException e) {
             statusText.setText(e.getLocalizedMessage());
         }
