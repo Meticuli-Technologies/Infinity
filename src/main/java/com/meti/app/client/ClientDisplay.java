@@ -31,14 +31,7 @@ public class ClientDisplay {
 
     @FXML
     public void changePort(){
-        portField.setEditable(true);
-        String portValue = portField.getText();
-        try {
-            int port = Integer.parseInt(portValue);
-            loadClient(port);
-        } catch (NumberFormatException e) {
-            statusText.setText("Invalid integer: " + portValue);
-        }
+
     }
 
     private void loadClient(int port) {
