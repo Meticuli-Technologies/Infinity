@@ -27,11 +27,36 @@ public class ClientDisplay {
     @FXML
     private Button changePortButton;
 
-    private boolean canChangePort = true;
+    private boolean shouldChangePort = true;
 
     @FXML
     public void changePort(){
+        if (shouldChangePort) {
+            disconnectToPort();
 
+            portField.setEditable(true);
+            changePortButton.setText("Reconnect");
+        } else {
+            connectToPort();
+
+            portField.setEditable(false);
+            changePortButton.setText("Change Port");
+        }
+        shouldChangePort = !shouldChangePort;
+    }
+
+    private void disconnectToPort() {
+
+    }
+
+    public void connectToPort() {
+        String portValue = portField.getText();
+        try {
+            int port = Integer.parseInt(portValue);
+            loadClient(port);
+        } catch (NumberFormatException e) {
+            statusText.setText("Invalid integer: " + portValue);
+        }
     }
 
     private void loadClient(int port) {
