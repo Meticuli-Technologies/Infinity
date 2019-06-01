@@ -34,12 +34,14 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connection Status:" GridPane.halignment="CENTER" />
                   <Text fx:id="statusText" strokeType="OUTSIDE" strokeWidth="0.0" text="[unknown]" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <TextField fx:id="portField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Button minWidth="200.0" mnemonicParsing="false" onAction="#changePort" text="Change Port" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="15.0" left="25.0" right="15.0" top="15.0" />

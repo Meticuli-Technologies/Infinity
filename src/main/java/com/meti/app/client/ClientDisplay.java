@@ -22,4 +22,9 @@ public class ClientDisplay {
 
     @FXML
     private TextField portField;
+
+    @FXML
+    public void changePort(){
+
+    }
 }
