@@ -16,7 +16,7 @@ import java.util.List;
  * @since 6/1/2019
  */
 public final class InjectorLoader extends FXMLLoader {
-    public InjectorLoader(List<?> dependencies) {
+    private InjectorLoader(List<?> dependencies) {
         setControllerFactory(new InstantiatorCallback(dependencies));
     }
 
@@ -24,14 +24,14 @@ public final class InjectorLoader extends FXMLLoader {
         return load(dependencies, url.openStream());
     }
 
-    public static <T> T load(List<?> dependencies, InputStream inputStream) throws IOException {
+    private static <T> T load(List<?> dependencies, InputStream inputStream) throws IOException {
         return new InjectorLoader(dependencies).load(inputStream);
     }
 
     private static class InstantiatorCallback implements Callback<Class<?>, Object> {
         private final List<?> dependencies;
 
-        public InstantiatorCallback(List<?> dependencies) {
+        InstantiatorCallback(List<?> dependencies) {
             this.dependencies = dependencies;
         }
 
