@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -24,6 +26,17 @@ public class ClientApp extends Application {
         Parent parent = InjectorLoader.load(List.of(state), getClientDisplayURL());
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        for (Closeable closeable : state.filterByClass(Closeable.class)) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private URL getClientDisplayURL() {
