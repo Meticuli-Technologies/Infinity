@@ -1,6 +1,7 @@
 package com.meti.app.client;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -22,6 +23,9 @@ public class ClientDisplay {
 
     @FXML
     private TextField portField;
+
+    @FXML
+    private Button changePortButton;
 
     @FXML
     public void changePort(){
