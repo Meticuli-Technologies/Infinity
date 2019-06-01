@@ -1,5 +1,7 @@
 package com.meti.app;
 
+import com.meti.lib.collect.SetBasedState;
+import com.meti.lib.collect.State;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +14,8 @@ import javafx.stage.Stage;
  * @since 6/1/2019
  */
 public class ClientApp extends Application {
+    private final State state = new SetBasedState();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("/com/meti/app/client/ClientDisplay.fxml"));
