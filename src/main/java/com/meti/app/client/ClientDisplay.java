@@ -59,7 +59,9 @@ public class ClientDisplay {
     @FXML
     public void changePort(){
         if (shouldChangePort) {
-            disconnectToPort();
+            if (client != null) {
+                disconnectFromPort(client);
+            }
 
             portField.setEditable(true);
             changePortButton.setText("Reconnect");
@@ -89,7 +91,7 @@ public class ClientDisplay {
     private Client client;
     private ResponseProcessor processor;
 
-    private void disconnectToPort() {
+    private void disconnectFromPort(Client client) {
         try {
             client.close();
         } catch (IOException e) {
