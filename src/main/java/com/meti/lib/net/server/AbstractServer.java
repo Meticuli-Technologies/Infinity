@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * @author SirMathhman
@@ -21,6 +22,7 @@ import java.util.Set;
 public abstract class AbstractServer extends LoopedExecutable implements Server {
     private final Set<ResponseHandler> responseHandlers = new HashSet<>();
     private final Set<Client> clients = new HashSet<>();
+    private Consumer<Client> onConnect;
 
     AbstractServer(Collection<? extends ResponseHandler> initialHandlers) {
         this.responseHandlers.addAll(initialHandlers);
@@ -29,6 +31,9 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
     @Override
     protected void loop() throws IOException {
         Client client = acceptClient();
+        if(onConnect != null){
+            onConnect.accept(client);
+        }
         clients.add(client);
         submitClient(client);
     }
@@ -51,6 +56,11 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
     @Override
     public Set<ResponseHandler> getResponseHandlers() {
         return responseHandlers;
+    }
+
+    @Override
+    public void setOnConnect(Consumer<Client> onConnect) {
+        this.onConnect = onConnect;
     }
 
     @Override

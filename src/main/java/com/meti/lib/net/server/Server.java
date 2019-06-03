@@ -7,6 +7,7 @@ import com.meti.lib.net.client.handle.ResponseHandler;
 import java.io.Closeable;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 /**
  * @author SirMathhman
@@ -14,6 +15,7 @@ import java.util.concurrent.Callable;
  * @since 5/30/2019
  */
 public interface Server extends Callable<Void>, Closeable, Listener {
+    void setOnConnect(Consumer<Client> onConnect);
     Set<Client> getClients();
 
     Set<ResponseHandler> getResponseHandlers();
