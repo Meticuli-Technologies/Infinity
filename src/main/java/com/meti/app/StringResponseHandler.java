@@ -4,6 +4,7 @@ import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ResponseHandler;
 import com.meti.lib.net.server.Server;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -26,6 +27,15 @@ public class StringResponseHandler implements ResponseHandler {
 
     @Override
     public Optional<Serializable> handle(Object response, Client client) {
-        return Optional.of(client.getName() + ": " + response);
+        String result = client.getName() + ": " + response;
+        for (Client serverClient : server.getClients()) {
+            try {
+                serverClient.writeAndFlush(result);
+            } catch (IOException e) {
+                //TODO: handle e
+                e.printStackTrace();
+            }
+        }
+        return Optional.empty();
     }
 }
