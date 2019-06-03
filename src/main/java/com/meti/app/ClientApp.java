@@ -2,9 +2,9 @@ package com.meti.app;
 
 import com.meti.lib.collect.State;
 import com.meti.lib.fx.InjectorLoader;
+import com.meti.lib.fx.StageManager;
 import javafx.application.Application;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.Closeable;
@@ -20,17 +20,24 @@ import java.util.Set;
  */
 public class ClientApp extends Application {
     private final Controls controls;
+    private final State state;
+    private final StateToolkit toolkit;
 
     public ClientApp() {
-        State state = new InfinityState();
-        this.controls = new ControlsImpl(state, new StateToolkit(state));
+        state = new InfinityState();
+        toolkit = new StateToolkit(state);
+        controls = new ControlsImpl(state, toolkit);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        loadClientMenu(primaryStage, toolkit.getStageManager());
+    }
+
+    private void loadClientMenu(Stage primaryStage, StageManager stageManager) throws IOException {
         Parent parent = InjectorLoader.load(List.of(controls), getClientMenuURL());
-        primaryStage.setScene(new Scene(parent));
-        primaryStage.show();
+        stageManager.addStage(primaryStage);
+        stageManager.loadPrimaryStage(parent);
     }
 
     @Override
