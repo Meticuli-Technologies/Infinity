@@ -2,6 +2,7 @@ package com.meti.app.client;
 
 import com.meti.app.Controls;
 import com.meti.lib.fx.InjectorLoader;
+import com.meti.lib.fx.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -35,11 +36,15 @@ public class ClientMenu extends AdvancedController {
 
             ClientBootstrap bootstrap = new SocketClientBootstrap(address, port);
             controls.getState().add(bootstrap);
-
-            Parent root = InjectorLoader.load(List.of(controls), getClientDisplayURL());
+            loadClientDisplay(controls.getToolkit().getStageManager());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadClientDisplay(StageManager stageManager) throws IOException {
+        Parent root = InjectorLoader.load(List.of(controls), getClientDisplayURL());
+        stageManager.loadPrimaryStage(root);
     }
 
     private URL getClientDisplayURL() {
