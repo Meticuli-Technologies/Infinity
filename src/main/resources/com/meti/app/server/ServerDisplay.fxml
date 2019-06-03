@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.meti.app.server.ServerDisplay"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meti.app.server.ServerDisplay">
+   <children>
+      <BorderPane prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="768.0" prefViewportWidth="824.0">
+               <content>
+                  <ListView fx:id="clientListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </content>
+            </ScrollPane>
+         </center>
+         <right>
+            <GridPane BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Port:" GridPane.halignment="CENTER" />
+                  <Text fx:id="portText" strokeType="OUTSIDE" strokeWidth="0.0" text="[unknown]" GridPane.columnIndex="1" />
+               </children>
+               <BorderPane.margin>
+                  <Insets left="15.0" />
+               </BorderPane.margin>
+            </GridPane>
+         </right>
+      </BorderPane>
+   </children>
 </AnchorPane>
