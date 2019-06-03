@@ -16,17 +16,15 @@ import java.util.List;
  * @version 0.0.0
  * @since 6/3/2019
  */
-public class ClientMenu {
+public class ClientMenu extends AdvancedController {
     @FXML
     private TextField addressField;
 
     @FXML
     private TextField portField;
 
-    private final Controls controls;
-
     public ClientMenu(Controls controls) {
-        this.controls = controls;
+        super(controls);
     }
 
     @FXML
