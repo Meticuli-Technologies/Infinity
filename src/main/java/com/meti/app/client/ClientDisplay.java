@@ -68,7 +68,7 @@ public class ClientDisplay implements Initializable {
         try {
             tryLoadClient(clientBootstrap);
         } catch (IOException e) {
-            statusText.setText(e.getLocalizedMessage());
+            writeLine(e.getLocalizedMessage());
         }
     }
 
