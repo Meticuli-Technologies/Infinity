@@ -35,7 +35,11 @@ public class ClientApp extends Application {
 
     @Override
     public void stop() {
-        Set<Closeable> closeables = controls.getState().filterByClass(Closeable.class);
+        closeCloseables(controls.getState());
+    }
+
+    private void closeCloseables(State state) {
+        Set<Closeable> closeables = state.filterByClass(Closeable.class);
         for (Closeable closeable : closeables) {
             tryClose(closeable);
         }
