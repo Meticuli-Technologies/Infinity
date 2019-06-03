@@ -1,5 +1,7 @@
 package com.meti.lib.net.client;
 
+import com.meti.app.client.ClientBootstrap;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,6 +29,10 @@ public class SocketClient implements Client {
              */
         this.outputStream = new ObjectOutputStream(this.socket.getOutputStream());
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
+    }
+
+    public SocketClient(ClientBootstrap clientBootstrap) throws IOException {
+        this(clientBootstrap.getAddress(), clientBootstrap.getPort());
     }
 
     @Override

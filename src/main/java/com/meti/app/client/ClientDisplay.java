@@ -86,7 +86,7 @@ public class ClientDisplay {
         String portValue = portField.getText();
         try {
             int port = Integer.parseInt(portValue);
-            loadClient(new SocketClientBootstrap(InetAddress.getLocalHost(), port));
+            loadClient(new SocketClientBootstrap(port));
             statusText.setText("Successfully connected to server.");
         } catch (NumberFormatException | UnknownHostException e) {
             statusText.setText("Invalid integer: " + portValue);
@@ -106,7 +106,7 @@ public class ClientDisplay {
 
     private void loadClient(ClientBootstrap clientBootstrap) {
         try {
-            client = new SocketClient(clientBootstrap.getAddress(), clientBootstrap.getPort());
+            client = new SocketClient(clientBootstrap);
             processor = new ClientProcessor(client);
             processor.addHandler(new OutputHandler());
 
