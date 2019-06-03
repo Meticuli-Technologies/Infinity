@@ -17,7 +17,7 @@ import java.util.List;
  * @version 0.0.0
  * @since 6/3/2019
  */
-public class ClientMenu extends AdvancedController {
+public class ClientMenu extends InfinityController {
     @FXML
     private TextField addressField;
 
@@ -35,8 +35,8 @@ public class ClientMenu extends AdvancedController {
             int port = Integer.parseInt(portField.getText());
 
             ClientBootstrap bootstrap = new SocketClientBootstrap(address, port);
-            controls.getState().add(bootstrap);
-            loadClientDisplay(controls.getToolkit().getStageManager());
+            state.add(bootstrap);
+            loadClientDisplay(toolkit.getStageManager());
         } catch (IOException e) {
             e.printStackTrace();
         }
