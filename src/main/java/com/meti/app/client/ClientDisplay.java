@@ -12,11 +12,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Optional;
 
 /**
@@ -40,8 +37,6 @@ public class ClientDisplay {
     @FXML
     private Button changePortButton;
 
-    private boolean shouldChangePort = true;
-
     private final State state;
 
     public ClientDisplay(State state) {
@@ -60,52 +55,12 @@ public class ClientDisplay {
         }
     }
 
-    @FXML
-    @Deprecated
-    public void changePort(){
-        if (shouldChangePort) {
-            if (client != null) {
-                disconnectFromPort(client);
-            }
-
-            portField.setEditable(true);
-            changePortButton.setText("Reconnect");
-        } else {
-            connectToPort();
-
-            portField.setEditable(false);
-            changePortButton.setText("Change Port");
-        }
-        shouldChangePort = !shouldChangePort;
-    }
-
     private void writeLine(String line) {
         output.appendText(line + '\n');
     }
 
-    @Deprecated
-    private void connectToPort() {
-        String portValue = portField.getText();
-        try {
-            int port = Integer.parseInt(portValue);
-            loadClient(new SocketClientBootstrap(port));
-            statusText.setText("Successfully connected to server.");
-        } catch (NumberFormatException | UnknownHostException e) {
-            statusText.setText("Invalid integer: " + portValue);
-        }
-    }
-
     private Client client;
     private ResponseProcessor processor;
-
-    @Deprecated
-    private void disconnectFromPort(Closeable client) {
-        try {
-            client.close();
-        } catch (IOException e) {
-            writeLine(e.getLocalizedMessage());
-        }
-    }
 
     private void loadClient(ClientBootstrap clientBootstrap) {
         try {
