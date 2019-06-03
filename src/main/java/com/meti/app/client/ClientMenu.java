@@ -48,6 +48,6 @@ public class ClientMenu extends InfinityController {
     }
 
     private URL getClientDisplayURL() {
-        return getClass().getResource("/com/meti/app/client/ClientDisplay");
+        return getClass().getResource("/com/meti/app/client/ClientDisplay.fxml");
     }
 }
