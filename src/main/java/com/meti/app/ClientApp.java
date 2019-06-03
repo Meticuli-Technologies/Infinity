@@ -42,7 +42,7 @@ public class ClientApp extends Application {
 
     @Override
     public void stop() {
-        closeCloseables(controls.getState());
+        closeCloseables(state);
     }
 
     private void closeCloseables(State state) {
