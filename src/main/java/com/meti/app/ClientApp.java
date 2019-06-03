@@ -19,7 +19,7 @@ import java.util.List;
  * @since 6/1/2019
  */
 public class ClientApp extends Application {
-    private final State state = new SetBasedState();
+    private final State state = new InfinityState();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
