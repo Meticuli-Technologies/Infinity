@@ -21,7 +21,7 @@ import java.util.Set;
 public class ClientApp extends Application {
     private final Controls controls;
     private final State state;
-    private final StateToolkit toolkit;
+    private final Toolkit toolkit;
 
     public ClientApp() {
         state = new InfinityState();
