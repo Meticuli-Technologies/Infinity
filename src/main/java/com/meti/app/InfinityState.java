@@ -1,7 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.collect.SetBasedState;
-import com.meti.lib.fx.StageManager;
+import com.meti.lib.fx.ListBasedStageManager;
 
 /**
  * @author SirMathhman
@@ -10,6 +10,6 @@ import com.meti.lib.fx.StageManager;
  */
 public final class InfinityState extends SetBasedState {
     public InfinityState() {
-        add(new StageManager());
+        add(new ListBasedStageManager());
     }
 }
