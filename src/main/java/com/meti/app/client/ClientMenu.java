@@ -1,6 +1,6 @@
 package com.meti.app.client;
 
-import com.meti.lib.collect.State;
+import com.meti.app.Controls;
 import com.meti.lib.fx.InjectorLoader;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -23,10 +23,10 @@ public class ClientMenu {
     @FXML
     private TextField portField;
 
-    private final State state;
+    private final Controls controls;
 
-    public ClientMenu(State state) {
-        this.state = state;
+    public ClientMenu(Controls controls) {
+        this.controls = controls;
     }
 
     @FXML
@@ -36,9 +36,9 @@ public class ClientMenu {
             int port = Integer.parseInt(portField.getText());
 
             ClientBootstrap bootstrap = new SocketClientBootstrap(address, port);
-            state.add(bootstrap);
+            controls.getState().add(bootstrap);
 
-            Parent root = InjectorLoader.load(List.of(state), getClientDisplayURL());
+            Parent root = InjectorLoader.load(List.of(controls), getClientDisplayURL());
         } catch (IOException e) {
             e.printStackTrace();
         }
