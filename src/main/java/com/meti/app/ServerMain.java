@@ -1,8 +1,10 @@
 package com.meti.app;
 
 import com.meti.lib.net.server.Server;
+import com.meti.lib.net.server.ServerSocketServer;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -50,9 +52,10 @@ class ServerMain {
 
     private void start() {
         try {
-            server = new InfinityServer(port);
+            server = new ServerSocketServer(port, Collections.emptySet());
             server.listen();
 
+            server.getResponseHandlers().add(new StringResponseHandler(server));
             System.out.println("Started server on port: " + server.getPort());
         } catch (IOException e) {
             e.printStackTrace();

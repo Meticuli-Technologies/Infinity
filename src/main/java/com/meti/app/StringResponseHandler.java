@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ResponseHandler;
+import com.meti.lib.net.server.Server;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -12,6 +13,12 @@ import java.util.Optional;
  * @since 5/30/2019
  */
 public class StringResponseHandler implements ResponseHandler {
+    private final Server server;
+
+    public StringResponseHandler(Server server) {
+        this.server = server;
+    }
+
     @Override
     public boolean canHandle(Object response) {
         return response instanceof String;

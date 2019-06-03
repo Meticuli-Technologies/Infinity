@@ -14,10 +14,10 @@ import java.util.Collection;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public abstract class ServerSocketServer extends AbstractServer {
+public class ServerSocketServer extends AbstractServer {
     private final ServerSocket serverSocket;
 
-    protected ServerSocketServer(int port, Collection<? extends ResponseHandler> initialHandlers) throws IOException {
+    public ServerSocketServer(int port, Collection<? extends ResponseHandler> initialHandlers) throws IOException {
         this(new ServerSocket(port), initialHandlers);
     }
 

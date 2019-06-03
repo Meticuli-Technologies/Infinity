@@ -4,12 +4,14 @@ import com.meti.lib.concurrent.Listener;
 import com.meti.lib.concurrent.LoopedExecutable;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ClientProcessor;
-import com.meti.lib.net.client.handle.ResponseProcessor;
 import com.meti.lib.net.client.handle.ResponseHandler;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -17,11 +19,11 @@ import java.util.HashSet;
  * @since 5/30/2019
  */
 public abstract class AbstractServer extends LoopedExecutable implements Server {
-    private final Collection<ResponseHandler> handlers = new HashSet<>();
-    private final Collection<Client> clients = new HashSet<>();
+    private final Set<ResponseHandler> responseHandlers = new HashSet<>();
+    private final Set<Client> clients = new HashSet<>();
 
     AbstractServer(Collection<? extends ResponseHandler> initialHandlers) {
-        this.handlers.addAll(initialHandlers);
+        this.responseHandlers.addAll(initialHandlers);
     }
 
     @Override
@@ -31,14 +33,24 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
         submitClient(client);
     }
 
-    protected abstract Client acceptClient() throws IOException;
-
     private void submitClient(Client client) {
         ResponseProcessor processor = new ClientProcessor(client);
-        processor.addHandlers(handlers);
+        processor.addHandlers(responseHandlers);
 
         Listener handler = new ProcessorExecutable(client, processor);
         handler.listen();
+    }
+
+    @Override
+    public Set<Client> getClients() {
+        return Collections.unmodifiableSet(clients);
+    }
+
+    protected abstract Client acceptClient() throws IOException;
+
+    @Override
+    public Set<ResponseHandler> getResponseHandlers() {
+        return responseHandlers;
     }
 
     @Override
