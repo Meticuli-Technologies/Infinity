@@ -7,6 +7,7 @@ import com.meti.lib.net.client.handle.ClientProcessor;
 import com.meti.lib.net.client.handle.ResponseHandler;
 import com.meti.lib.net.client.handle.ResponseProcessor;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,14 +15,16 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 6/1/2019
  */
-public class ClientDisplay {
+public class ClientDisplay implements Initializable {
     @FXML
     private TextArea output;
 
@@ -41,6 +44,16 @@ public class ClientDisplay {
 
     public ClientDisplay(State state) {
         this.state = state;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Optional<ClientBootstrap> clientBootstrap = state.singleByClass(ClientBootstrap.class);
+        if (clientBootstrap.isPresent()) {
+            loadClient(clientBootstrap.get());
+        } else {
+            writeLine("No bootstrap was found.");
+        }
     }
 
     @FXML
@@ -64,14 +77,17 @@ public class ClientDisplay {
 
     private void loadClient(ClientBootstrap clientBootstrap) {
         try {
-            client = new SocketClient(clientBootstrap);
-            processor = new ClientProcessor(client);
-            processor.addHandler(new OutputHandler());
-
-            state.add(client);
+            tryLoadClient(clientBootstrap);
         } catch (IOException e) {
             statusText.setText(e.getLocalizedMessage());
         }
+    }
+
+    private void tryLoadClient(ClientBootstrap clientBootstrap) throws IOException {
+        client = new SocketClient(clientBootstrap);
+        processor = new ClientProcessor(client);
+        processor.addHandler(new OutputHandler());
+        state.add(client);
     }
 
     private class OutputHandler implements ResponseHandler {
