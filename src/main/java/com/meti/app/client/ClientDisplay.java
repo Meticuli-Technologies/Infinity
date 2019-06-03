@@ -8,10 +8,8 @@ import com.meti.lib.net.client.handle.ResponseHandler;
 import com.meti.lib.net.client.handle.ResponseProcessor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,15 +28,6 @@ public class ClientDisplay implements Initializable {
 
     @FXML
     private TextField input;
-
-    @FXML
-    private Text statusText;
-
-    @FXML
-    private TextField portField;
-
-    @FXML
-    private Button changePortButton;
 
     private final State state;
 
