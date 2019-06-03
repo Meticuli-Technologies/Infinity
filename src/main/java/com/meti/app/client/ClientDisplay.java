@@ -15,6 +15,8 @@ import javafx.scene.text.Text;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 /**
@@ -84,9 +86,9 @@ public class ClientDisplay {
         String portValue = portField.getText();
         try {
             int port = Integer.parseInt(portValue);
-            loadClient(port);
+            loadClient(InetAddress.getLocalHost(), port);
             statusText.setText("Successfully connected to server.");
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | UnknownHostException e) {
             statusText.setText("Invalid integer: " + portValue);
         }
     }
@@ -102,9 +104,9 @@ public class ClientDisplay {
         }
     }
 
-    private void loadClient(int port) {
+    private void loadClient(InetAddress address, int port) {
         try {
-            client = new SocketClient(port);
+            client = new SocketClient(address, port);
             processor = new ClientProcessor(client);
             processor.addHandler(new OutputHandler());
 

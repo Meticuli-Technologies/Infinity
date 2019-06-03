@@ -16,7 +16,7 @@ public class SocketClient implements Client {
         this(InetAddress.getLocalHost(), port);
     }
 
-    private SocketClient(InetAddress address, int port) throws IOException {
+    public SocketClient(InetAddress address, int port) throws IOException {
         this(new Socket(address, port));
     }
 
