@@ -39,7 +39,7 @@ public final class InjectorLoader extends FXMLLoader {
         public Object call(Class<?> param) {
             try {
                 return Instantiator.genericInstanceToSingle(dependencies, param).orElseThrow();
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to instantiate controller: " + e);
             }
         }

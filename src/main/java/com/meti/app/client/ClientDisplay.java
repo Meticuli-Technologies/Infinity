@@ -29,9 +29,8 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     private TextField input;
 
-    public ClientDisplay(Controls controls, Client client) {
+    public ClientDisplay(Controls controls) {
         super(controls);
-        this.client = client;
     }
 
     @Override
