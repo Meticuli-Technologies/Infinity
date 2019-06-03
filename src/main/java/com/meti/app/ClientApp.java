@@ -23,7 +23,7 @@ public class ClientApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent parent = InjectorLoader.load(List.of(state), getClientDisplayURL());
+        Parent parent = InjectorLoader.load(List.of(state), getClientMenuURL());
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
     }
@@ -39,8 +39,8 @@ public class ClientApp extends Application {
         }
     }
 
-    private URL getClientDisplayURL() {
-        return getClass().getResource("/com/meti/app/client/ClientDisplay.fxml");
+    private URL getClientMenuURL() {
+        return getClass().getResource("/com/meti/app/client/ClientMenu.fxml");
     }
 
     public static void main(String[] args) {
