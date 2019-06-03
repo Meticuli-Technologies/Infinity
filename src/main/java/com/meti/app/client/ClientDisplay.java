@@ -61,6 +61,7 @@ public class ClientDisplay {
     }
 
     @FXML
+    @Deprecated
     public void changePort(){
         if (shouldChangePort) {
             if (client != null) {
@@ -82,6 +83,7 @@ public class ClientDisplay {
         output.appendText(line + '\n');
     }
 
+    @Deprecated
     private void connectToPort() {
         String portValue = portField.getText();
         try {
@@ -96,6 +98,7 @@ public class ClientDisplay {
     private Client client;
     private ResponseProcessor processor;
 
+    @Deprecated
     private void disconnectFromPort(Closeable client) {
         try {
             client.close();
