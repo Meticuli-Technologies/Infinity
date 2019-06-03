@@ -1,4 +1,4 @@
-package com.meti.app.client;
+package com.meti.app.server;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
