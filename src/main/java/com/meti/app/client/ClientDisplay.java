@@ -1,6 +1,6 @@
 package com.meti.app.client;
 
-import com.meti.lib.collect.State;
+import com.meti.app.Controls;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
@@ -22,17 +22,16 @@ import java.util.ResourceBundle;
  * @version 0.0.0
  * @since 6/1/2019
  */
-public class ClientDisplay implements Initializable {
+public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     private TextArea output;
 
     @FXML
     private TextField input;
 
-    private final State state;
-
-    public ClientDisplay(State state) {
-        this.state = state;
+    public ClientDisplay(Controls controls, Client client) {
+        super(controls);
+        this.client = client;
     }
 
     @Override
