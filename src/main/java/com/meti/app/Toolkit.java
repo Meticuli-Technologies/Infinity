@@ -7,6 +7,6 @@ import com.meti.lib.fx.StageManager;
  * @version 0.0.0
  * @since 6/3/2019
  */
-public interface InfinityToolkit {
+public interface Toolkit {
     StageManager getStageManager();
 }
