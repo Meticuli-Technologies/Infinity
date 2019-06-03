@@ -1,6 +1,5 @@
 package com.meti.app;
 
-import com.meti.lib.collect.SetBasedState;
 import com.meti.lib.collect.State;
 import com.meti.lib.fx.InjectorLoader;
 import javafx.application.Application;
@@ -12,6 +11,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -19,23 +19,33 @@ import java.util.List;
  * @since 6/1/2019
  */
 public class ClientApp extends Application {
-    private final State state = new InfinityState();
+    private final Controls controls;
+
+    public ClientApp() {
+        State state = new InfinityState();
+        this.controls = new ControlsImpl(state, new StateToolkit(state));
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent parent = InjectorLoader.load(List.of(state), getClientMenuURL());
+        Parent parent = InjectorLoader.load(List.of(controls), getClientMenuURL());
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
     }
 
     @Override
     public void stop() {
-        for (Closeable closeable : state.filterByClass(Closeable.class)) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Set<Closeable> closeables = controls.getState().filterByClass(Closeable.class);
+        for (Closeable closeable : closeables) {
+            tryClose(closeable);
+        }
+    }
+
+    private void tryClose(Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
