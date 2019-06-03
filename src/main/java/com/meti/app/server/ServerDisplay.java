@@ -52,6 +52,7 @@ public class ServerDisplay extends InfinityController implements Initializable {
 
     private void tryLoadServer(int port) throws IOException {
         Server server = new ServerSocketServer(port, Collections.emptySet());
+        portText.setText(String.valueOf(server.getPort()));
         server.listen();
         server.getResponseHandlers().add(new StringResponseHandler(server));
     }
