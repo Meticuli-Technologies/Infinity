@@ -2,6 +2,7 @@ package com.meti.app.client;
 
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
+import com.meti.app.Toolkit;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
@@ -49,6 +50,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
         client = new SocketClient(clientBootstrap);
         processor = new ClientProcessor(client);
         state.add(client);
+        state.add(processor);
     }
 
 

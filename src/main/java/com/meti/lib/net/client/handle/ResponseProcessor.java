@@ -13,5 +13,4 @@ public interface ResponseProcessor {
     void addHandler(ResponseHandler handler);
 
     void addHandlers(Collection<? extends ResponseHandler> handlers);
-
 }

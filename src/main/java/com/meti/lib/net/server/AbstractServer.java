@@ -42,7 +42,7 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
         ResponseProcessor processor = new ClientProcessor(client);
         processor.addHandlers(responseHandlers);
 
-        Listener handler = new ProcessorExecutable(client, processor);
+        Listener handler = new EmptyProcessorExecutable(client, processor);
         handler.listen();
     }
 
@@ -74,4 +74,5 @@ public abstract class AbstractServer extends LoopedExecutable implements Server 
             client.close();
         }
     }
+
 }

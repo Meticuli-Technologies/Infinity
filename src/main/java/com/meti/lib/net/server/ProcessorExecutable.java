@@ -11,7 +11,7 @@ import java.io.IOException;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class ProcessorExecutable extends LoopedExecutable {
+public abstract class ProcessorExecutable extends LoopedExecutable {
     private final Client client;
     private final ResponseProcessor processor;
 

@@ -2,6 +2,8 @@ package com.meti.app;
 
 import com.meti.lib.collect.State;
 import com.meti.lib.javafx.StageManager;
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.server.Server;
 
 /**
  * @author SirMathhman
@@ -13,6 +15,16 @@ public class StateBasedToolkit implements Toolkit {
 
     public StateBasedToolkit(State state) {
         this.state = state;
+    }
+
+    @Override
+    public Client getClient() {
+        return state.singleByClass(Client.class).orElseThrow();
+    }
+
+    @Override
+    public Server getServer() {
+        return state.singleByClass(Server.class).orElseThrow();
     }
 
     @Override
