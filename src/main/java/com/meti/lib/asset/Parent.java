@@ -1,5 +1,6 @@
 package com.meti.lib.asset;
 
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -8,5 +9,5 @@ import java.util.Set;
  * @since 6/6/2019
  */
 public interface Parent<T> {
-    Set<T> getChildren();
+    Set<T> getChildren() throws IOException;
 }
