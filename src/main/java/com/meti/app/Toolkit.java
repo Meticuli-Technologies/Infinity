@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.asset.AssetManager;
 import com.meti.lib.javafx.StageManager;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
@@ -15,4 +16,6 @@ public interface Toolkit {
     Server getServer();
 
     StageManager getStageManager();
+
+    AssetManager getAssetManager();
 }

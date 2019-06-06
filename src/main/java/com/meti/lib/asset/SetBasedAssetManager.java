@@ -18,12 +18,12 @@ public class SetBasedAssetManager implements AssetManager {
     private final Set<Asset> assets = new HashSet<>();
 
     @Override
-    public void addBuilder(AssetTranslator<?> builder) {
+    public void addTranslator(AssetTranslator<?> builder) {
         builders.add(builder);
     }
 
     @Override
-    public void build(Source source) throws IOException {
+    public void read(Source source) throws IOException {
         for (AssetTranslator<?> builder : builders) {
             if (builder.canBuild(source)) {
                 Asset asset = builder.read(source);
@@ -38,7 +38,7 @@ public class SetBasedAssetManager implements AssetManager {
 
     private void buildParent(ParentSource source) throws IOException {
         for (Source child : source.getChildren()) {
-            build(child);
+            read(child);
         }
     }
 

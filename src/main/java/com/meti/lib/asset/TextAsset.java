@@ -12,7 +12,7 @@ public class TextAsset implements Asset<TextAssetChange, StringBuilder> {
     private final String name;
     private BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> onChange;
 
-    public TextAsset(String name, String value) {
+    public TextAsset(String name, StringBuilder value) {
         this.name = name;
         this.value.append(value);
     }

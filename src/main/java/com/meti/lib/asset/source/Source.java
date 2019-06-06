@@ -1,6 +1,7 @@
 package com.meti.lib.asset.source;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -9,10 +10,10 @@ import java.io.OutputStream;
  * @version 0.0.0
  * @since 6/6/2019
  */
-public interface Source extends Closeable {
-    InputStream getInputStream();
+public interface Source {
+    InputStream newInputStream() throws IOException;
 
     String getName();
 
-    OutputStream getOutputStream();
+    OutputStream newOutputStream() throws IOException;
 }

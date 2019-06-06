@@ -3,9 +3,9 @@ package com.meti.lib.asset;
 import com.meti.lib.asset.source.Source;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -14,16 +14,24 @@ import java.util.stream.Collectors;
  */
 public class TextAssetTranslator implements AssetTranslator<Asset<?, StringBuilder>> {
     @Override
-    public Asset<?, StringBuilder> read(Source source) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(source.getInputStream()));
-        String lines = reader.lines().collect(Collectors.joining());
-        return new TextAsset(source.getName(), lines);
+    public Asset<?, StringBuilder> read(Source source) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(source.newInputStream()));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        do{
+            line = reader.readLine();
+            if(line != null){
+                builder.append(line);
+            }
+        } while(line != null);
+        return new TextAsset(source.getName(), builder);
     }
 
     @Override
-    public void write(Source source, Asset<?, StringBuilder> asset) {
-        PrintWriter writer = new PrintWriter(source.getOutputStream());
+    public void write(Source source, Asset<?, StringBuilder> asset) throws IOException {
+        PrintWriter writer = new PrintWriter(source.newOutputStream());
         writer.print(asset.getValue());
+        writer.flush();
         writer.flush();
     }
 

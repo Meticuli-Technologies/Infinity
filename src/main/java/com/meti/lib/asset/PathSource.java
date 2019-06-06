@@ -3,9 +3,7 @@ package com.meti.lib.asset;
 import com.meti.lib.asset.source.ParentSource;
 import com.meti.lib.asset.source.Source;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -19,13 +17,9 @@ import java.util.stream.Collectors;
  */
 public class PathSource implements ParentSource {
     private final Path path;
-    private final InputStream inputStream;
-    private final OutputStream outputStream;
 
-    public PathSource(Path path) throws IOException {
+    public PathSource(Path path) {
         this.path = path;
-        this.inputStream = Files.newInputStream(path);
-        this.outputStream = Files.newOutputStream(path);
     }
 
     @Override
@@ -41,8 +35,8 @@ public class PathSource implements ParentSource {
     }
 
     @Override
-    public InputStream getInputStream() {
-        return inputStream;
+    public InputStream newInputStream() throws IOException {
+        return Files.newInputStream(path);
     }
 
     @Override
@@ -51,13 +45,7 @@ public class PathSource implements ParentSource {
     }
 
     @Override
-    public OutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    @Override
-    public void close() throws IOException {
-        inputStream.close();
-        outputStream.close();
+    public OutputStream newOutputStream() throws IOException {
+        return Files.newOutputStream(path);
     }
 }

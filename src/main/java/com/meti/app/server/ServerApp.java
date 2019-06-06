@@ -1,6 +1,9 @@
 package com.meti.app.server;
 
 import com.meti.app.*;
+import com.meti.lib.asset.AssetManager;
+import com.meti.lib.asset.PathSource;
+import com.meti.lib.asset.TextAssetTranslator;
 import com.meti.lib.collect.State;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;
@@ -11,6 +14,9 @@ import javafx.stage.Stage;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +26,7 @@ import java.util.Set;
  * @since 6/3/2019
  */
 public class ServerApp extends Application {
+    private static final Path ASSET_PATH = Paths.get(".\\assets");
     private final Controls controls;
     private final State state;
     private final Toolkit toolkit;
@@ -32,7 +39,21 @@ public class ServerApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        AssetManager assetManager = toolkit.getAssetManager();
+        loadAssetManager(assetManager);
         loadServerMenu(primaryStage, toolkit.getStageManager());
+    }
+
+    private void loadAssetManager(AssetManager assetManager) throws IOException {
+        ensureAssetPath();
+        assetManager.addTranslator(new TextAssetTranslator());
+        assetManager.read(new PathSource(ASSET_PATH));
+    }
+
+    private void ensureAssetPath() throws IOException {
+        if (!Files.exists(ASSET_PATH)) {
+            Files.createDirectory(ASSET_PATH);
+        }
     }
 
     private void loadServerMenu(Stage primaryStage, StageManager stageManager) throws java.io.IOException {

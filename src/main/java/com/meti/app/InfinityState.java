@@ -1,5 +1,6 @@
 package com.meti.app;
 
+import com.meti.lib.asset.SetBasedAssetManager;
 import com.meti.lib.collect.SetBasedState;
 import com.meti.lib.javafx.ListBasedStageManager;
 
@@ -11,5 +12,6 @@ import com.meti.lib.javafx.ListBasedStageManager;
 public final class InfinityState extends SetBasedState {
     public InfinityState() {
         add(new ListBasedStageManager());
+        add(new SetBasedAssetManager());
     }
 }

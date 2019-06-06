@@ -11,9 +11,9 @@ import java.util.Set;
  * @since 6/6/2019
  */
 public interface AssetManager {
-    void addBuilder(AssetTranslator<?> builder);
+    void addTranslator(AssetTranslator<?> builder);
 
-    void build(Source source) throws IOException;
+    void read(Source source) throws IOException;
 
     Set<Asset> getAssets();
 }
