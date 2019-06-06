@@ -39,7 +39,7 @@ public class ChatDisplay extends InfinityClientController implements Initializab
     public void nextInput() {
         try {
             String message = input.getText();
-            client.writeAndFlush(message);
+            client.writeAndFlush(new SerializedChatMessage(message));
             input.clear();
 
             processor.processNextResponse();

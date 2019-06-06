@@ -8,17 +8,11 @@ import java.io.Serializable;
  * @since 6/6/2019
  */
 public class SerializedChatMessage implements Serializable, ChatMessage {
-    private final String user;
+    private static final long serialVersionUID = -8064488992846676572L;
     private final String value;
 
-    public SerializedChatMessage(String user, String value) {
-        this.user = user;
+    public SerializedChatMessage(String value) {
         this.value = value;
-    }
-
-    @Override
-    public String getUser() {
-        return user;
     }
 
     @Override
