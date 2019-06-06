@@ -2,7 +2,7 @@ package com.meti.app.client.chat;
 
 import com.meti.app.Controls;
 import com.meti.app.client.InfinityClientController;
-import com.meti.lib.net.StringTypeHandler;
+import com.meti.lib.net.TypeHandler;
 import com.meti.lib.net.client.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,10 +52,14 @@ public class ChatDisplay extends InfinityClientController implements Initializab
         output.appendText(line + '\n');
     }
 
-    private class OutputHandler extends StringTypeHandler {
+    private class OutputHandler extends TypeHandler<ChatMessageResponse> {
+        public OutputHandler() {
+            super(ChatMessageResponse.class);
+        }
+
         @Override
-        public Optional<Serializable> handleGeneric(String response, Client client) {
-            writeLine(response);
+        public Optional<Serializable> handleGeneric(ChatMessageResponse response, Client client) {
+            writeLine(response.buildString());
             return Optional.empty();
         }
     }

@@ -1,6 +1,6 @@
 package com.meti.app.server;
 
-import com.meti.app.client.chat.ChatResponseHandler;
+import com.meti.app.client.chat.ChatMessageHandler;
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.server.ServerSocketServer;
 
@@ -56,7 +56,7 @@ class ServerMain {
             server = new ServerSocketServer(port, Collections.emptySet());
             server.listen();
 
-            server.getResponseHandlers().add(new ChatResponseHandler(server));
+            server.getResponseHandlers().add(new ChatMessageHandler(server));
             System.out.println("Started server on port: " + server.getPort());
         } catch (IOException e) {
             e.printStackTrace();

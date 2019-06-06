@@ -19,6 +19,11 @@ public class SerializedChatMessageResponse implements ChatMessageResponse, Seria
         this.value = value;
     }
 
+    @Override
+    public String buildString() {
+        return "[ " + user + ": " + timestamp + "]: " + value;
+    }
+
     public String getTimestamp() {
         return timestamp;
     }
