@@ -8,6 +8,7 @@ import com.meti.lib.collect.State;
  * @since 6/3/2019
  */
 public interface Controls {
+    NetBinding getNetBinding();
     State getState();
     Toolkit getToolkit();
 }
