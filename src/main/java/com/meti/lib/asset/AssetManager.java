@@ -1,5 +1,7 @@
 package com.meti.lib.asset;
 
+import com.meti.lib.asset.source.Source;
+
 import java.util.Set;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Set;
 public interface AssetManager {
     void addBuilder(AssetBuilder<?> builder);
 
-    void build(Asset asset);
+    void build(Source source);
 
     Set<Asset> getAssets();
 }
