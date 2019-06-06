@@ -21,7 +21,7 @@ public class ChatResponseHandler extends StringTypeHandler {
     }
 
     @Override
-    public Optional<Serializable> handle(Object response, Client client) {
+    public Optional<Serializable> handleGeneric(String response, Client client) {
         String result = client.getName() + ": " + response;
         for (Client serverClient : server.getClients()) {
             try {

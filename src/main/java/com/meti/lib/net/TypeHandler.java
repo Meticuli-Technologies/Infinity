@@ -1,6 +1,10 @@
 package com.meti.lib.net;
 
+import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ResponseHandler;
+
+import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * @author SirMathhman
@@ -18,4 +22,11 @@ public abstract class TypeHandler<T> implements ResponseHandler {
     public boolean canHandle(Object response) {
         return tClass.isInstance(response);
     }
+
+    @Override
+    public Optional<Serializable> handle(Object response, Client client) {
+        return handleGeneric(tClass.cast(response), client);
+    }
+
+    public abstract Optional<Serializable> handleGeneric(T response, Client client);
 }

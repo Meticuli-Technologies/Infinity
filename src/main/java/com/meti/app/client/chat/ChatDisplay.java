@@ -54,8 +54,8 @@ public class ChatDisplay extends InfinityClientController implements Initializab
 
     private class OutputHandler extends StringTypeHandler {
         @Override
-        public Optional<Serializable> handle(Object response, Client client) {
-            writeLine(response.toString());
+        public Optional<Serializable> handleGeneric(String response, Client client) {
+            writeLine(response);
             return Optional.empty();
         }
     }
