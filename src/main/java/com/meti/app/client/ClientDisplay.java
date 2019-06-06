@@ -1,13 +1,57 @@
 package com.meti.app.client;
 
+import com.meti.app.Controls;
+import com.meti.app.InfinityController;
+import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.SocketClient;
+import com.meti.lib.net.client.handle.ClientProcessor;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 6/6/2019
  */
-public class ClientDisplay{
+public class ClientDisplay extends InfinityController implements Initializable {
+    private Client client;
+    private ResponseProcessor processor;
+
+    public ClientDisplay(Controls controls) {
+        super(controls);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Optional<ClientBootstrap> clientBootstrap = state.singleByClass(ClientBootstrap.class);
+        if (clientBootstrap.isPresent()) {
+            loadClient(clientBootstrap.get());
+        } else {
+            //TODO: do something
+        }
+    }
+
+    private void loadClient(ClientBootstrap clientBootstrap) {
+        try {
+            tryLoadClient(clientBootstrap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void tryLoadClient(ClientBootstrap clientBootstrap) throws IOException {
+        client = new SocketClient(clientBootstrap);
+        processor = new ClientProcessor(client);
+        state.add(client);
+    }
+
+
     @FXML
     public void openChat(){
 
