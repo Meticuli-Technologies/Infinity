@@ -1,71 +1,88 @@
 package com.meti.lib.reflect;
 
-import com.meti.lib.collect.TypeFunction;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 5/21/2019
+ * @since 6/1/2019
  */
-public class Instantiator implements InstantiatorImpl {
-    @Override
-    public <T> List<T> instantiateGeneric(Class<T> tClass, List<Object> dependencies) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        return instantiate(tClass, dependencies).stream()
-                .map(new TypeFunction<>(tClass))
-                .collect(Collectors.toList());
+public class Instantiator {
+    private final List<Object> dependencies = new ArrayList<>();
+
+    public Instantiator(Collection<?> dependencies) {
+        this.dependencies.addAll(dependencies);
     }
 
-    @Override
-    public List<Object> instantiate(Class<?> instantiatee, List<Object> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Map<List<Class<?>>, Constructor<?>> parameterTypeMap = this.constructParameterTypeMap(instantiatee);
-        List<Class<?>> dependencyClasses = this.getDependencyClasses(dependencies);
-        List<Constructor<?>> constructors = this.matchConstructors(parameterTypeMap, dependencyClasses);
-        return this.instantiateConstructors(dependencies, constructors);
+    public static <T> Set<T> genericInstanceSet(List<?> dependencies, Class<? extends T> clazz) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        return genericInstanceStream(dependencies, clazz).collect(Collectors.toSet());
     }
 
-    private Map<List<Class<?>>, Constructor<?>> constructParameterTypeMap(Class<?> instantiatee) {
+    private static <T> Stream<? extends T> genericInstanceStream(List<?> dependencies, Class<? extends T> clazz) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        return new Instantiator(dependencies)
+                .instantiate(clazz)
+                .stream()
+                .filter(clazz::isInstance)
+                .map(clazz::cast);
+    }
+
+    private Set<Object> instantiate(Class<?> clazz) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        List<Constructor<?>> constructors = List.of(clazz.getConstructors());
+        Map<List<Class<?>>, Constructor<?>> parameterTypeMap = createParameterTypeMap(constructors);
+        List<Constructor<?>> validConstructors = filterValidConstructors(parameterTypeMap);
+        return instantiate(validConstructors);
+    }
+
+    public static <T> Optional<? extends T> genericInstanceToSingle(List<?> dependencies, Class<? extends T> clazz) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        return genericInstanceStream(dependencies, clazz).findAny();
+    }
+
+    private Map<List<Class<?>>, Constructor<?>> createParameterTypeMap(Iterable<Constructor<?>> constructors) {
         Map<List<Class<?>>, Constructor<?>> parameterTypeMap = new HashMap<>();
-        for (Constructor<?> constructor : instantiatee.getConstructors()) {
+        for (Constructor<?> constructor : constructors) {
             parameterTypeMap.put(List.of(constructor.getParameterTypes()), constructor);
         }
         return parameterTypeMap;
     }
 
-    private List<Class<?>> getDependencyClasses(Collection<Object> dependencies) {
-        return dependencies.stream().map(Object::getClass).collect(Collectors.toList());
+    private List<Constructor<?>> filterValidConstructors(Map<List<Class<?>>, Constructor<?>> parameterTypeMap) {
+        List<Constructor<?>> validConstructors = new ArrayList<>();
+        for (Map.Entry<List<Class<?>>, Constructor<?>> parameterTypeEntry : parameterTypeMap.entrySet()) {
+            if (areValidParameters(parameterTypeEntry.getKey())) {
+                validConstructors.add(parameterTypeEntry.getValue());
+            }
+        }
+        return validConstructors;
     }
 
-    private List<Constructor<?>> matchConstructors(Map<? extends List<Class<?>>, Constructor<?>> parameterTypeMap, List<Class<?>> dependencyClasses) {
-        return parameterTypeMap.keySet().stream()
-                .filter(classes -> this.isEqualSize(classes, dependencyClasses))
-                .map(parameterTypeMap::get)
-                .collect(Collectors.toList());
-    }
-
-    private List<Object> instantiateConstructors(Collection<Object> dependencies, List<? extends Constructor<?>> constructors) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        List<Object> instances = new ArrayList<>();
-        for (Constructor<?> constructor : constructors) {
-            instances.add(constructor.newInstance(dependencies.toArray()));
+    private Set<Object> instantiate(Iterable<Constructor<?>> validConstructors) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        Set<Object> instances = new HashSet<>();
+        for (Constructor<?> validConstructor : validConstructors) {
+            Object instance = validConstructor.newInstance(dependencies.toArray());
+            instances.add(instance);
         }
         return instances;
     }
 
-    private boolean isEqualSize(List<Class<?>> superClasses, List<Class<?>> implementors) {
-        if (superClasses.size() != implementors.size()) throw new IllegalArgumentException("List sizes aren't equal.");
-        boolean matching = true;
-        int listSize = superClasses.size();
-        for (int i = 0; i < listSize; i++) {
-            Class<?> superClass = superClasses.get(i);
-            Class<?> implementor = implementors.get(i);
-            if (!superClass.isAssignableFrom(implementor)) {
-                matching = false;
+    private boolean areValidParameters(List<Class<?>> key) {
+        return isEqualSize(key, dependencies) && areDependenciesInstancesOf(key);
+    }
+
+    private boolean isEqualSize(Collection<?> collection0, Collection<?> collection1) {
+        return collection0.size() == collection1.size();
+    }
+
+    @SuppressWarnings("MethodWithMultipleReturnPoints")
+    private boolean areDependenciesInstancesOf(List<Class<?>> parameterTypes) {
+        for (int i = 0; i < (parameterTypes).size(); i++) {
+            if (!parameterTypes.get(i).isInstance(dependencies.get(i))) {
+                return false;
             }
         }
-        return matching;
+        return true;
     }
 }
