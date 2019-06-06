@@ -1,7 +1,9 @@
 package com.meti.lib.asset;
 
+import com.meti.lib.asset.source.ParentSource;
 import com.meti.lib.asset.source.Source;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,12 +23,22 @@ public class SetBasedAssetManager implements AssetManager {
     }
 
     @Override
-    public void build(Source source) {
+    public void build(Source source) throws IOException {
         for (AssetBuilder<?> builder : builders) {
             if (builder.canBuild(source)) {
                 Asset asset = builder.build(source);
                 assets.add(asset);
             }
+        }
+
+        if(source instanceof ParentSource){
+            buildParent((ParentSource) source);
+        }
+    }
+
+    private void buildParent(ParentSource source) throws IOException {
+        for (Source child : source.getChildren()) {
+            build(child);
         }
     }
 

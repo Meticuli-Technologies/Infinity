@@ -2,6 +2,7 @@ package com.meti.lib.asset;
 
 import com.meti.lib.asset.source.Source;
 
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Set;
 public interface AssetManager {
     void addBuilder(AssetBuilder<?> builder);
 
-    void build(Source source);
+    void build(Source source) throws IOException;
 
     Set<Asset> getAssets();
 }
