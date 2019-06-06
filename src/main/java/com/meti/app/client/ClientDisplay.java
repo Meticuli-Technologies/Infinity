@@ -2,32 +2,36 @@ package com.meti.app.client;
 
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
+import com.meti.lib.javafx.InjectorLoader;
+import com.meti.lib.javafx.StageManager;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
 import com.meti.lib.net.client.handle.ResponseProcessor;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 6/1/2019
+ * @since 6/6/2019
  */
 public class ClientDisplay extends InfinityController implements Initializable {
-    @FXML
-    private TextArea output;
+    private Client client;
+    private ResponseProcessor processor;
 
     @FXML
-    private TextField input;
+    public void close() {
+        Platform.exit();
+    }
 
     public ClientDisplay(Controls controls) {
         super(controls);
@@ -39,49 +43,47 @@ public class ClientDisplay extends InfinityController implements Initializable {
         if (clientBootstrap.isPresent()) {
             loadClient(clientBootstrap.get());
         } else {
-            writeLine("No bootstrap was found.");
+            //TODO: do something
         }
     }
-
-    @FXML
-    public void nextInput() {
-        try {
-            String message = input.getText();
-            input.clear();
-            client.writeAndFlush(message);
-            processor.processNextResponse();
-        } catch (Throwable throwable) {
-            writeLine(throwable.getLocalizedMessage());
-        }
-    }
-
-    private void writeLine(String line) {
-        output.appendText(line + '\n');
-    }
-
-    private Client client;
-    private ResponseProcessor processor;
 
     private void loadClient(ClientBootstrap clientBootstrap) {
         try {
             tryLoadClient(clientBootstrap);
         } catch (IOException e) {
-            writeLine(e.getLocalizedMessage());
+            e.printStackTrace();
         }
     }
 
     private void tryLoadClient(ClientBootstrap clientBootstrap) throws IOException {
         client = new SocketClient(clientBootstrap);
         processor = new ClientProcessor(client);
-        processor.addHandler(new OutputHandler());
         state.add(client);
+        state.add(processor);
     }
 
-    private class OutputHandler extends StringTypeHandler {
-        @Override
-        public Optional<Serializable> handle(Object response, Client client) {
-            writeLine(response.toString());
-            return Optional.empty();
+
+    @FXML
+    public void openChat(){
+        try {
+            StageManager stageManager = toolkit.getStageManager();
+            loadChatDisplay(stageManager);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void loadChatDisplay(StageManager stageManager) throws IOException {
+        Parent parent = InjectorLoader.load(List.of(getControls()), getChatDisplayURL());
+        stageManager.loadPrimaryStage(parent);
+    }
+
+    private URL getChatDisplayURL() {
+        return getClass().getResource("/com/meti/app/client/ChatDisplay.fxml");
+    }
+
+    @FXML
+    public void openIssues(){
+
     }
 }

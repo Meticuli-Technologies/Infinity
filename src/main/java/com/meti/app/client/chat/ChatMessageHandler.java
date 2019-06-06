@@ -1,13 +1,13 @@
-package com.meti.app.server;
+package com.meti.app.client.chat;
 
-import com.meti.app.client.StringTypeHandler;
 import com.meti.lib.net.TypeHandler;
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.client.handle.ResponseHandler;
 import com.meti.lib.net.server.Server;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -15,16 +15,17 @@ import java.util.Optional;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class StringResponseHandler extends StringTypeHandler {
+public class ChatMessageHandler extends TypeHandler<ChatMessage> {
     private final Server server;
 
-    public StringResponseHandler(Server server) {
+    public ChatMessageHandler(Server server) {
+        super(ChatMessage.class);
         this.server = server;
     }
 
     @Override
-    public Optional<Serializable> handle(Object response, Client client) {
-        String result = client.getName() + ": " + response;
+    public Optional<Serializable> handleGeneric(ChatMessage response, Client client) {
+        Serializable result = constructResult(response, client);
         for (Client serverClient : server.getClients()) {
             try {
                 serverClient.writeAndFlush(result);
@@ -34,5 +35,10 @@ public class StringResponseHandler extends StringTypeHandler {
             }
         }
         return Optional.empty();
+    }
+
+    private Serializable constructResult(ChatMessage response, Client client) {
+        String timestamp = Date.from(Instant.now()).toString();
+        return new SerializedChatMessageResponse(timestamp, client.getName(), response.getValue());
     }
 }
