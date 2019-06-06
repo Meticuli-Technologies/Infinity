@@ -1,9 +1,7 @@
 package com.meti.app.client;
 
 import com.meti.app.Controls;
-import com.meti.app.InfinityController;
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.client.handle.ResponseProcessor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -19,20 +17,15 @@ import java.util.ResourceBundle;
  * @version 0.0.0
  * @since 6/1/2019
  */
-public class ChatDisplay extends InfinityController implements Initializable {
+public class ChatDisplay extends InfinityClientController implements Initializable {
     @FXML
     private TextArea output;
 
     @FXML
     private TextField input;
 
-    private final Client client;
-    private final ResponseProcessor processor;
-
     public ChatDisplay(Controls controls) {
         super(controls);
-        this.client = toolkit.getClient();
-        this.processor = state.singleByClass(ResponseProcessor.class).orElseThrow();
     }
 
     @Override
@@ -46,6 +39,8 @@ public class ChatDisplay extends InfinityController implements Initializable {
             String message = input.getText();
             client.writeAndFlush(message);
             input.clear();
+
+            processor.processNextResponse();
         } catch (Throwable throwable) {
             writeLine(throwable.getLocalizedMessage());
         }

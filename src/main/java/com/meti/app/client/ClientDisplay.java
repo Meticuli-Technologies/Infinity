@@ -2,16 +2,20 @@ package com.meti.app.client;
 
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
-import com.meti.app.Toolkit;
+import com.meti.lib.javafx.InjectorLoader;
+import com.meti.lib.javafx.StageManager;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
 import com.meti.lib.net.client.handle.ResponseProcessor;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -23,6 +27,11 @@ import java.util.ResourceBundle;
 public class ClientDisplay extends InfinityController implements Initializable {
     private Client client;
     private ResponseProcessor processor;
+
+    @FXML
+    public void close() {
+        Platform.exit();
+    }
 
     public ClientDisplay(Controls controls) {
         super(controls);
@@ -56,7 +65,21 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     @FXML
     public void openChat(){
+        try {
+            StageManager stageManager = toolkit.getStageManager();
+            loadChatDisplay(stageManager);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void loadChatDisplay(StageManager stageManager) throws IOException {
+        Parent parent = InjectorLoader.load(List.of(getControls()), getChatDisplayURL());
+        stageManager.loadPrimaryStage(parent);
+    }
+
+    private URL getChatDisplayURL() {
+        return getClass().getResource("/com/meti/app/client/ChatDisplay.fxml");
     }
 
     @FXML
