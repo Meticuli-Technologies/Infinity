@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.app.client;
 
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ClientProcessor;

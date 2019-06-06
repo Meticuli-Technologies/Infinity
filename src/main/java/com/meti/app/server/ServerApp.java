@@ -1,5 +1,6 @@
-package com.meti.app;
+package com.meti.app.server;
 
+import com.meti.app.*;
 import com.meti.lib.collect.State;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;
@@ -16,29 +17,34 @@ import java.util.Set;
 /**
  * @author SirMathhman
  * @version 0.0.0
- * @since 6/1/2019
+ * @since 6/3/2019
  */
-public class ClientApp extends Application {
+public class ServerApp extends Application {
     private final Controls controls;
     private final State state;
     private final Toolkit toolkit;
 
-    public ClientApp() {
+    public ServerApp() {
         state = new InfinityState();
-        toolkit = new StateToolkit(state);
+        toolkit = new StateBasedToolkit(state);
         controls = new ControlsImpl(state, toolkit);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        loadClientMenu(primaryStage, toolkit.getStageManager());
+        loadServerMenu(primaryStage, toolkit.getStageManager());
     }
 
-    private void loadClientMenu(Stage primaryStage, StageManager stageManager) throws IOException {
-        Parent parent = InjectorLoader.load(List.of(controls), getClientMenuURL());
+    private void loadServerMenu(Stage primaryStage, StageManager stageManager) throws java.io.IOException {
+        Parent parent = InjectorLoader.load(List.of(controls), getServerMenuURL());
         stageManager.addStage(primaryStage);
         stageManager.loadPrimaryStage(parent);
     }
+
+    private URL getServerMenuURL() {
+        return getClass().getResource("/com/meti/app/server/ServerMenu.fxml");
+    }
+
 
     @Override
     public void stop() {
@@ -58,10 +64,6 @@ public class ClientApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private URL getClientMenuURL() {
-        return getClass().getResource("/com/meti/app/client/ClientMenu.fxml");
     }
 
     public static void main(String[] args) {

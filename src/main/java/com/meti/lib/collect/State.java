@@ -9,7 +9,7 @@ import java.util.Set;
  * @since 6/1/2019
  */
 public interface State {
-    boolean add(Object o);
+    void add(Object o);
 
     <T> Optional<T> singleByClass(Class<T> tClass);
 

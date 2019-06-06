@@ -1,4 +1,4 @@
-package com.meti.app.client;
+package com.meti.app;
 
 import com.meti.app.Controls;
 

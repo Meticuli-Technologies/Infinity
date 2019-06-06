@@ -1,4 +1,4 @@
-package com.meti.app;
+package com.meti.app.server;
 
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.server.ServerSocketServer;

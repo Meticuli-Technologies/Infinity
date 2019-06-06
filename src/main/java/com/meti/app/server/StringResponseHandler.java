@@ -1,5 +1,7 @@
-package com.meti.app;
+package com.meti.app.server;
 
+import com.meti.app.client.StringTypeHandler;
+import com.meti.lib.net.TypeHandler;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ResponseHandler;
 import com.meti.lib.net.server.Server;
@@ -13,16 +15,11 @@ import java.util.Optional;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class StringResponseHandler implements ResponseHandler {
+public class StringResponseHandler extends StringTypeHandler {
     private final Server server;
 
     public StringResponseHandler(Server server) {
         this.server = server;
-    }
-
-    @Override
-    public boolean canHandle(Object response) {
-        return response instanceof String;
     }
 
     @Override

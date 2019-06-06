@@ -1,6 +1,7 @@
 package com.meti.app.client;
 
 import com.meti.app.Controls;
+import com.meti.app.InfinityController;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;
 import javafx.fxml.FXML;

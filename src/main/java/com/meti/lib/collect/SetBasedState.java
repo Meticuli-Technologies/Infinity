@@ -14,8 +14,8 @@ public class SetBasedState implements State {
     private final Set<Object> components = new HashSet<>();
 
     @Override
-    public boolean add(Object o) {
-        return components.add(o);
+    public void add(Object o) {
+        components.add(o);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.meti.app.client;
+package com.meti.lib.net;
 
 import com.meti.lib.net.client.handle.ResponseHandler;
 
@@ -10,7 +10,7 @@ import com.meti.lib.net.client.handle.ResponseHandler;
 public abstract class TypeHandler<T> implements ResponseHandler {
     private final Class<T> tClass;
 
-    public TypeHandler(Class<T> tClass) {
+    protected TypeHandler(Class<T> tClass) {
         this.tClass = tClass;
     }
 

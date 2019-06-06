@@ -8,10 +8,10 @@ import com.meti.lib.javafx.StageManager;
  * @version 0.0.0
  * @since 6/3/2019
  */
-public class StateToolkit implements Toolkit {
+public class StateBasedToolkit implements Toolkit {
     private final State state;
 
-    public StateToolkit(State state) {
+    public StateBasedToolkit(State state) {
         this.state = state;
     }
 
