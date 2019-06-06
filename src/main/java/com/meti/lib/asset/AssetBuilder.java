@@ -5,5 +5,6 @@ package com.meti.lib.asset;
  * @version 0.0.0
  * @since 6/6/2019
  */
-public interface AssetBuilder {
+public interface AssetBuilder<A extends Asset> {
+    A build();
 }
