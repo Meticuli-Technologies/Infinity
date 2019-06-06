@@ -32,8 +32,7 @@ public class ServerSocketServer extends AbstractServer {
     }
 
     @Override
-    public void close() throws IOException {
-        super.close();
+    protected void preClose() throws IOException {
         serverSocket.close();
     }
 
