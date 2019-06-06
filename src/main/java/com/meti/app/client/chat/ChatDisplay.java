@@ -1,6 +1,8 @@
-package com.meti.app.client;
+package com.meti.app.client.chat;
 
 import com.meti.app.Controls;
+import com.meti.app.client.InfinityClientController;
+import com.meti.lib.net.StringTypeHandler;
 import com.meti.lib.net.client.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -2,6 +2,7 @@ package com.meti.app.server;
 
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
+import com.meti.app.client.chat.ChatResponseHandler;
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.server.ServerSocketServer;
 import javafx.fxml.FXML;
@@ -63,7 +64,7 @@ public class ServerDisplay extends InfinityController implements Initializable {
     }
 
     private void loadHandlers(Server server) {
-        server.getResponseHandlers().add(new StringResponseHandler(server));
+        server.getResponseHandlers().add(new ChatResponseHandler(server));
     }
 
     private void loadPortText(int port) {

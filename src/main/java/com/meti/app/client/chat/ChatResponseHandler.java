@@ -1,9 +1,7 @@
-package com.meti.app.server;
+package com.meti.app.client.chat;
 
-import com.meti.app.client.StringTypeHandler;
-import com.meti.lib.net.TypeHandler;
+import com.meti.lib.net.StringTypeHandler;
 import com.meti.lib.net.client.Client;
-import com.meti.lib.net.client.handle.ResponseHandler;
 import com.meti.lib.net.server.Server;
 
 import java.io.IOException;
@@ -15,10 +13,10 @@ import java.util.Optional;
  * @version 0.0.0
  * @since 5/30/2019
  */
-public class StringResponseHandler extends StringTypeHandler {
+public class ChatResponseHandler extends StringTypeHandler {
     private final Server server;
 
-    public StringResponseHandler(Server server) {
+    public ChatResponseHandler(Server server) {
         this.server = server;
     }
 

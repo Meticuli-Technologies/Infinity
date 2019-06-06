@@ -1,6 +1,4 @@
-package com.meti.app.client;
-
-import com.meti.lib.net.TypeHandler;
+package com.meti.lib.net;
 
 /**
  * @author SirMathhman
