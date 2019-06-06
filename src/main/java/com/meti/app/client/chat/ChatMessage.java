@@ -8,9 +8,11 @@ import java.io.Serializable;
  * @since 6/6/2019
  */
 public class ChatMessage implements Serializable {
+    private final String user;
     private final String value;
 
-    public ChatMessage(String value) {
+    public ChatMessage(String user, String value) {
+        this.user = user;
         this.value = value;
     }
 }
