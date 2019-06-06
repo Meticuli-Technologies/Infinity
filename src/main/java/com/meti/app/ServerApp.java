@@ -1,8 +1,8 @@
 package com.meti.app;
 
 import com.meti.lib.collect.State;
-import com.meti.lib.fx.InjectorLoader;
-import com.meti.lib.fx.StageManager;
+import com.meti.lib.javafx.InjectorLoader;
+import com.meti.lib.javafx.StageManager;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;

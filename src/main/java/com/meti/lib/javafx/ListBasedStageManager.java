@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.lib.javafx;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +26,7 @@ public class ListBasedStageManager implements StageManager {
         load(PRIMARY_STAGE_INDEX, parent);
     }
 
+    //TODO: consider if other indices are required?
     private void load(int index, Parent parent) {
         Stage stage = stages.get(index);
         stage.setScene(new Scene(parent));

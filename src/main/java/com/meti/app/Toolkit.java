@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.fx.StageManager;
+import com.meti.lib.javafx.StageManager;
 
 /**
  * @author SirMathhman

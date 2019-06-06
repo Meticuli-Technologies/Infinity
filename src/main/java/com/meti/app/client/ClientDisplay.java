@@ -77,12 +77,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
         state.add(client);
     }
 
-    private class OutputHandler implements ResponseHandler {
-        @Override
-        public boolean canHandle(Object response) {
-            return response instanceof String;
-        }
-
+    private class OutputHandler extends StringTypeHandler {
         @Override
         public Optional<Serializable> handle(Object response, Client client) {
             writeLine(response.toString());

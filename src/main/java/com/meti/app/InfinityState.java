@@ -1,7 +1,7 @@
 package com.meti.app;
 
 import com.meti.lib.collect.SetBasedState;
-import com.meti.lib.fx.ListBasedStageManager;
+import com.meti.lib.javafx.ListBasedStageManager;
 
 /**
  * @author SirMathhman

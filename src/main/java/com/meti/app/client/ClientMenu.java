@@ -1,8 +1,8 @@
 package com.meti.app.client;
 
 import com.meti.app.Controls;
-import com.meti.lib.fx.InjectorLoader;
-import com.meti.lib.fx.StageManager;
+import com.meti.lib.javafx.InjectorLoader;
+import com.meti.lib.javafx.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -43,7 +43,7 @@ public class ClientMenu extends InfinityController {
     }
 
     private void loadClientDisplay(StageManager stageManager) throws IOException {
-        Parent root = InjectorLoader.load(List.of(controls), getClientDisplayURL());
+        Parent root = InjectorLoader.load(List.of(getControls()), getClientDisplayURL());
         stageManager.loadPrimaryStage(root);
     }
 

@@ -18,6 +18,7 @@ public abstract class Executable implements Callable<Void>, Closeable, Listener 
     private final Terminator serviceTerminator;
     private final Duration timeout;
 
+    //TODO: add setting for changeable timeout
     Executable() {
         this(DEFAULT_TIMEOUT);
     }

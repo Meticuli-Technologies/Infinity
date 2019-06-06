@@ -8,9 +8,13 @@ import com.meti.app.Controls;
  * @since 6/3/2019
  */
 public class AdvancedController {
-    protected final Controls controls;
+    private final Controls controls;
 
     public AdvancedController(Controls controls) {
         this.controls = controls;
+    }
+
+    protected Controls getControls() {
+        return controls;
     }
 }

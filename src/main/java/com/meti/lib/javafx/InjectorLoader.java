@@ -1,4 +1,4 @@
-package com.meti.lib.fx;
+package com.meti.lib.javafx;
 
 import com.meti.lib.reflect.Instantiator;
 import javafx.fxml.FXMLLoader;
@@ -6,7 +6,6 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 
