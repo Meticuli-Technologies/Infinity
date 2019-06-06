@@ -38,8 +38,7 @@ public abstract class Executable implements Callable<Void>, Closeable, Listener 
         }
     }
 
-    protected void preClose() throws IOException {
-    }
+    protected abstract void preClose() throws IOException;
 
     @Override
     public void listen() {
