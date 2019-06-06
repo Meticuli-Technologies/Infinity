@@ -14,19 +14,19 @@ import java.util.Set;
  * @since 6/6/2019
  */
 public class SetBasedAssetManager implements AssetManager {
-    private final Collection<AssetBuilder<?>> builders = new HashSet<>();
+    private final Collection<AssetTranslator<?>> builders = new HashSet<>();
     private final Set<Asset> assets = new HashSet<>();
 
     @Override
-    public void addBuilder(AssetBuilder<?> builder) {
+    public void addBuilder(AssetTranslator<?> builder) {
         builders.add(builder);
     }
 
     @Override
     public void build(Source source) throws IOException {
-        for (AssetBuilder<?> builder : builders) {
+        for (AssetTranslator<?> builder : builders) {
             if (builder.canBuild(source)) {
-                Asset asset = builder.build(source);
+                Asset asset = builder.read(source);
                 assets.add(asset);
             }
         }

@@ -7,12 +7,12 @@ import java.util.function.BiConsumer;
  * @version 0.0.0
  * @since 6/6/2019
  */
-public interface Asset<A extends AssetComponents, C extends AssetChange> {
+public interface Asset<C extends AssetChange, V> {
     String getName();
 
     void change(C change);
 
-    A getChanges();
+    V getValue();
 
-    void onChange(BiConsumer<C, Asset<A, C>> consumer);
+    void onChange(BiConsumer<C, Asset<C, V>> consumer);
 }
