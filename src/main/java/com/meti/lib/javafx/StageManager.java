@@ -11,5 +11,9 @@ import javafx.stage.Stage;
 public interface StageManager {
     void addStage(Stage stage);
 
+    void allocate(Parent root);
+
+    void loadLast(Parent parent);
+
     void loadPrimaryStage(Parent parent);
 }

@@ -54,12 +54,24 @@ public class ClientDisplay extends InfinityController implements Initializable {
                 .forEach(stringTreeItem -> openAsset(stringTreeItem.getValue()));
     }
 
+    private void loadEditors(ModuleManager moduleManager) {
+        for (Module module : moduleManager.getModules()) {
+            try {
+                Set<Editor> editorInstances = module.getInstances(Editor.class, List.of(getControls()));
+                putInstances(editorInstances);
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void openAsset(String assetName) {
+        StageManager stageManager = toolkit.getStageManager();
         for (Editor editor : editors.keySet()) {
             AssetProperties properties = propertiesByNameMap.get(assetName);
             if(editor.canRender(properties)){
                 try {
-                    renderAssetByName(editor, assetName);
+                    render(assetName, stageManager, editor);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
@@ -67,16 +79,9 @@ public class ClientDisplay extends InfinityController implements Initializable {
         }
     }
 
-    private void renderAssetByName(Editor editor, String assetName) throws Throwable {
-        Serializable request = new InlineAssetRequest(assetName);
-        client.writeAndFlush(request);
-
-        CompletableFuture<AssetResponse> query = querier.query(AssetResponse.class);
-        processor.processNextResponse();
-        AssetResponse assetResponse = query.get();
-
-        Asset<?, ?> asset = assetResponse.getAsset();
-        editor.render(asset);
+    private void render(String assetName, StageManager stageManager, Editor editor) throws Throwable {
+        Parent root = renderAssetByName(editor, assetName);
+        stageManager.allocate(root);
     }
 
     @FXML
@@ -112,15 +117,17 @@ public class ClientDisplay extends InfinityController implements Initializable {
         }
     }
 
-    private void loadEditors(ModuleManager moduleManager) {
-        for (Module module : moduleManager.getModules()) {
-            try {
-                Set<Editor> editorInstances = module.getInstances(Editor.class, Collections.emptyList());
-                putInstances(editorInstances);
-            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }
+    private Parent renderAssetByName(Editor editor, String assetName) throws Throwable {
+        Serializable request = new InlineAssetRequest(assetName);
+        client.writeAndFlush(request);
+
+        CompletableFuture<AssetResponse> query = querier.query(AssetResponse.class);
+        processor.processNextResponse();
+        AssetResponse assetResponse = query.get();
+
+        Asset<?, ?> asset = assetResponse.getAsset();
+        editor.render(asset);
+        return editor.getRoot();
     }
 
     private void putInstances(Iterable<? extends Editor> editorInstances) {

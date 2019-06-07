@@ -2,7 +2,6 @@ package com.meti.app.text;
 
 import com.meti.lib.module.ClassCollectionModule;
 
-import java.util.Collections;
 import java.util.Set;
 
 /**
