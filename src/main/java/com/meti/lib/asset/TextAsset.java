@@ -9,17 +9,12 @@ import java.util.function.BiConsumer;
  */
 public class TextAsset implements Asset<TextAssetChange, StringBuilder> {
     private final StringBuilder value = new StringBuilder();
-    private final String name;
     private BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> onChange;
+    private final AssetProperties properties;
 
-    public TextAsset(String name, StringBuilder value) {
-        this.name = name;
-        this.value.append(value);
-    }
-
-    @Override
-    public String getName() {
-        return name;
+    public TextAsset(AssetProperties properties, CharSequence initialValue) {
+        this.properties = properties;
+        this.value.append(initialValue);
     }
 
     @Override
@@ -33,6 +28,11 @@ public class TextAsset implements Asset<TextAssetChange, StringBuilder> {
         } else if (change.wasRemoved()) {
             delete(change);
         }
+    }
+
+    @Override
+    public AssetProperties getProperties() {
+        return properties;
     }
 
     @Override

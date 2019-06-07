@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public class SetBasedAssetManager implements AssetManager {
     private final Collection<AssetTranslator<?>> builders = new HashSet<>();
-    private final Set<Asset> assets = new HashSet<>();
+    private final Set<Asset<?, ?>> assets = new HashSet<>();
 
     @Override
     public void addTranslator(AssetTranslator<?> builder) {
@@ -23,27 +23,37 @@ public class SetBasedAssetManager implements AssetManager {
     }
 
     @Override
-    public void read(Source source) throws IOException {
+    public Set<Asset<?, ?>> read(Source source) throws IOException {
+        Set<Asset<?, ?>> builtSet = new HashSet<>();
         for (AssetTranslator<?> builder : builders) {
             if (builder.canBuild(source)) {
-                Asset asset = builder.read(source);
-                assets.add(asset);
+                Asset<?, ?> asset = builder.read(source);
+                builtSet.add(asset);
             }
         }
+        assets.addAll(builtSet);
 
         if(source instanceof ParentSource){
             buildParent((ParentSource) source);
         }
+
+        return builtSet;
+    }
+
+    @Override
+    public Set<Asset<?, ?>> getAssets() {
+        return assets;
+    }
+
+    private void buildChild(ParentSource source, Source child) throws IOException {
+        read(child).stream()
+                .map(Asset::getProperties)
+                .forEach(assetProperties -> assetProperties.setParentName(source.getName()));
     }
 
     private void buildParent(ParentSource source) throws IOException {
         for (Source child : source.getChildren()) {
-            read(child);
+            buildChild(source, child);
         }
-    }
-
-    @Override
-    public Set<Asset> getAssets() {
-        return assets;
     }
 }

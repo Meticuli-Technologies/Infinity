@@ -8,11 +8,11 @@ import java.util.function.BiConsumer;
  * @since 6/6/2019
  */
 public interface Asset<C extends AssetChange, V> {
-    String getName();
-
-    void change(C change);
+    AssetProperties getProperties();
 
     V getValue();
+
+    void change(C change);
 
     void onChange(BiConsumer<C, Asset<C, V>> consumer);
 }

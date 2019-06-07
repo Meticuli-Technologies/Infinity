@@ -13,7 +13,7 @@ import java.util.Set;
 public interface AssetManager {
     void addTranslator(AssetTranslator<?> builder);
 
-    void read(Source source) throws IOException;
+    Set<Asset<?, ?>> read(Source source) throws IOException;
 
-    Set<Asset> getAssets();
+    Set<Asset<?, ?>> getAssets();
 }
