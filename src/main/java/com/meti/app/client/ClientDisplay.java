@@ -3,6 +3,7 @@ package com.meti.app.client;
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
 import com.meti.app.server.asset.SerializedAssetPropertiesRequest;
+import com.meti.lib.asset.properties.AssetProperties;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;
 import com.meti.lib.module.Module;
@@ -36,10 +37,22 @@ public class ClientDisplay extends InfinityController implements Initializable {
     private TreeView<String> assetView;
     private Map<String, TreeItem<String>> itemMap = new HashMap<>();
     private Map<Editor, Parent> editors = new HashMap<>();
+    private HashMap<String, AssetProperties> propertiesByNameMap = new HashMap<>();
 
     @FXML
     public void open(){
-        assetView.getSelectionModel().getSelectedItems();
+        assetView.getSelectionModel()
+                .getSelectedItems()
+                .forEach(stringTreeItem -> openAsset(stringTreeItem.getValue()));
+    }
+
+    private void openAsset(String assetName) {
+        for (Editor editor : editors.keySet()) {
+            AssetProperties properties = propertiesByNameMap.get(assetName);
+            if(editor.canRender(properties)){
+
+            }
+        }
     }
 
     @FXML
@@ -94,7 +107,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     private void indexAssets() throws Throwable {
         client.writeAndFlush(new SerializedAssetPropertiesRequest());
-        processor.addHandler(new AssetPropertiesRequestResponseHandler(assetView, itemMap));
+        processor.addHandler(new AssetPropertiesRequestResponseHandler(assetView, itemMap, propertiesByNameMap));
         processor.processNextResponse();
     }
 

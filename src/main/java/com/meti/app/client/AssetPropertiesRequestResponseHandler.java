@@ -16,15 +16,16 @@ import java.util.*;
  * @since 6/7/2019
  */
 class AssetPropertiesRequestResponseHandler extends TypeHandler<AssetPropertiesRequestResponse> {
-    private final Map<String, AssetProperties> propertiesByNameMap = new HashMap<>();
+    private final Map<String, AssetProperties> propertiesByNameMap;
     private final Map<? super String, TreeItem<String>> itemMap;
     private final TreeItem<String> root = new TreeItem<>();
     private final TreeView<String> assetView;
 
-    public AssetPropertiesRequestResponseHandler(TreeView<String> assetView, Map<? super String, TreeItem<String>> itemMap) {
+    public AssetPropertiesRequestResponseHandler(TreeView<String> assetView, Map<? super String, TreeItem<String>> itemMap, HashMap<String, AssetProperties> propertiesByNameMap) {
         super(AssetPropertiesRequestResponse.class);
         this.assetView = assetView;
         this.itemMap = itemMap;
+        this.propertiesByNameMap = propertiesByNameMap;
     }
 
     @Override

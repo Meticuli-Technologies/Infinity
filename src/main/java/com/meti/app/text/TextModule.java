@@ -3,6 +3,7 @@ package com.meti.app.text;
 import com.meti.lib.module.ClassCollectionModule;
 
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author SirMathhman
@@ -11,6 +12,6 @@ import java.util.Collections;
  */
 public class TextModule extends ClassCollectionModule {
     public TextModule() {
-        super(Collections.emptySet());
+        super(Set.of(TextEditor.class));
     }
 }
