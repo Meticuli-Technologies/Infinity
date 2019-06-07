@@ -14,6 +14,8 @@ import java.util.Set;
  * @since 6/6/2019
  */
 public interface AssetManager {
+    Asset<?, ?> getAssetByName(String name);
+
     Optional<Source> getRootSource();
 
     void addTranslator(AssetTranslator<?> builder);

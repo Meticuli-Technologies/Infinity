@@ -40,6 +40,15 @@ public class SetBasedAssetManager implements AssetManager {
     }
 
     @Override
+    public Asset<?, ?> getAssetByName(String name) {
+        return assets.stream()
+                //TODO: fix LoD violation
+                .filter(asset -> asset.getProperties().getName().equals(name))
+                .findAny()
+                .orElseThrow();
+    }
+
+    @Override
     public Optional<Source> getRootSource() {
         return Optional.ofNullable(rootSource);
     }

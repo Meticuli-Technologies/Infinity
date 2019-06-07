@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author SirMathhman
@@ -69,8 +70,11 @@ public class ClientDisplay extends InfinityController implements Initializable {
     private void renderAssetByName(Editor editor, String assetName) throws Throwable {
         Serializable request = new InlineAssetRequest(assetName);
         client.writeAndFlush(request);
+
+        CompletableFuture<AssetResponse> query = querier.query(AssetResponse.class);
         processor.processNextResponse();
-        AssetResponse assetResponse = querier.query(AssetResponse.class).get();
+        AssetResponse assetResponse = query.get();
+
         Asset<?, ?> asset = assetResponse.getAsset();
         editor.render(asset);
     }

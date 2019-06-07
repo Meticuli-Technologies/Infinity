@@ -1,6 +1,7 @@
 package com.meti.app.text;
 
 import com.meti.app.client.Editor;
+import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.properties.AssetProperties;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
@@ -24,5 +25,10 @@ public class TextEditor implements Editor {
     @Override
     public String getName() {
         return "Text";
+    }
+
+    @Override
+    public void render(Asset<?, ?> asset) {
+        //TODO: implement render
     }
 }
