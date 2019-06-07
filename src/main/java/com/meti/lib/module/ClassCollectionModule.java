@@ -14,14 +14,14 @@ import static com.meti.lib.reflect.Instantiator.genericInstanceSet;
  * @since 6/7/2019
  */
 public class ClassCollectionModule implements Module {
-    private final Set<Class<?>> classes = new HashSet<>();
+    private final Collection<Class<?>> classes = new HashSet<>();
 
     public ClassCollectionModule(Collection<Class<?>> initialClasses) {
         this.classes.addAll(initialClasses);
     }
 
     @Override
-    public <T> Set<T> getInstances(Class<T> superClass, List<?> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    public <T> Set<T> getInstances(Class<? extends T> superClass, List<?> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         Set<T> set = new HashSet<>();
         for (Class<?> specificClass : classes) {
             if (superClass.isAssignableFrom(specificClass)) {

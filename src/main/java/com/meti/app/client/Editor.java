@@ -1,6 +1,7 @@
 package com.meti.app.client;
 
 import com.meti.lib.asset.properties.AssetProperties;
+import javafx.scene.Parent;
 
 /**
  * @author SirMathhman
@@ -9,6 +10,8 @@ import com.meti.lib.asset.properties.AssetProperties;
  */
 public interface Editor {
     boolean canRender(AssetProperties properties);
+
+    Parent getRoot();
 
     String getName();
 }

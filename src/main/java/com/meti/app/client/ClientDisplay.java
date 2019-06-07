@@ -19,6 +19,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -34,7 +35,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     private TreeView<String> assetView;
     private Map<String, TreeItem<String>> itemMap = new HashMap<>();
-    private Map<String, Editor> editors = new HashMap<>();
+    private Map<Editor, Parent> editors = new HashMap<>();
 
     @FXML
     public void open(){
@@ -76,14 +77,18 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     private void loadEditors(ModuleManager moduleManager) {
         for (Module module : moduleManager.getModules()) {
-            Set<Editor> editorInstances = module.getInstances(Editor.class, );
-            putInstances(editorInstances);
+            try {
+                Set<Editor> editorInstances = module.getInstances(Editor.class, Collections.emptyList());
+                putInstances(editorInstances);
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void putInstances(Iterable<? extends Editor> editorInstances) {
         for (Editor editor : editorInstances) {
-            this.editors.put(editor.getName(), editor);
+            this.editors.put(editor, editor.getRoot());
         }
     }
 

@@ -14,6 +14,6 @@ public final class InfinityState extends SetBasedState {
     public InfinityState() {
         add(new ListBasedStageManager());
         add(new SetBasedAssetManager());
-        add(new SetBasedModuleManager());
+        add(new InfinityModuleManager());
     }
 }

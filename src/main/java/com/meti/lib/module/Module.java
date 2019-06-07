@@ -10,5 +10,5 @@ import java.util.Set;
  * @since 6/7/2019
  */
 public interface Module {
-    <T> Set<T> getInstances(Class<T> instanceClass, List<?> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException;
+    <T> Set<T> getInstances(Class<? extends T> instanceClass, List<?> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException;
 }
