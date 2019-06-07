@@ -1,9 +1,9 @@
 package com.meti.app.server;
 
 import com.meti.app.*;
-import com.meti.lib.asset.AssetManager;
-import com.meti.lib.asset.PathSource;
-import com.meti.lib.asset.TextAssetTranslator;
+import com.meti.lib.asset.manage.AssetManager;
+import com.meti.lib.asset.source.PathSource;
+import com.meti.lib.asset.text.TextAssetTranslator;
 import com.meti.lib.collect.State;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;

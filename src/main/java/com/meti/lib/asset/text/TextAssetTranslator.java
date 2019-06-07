@@ -1,5 +1,8 @@
-package com.meti.lib.asset;
+package com.meti.lib.asset.text;
 
+import com.meti.lib.asset.Asset;
+import com.meti.lib.asset.AssetTranslator;
+import com.meti.lib.asset.properties.InlineAssetProperties;
 import com.meti.lib.asset.source.Source;
 
 import java.io.BufferedReader;

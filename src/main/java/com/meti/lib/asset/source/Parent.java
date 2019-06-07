@@ -1,4 +1,4 @@
-package com.meti.lib.asset;
+package com.meti.lib.asset.source;
 
 import java.io.IOException;
 import java.util.Set;

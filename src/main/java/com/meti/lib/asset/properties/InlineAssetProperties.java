@@ -1,4 +1,4 @@
-package com.meti.lib.asset;
+package com.meti.lib.asset.properties;
 
 import java.util.Optional;
 

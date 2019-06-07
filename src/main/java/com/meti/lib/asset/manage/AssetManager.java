@@ -1,5 +1,7 @@
-package com.meti.lib.asset;
+package com.meti.lib.asset.manage;
 
+import com.meti.lib.asset.Asset;
+import com.meti.lib.asset.AssetTranslator;
 import com.meti.lib.asset.source.Source;
 
 import java.io.IOException;

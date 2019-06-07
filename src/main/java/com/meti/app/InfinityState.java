@@ -1,6 +1,6 @@
 package com.meti.app;
 
-import com.meti.lib.asset.SetBasedAssetManager;
+import com.meti.lib.asset.manage.SetBasedAssetManager;
 import com.meti.lib.collect.SetBasedState;
 import com.meti.lib.javafx.ListBasedStageManager;
 

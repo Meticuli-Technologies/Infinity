@@ -1,7 +1,4 @@
-package com.meti.lib.asset;
-
-import com.meti.lib.asset.source.ParentSource;
-import com.meti.lib.asset.source.Source;
+package com.meti.lib.asset.source;
 
 import java.io.*;
 import java.nio.file.Files;

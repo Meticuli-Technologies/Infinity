@@ -1,4 +1,6 @@
-package com.meti.lib.asset;
+package com.meti.lib.asset.text;
+
+import com.meti.lib.asset.AssetChange;
 
 /**
  * @author SirMathhman

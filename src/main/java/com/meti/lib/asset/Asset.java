@@ -1,5 +1,7 @@
 package com.meti.lib.asset;
 
+import com.meti.lib.asset.properties.AssetProperties;
+
 import java.util.function.BiConsumer;
 
 /**
