@@ -17,13 +17,14 @@ import java.util.*;
  */
 class AssetPropertiesRequestResponseHandler extends TypeHandler<AssetPropertiesRequestResponse> {
     private final Map<String, AssetProperties> propertiesByNameMap = new HashMap<>();
-    private final Map<String, TreeItem<String>> itemMap = new HashMap<>();
+    private final Map<? super String, TreeItem<String>> itemMap;
     private final TreeItem<String> root = new TreeItem<>();
     private final TreeView<String> assetView;
 
-    public AssetPropertiesRequestResponseHandler(TreeView<String> assetView) {
+    public AssetPropertiesRequestResponseHandler(TreeView<String> assetView, Map<? super String, TreeItem<String>> itemMap) {
         super(AssetPropertiesRequestResponse.class);
         this.assetView = assetView;
+        this.itemMap = itemMap;
     }
 
     @Override

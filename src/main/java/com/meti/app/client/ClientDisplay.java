@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.IOException;
@@ -30,10 +31,11 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     @FXML
     private TreeView<String> assetView;
+    private Map<String, TreeItem<String>> itemMap = new HashMap<>();
 
     @FXML
     public void open(){
-
+        assetView.getSelectionModel().getSelectedItems();
     }
 
     @FXML
@@ -63,7 +65,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     private void indexAssets() throws Throwable {
         client.writeAndFlush(new SerializedAssetPropertiesRequest());
-        processor.addHandler(new AssetPropertiesRequestResponseHandler(assetView));
+        processor.addHandler(new AssetPropertiesRequestResponseHandler(assetView, itemMap));
         processor.processNextResponse();
     }
 
