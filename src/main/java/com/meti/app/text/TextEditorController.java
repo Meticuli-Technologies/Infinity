@@ -4,8 +4,8 @@ import com.meti.app.Controls;
 import com.meti.app.InfinityController;
 import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.text.TextAsset;
-import com.meti.lib.asset.text.TextAssetImpl;
-import javafx.scene.control.skin.TextAreaSkin;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 
 /**
  * @author SirMathhman
@@ -13,6 +13,9 @@ import javafx.scene.control.skin.TextAreaSkin;
  * @since 6/7/2019
  */
 public class TextEditorController extends InfinityController implements AssetRenderer {
+    @FXML
+    private TextArea input;
+
     public TextEditorController(Controls controls) {
         super(controls);
     }
@@ -21,7 +24,7 @@ public class TextEditorController extends InfinityController implements AssetRen
         if(asset instanceof TextAsset){
             TextAsset castedAsset = (TextAsset) asset;
             StringBuilder builder = castedAsset.getValue();
-
+            input.setText(builder.toString());
         }
     }
 }
