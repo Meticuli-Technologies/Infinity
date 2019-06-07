@@ -2,6 +2,7 @@ package com.meti.lib.asset;
 
 import com.meti.lib.asset.properties.AssetProperties;
 
+import java.io.Serializable;
 import java.util.function.BiConsumer;
 
 /**
@@ -9,7 +10,7 @@ import java.util.function.BiConsumer;
  * @version 0.0.0
  * @since 6/6/2019
  */
-public interface Asset<C extends AssetChange, V> {
+public interface Asset<C extends AssetChange, V> extends Serializable {
     AssetProperties getProperties();
 
     V getValue();

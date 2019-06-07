@@ -1,5 +1,6 @@
 package com.meti.app.client;
 
+import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.properties.AssetProperties;
 import javafx.scene.Parent;
 
@@ -14,4 +15,6 @@ public interface Editor {
     Parent getRoot();
 
     String getName();
+
+    void render(Asset<?, ?> asset);
 }

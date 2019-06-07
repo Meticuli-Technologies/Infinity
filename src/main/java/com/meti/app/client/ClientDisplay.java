@@ -2,7 +2,12 @@ package com.meti.app.client;
 
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
+import com.meti.app.MapBasedQuerier;
+import com.meti.app.Querier;
+import com.meti.app.asset.AssetResponse;
+import com.meti.app.asset.InlineAssetRequest;
 import com.meti.app.server.asset.SerializedAssetPropertiesRequest;
+import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.properties.AssetProperties;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;
@@ -20,6 +25,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
@@ -38,6 +44,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
     private Map<String, TreeItem<String>> itemMap = new HashMap<>();
     private Map<Editor, Parent> editors = new HashMap<>();
     private HashMap<String, AssetProperties> propertiesByNameMap = new HashMap<>();
+    private Querier querier;
 
     @FXML
     public void open(){
@@ -50,9 +57,22 @@ public class ClientDisplay extends InfinityController implements Initializable {
         for (Editor editor : editors.keySet()) {
             AssetProperties properties = propertiesByNameMap.get(assetName);
             if(editor.canRender(properties)){
-
+                try {
+                    renderAssetByName(editor, assetName);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
             }
         }
+    }
+
+    private void renderAssetByName(Editor editor, String assetName) throws Throwable {
+        Serializable request = new InlineAssetRequest(assetName);
+        client.writeAndFlush(request);
+        processor.processNextResponse();
+        AssetResponse assetResponse = querier.query(AssetResponse.class).get();
+        Asset<?, ?> asset = assetResponse.getAsset();
+        editor.render(asset);
     }
 
     @FXML
@@ -122,6 +142,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
     private void tryLoadClient(ClientBootstrap clientBootstrap) throws IOException {
         client = new SocketClient(clientBootstrap);
         processor = new ClientProcessor(client);
+        querier = new MapBasedQuerier(processor);
         state.add(client);
         state.add(processor);
     }
