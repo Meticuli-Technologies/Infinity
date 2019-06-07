@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.TreeView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +28,14 @@ import java.util.ResourceBundle;
 public class ClientDisplay extends InfinityController implements Initializable {
     private Client client;
     private ResponseProcessor processor;
+
+    @FXML
+    private TreeView<String> assetView;
+
+    @FXML
+    public void open(){
+
+    }
 
     @FXML
     public void close() {

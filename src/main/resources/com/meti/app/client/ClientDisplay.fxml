@@ -31,7 +31,14 @@
             </MenuBar>
          </top>
          <left>
-            <TreeView fx:id="assetView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <TreeView fx:id="assetView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#open" text="Open" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TreeView>
          </left>
          <center>
             <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
