@@ -8,6 +8,7 @@ import java.util.Optional;
  * @since 6/7/2019
  */
 public class InlineAssetProperties implements AssetProperties {
+    private static final long serialVersionUID = -8693026018971353310L;
     private final String name;
     private String parentName;
 

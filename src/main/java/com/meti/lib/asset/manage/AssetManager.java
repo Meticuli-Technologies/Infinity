@@ -5,6 +5,7 @@ import com.meti.lib.asset.AssetTranslator;
 import com.meti.lib.asset.source.Source;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -13,9 +14,13 @@ import java.util.Set;
  * @since 6/6/2019
  */
 public interface AssetManager {
+    Optional<Source> getRootSource();
+
     void addTranslator(AssetTranslator<?> builder);
 
     Set<Asset<?, ?>> read(Source source) throws IOException;
 
     Set<Asset<?, ?>> getAssets();
+
+    void setRootSource(Source rootSource);
 }

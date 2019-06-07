@@ -20,6 +20,12 @@ public class PathSource implements ParentSource {
     }
 
     @Override
+    public boolean equals(Object obj){
+        //noinspection AccessingNonPublicFieldOfAnotherObject
+        return (obj instanceof PathSource) && ((PathSource) obj).path.equals(path);
+    }
+
+    @Override
     public Set<Source> getChildren() throws IOException {
         Set<Source> children = new HashSet<>();
         if (Files.isDirectory(path)) {

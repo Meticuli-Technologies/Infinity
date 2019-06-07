@@ -27,7 +27,7 @@ public class AssetPropertiesRequestHandler extends TypeHandler<AssetPropertiesRe
     @Override
     public Optional<Serializable> handleGeneric(AssetPropertiesRequest response, Client client) {
         List<AssetProperties> assetPropertiesList = getAssetPropertiesList(assetManager);
-        return Optional.of(new AssetPropertiesRequestResponse(assetPropertiesList));
+        return Optional.of(new ListBasedAssetPropertiesRequestResponse(assetPropertiesList));
     }
 
     private List<AssetProperties> getAssetPropertiesList(AssetManager assetManager) {

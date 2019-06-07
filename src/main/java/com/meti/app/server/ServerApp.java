@@ -2,6 +2,7 @@ package com.meti.app.server;
 
 import com.meti.app.*;
 import com.meti.lib.asset.manage.AssetManager;
+import com.meti.lib.asset.source.ParentSource;
 import com.meti.lib.asset.source.PathSource;
 import com.meti.lib.asset.text.TextAssetTranslator;
 import com.meti.lib.collect.State;
@@ -46,8 +47,10 @@ public class ServerApp extends Application {
 
     private void loadAssetManager(AssetManager assetManager) throws IOException {
         ensureAssetPath();
+        ParentSource assetPathSource = new PathSource(ASSET_PATH);
         assetManager.addTranslator(new TextAssetTranslator());
-        assetManager.read(new PathSource(ASSET_PATH));
+        assetManager.setRootSource(assetPathSource);
+        assetManager.read(assetPathSource);
     }
 
     private void ensureAssetPath() throws IOException {
