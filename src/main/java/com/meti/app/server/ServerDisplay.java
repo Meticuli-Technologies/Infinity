@@ -70,5 +70,4 @@ public class ServerDisplay extends InfinityController implements Initializable {
     private void loadPortText(int port) {
         portText.setText(String.valueOf(port));
     }
-
 }

@@ -7,7 +7,6 @@ import com.meti.lib.net.TypeHandler;
 import com.meti.lib.net.client.Client;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class AssetPropertiesRequestHandler extends TypeHandler<AssetPropertiesRe
     @Override
     public Optional<Serializable> handleGeneric(AssetPropertiesRequest response, Client client) {
         List<AssetProperties> assetPropertiesList = getAssetPropertiesList(assetManager);
-        return Optional.of(new ArrayList<>(assetPropertiesList));
+        return Optional.of(new AssetPropertiesRequestResponse(assetPropertiesList));
     }
 
     private List<AssetProperties> getAssetPropertiesList(AssetManager assetManager) {
