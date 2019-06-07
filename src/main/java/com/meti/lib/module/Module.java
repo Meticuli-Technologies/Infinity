@@ -1,5 +1,7 @@
 package com.meti.lib.module;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -8,5 +10,5 @@ import java.util.Set;
  * @since 6/7/2019
  */
 public interface Module {
-    <T> Set<T> getInstances(Class<T> instanceClass);
+    <T> Set<T> getInstances(Class<T> instanceClass, List<?> dependencies) throws IllegalAccessException, InvocationTargetException, InstantiationException;
 }

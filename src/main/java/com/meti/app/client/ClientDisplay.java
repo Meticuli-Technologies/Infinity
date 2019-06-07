@@ -76,7 +76,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     private void loadEditors(ModuleManager moduleManager) {
         for (Module module : moduleManager.getModules()) {
-            Set<Editor> editorInstances = module.getInstances(Editor.class);
+            Set<Editor> editorInstances = module.getInstances(Editor.class, );
             putInstances(editorInstances);
         }
     }
