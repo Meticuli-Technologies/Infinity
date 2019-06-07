@@ -2,6 +2,7 @@ package com.meti.app;
 
 import com.meti.lib.asset.manage.AssetManager;
 import com.meti.lib.javafx.StageManager;
+import com.meti.lib.module.ModuleManager;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
 
@@ -12,6 +13,8 @@ import com.meti.lib.net.server.Server;
  */
 public interface Toolkit {
     Client getClient();
+
+    ModuleManager getModuleManager();
 
     Server getServer();
 

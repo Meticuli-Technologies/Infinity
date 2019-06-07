@@ -5,6 +5,8 @@ import com.meti.app.InfinityController;
 import com.meti.app.server.asset.SerializedAssetPropertiesRequest;
 import com.meti.lib.javafx.InjectorLoader;
 import com.meti.lib.javafx.StageManager;
+import com.meti.lib.module.Module;
+import com.meti.lib.module.ModuleManager;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.SocketClient;
 import com.meti.lib.net.client.handle.ClientProcessor;
@@ -32,6 +34,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
     @FXML
     private TreeView<String> assetView;
     private Map<String, TreeItem<String>> itemMap = new HashMap<>();
+    private Map<String, Editor> editors = new HashMap<>();
 
     @FXML
     public void open(){
@@ -49,17 +52,38 @@ public class ClientDisplay extends InfinityController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadClientFromBootstrap();
+        tryIndexAssets();
+        loadEditors(toolkit.getModuleManager());
+    }
+
+    private void loadClientFromBootstrap() {
         Optional<ClientBootstrap> clientBootstrap = state.singleByClass(ClientBootstrap.class);
         if (clientBootstrap.isPresent()) {
             loadClient(clientBootstrap.get());
         } else {
             //TODO: do something
         }
+    }
 
+    private void tryIndexAssets() {
         try {
             indexAssets();
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+    }
+
+    private void loadEditors(ModuleManager moduleManager) {
+        for (Module module : moduleManager.getModules()) {
+            Set<Editor> editorInstances = module.getInstances(Editor.class);
+            putInstances(editorInstances);
+        }
+    }
+
+    private void putInstances(Iterable<? extends Editor> editorInstances) {
+        for (Editor editor : editorInstances) {
+            this.editors.put(editor.getName(), editor);
         }
     }
 
