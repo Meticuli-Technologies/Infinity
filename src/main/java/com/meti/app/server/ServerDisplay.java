@@ -3,6 +3,7 @@ package com.meti.app.server;
 import com.meti.app.Controls;
 import com.meti.app.InfinityController;
 import com.meti.app.client.chat.ChatMessageHandler;
+import com.meti.app.server.asset.AssetPropertiesRequestHandler;
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.server.ServerSocketServer;
 import javafx.fxml.FXML;
@@ -12,9 +13,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author SirMathhman
@@ -65,9 +64,11 @@ public class ServerDisplay extends InfinityController implements Initializable {
 
     private void loadHandlers(Server server) {
         server.getResponseHandlers().add(new ChatMessageHandler(server));
+        server.getResponseHandlers().add(new AssetPropertiesRequestHandler(toolkit.getAssetManager()));
     }
 
     private void loadPortText(int port) {
         portText.setText(String.valueOf(port));
     }
+
 }
