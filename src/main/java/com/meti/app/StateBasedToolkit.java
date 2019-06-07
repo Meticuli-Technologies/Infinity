@@ -3,6 +3,7 @@ package com.meti.app;
 import com.meti.lib.asset.manage.AssetManager;
 import com.meti.lib.collect.State;
 import com.meti.lib.javafx.StageManager;
+import com.meti.lib.module.ModuleManager;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
 
@@ -21,6 +22,11 @@ public class StateBasedToolkit implements Toolkit {
     @Override
     public Client getClient() {
         return state.singleByClass(Client.class).orElseThrow();
+    }
+
+    @Override
+    public ModuleManager getModuleManager() {
+        return state.singleByClass(ModuleManager.class).orElseThrow();
     }
 
     @Override
