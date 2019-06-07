@@ -4,8 +4,11 @@ import com.meti.app.Controls;
 import com.meti.app.InfinityController;
 import com.meti.lib.asset.Asset;
 import com.meti.lib.asset.text.TextAsset;
+import com.meti.lib.net.client.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+
+import java.awt.event.KeyEvent;
 
 /**
  * @author SirMathhman
@@ -20,6 +23,13 @@ public class TextEditorController extends InfinityController implements AssetRen
         super(controls);
     }
 
+    @FXML
+    public void changeInput(KeyEvent event){
+        int start = input.getCaretPosition();
+        //TODO: implement change input
+    }
+
+    @Override
     public void render(Asset<?, ?> asset) {
         if(asset instanceof TextAsset){
             TextAsset castedAsset = (TextAsset) asset;
