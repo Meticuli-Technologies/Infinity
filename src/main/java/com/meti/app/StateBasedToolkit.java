@@ -1,8 +1,11 @@
 package com.meti.app;
 
+import com.meti.lib.asset.manage.AssetManager;
 import com.meti.lib.collect.State;
 import com.meti.lib.javafx.StageManager;
+import com.meti.lib.module.ModuleManager;
 import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 import com.meti.lib.net.server.Server;
 
 /**
@@ -23,6 +26,21 @@ public class StateBasedToolkit implements Toolkit {
     }
 
     @Override
+    public ResponseProcessor getProcessor() {
+        return state.singleByClass(ResponseProcessor.class).orElseThrow();
+    }
+
+    @Override
+    public Querier getQuerier() {
+        return state.singleByClass(Querier.class).orElseThrow();
+    }
+
+    @Override
+    public ModuleManager getModuleManager() {
+        return state.singleByClass(ModuleManager.class).orElseThrow();
+    }
+
+    @Override
     public Server getServer() {
         return state.singleByClass(Server.class).orElseThrow();
     }
@@ -30,5 +48,10 @@ public class StateBasedToolkit implements Toolkit {
     @Override
     public StageManager getStageManager() {
         return state.singleByClass(StageManager.class).orElseThrow();
+    }
+
+    @Override
+    public AssetManager getAssetManager() {
+        return state.singleByClass(AssetManager.class).orElseThrow();
     }
 }

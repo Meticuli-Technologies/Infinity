@@ -22,12 +22,27 @@ public class ListBasedStageManager implements StageManager {
     }
 
     @Override
+    public void allocate(Parent root) {
+        addStage(new Stage());
+        loadLast(root);
+    }
+
+    @Override
+    public void loadLast(Parent parent){
+        loadParent(lastStageIndex(), parent);
+    }
+
+    private int lastStageIndex() {
+        return stages.size() - 1;
+    }
+
+    @Override
     public void loadPrimaryStage(Parent parent) {
-        load(PRIMARY_STAGE_INDEX, parent);
+        loadParent(PRIMARY_STAGE_INDEX, parent);
     }
 
     //TODO: consider if other indices are required?
-    private void load(int index, Parent parent) {
+    private void loadParent(int index, Parent parent) {
         Stage stage = stages.get(index);
         stage.setScene(new Scene(parent));
         if (!stage.isShowing()) {

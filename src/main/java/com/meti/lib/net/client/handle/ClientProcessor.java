@@ -5,6 +5,7 @@ import com.meti.lib.net.client.Client;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.SocketException;
 import java.util.Collection;
 import java.util.Set;
 
@@ -23,12 +24,16 @@ public class ClientProcessor implements ResponseProcessor {
             Set<Serializable> results = handlerManager.processResponse(nextResponse, client);
             writeResults(results);
         } catch (Throwable throwable) {
-            if (throwable instanceof EOFException) {
+            if (isEndingException(throwable)) {
                 client.close();
             } else {
                 throw throwable;
             }
         }
+    }
+
+    private boolean isEndingException(Throwable throwable) {
+        return (throwable instanceof EOFException) || (throwable instanceof SocketException);
     }
 
     private void writeResults(Iterable<? extends Serializable> results) throws IOException {

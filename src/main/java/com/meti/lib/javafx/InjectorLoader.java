@@ -15,7 +15,7 @@ import java.util.List;
  * @since 6/1/2019
  */
 public final class InjectorLoader extends FXMLLoader {
-    private InjectorLoader(List<?> dependencies) {
+    public InjectorLoader(List<?> dependencies) {
         setControllerFactory(new InstantiatorCallback(dependencies));
     }
 
