@@ -52,7 +52,7 @@ public class SocketClient implements Client {
 
     @Override
     public Object read() throws IOException, ClassNotFoundException {
-        return inputStream.readObject();
+        return inputStream.readUnshared();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SocketClient implements Client {
 
     @Override
     public void write(Serializable serializable) throws IOException {
-        outputStream.writeObject(serializable);
+        outputStream.writeUnshared(serializable);
     }
 
     @Override
