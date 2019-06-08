@@ -37,7 +37,7 @@ public class TextHandlerSupplier implements ServerHandlerSupplier {
                         castedAsset.setOnChange((textAssetChange, textAssetChangeStringBuilderAsset) -> {
                             for (Client serverClient : server.getClients()) {
                                 try {
-                                    serverClient.writeAndFlush(response);
+                                    serverClient.writeAndFlush(textAssetChange);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
