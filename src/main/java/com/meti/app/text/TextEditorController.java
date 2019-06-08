@@ -41,25 +41,21 @@ public class TextEditorController extends InfinityController implements AssetRen
             StringBuilder builder = renderedAsset.getValue();
             display.setText(builder.toString());
 
-            renderedAsset.onChange((textAssetChange, asset1) -> {
-                try {
-                    toolkit.getClient().writeAndFlush(textAssetChange);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            renderedAsset.setOnChange((change, asset1) -> {
+                if (change.wasAdded()) {
+                    int start = change.getStart();
+                    display.insertText(start, String.valueOf(change.getValue()));
+                } else if (change.wasRemoved()) {
+                    int start = change.getStart();
+                    int stop = change.getStop();
+                    display.deleteText(start, stop);
                 }
             });
 
             processor.addHandler(new TypeHandler<>(TextAssetChange.class) {
                 @Override
                 public Optional<Serializable> handleGeneric(TextAssetChange response, Client client) {
-                    if (response.wasAdded()) {
-                        int start = response.getStart();
-                        display.insertText(start, String.valueOf(response.getValue()));
-                    } else if (response.wasRemoved()) {
-                        int start = response.getStart();
-                        int stop = response.getStop();
-                        display.deleteText(start, stop);
-                    }
+                    renderedAsset.change(response);
                     return Optional.empty();
                 }
             });
@@ -69,16 +65,22 @@ public class TextEditorController extends InfinityController implements AssetRen
     @FXML
     public void changeInput(KeyEvent event) {
         KeyCode code = event.getCode();
+        TextAssetChange change;
+        Client client = toolkit.getClient();
+        System.out.println(code);
         if (code != KeyCode.BACK_SPACE) {
             int start = display.getCaretPosition();
-            char c = code.getChar().charAt(0);
-            TextAssetChange change = new SerializedTextAssetChange(start, c);
-            renderedAsset.change(change);
+            change = new SerializedTextAssetChange(renderedAsset.getProperties().getName(), start, event.getText());
         } else {
             int start = display.getCaretPosition();
             int stop = display.getCaretPosition() + 1;
-            TextAssetChange change = new SerializedTextAssetChange(start, stop);
-            renderedAsset.change(change);
+            change = new SerializedTextAssetChange(renderedAsset.getProperties().getName(), start, stop);
+        }
+        try {
+            client.writeAndFlush(change);
+            processor.processNextResponse();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
         //TODO: implement change display
     }

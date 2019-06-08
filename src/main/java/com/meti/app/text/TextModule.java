@@ -11,6 +11,6 @@ import java.util.Set;
  */
 public class TextModule extends ClassCollectionModule {
     public TextModule() {
-        super(Set.of(TextEditor.class));
+        super(Set.of(TextEditor.class, TextHandlerSupplier.class));
     }
 }

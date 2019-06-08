@@ -27,7 +27,7 @@ public class TextAssetTranslator implements AssetTranslator<Asset<?, StringBuild
                 builder.append(line);
             }
         } while(line != null);
-        return new TextAssetImpl(new InlineAssetProperties(source.getName()), builder);
+        return new SerializedTextAsset(new InlineAssetProperties(source.getName()), builder);
     }
 
     @Override

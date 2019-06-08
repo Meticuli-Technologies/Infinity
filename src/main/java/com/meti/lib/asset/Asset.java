@@ -15,7 +15,9 @@ public interface Asset<C extends AssetChange, V> extends Serializable {
 
     V getValue();
 
+    BiConsumer<C, Asset<C, V>> getOnChange();
+
     void change(C change);
 
-    void onChange(BiConsumer<C, Asset<C, V>> consumer);
+    void setOnChange(BiConsumer<C, Asset<C, V>> consumer);
 }

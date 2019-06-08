@@ -10,12 +10,18 @@ import java.util.function.BiConsumer;
  * @version 0.0.0
  * @since 6/6/2019
  */
-public class TextAssetImpl implements TextAsset {
+public class SerializedTextAsset implements TextAsset {
+    private static final long serialVersionUID = 1978563885296338066L;
+    private transient BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> onChange;
     private final StringBuilder value = new StringBuilder();
-    private BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> onChange;
     private final AssetProperties properties;
 
-    public TextAssetImpl(AssetProperties properties, CharSequence initialValue) {
+    @Override
+    public BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> getOnChange() {
+        return onChange;
+    }
+
+    public SerializedTextAsset(AssetProperties properties, CharSequence initialValue) {
         this.properties = properties;
         this.value.append(initialValue);
     }
@@ -44,7 +50,7 @@ public class TextAssetImpl implements TextAsset {
     }
 
     @Override
-    public void onChange(BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> onChange) {
+    public void setOnChange(BiConsumer<TextAssetChange, Asset<TextAssetChange, StringBuilder>> onChange) {
         this.onChange = onChange;
     }
 

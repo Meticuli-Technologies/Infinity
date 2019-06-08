@@ -9,15 +9,17 @@ public class SerializedTextAssetChange implements TextAssetChange {
     private static final long serialVersionUID = -303601291311302480L;
     private final int start;
     private final int stop;
-    private final char value;
+    private final String value;
     private final boolean wasAdded;
     private final boolean wasRemoved;
+    private final String name;
 
-    public SerializedTextAssetChange(int start, char value) {
-        this(start, -1, value, true, false);
+    public SerializedTextAssetChange(String name, int start, String value) {
+        this(name, start, -1, value, true, false);
     }
 
-    private SerializedTextAssetChange(int start, int stop, char value, boolean wasAdded, boolean wasRemoved) {
+    private SerializedTextAssetChange(String name, int start, int stop, String value, boolean wasAdded, boolean wasRemoved) {
+        this.name = name;
         this.start = start;
         this.stop = stop;
         this.value = value;
@@ -25,8 +27,8 @@ public class SerializedTextAssetChange implements TextAssetChange {
         this.wasRemoved = wasRemoved;
     }
 
-    public SerializedTextAssetChange(int start, int stop) {
-        this(start, stop, '\0', false, true);
+    public SerializedTextAssetChange(String name, int start, int stop) {
+        this(name, start, stop, "", false, true);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class SerializedTextAssetChange implements TextAssetChange {
     }
 
     @Override
-    public char getValue() {
+    public String getValue() {
         return value;
     }
 
@@ -52,5 +54,10 @@ public class SerializedTextAssetChange implements TextAssetChange {
     @Override
     public boolean wasRemoved() {
         return wasRemoved;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

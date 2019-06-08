@@ -12,7 +12,7 @@ public interface TextAssetChange extends AssetChange {
 
     int getStop();
 
-    char getValue();
+    String getValue();
 
     boolean wasAdded();
 
