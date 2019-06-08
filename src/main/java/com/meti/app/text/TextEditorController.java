@@ -10,20 +10,23 @@ import com.meti.lib.net.TypeHandler;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.client.handle.ResponseProcessor;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.skin.TextAreaSkin;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 /**
  * @author SirMathhman
  * @version 0.0.0
  * @since 6/7/2019
  */
-public class TextEditorController extends InfinityController implements AssetRenderer {
+public class TextEditorController extends InfinityController implements AssetRenderer, Initializable {
     private final ResponseProcessor processor;
     @FXML
     private TextArea display;
@@ -67,14 +70,10 @@ public class TextEditorController extends InfinityController implements AssetRen
         KeyCode code = event.getCode();
         TextAssetChange change;
         Client client = toolkit.getClient();
-        System.out.println(code);
-        if (code != KeyCode.BACK_SPACE) {
-            int start = display.getCaretPosition();
-            change = new SerializedTextAssetChange(renderedAsset.getProperties().getName(), start, event.getText());
+        if (code == KeyCode.BACK_SPACE) {
+            change = backSpaceChange();
         } else {
-            int start = display.getCaretPosition();
-            int stop = display.getCaretPosition() + 1;
-            change = new SerializedTextAssetChange(renderedAsset.getProperties().getName(), start, stop);
+            change = notBackSpaceChange(event);
         }
         try {
             client.writeAndFlush(change);
@@ -82,6 +81,35 @@ public class TextEditorController extends InfinityController implements AssetRen
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-        //TODO: implement change display
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        TextAreaSkin value = new TextAreaSkin(display);
+        value.setCaretAnimating(true);
+        display.setSkin(value);
+    }
+
+    private TextAssetChange backSpaceChange() {
+        int start = display.getCaretPosition();
+        int stop = display.getCaretPosition() + 1;
+        return new SerializedTextAssetChange(renderedAsset.getProperties().getName(), start, stop);
+    }
+
+    private TextAssetChange notBackSpaceChange(KeyEvent event) {
+        int start = display.getCaretPosition();
+        String value;
+        if (event.getCode() == KeyCode.ENTER) {
+            value = "\n";
+        } else if (event.getCode() == KeyCode.TAB) {
+            value = "\t";
+        } else {
+            if (event.isShiftDown()) {
+                value = event.getText().toUpperCase();
+            } else {
+                value = event.getText();
+            }
+        }
+        return new SerializedTextAssetChange(renderedAsset.getProperties().getName(), start, value);
     }
 }
