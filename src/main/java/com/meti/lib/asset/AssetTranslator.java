@@ -12,7 +12,7 @@ import java.io.IOException;
 public interface AssetTranslator<A extends Asset<?, ?>> {
     A read(Source source) throws IOException;
 
-    void write(Source source, A asset) throws IOException;
+    void write(Source source, Asset<?, ?> asset) throws IOException;
 
-    boolean canBuild(Source source);
+    boolean canUse(Source source);
 }

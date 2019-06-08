@@ -31,7 +31,7 @@ public class TextAssetTranslator implements AssetTranslator<Asset<?, StringBuild
     }
 
     @Override
-    public void write(Source source, Asset<?, StringBuilder> asset) throws IOException {
+    public void write(Source source, Asset<?, ?> asset) throws IOException {
         PrintWriter writer = new PrintWriter(source.newOutputStream());
         writer.print(asset.getValue());
         writer.flush();
@@ -39,7 +39,7 @@ public class TextAssetTranslator implements AssetTranslator<Asset<?, StringBuild
     }
 
     @Override
-    public boolean canBuild(Source source) {
+    public boolean canUse(Source source) {
         return source.getName().endsWith("txt");
     }
 }

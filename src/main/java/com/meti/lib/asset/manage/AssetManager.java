@@ -25,4 +25,6 @@ public interface AssetManager {
     Set<Asset<?, ?>> getAssets();
 
     void setRootSource(Source rootSource);
+
+    void write() throws IOException;
 }

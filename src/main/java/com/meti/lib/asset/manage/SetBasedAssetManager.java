@@ -6,10 +6,8 @@ import com.meti.lib.asset.source.ParentSource;
 import com.meti.lib.asset.source.Source;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author SirMathhman
@@ -17,9 +15,19 @@ import java.util.Set;
  * @since 6/6/2019
  */
 public class SetBasedAssetManager implements AssetManager {
-    private final Collection<AssetTranslator<?>> builders = new HashSet<>();
-    private final Set<Asset<?, ?>> assets = new HashSet<>();
+    private final Collection<AssetTranslator<?>> translators = new HashSet<>();
+    private final Map<Source, Set<Asset<?, ?>>> assetMap = new HashMap<>();
     private Source rootSource;
+
+    @Override
+    public Asset<?, ?> getAssetByName(String name) {
+        return assetMap.values().stream()
+                .flatMap(Collection::stream)
+                //TODO: fix LoD violation
+                .filter(asset -> asset.getProperties().getName().equals(name))
+                .findAny()
+                .orElseThrow();
+    }
 
     private void buildChild(ParentSource source, Source child) throws IOException {
         Optional<Source> rootSourceOptional = getRootSource();
@@ -28,24 +36,11 @@ public class SetBasedAssetManager implements AssetManager {
                 buildChildWithParent(source, child);
             }
             else{
-                buildChildWithoutParent(child);
+                read(child);
             }
         } else {
             buildChildWithParent(source, child);
         }
-    }
-
-    private void buildChildWithoutParent(Source childSource) throws IOException {
-        assets.addAll(read(childSource));
-    }
-
-    @Override
-    public Asset<?, ?> getAssetByName(String name) {
-        return assets.stream()
-                //TODO: fix LoD violation
-                .filter(asset -> asset.getProperties().getName().equals(name))
-                .findAny()
-                .orElseThrow();
     }
 
     @Override
@@ -54,22 +49,16 @@ public class SetBasedAssetManager implements AssetManager {
     }
 
     @Override
-    public void addTranslator(AssetTranslator<?> builder) {
-        builders.add(builder);
-    }
-
-
-    @Override
     public Set<Asset<?, ?>> read(Source source) throws IOException {
         Set<Asset<?, ?>> builtSet = new HashSet<>();
-        for (AssetTranslator<?> builder : builders) {
-            if (builder.canBuild(source)) {
+        for (AssetTranslator<?> builder : translators) {
+            if (builder.canUse(source)) {
                 Asset<?, ?> asset = builder.read(source);
                 builtSet.add(asset);
             }
         }
-        assets.addAll(builtSet);
 
+        assetMap.put(source, builtSet);
         if(source instanceof ParentSource){
             buildParent((ParentSource) source);
         }
@@ -79,7 +68,29 @@ public class SetBasedAssetManager implements AssetManager {
 
     @Override
     public Set<Asset<?, ?>> getAssets() {
-        return assets;
+        return assetMap.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void write() throws IOException {
+        for (Map.Entry<Source, Set<Asset<?, ?>>> sourceSetEntry : assetMap.entrySet()) {
+            Set<Asset<?, ?>> assets = sourceSetEntry.getValue();
+            Optional<Asset<?, ?>> optional = assets.stream().findAny();
+            if (optional.isPresent()) {
+                Asset<?, ?> asset = optional.get();
+                Set<AssetTranslator<?>> validTranslators = translators.stream()
+                        .filter(assetTranslator -> assetTranslator.canUse(sourceSetEntry.getKey()))
+                        .collect(Collectors.toSet());
+                for (AssetTranslator<?> validTranslator : validTranslators) {
+                    validTranslator.write(sourceSetEntry.getKey(), asset);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addTranslator(AssetTranslator<?> translator) {
+        translators.add(translator);
     }
 
     @Override
@@ -89,7 +100,6 @@ public class SetBasedAssetManager implements AssetManager {
 
     private void buildChildWithParent(ParentSource parentSource, Source childSource) throws IOException {
         read(childSource).stream()
-                .peek(assets::add)
                 .map(Asset::getProperties)
                 .forEach(assetProperties -> assetProperties.setParentName(parentSource.getName()));
     }

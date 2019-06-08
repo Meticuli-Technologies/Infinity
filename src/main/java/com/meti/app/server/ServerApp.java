@@ -69,10 +69,15 @@ public class ServerApp extends Application {
         return getClass().getResource("/com/meti/app/server/ServerMenu.fxml");
     }
 
-
     @Override
     public void stop() {
         closeCloseables(state);
+        try {
+            AssetManager assetManager = toolkit.getAssetManager();
+            assetManager.write();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void closeCloseables(State state) {
