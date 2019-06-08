@@ -11,6 +11,7 @@ import com.meti.lib.net.TypeHandler;
 import com.meti.lib.net.client.Client;
 import com.meti.lib.net.server.Server;
 import com.meti.lib.net.server.ServerSocketServer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -65,7 +66,7 @@ public class ServerDisplay extends InfinityController implements Initializable {
     }
 
     private void loadServerOntoGUI(Server server) {
-        server.setOnConnect(client -> clientListView.getItems().add(client.getName()));
+        server.setOnConnect(client -> Platform.runLater(() -> clientListView.getItems().add(client.getName())));
         loadHandlers(server);
         loadPortText(server.getPort());
     }

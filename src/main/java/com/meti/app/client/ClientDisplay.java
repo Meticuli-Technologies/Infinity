@@ -156,6 +156,7 @@ public class ClientDisplay extends InfinityController implements Initializable {
         querier = new MapBasedQuerier(processor);
         state.add(client);
         state.add(processor);
+        state.add(querier);
     }
 
 

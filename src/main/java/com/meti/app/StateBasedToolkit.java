@@ -5,6 +5,7 @@ import com.meti.lib.collect.State;
 import com.meti.lib.javafx.StageManager;
 import com.meti.lib.module.ModuleManager;
 import com.meti.lib.net.client.Client;
+import com.meti.lib.net.client.handle.ResponseProcessor;
 import com.meti.lib.net.server.Server;
 
 /**
@@ -22,6 +23,16 @@ public class StateBasedToolkit implements Toolkit {
     @Override
     public Client getClient() {
         return state.singleByClass(Client.class).orElseThrow();
+    }
+
+    @Override
+    public ResponseProcessor getProcessor() {
+        return state.singleByClass(ResponseProcessor.class).orElseThrow();
+    }
+
+    @Override
+    public Querier getQuerier() {
+        return state.singleByClass(Querier.class).orElseThrow();
     }
 
     @Override

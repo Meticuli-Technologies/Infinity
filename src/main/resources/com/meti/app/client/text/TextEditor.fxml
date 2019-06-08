@@ -10,7 +10,7 @@
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="400.0" prefViewportWidth="600.0">
          <content>
-            <TextArea fx:id="input" layoutX="231.0" layoutY="100.0" onKeyPressed="#changeInput" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <TextArea fx:id="display" editable="false" layoutX="231.0" layoutY="100.0" onKeyPressed="#changeInput" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </content>
       </ScrollPane>
    </children>

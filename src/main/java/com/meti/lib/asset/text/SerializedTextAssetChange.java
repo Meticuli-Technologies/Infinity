@@ -6,6 +6,7 @@ package com.meti.lib.asset.text;
  * @since 6/6/2019
  */
 public class SerializedTextAssetChange implements TextAssetChange {
+    private static final long serialVersionUID = -303601291311302480L;
     private final int start;
     private final int stop;
     private final char value;
